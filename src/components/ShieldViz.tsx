@@ -19,7 +19,7 @@ export default function ShieldViz(){
   const [bars,setBars]=useState([0,0,0,0,0]);
   const [d1,setD1]=useState(0);
   const [d2,setD2]=useState(0);
-  const [ln,setLn]=useState('272,350 272,350');
+  const [ln,setLn]=useState('270,420 270,420');
   const [dots,setDots]=useState<boolean[]>(Array(12).fill(false));
   const [scan,setScan]=useState(0);
   const [pulse,setPulse]=useState(false);
@@ -29,8 +29,8 @@ export default function ShieldViz(){
   const slaVal  = useCountUp(91,1400,800);
 
   useEffect(()=>{
-    setTimeout(()=>{ setBars([40,65,48,78,55]); setD1(188); setD2(178); }, 700);
-    setTimeout(()=>setLn('272,368 286,355 300,360 314,345 328,350 342,335 356,340 370,322'), 900);
+    setTimeout(()=>{ setBars([40,65,48,78,55]); setD1(186); setD2(176); }, 700);
+    setTimeout(()=>setLn('262,435 278,420 294,426 310,409 326,415 342,398 358,404 374,386'), 900);
     const sv = setInterval(()=>setScan(n=>(n+1)%100), 55);
     const dv = setInterval(()=>setDots(Array(12).fill(0).map(()=>Math.random()>0.45)), 1800);
     const pv = setInterval(()=>{ setPulse(true); setTimeout(()=>setPulse(false),700); }, 2800);
@@ -38,16 +38,16 @@ export default function ShieldViz(){
     return()=>{ clearInterval(sv); clearInterval(dv); clearInterval(pv); clearInterval(tv); };
   },[]);
 
-  const lb = bars.map((b,i)=>Math.max(10, b+(tk%5===i?(Math.random()>0.5?9:-7):0)));
+  const lb = bars.map((b,i)=>Math.max(10, b+(tk%5===i?(Math.random()>0.5?10:-8):0)));
 
   /*
-    Exact panel centers from PIL analysis of pp_hr.gif (1800x1800 → 620px display):
-    TL-Donut:  cx=188, cy=198   (w=149, h=139)
-    TC-Map:    cx=328, cy=198   (w=133, h=139)
-    TR-Shield: cx=450, cy=198   (w=109, h=139)
-    BL-Bars:   cx=188, cy=350   (w=149, h=166)
-    BC-Line:   cx=328, cy=350   (w=133, h=166)
-    BR-Ring:   cx=450, cy=350   (w=109, h=166)
+    Positions from actual purple pixel analysis of pp_hr.gif (1800x1800 → 620px display):
+    TL Donut:   cx=170, cy=188,  ring_r≈66px (but draw smaller: ~32px to fit inside)
+    TR Shield:  cx=449, cy=188
+    BL Bars:    x=70-235, bar_base_y=495, bar_top_y=279
+    BR Ring:    cx=473, cy=387,  ring_r≈88px (draw ~38px)
+    TC Map:     cx≈310, cy≈188  (center column, top row)
+    BC Line:    cx≈310, cy≈387  (center column, bottom row)
   */
 
   return(
@@ -65,67 +65,66 @@ export default function ShieldViz(){
             <stop offset="0%" stopColor="#4f46e5"/><stop offset="100%" stopColor="#7c3aed"/>
           </linearGradient>
           <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#6d28d9"/><stop offset="50%" stopColor="#4f46e5"/><stop offset="100%" stopColor="#818cf8"/>
+            <stop offset="0%" stopColor="#6d28d9"/><stop offset="60%" stopColor="#4f46e5"/><stop offset="100%" stopColor="#818cf8"/>
           </linearGradient>
           <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#4f46e5"/><stop offset="100%" stopColor="#7c3aed"/>
           </linearGradient>
-          <filter id="glow"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         </defs>
 
-        {/* ── TL: Donut — cx=188, cy=198 ── */}
-        <circle cx="188" cy="192" r="30" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="9"/>
-        <circle cx="188" cy="192" r="30" fill="none" stroke="url(#dg)" strokeWidth="9"
+        {/* ── TL: Donut — cx=170, cy=188 (from actual purple pixels) ── */}
+        <circle cx="170" cy="188" r="32" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="9"/>
+        <circle cx="170" cy="188" r="32" fill="none" stroke="url(#dg)" strokeWidth="9"
           strokeDasharray={`${d1} 210`} strokeLinecap="round" filter="url(#glow)"
-          style={{transformOrigin:'188px 192px',transform:'rotate(-90deg)',
+          style={{transformOrigin:'170px 188px',transform:'rotate(-90deg)',
             transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)'}}/>
-        <text x="188" y="196" textAnchor="middle" fontSize="11" fontWeight="900" fill="#4f46e5"
+        <text x="170" y="193" textAnchor="middle" fontSize="11" fontWeight="900" fill="#4f46e5"
           style={{fontFamily:'Inter,sans-serif'}}>{riskVal}%</text>
-        <text x="188" y="207" textAnchor="middle" fontSize="6.5" fill="#6d28d9" fontWeight="700">RISK</text>
+        <text x="170" y="205" textAnchor="middle" fontSize="6.5" fill="#6d28d9" fontWeight="700">RISK</text>
 
-        {/* ── TC: World map — cx=328, cy=198 ── */}
-        {/* Scanning line */}
-        <line x1={262+(scan/100)*133} y1="128" x2={262+(scan/100)*133} y2="267"
-          stroke="#4f46e5" strokeWidth="1.5" opacity="0.35"/>
-        {/* Threat dots */}
+        {/* ── TC: World map — cx=310, cy=188 ── */}
+        {/* Scanning sweep */}
+        <line x1={210+(scan/100)*200} y1="128" x2={210+(scan/100)*200} y2="260"
+          stroke="#4f46e5" strokeWidth="1.5" opacity="0.3"/>
         {[
-          [278,158],[292,150],[306,155],[320,147],[334,152],[348,142],[362,148],
-          [285,172],[299,166],[313,174],[327,162],[341,168],[355,158]
+          [228,155],[242,147],[256,152],[270,144],[284,149],[298,140],[312,145],[326,137],
+          [240,168],[258,162],[276,170],[294,158],[312,166],[330,153]
         ].map(([cx,cy],i)=>(
-          <circle key={i} cx={cx} cy={cy} r={i===3?"5":i===9?"4":"2.5"}
-            fill={i===3?"#ef4444":i===9?"#f97316":"#818cf8"}
+          <circle key={i} cx={cx} cy={cy} r={i===4?"5":i===10?"4.5":"2.5"}
+            fill={i===4?"#ef4444":i===10?"#f97316":"#818cf8"}
             opacity={dots[i]?0.95:0.3}
-            filter={i===3||i===9?"url(#glow)":undefined}
+            filter={i===4||i===10?"url(#glow)":undefined}
             style={{transition:'opacity 0.6s ease'}}/>
         ))}
-        <circle cx="320" cy="147" r={pulse?12:7} fill="none" stroke="#ef4444"
-          strokeWidth="1" opacity={pulse?0:0.6}
+        <circle cx="284" cy="149" r={pulse?12:7} fill="none" stroke="#ef4444"
+          strokeWidth="1" opacity={pulse?0:0.55}
           style={{transition:'r 0.7s ease,opacity 0.7s ease'}}/>
 
-        {/* ── TR: Shield pulse — cx=450, cy=198 ── */}
-        <circle cx="450" cy="190" r={pulse?28:20} fill="none" stroke="#4f46e5"
-          strokeWidth="1.5" opacity={pulse?0:0.45}
+        {/* ── TR: Shield pulse — cx=449, cy=188 ── */}
+        <circle cx="449" cy="182" r={pulse?28:20} fill="none" stroke="#4f46e5"
+          strokeWidth="1.5" opacity={pulse?0:0.4}
           style={{transition:'r 0.7s ease,opacity 0.7s ease'}}/>
-        <text x="450" y="240" textAnchor="middle" fontSize="8" fontWeight="800"
+        <text x="449" y="236" textAnchor="middle" fontSize="7.5" fontWeight="800"
           fill={pulse?"#059669":"#4f46e5"} filter={pulse?"url(#glow)":undefined}
           style={{fontFamily:'Inter,sans-serif',transition:'fill 0.3s'}}>
           {pulse?"✓ SECURE":"PROTECTED"}
         </text>
 
-        {/* ── BL: Bar chart — cx=188, cy=350 (bars at bottom of panel: y baseline=415) ── */}
-        <line x1="118" y1="415" x2="258" y2="415" stroke="rgba(79,70,229,0.25)" strokeWidth="1.5"/>
+        {/* ── BL: Bar chart — base y=490, bars in x=80-230 ── */}
+        <line x1="78" y1="490" x2="232" y2="490" stroke="rgba(79,70,229,0.25)" strokeWidth="1.5"/>
         {lb.map((h,i)=>(
-          <rect key={i} x={123+i*24} y={415-h*1.4} width="17" height={h*1.4} rx="4"
+          <rect key={i} x={88+i*27} y={490-h*2.0} width="20" height={h*2.0} rx="4"
             fill="url(#bg)" opacity="0.88" filter="url(#glow)"
             style={{transition:'y 0.65s cubic-bezier(0.4,0,0.2,1),height 0.65s cubic-bezier(0.4,0,0.2,1)'}}/>
         ))}
         {['C','H','M','L','I'].map((l,i)=>(
-          <text key={l} x={131+i*24} y="425" textAnchor="middle" fontSize="7" fill="#6d28d9" fontWeight="700">{l}</text>
+          <text key={l} x={98+i*27} y="502" textAnchor="middle" fontSize="7" fill="#6d28d9" fontWeight="700">{l}</text>
         ))}
 
-        {/* ── BC: Line chart — cx=328, cy=350 ── */}
-        {[330,345,360,375,390].map(y=>(
-          <line key={y} x1="264" y1={y} x2="394" y2={y} stroke="rgba(79,70,229,0.07)" strokeWidth="1"/>
+        {/* ── BC: Line chart — cx=310, cy=387, y range 330-490 ── */}
+        {[350,370,390,410,430,450].map(y=>(
+          <line key={y} x1="210" y1={y} x2="410" y2={y} stroke="rgba(79,70,229,0.07)" strokeWidth="1"/>
         ))}
         <polyline points={ln} fill="none" stroke="url(#lg)" strokeWidth="2.5"
           strokeLinecap="round" strokeLinejoin="round" filter="url(#glow)"
@@ -134,19 +133,19 @@ export default function ShieldViz(){
           <circle key={i} cx={+x} cy={+y} r="4.5" fill="#4f46e5" stroke="white" strokeWidth="1.5"
             filter="url(#glow)" style={{transition:'all 1.3s cubic-bezier(0.4,0,0.2,1)'}}/>
         )})}
-        <line x1="264" y1="415" x2="394" y2="415" stroke="rgba(79,70,229,0.25)" strokeWidth="1.5"/>
-        <text x="388" y="302" textAnchor="end" fontSize="8" fill="#16a34a" fontWeight="800"
+        <line x1="210" y1="490" x2="410" y2="490" stroke="rgba(79,70,229,0.25)" strokeWidth="1.5"/>
+        <text x="405" y="330" textAnchor="end" fontSize="8" fill="#16a34a" fontWeight="800"
           style={{fontFamily:'Inter,sans-serif'}}>▼ 24%</text>
 
-        {/* ── BR: Ring chart — cx=450, cy=350 ── */}
-        <circle cx="450" cy="340" r="30" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="10"/>
-        <circle cx="450" cy="340" r="30" fill="none" stroke="url(#dg)" strokeWidth="10"
-          strokeDasharray={`${d2} 210`} strokeLinecap="round" filter="url(#glow)"
-          style={{transformOrigin:'450px 340px',transform:'rotate(-90deg)',
+        {/* ── BR: Ring — cx=473, cy=387 (from actual purple pixels) ── */}
+        <circle cx="473" cy="387" r="38" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="11"/>
+        <circle cx="473" cy="387" r="38" fill="none" stroke="url(#dg)" strokeWidth="11"
+          strokeDasharray={`${d2} 260`} strokeLinecap="round" filter="url(#glow)"
+          style={{transformOrigin:'473px 387px',transform:'rotate(-90deg)',
             transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)'}}/>
-        <text x="450" y="344" textAnchor="middle" fontSize="11" fontWeight="900" fill="#7c3aed"
+        <text x="473" y="392" textAnchor="middle" fontSize="12" fontWeight="900" fill="#7c3aed"
           style={{fontFamily:'Inter,sans-serif'}}>{slaVal}%</text>
-        <text x="450" y="356" textAnchor="middle" fontSize="6.5" fill="#4f46e5" fontWeight="700">SLA</text>
+        <text x="473" y="406" textAnchor="middle" fontSize="6.5" fill="#4f46e5" fontWeight="700">SLA</text>
 
         {/* LIVE badge */}
         <circle cx="570" cy="44" r="5" fill="#22c55e" opacity={pulse?1:0.5}
