@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const TABS = ["Configure","Monitor","Report","Secure"];
 const BOARDS = [
@@ -25,7 +25,7 @@ const PLANS = [
 export default function Page() {
   const [tab,setTab]=useState("Monitor");
   return(
-    <div style={{fontFamily:"Inter,sans-serif",background:"#f0f4ff",color:"#0f172a",minHeight:"100vh"}}>
+    <div style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh"}}>
       <style>{`
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap");
         *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
@@ -34,7 +34,7 @@ export default function Page() {
       `}</style>
 
       {/* NAV */}
-      <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(240,244,255,0.94)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 2.5rem",height:64}}>
+      <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 2.5rem",height:64}}>
         <Image src="/posturepilot.jpg" alt="PosturePilot" width={160} height={52} style={{objectFit:"contain"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         <div style={{display:"flex",gap:"2rem"}}>
           {["Features","Pricing"].map(t=><a key={t} href={"#"+t.toLowerCase()} style={{color:"#64748b",fontSize:"0.875rem",fontWeight:600,textDecoration:"none"}}>{t}</a>)}
@@ -45,61 +45,82 @@ export default function Page() {
         </div>
       </nav>
 
-      {/* HERO — full height, 50/50 split */}
-      <section style={{background:"linear-gradient(135deg,#1e1b4b 0%,#3730a3 45%,#4f46e5 75%,#7c3aed 100%)",minHeight:"100vh",display:"flex",alignItems:"stretch",position:"relative",overflow:"hidden"}}>
-        {/* Grid overlay */}
-        <div style={{position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px)",backgroundSize:"50px 50px",pointerEvents:"none"}}/>
+      {/* HERO — white bg so logo sits naturally */}
+      <section style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"92vh",display:"flex",alignItems:"center",padding:"4rem 3rem",position:"relative",overflow:"hidden"}}>
+        {/* Subtle radial glow */}
+        <div style={{position:"absolute",top:"-10%",right:"5%",width:600,height:600,background:"radial-gradient(circle,rgba(79,70,229,0.08) 0%,transparent 70%)",pointerEvents:"none"}}/>
+        <div style={{position:"absolute",bottom:"-10%",left:"5%",width:400,height:400,background:"radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%)",pointerEvents:"none"}}/>
 
-        {/* LEFT — 50% */}
-        <div style={{flex:"0 0 50%",display:"flex",flexDirection:"column",justifyContent:"center",padding:"5rem 3rem 4rem 4rem",position:"relative",zIndex:1}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"rgba(255,255,255,0.12)",border:"1px solid rgba(255,255,255,0.25)",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.7rem",fontWeight:700,color:"#fff",marginBottom:"1.75rem",letterSpacing:"0.08em",textTransform:"uppercase",backdropFilter:"blur(8px)",width:"fit-content"}}>
-            <span style={{width:7,height:7,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 8px #22c55e"}}/> Live · 9 Security Dashboards
-          </div>
-          <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#fff",marginBottom:"1.25rem"}}>
-            Your Security<br/><span style={{opacity:0.85}}>Command Center</span>
-          </h1>
-          <p style={{fontSize:"1.05rem",color:"rgba(255,255,255,0.72)",lineHeight:1.8,marginBottom:"2rem",maxWidth:420}}>
-            Upload Qualys · Tenable · Nessus scans. Get a board-ready dashboard in 5 minutes with Triple-Filter Triage built in.
-          </p>
-          <div style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
-            <Link href="/login" style={{background:"#fff",color:"#4f46e5",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 24px rgba(0,0,0,0.25)"}}>Start Free Trial →</Link>
-            <Link href="/dashboard" style={{background:"rgba(255,255,255,0.1)",color:"#fff",fontWeight:600,fontSize:"1rem",padding:"0.875rem 1.5rem",borderRadius:10,textDecoration:"none",border:"1px solid rgba(255,255,255,0.25)",backdropFilter:"blur(8px)"}}>View Demo</Link>
-          </div>
-          {/* Stats */}
-          <div style={{display:"flex",gap:"2.5rem",marginBottom:"2.5rem"}}>
-            {[["9","Dashboards"],["5 min","First Report"],["80%","Less Reporting"]].map(([v,l])=>(
-              <div key={l}><div style={{fontSize:"2.25rem",fontWeight:900,color:"#fff"}}>{v}</div><div style={{fontSize:"0.68rem",color:"rgba(255,255,255,0.55)",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em"}}>{l}</div></div>
-            ))}
-          </div>
-          {/* Scanners */}
-          <div style={{borderTop:"1px solid rgba(255,255,255,0.12)",paddingTop:"1.25rem"}}>
-            <p style={{fontSize:"0.65rem",color:"rgba(255,255,255,0.4)",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:"0.625rem"}}>Ingests from</p>
-            <div style={{display:"flex",gap:"1rem",flexWrap:"wrap"}}>
-              {["Qualys","Tenable","Nessus","OpenVAS","AWS Security Hub"].map(s=>(
-                <span key={s} style={{fontSize:"0.75rem",fontWeight:700,color:"rgba(255,255,255,0.6)",background:"rgba(255,255,255,0.08)",padding:"0.25rem 0.625rem",borderRadius:6,border:"1px solid rgba(255,255,255,0.12)"}}>{s}</span>
+        <div style={{maxWidth:1300,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem",alignItems:"center",width:"100%",position:"relative",zIndex:1}}>
+
+          {/* LEFT */}
+          <div>
+            <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.7rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",letterSpacing:"0.08em",textTransform:"uppercase"}}>
+              <span style={{width:7,height:7,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 8px #22c55e"}}/> Live · 9 Security Dashboards
+            </div>
+
+            <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#0f172a",marginBottom:"1.25rem"}}>
+              Your Security<br/>
+              <span style={{background:"linear-gradient(90deg,#4f46e5,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Command Center</span>
+            </h1>
+
+            <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:440}}>
+              Upload Qualys · Tenable · Nessus scans. Get a board-ready security posture dashboard in 5 minutes — with Triple-Filter Triage built in.
+            </p>
+
+            <div style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
+              <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Start Free Trial →</Link>
+              <Link href="/dashboard" style={{background:"#fff",color:"#4f46e5",fontWeight:600,fontSize:"1rem",padding:"0.875rem 1.5rem",borderRadius:10,textDecoration:"none",border:"1px solid #c4b5fd"}}>View Demo</Link>
+            </div>
+
+            <div style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
+              {[["9","Dashboards"],["5 min","First Report"],["80%","Less Reporting"]].map(([v,l])=>(
+                <div key={l}>
+                  <div style={{fontSize:"2.25rem",fontWeight:900,background:"linear-gradient(135deg,#4f46e5,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{v}</div>
+                  <div style={{fontSize:"0.68rem",color:"#64748b",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em"}}>{l}</div>
+                </div>
               ))}
             </div>
+
+            <div style={{borderTop:"1px solid #e0e7ff",paddingTop:"1.25rem"}}>
+              <p style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:"0.75rem"}}>Ingests from your existing scanners</p>
+              <div style={{display:"flex",gap:"0.75rem",flexWrap:"wrap"}}>
+                {["Qualys","Tenable","Nessus","OpenVAS","AWS Security Hub"].map(s=>(
+                  <span key={s} style={{fontSize:"0.75rem",fontWeight:700,color:"#4f46e5",background:"#ede9fe",padding:"0.25rem 0.75rem",borderRadius:20,border:"1px solid #c4b5fd"}}>{s}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT — Logo as-is, white bg blends with hero */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <Image
+              src="/posturepilot.jpg"
+              alt="PosturePilot Command Center"
+              width={620}
+              height={607}
+              style={{
+                width:"100%",
+                maxWidth:620,
+                height:"auto",
+                display:"block",
+                filter:"drop-shadow(0 8px 40px rgba(79,70,229,0.18))"
+              }}
+              priority
+            />
           </div>
         </div>
-
-        {/* RIGHT — 50% : Logo fills it entirely */}
-        <div style={{flex:"0 0 50%",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",zIndex:1,padding:"2rem 2rem 2rem 0"}}>
-          <Image
-            src="/posturepilot-nobg.png"
-            alt="PosturePilot Command Center"
-            width={680}
-            height={665}
-            style={{
-              width:"100%",
-              maxWidth:680,
-              height:"auto",
-              display:"block",
-              filter:"drop-shadow(0 20px 60px rgba(79,70,229,0.4))"
-            }}
-            priority
-          />
-        </div>
       </section>
+
+      {/* Scanner strip */}
+      <div style={{background:"#fff",borderTop:"1px solid #e0e7ff",borderBottom:"1px solid #e0e7ff",padding:"1.25rem 2rem"}}>
+        <div style={{maxWidth:1100,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"center",gap:"3rem",flexWrap:"wrap"}}>
+          <span style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em"}}>Trusted by security teams using</span>
+          {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","CrowdStrike","AWS Security Hub"].map(t=>(
+            <span key={t} style={{fontSize:"0.82rem",fontWeight:700,color:"#334155"}}>{t}</span>
+          ))}
+        </div>
+      </div>
 
       {/* TABS */}
       <section style={{background:"#fff",borderBottom:"1px solid #e0e7ff"}}>
@@ -135,7 +156,7 @@ export default function Page() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" style={{padding:"4rem 2rem",background:"linear-gradient(135deg,#f0f4ff,#f5f3ff)"}}>
+      <section id="pricing" style={{padding:"4rem 2rem",background:"linear-gradient(135deg,#f5f3ff,#eff6ff)"}}>
         <div style={{maxWidth:900,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>Transparent Pricing</div>
