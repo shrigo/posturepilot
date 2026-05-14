@@ -22,7 +22,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div className="sidebar-logo" style={{ padding: '1rem 1.25rem', flexDirection: 'column', alignItems: 'flex-start', gap: 0 }}>
         <Image
-          src="/posturepilot-logo.png"
+          src="/posturepilot.jpg"
           alt="PosturePilot"
           width={160}
           height={54}
