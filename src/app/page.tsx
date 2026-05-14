@@ -94,11 +94,13 @@ export default function Page() {
 
           {/* RIGHT — Logo as-is, white bg blends with hero */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+            {/* GIF — unoptimized to preserve animation */}
             <Image
-              src="/posturepilot.jpg"
+              src="/pp_hr.gif"
               alt="PosturePilot Command Center"
               width={620}
-              height={607}
+              height={620}
+              unoptimized
               style={{
                 width:"100%",
                 maxWidth:620,
