@@ -2,6 +2,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import ShieldViz from "@/components/ShieldViz";
 import { useState } from "react";
 
 const TABS = ["Configure","Monitor","Report","Secure"];
@@ -92,24 +93,9 @@ export default function Page() {
             </div>
           </div>
 
-          {/* RIGHT — Logo as-is, white bg blends with hero */}
+          {/* RIGHT — GIF + animated SVG overlay on 6 panel positions */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-            {/* GIF — unoptimized to preserve animation */}
-            <Image
-              src="/pp_hr.gif"
-              alt="PosturePilot Command Center"
-              width={620}
-              height={620}
-              unoptimized
-              style={{
-                width:"100%",
-                maxWidth:620,
-                height:"auto",
-                display:"block",
-                filter:"drop-shadow(0 8px 40px rgba(79,70,229,0.18))"
-              }}
-              priority
-            />
+            <ShieldViz/>
           </div>
         </div>
       </section>
