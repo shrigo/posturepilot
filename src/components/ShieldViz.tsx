@@ -304,11 +304,14 @@ export default function ShieldViz(){
         <circle cx="445" cy="280" r="22" fill="none" stroke="url(#dg)" strokeWidth="6"
           strokeDasharray={`${d2} 138`} strokeLinecap="round" filter="url(#gw)"
           style={{transformOrigin:'445px 280px',transform:'rotate(-90deg)',
-            transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)'}}/>
+            transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)',
+            stroke:brSla>=90?'#16a34a':'url(#dg)'}}/>
         <g transform="rotate(5, 445, 280)">
-          <text x="445" y="276" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900" fill="#7c3aed"
+          <text x="445" y="276" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900"
+            fill={brSla>=90?'#16a34a':'#7c3aed'}
             style={{fontFamily:'Inter,sans-serif',transition:'all 0.8s ease'}}>{brSla}%</text>
-          <text x="445" y="287" textAnchor="middle" dominantBaseline="middle" fontSize="9" fill="#4f46e5" fontWeight="700">SLA</text>
+          <text x="445" y="287" textAnchor="middle" dominantBaseline="middle" fontSize="9"
+            fill={brSla>=90?'#15803d':'#4f46e5'} fontWeight="700">SLA</text>
         </g>
         {/* BR bullet — 5° tilt up */}
         <g transform="rotate(7, 413, 313)">
@@ -318,9 +321,9 @@ export default function ShieldViz(){
         </g>
 
         {/* LIVE badge */}
-        <circle cx="570" cy="44" r="5" fill="#22c55e" opacity={pulse?1:0.5}
+        <circle cx="570" cy="44" r="8" fill="#22c55e" opacity={pulse?1:0.5}
           style={{transition:'opacity 0.4s'}}/>
-        <text x="580" y="48" fontSize="8" fill="#16a34a" fontWeight="800"
+        <text x="583" y="49" fontSize="11" fill="#16a34a" fontWeight="800"
           style={{fontFamily:'Inter,sans-serif'}}>LIVE</text>
       </svg>
     </div>

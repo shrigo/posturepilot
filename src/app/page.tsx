@@ -47,7 +47,7 @@ export default function Page() {
       </nav>
 
       {/* HERO — white bg so logo sits naturally */}
-      <section style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"92vh",display:"flex",alignItems:"center",padding:"4rem 3rem",position:"relative",overflow:"hidden"}}>
+      <section style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"92vh",display:"flex",alignItems:"center",padding:"2rem 3rem",position:"relative",overflow:"hidden"}}>
         {/* Subtle radial glow */}
         <div style={{position:"absolute",top:"-10%",right:"5%",width:600,height:600,background:"radial-gradient(circle,rgba(79,70,229,0.08) 0%,transparent 70%)",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:"-10%",left:"5%",width:400,height:400,background:"radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%)",pointerEvents:"none"}}/>
@@ -56,13 +56,13 @@ export default function Page() {
 
           {/* LEFT */}
           <div>
-            <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.7rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",letterSpacing:"0.08em",textTransform:"uppercase"}}>
-              <span style={{width:7,height:7,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 8px #22c55e"}}/> Live · 9 Security Dashboards
+            <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",letterSpacing:"0.08em",textTransform:"uppercase"}}>
+              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 9 Security Dashboards
             </div>
 
             <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#0f172a",marginBottom:"1.25rem"}}>
-              Your Security<br/>
-              <span style={{background:"linear-gradient(90deg,#4f46e5,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Command Center</span>
+              <span style={{color:"#1e2d6e"}}>Your Security</span><br/>
+              <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Command Center</span>
             </h1>
 
             <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:440}}>
