@@ -30,12 +30,7 @@ export default function Sidebar() {
           priority
           onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
         />
-        {/* Text fallback shown until logo file is placed in /public */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem' }}>
-          <div className="sidebar-logo-icon" style={{ width: 26, height: 26, fontSize: '0.85rem' }}>🎯</div>
-          <div className="sidebar-logo-text" style={{ fontSize: '1rem' }}>Posture<span>Pilot</span></div>
-        </div>
-        <div style={{ fontSize: '0.58rem', color: '#334155', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: '0.2rem', fontWeight: 600 }}>Configure · Monitor · Report · Secure</div>
+
       </div>
 
       <div className="sidebar-section-label">Dashboards</div>

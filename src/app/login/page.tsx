@@ -44,10 +44,6 @@ export default function LoginPage() {
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
           </div>
-          {/* Text fallback */}
-          <div className="login-logo-icon">🎯</div>
-          <div className="login-product-name">Posture<span>Pilot</span></div>
-          <div className="login-tagline">Configure · Monitor · Report · Secure</div>
         </div>
 
         {error && <div className="login-error">⚠️ {error}</div>}
