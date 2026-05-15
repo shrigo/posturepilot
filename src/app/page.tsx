@@ -2,7 +2,6 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import ShieldViz from "@/components/ShieldViz";
 import { useState } from "react";
 
 const TABS = ["Configure","Monitor","Report","Secure"];
@@ -46,56 +45,61 @@ export default function Page() {
         </div>
       </nav>
 
-      {/* HERO — white bg so logo sits naturally */}
-      <section style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"92vh",display:"flex",alignItems:"center",padding:"4rem 3rem",position:"relative",overflow:"hidden"}}>
-        {/* Subtle radial glow */}
-        <div style={{position:"absolute",top:"-10%",right:"5%",width:600,height:600,background:"radial-gradient(circle,rgba(79,70,229,0.08) 0%,transparent 70%)",pointerEvents:"none"}}/>
-        <div style={{position:"absolute",bottom:"-10%",left:"5%",width:400,height:400,background:"radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%)",pointerEvents:"none"}}/>
+      {/* HERO — pp_hr.gif as full background */}
+      <section style={{position:"relative",minHeight:"92vh",display:"flex",alignItems:"center",overflow:"hidden"}}>
 
-        <div style={{maxWidth:1300,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem",alignItems:"center",width:"100%",position:"relative",zIndex:1}}>
+        {/* Full-bleed GIF background */}
+        <div style={{position:"absolute",inset:0,zIndex:0}}>
+          <Image
+            src="/pp_hr.gif"
+            alt="PosturePilot Command Center"
+            fill unoptimized priority
+            style={{objectFit:"cover",objectPosition:"center top"}}
+          />
+          {/* Dark-left gradient overlay so left text stays readable */}
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(100deg, rgba(15,10,40,0.88) 0%, rgba(15,10,40,0.72) 42%, rgba(15,10,40,0.08) 75%, transparent 100%)"}}/>
+        </div>
 
-          {/* LEFT */}
-          <div>
-            <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.7rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",letterSpacing:"0.08em",textTransform:"uppercase"}}>
+        {/* Content sits above background */}
+        <div style={{position:"relative",zIndex:1,maxWidth:1300,margin:"0 auto",padding:"4rem 3rem",width:"100%"}}>
+
+          {/* LEFT — max 520px so right half of GIF stays visible */}
+          <div style={{maxWidth:520}}>
+            <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"rgba(109,40,217,0.55)",border:"1px solid rgba(167,139,250,0.6)",backdropFilter:"blur(8px)",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.7rem",fontWeight:700,color:"#e9d5ff",marginBottom:"1.5rem",letterSpacing:"0.08em",textTransform:"uppercase"}}>
               <span style={{width:7,height:7,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 8px #22c55e"}}/> Live · 9 Security Dashboards
             </div>
 
-            <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#0f172a",marginBottom:"1.25rem"}}>
+            <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#ffffff",marginBottom:"1.25rem",textShadow:"0 2px 24px rgba(79,70,229,0.4)"}}>
               Your Security<br/>
-              <span style={{background:"linear-gradient(90deg,#4f46e5,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Command Center</span>
+              <span style={{background:"linear-gradient(90deg,#a78bfa,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Command Center</span>
             </h1>
 
-            <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:440}}>
+            <p style={{fontSize:"1.05rem",color:"rgba(255,255,255,0.8)",lineHeight:1.8,marginBottom:"2rem"}}>
               Upload Qualys · Tenable · Nessus scans. Get a board-ready security posture dashboard in 5 minutes — with Triple-Filter Triage built in.
             </p>
 
             <div style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
-              <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Start Free Trial →</Link>
-              <Link href="/dashboard" style={{background:"#fff",color:"#4f46e5",fontWeight:600,fontSize:"1rem",padding:"0.875rem 1.5rem",borderRadius:10,textDecoration:"none",border:"1px solid #c4b5fd"}}>View Demo</Link>
+              <Link href="/login" style={{background:"linear-gradient(135deg,#6d28d9,#4f46e5)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 24px rgba(109,40,217,0.55)"}}>Start Free Trial →</Link>
+              <Link href="/dashboard" style={{background:"rgba(255,255,255,0.12)",backdropFilter:"blur(8px)",color:"#e9d5ff",fontWeight:600,fontSize:"1rem",padding:"0.875rem 1.5rem",borderRadius:10,textDecoration:"none",border:"1px solid rgba(167,139,250,0.5)"}}>View Demo</Link>
             </div>
 
             <div style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
               {[["9","Dashboards"],["5 min","First Report"],["80%","Less Reporting"]].map(([v,l])=>(
                 <div key={l}>
-                  <div style={{fontSize:"2.25rem",fontWeight:900,background:"linear-gradient(135deg,#4f46e5,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{v}</div>
-                  <div style={{fontSize:"0.68rem",color:"#64748b",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em"}}>{l}</div>
+                  <div style={{fontSize:"2.25rem",fontWeight:900,color:"#a78bfa"}}>{v}</div>
+                  <div style={{fontSize:"0.68rem",color:"rgba(255,255,255,0.55)",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em"}}>{l}</div>
                 </div>
               ))}
             </div>
 
-            <div style={{borderTop:"1px solid #e0e7ff",paddingTop:"1.25rem"}}>
-              <p style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:"0.75rem"}}>Ingests from your existing scanners</p>
+            <div style={{borderTop:"1px solid rgba(167,139,250,0.3)",paddingTop:"1.25rem"}}>
+              <p style={{fontSize:"0.65rem",color:"rgba(255,255,255,0.45)",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:"0.75rem"}}>Ingests from your existing scanners</p>
               <div style={{display:"flex",gap:"0.75rem",flexWrap:"wrap"}}>
                 {["Qualys","Tenable","Nessus","OpenVAS","AWS Security Hub"].map(s=>(
-                  <span key={s} style={{fontSize:"0.75rem",fontWeight:700,color:"#4f46e5",background:"#ede9fe",padding:"0.25rem 0.75rem",borderRadius:20,border:"1px solid #c4b5fd"}}>{s}</span>
+                  <span key={s} style={{fontSize:"0.75rem",fontWeight:700,color:"#c4b5fd",background:"rgba(109,40,217,0.35)",padding:"0.25rem 0.75rem",borderRadius:20,border:"1px solid rgba(167,139,250,0.4)"}}>{s}</span>
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* RIGHT — GIF + animated SVG overlay on 6 panel positions */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <ShieldViz/>
           </div>
         </div>
       </section>
