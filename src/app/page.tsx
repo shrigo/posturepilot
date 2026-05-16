@@ -186,45 +186,142 @@ export default function Page() {
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>9 live dashboards. Everything in one place.</h2>
             <p style={{color:"#a5b4fc",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
           </div>
-          {/* Mini dashboard mockup */}
-          <div style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:16,padding:"1.5rem",backdropFilter:"blur(8px)"}}>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:"0.875rem",marginBottom:"1.25rem"}}>
-              {[
-                {label:"Risk Score",val:"74",unit:"/100",c:"#818cf8"},
-                {label:"Open Criticals",val:"23",unit:"findings",c:"#f87171"},
-                {label:"SLA Compliance",val:"91%",unit:"on-track",c:"#34d399"},
-                {label:"Avg CVSS",val:"7.4",unit:"score",c:"#fb923c"},
-              ].map(s=>(
-                <div key={s.label} style={{background:"rgba(255,255,255,0.06)",borderRadius:10,padding:"1rem",borderTop:`2px solid ${s.c}`}}>
-                  <div style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",marginBottom:"0.25rem"}}>{s.label}</div>
-                  <div style={{fontSize:"1.75rem",fontWeight:900,color:s.c,lineHeight:1}}>{s.val}<span style={{fontSize:"0.75rem",fontWeight:500,color:"#64748b",marginLeft:4}}>{s.unit}</span></div>
-                </div>
-              ))}
+
+          {/* SOC Dashboard Mockup */}
+          <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:18,overflow:"hidden",backdropFilter:"blur(12px)"}}>
+
+            {/* Topbar */}
+            <div style={{background:"rgba(0,0,0,0.25)",padding:"0.625rem 1.25rem",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+              <div style={{display:"flex",alignItems:"center",gap:"0.5rem"}}>
+                <div style={{width:8,height:8,borderRadius:"50%",background:"#f87171"}}/>
+                <div style={{width:8,height:8,borderRadius:"50%",background:"#fbbf24"}}/>
+                <div style={{width:8,height:8,borderRadius:"50%",background:"#34d399"}}/>
+                <span style={{fontSize:"0.72rem",color:"#64748b",marginLeft:"0.5rem"}}>PosturePilot Security Command Center</span>
+              </div>
+              <div style={{display:"flex",gap:"0.5rem",alignItems:"center"}}>
+                <span style={{width:6,height:6,borderRadius:"50%",background:"#34d399",display:"inline-block",boxShadow:"0 0 8px #34d399"}}/>
+                <span style={{fontSize:"0.65rem",color:"#34d399",fontWeight:700}}>LIVE</span>
+                <span style={{fontSize:"0.65rem",color:"#475569",marginLeft:"0.5rem"}}>Last updated: just now</span>
+              </div>
             </div>
-            <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:"0.875rem"}}>
-              <div style={{background:"rgba(255,255,255,0.06)",borderRadius:10,padding:"1rem"}}>
-                <div style={{fontSize:"0.72rem",fontWeight:700,color:"#a5b4fc",marginBottom:"0.875rem"}}>📊 Findings by Severity</div>
-                {[["Critical",14,"#f87171"],["High",67,"#fb923c"],["Medium",148,"#fbbf24"],["Low",83,"#34d399"]].map(([s,n,c])=>(
-                  <div key={String(s)} style={{marginBottom:"0.625rem"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.72rem",marginBottom:"3px"}}><span style={{color:"#cbd5e1"}}>{s}</span><span style={{color:String(c),fontWeight:700}}>{n}</span></div>
-                    <div style={{height:6,background:"rgba(255,255,255,0.08)",borderRadius:99}}><div style={{height:"100%",width:`${Math.round(Number(n)/148*100)}%`,background:String(c),borderRadius:99}}/></div>
+
+            <div style={{display:"grid",gridTemplateColumns:"160px 1fr",minHeight:480}}>
+              {/* Mini sidebar */}
+              <div style={{background:"rgba(0,0,0,0.3)",padding:"0.875rem 0",borderRight:"1px solid rgba(255,255,255,0.06)"}}>
+                {[
+                  {icon:"🏠",label:"Overview",active:false},
+                  {icon:"🛡️",label:"Cyber Posture",active:true,badge:"3"},
+                  {icon:"☁️",label:"Cloud",active:false},
+                  {icon:"🌐",label:"Network",active:false,badge:"34"},
+                  {icon:"📊",label:"KPIs",active:false},
+                  {icon:"🔐",label:"App Security",active:false,badge:"14"},
+                  {icon:"📡",label:"Traffic",active:false},
+                  {icon:"🖥️",label:"Servers",active:false,badge:"3"},
+                  {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
+                ].map(item=>(
+                  <div key={item.label} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.45rem 0.875rem",
+                    background:item.active?"rgba(99,102,241,0.2)":"transparent",
+                    borderLeft:item.active?"2px solid #818cf8":"2px solid transparent",marginBottom:2,cursor:"default"}}>
+                    <span style={{fontSize:"0.75rem"}}>{item.icon}</span>
+                    <span style={{fontSize:"0.68rem",color:item.active?"#e0e7ff":"#64748b",fontWeight:item.active?700:400,flex:1}}>{item.label}</span>
+                    {item.badge && <span style={{fontSize:"0.55rem",fontWeight:800,padding:"1px 5px",borderRadius:99,
+                      background:item.badge==="NEW"?"#7c3aed":"rgba(248,113,113,0.2)",
+                      color:item.badge==="NEW"?"#fff":"#f87171"}}>{item.badge}</span>}
                   </div>
                 ))}
               </div>
-              <div style={{background:"rgba(255,255,255,0.06)",borderRadius:10,padding:"1rem"}}>
-                <div style={{fontSize:"0.72rem",fontWeight:700,color:"#a5b4fc",marginBottom:"0.875rem"}}>🔧 Connected Tools</div>
-                {["Qualys VMDR","Nessus Pro","AWS Sec Hub"].map(t=>(
-                  <div key={t} style={{display:"flex",alignItems:"center",gap:"0.5rem",marginBottom:"0.5rem"}}>
-                    <span style={{width:6,height:6,borderRadius:"50%",background:"#34d399",display:"inline-block",boxShadow:"0 0 6px #34d399"}}/>
-                    <span style={{fontSize:"0.78rem",color:"#cbd5e1"}}>{t}</span>
+
+              {/* Main content */}
+              <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"0.875rem",overflow:"hidden"}}>
+
+                {/* KPI row */}
+                <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.625rem"}}>
+                  {[
+                    {label:"Risk Score",val:"74",unit:"/100",c:"#818cf8",trend:"↑2"},
+                    {label:"Open Criticals",val:"23",unit:"CVEs",c:"#f87171",trend:"↓5"},
+                    {label:"SLA Compliance",val:"91%",unit:"on-track",c:"#34d399",trend:"↑3%"},
+                    {label:"Avg CVSS",val:"7.4",unit:"score",c:"#fb923c",trend:"stable"},
+                  ].map(s=>(
+                    <div key={s.label} style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"0.75rem",borderTop:`2px solid ${s.c}`}}>
+                      <div style={{fontSize:"0.58rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",marginBottom:"0.2rem"}}>{s.label}</div>
+                      <div style={{fontSize:"1.5rem",fontWeight:900,color:s.c,lineHeight:1}}>{s.val}<span style={{fontSize:"0.62rem",fontWeight:400,color:"#64748b",marginLeft:3}}>{s.unit}</span></div>
+                      <div style={{fontSize:"0.58rem",color:"#475569",marginTop:"0.25rem"}}>{s.trend} this week</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Middle row: severity bars + live alerts */}
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.625rem"}}>
+                  {/* Severity breakdown */}
+                  <div style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"0.875rem"}}>
+                    <div style={{fontSize:"0.65rem",fontWeight:700,color:"#a5b4fc",marginBottom:"0.625rem"}}>📊 Findings by Severity</div>
+                    {[["Critical",14,"#f87171",312],["High",67,"#fb923c",312],["Medium",148,"#fbbf24",312],["Low",83,"#34d399",312],["Info",22,"#60a5fa",312]].map(([s,n,c,max])=>(
+                      <div key={String(s)} style={{marginBottom:"0.45rem"}}>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.65rem",marginBottom:2}}>
+                          <span style={{color:"#cbd5e1"}}>{s}</span>
+                          <span style={{color:String(c),fontWeight:700}}>{n}</span>
+                        </div>
+                        <div style={{height:5,background:"rgba(255,255,255,0.07)",borderRadius:99}}>
+                          <div style={{height:"100%",width:`${Math.round(Number(n)/Number(max)*100)}%`,background:String(c),borderRadius:99}}/>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-                <div style={{marginTop:"0.75rem",paddingTop:"0.75rem",borderTop:"1px solid rgba(255,255,255,0.08)",fontSize:"0.68rem",color:"#64748b"}}>Last sync: 2 min ago</div>
+
+                  {/* Live alerts */}
+                  <div style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"0.875rem"}}>
+                    <div style={{fontSize:"0.65rem",fontWeight:700,color:"#a5b4fc",marginBottom:"0.625rem"}}>🚨 Active Alerts</div>
+                    {[
+                      {sev:"CRIT",cve:"CVE-2024-3400",host:"web-01",c:"#f87171",bg:"rgba(248,113,113,0.1)"},
+                      {sev:"HIGH",cve:"CVE-2024-21762",host:"db-02",c:"#fb923c",bg:"rgba(251,146,60,0.1)"},
+                      {sev:"HIGH",cve:"CVE-2023-44487",host:"lb-01",c:"#fb923c",bg:"rgba(251,146,60,0.1)"},
+                      {sev:"MED",cve:"CVE-2024-1086",host:"app-03",c:"#fbbf24",bg:"rgba(251,191,36,0.1)"},
+                    ].map((a,i)=>(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.35rem 0.5rem",borderRadius:6,marginBottom:4,background:a.bg}}>
+                        <span style={{fontSize:"0.55rem",fontWeight:800,padding:"1px 5px",borderRadius:4,background:a.c,color:"#fff",minWidth:28,textAlign:"center"}}>{a.sev}</span>
+                        <span style={{fontSize:"0.65rem",color:"#e2e8f0",fontFamily:"monospace",flex:1}}>{a.cve}</span>
+                        <span style={{fontSize:"0.6rem",color:"#475569"}}>{a.host}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom row: dashboard tiles + tools */}
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"0.625rem"}}>
+                  {/* Dashboard mini tiles */}
+                  {[
+                    {icon:"☁️",label:"Cloud Security",val:"47 findings",sub:"3 misconfigs",c:"#60a5fa"},
+                    {icon:"🌐",label:"Network",val:"34 open ports",sub:"2 SLA breach",c:"#f87171"},
+                    {icon:"🔐",label:"App Security",val:"14 vulns",sub:"OWASP Top 10",c:"#a78bfa"},
+                  ].map(d=>(
+                    <div key={d.label} style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"0.75rem",borderLeft:`3px solid ${d.c}`}}>
+                      <div style={{fontSize:"0.78rem",marginBottom:"0.25rem"}}>{d.icon}</div>
+                      <div style={{fontSize:"0.65rem",fontWeight:700,color:"#e2e8f0",marginBottom:"0.2rem"}}>{d.label}</div>
+                      <div style={{fontSize:"0.78rem",fontWeight:900,color:d.c}}>{d.val}</div>
+                      <div style={{fontSize:"0.6rem",color:"#475569",marginTop:2}}>{d.sub}</div>
+                    </div>
+                  ))}
+                </div>
+
               </div>
+            </div>
+
+            {/* Status bar */}
+            <div style={{background:"rgba(0,0,0,0.25)",padding:"0.5rem 1.25rem",borderTop:"1px solid rgba(255,255,255,0.06)",display:"flex",gap:"1.5rem",alignItems:"center"}}>
+              {[
+                {label:"3 Scanners Active",c:"#34d399"},
+                {label:"12 Assets Monitored",c:"#60a5fa"},
+                {label:"2 SLA Breaches",c:"#f87171"},
+                {label:"Last Scan: 4 min ago",c:"#475569"},
+              ].map(s=>(
+                <span key={s.label} style={{fontSize:"0.62rem",color:s.c,fontWeight:600}}>{s.label}</span>
+              ))}
+              <span style={{marginLeft:"auto",fontSize:"0.62rem",color:"#334155"}}>PosturePilot v2.0 · posturepilot.io</span>
             </div>
           </div>
+
           <div style={{textAlign:"center",marginTop:"1.5rem"}}>
-            <Link href="/dashboard" style={{display:"inline-block",background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:700,fontSize:"0.9rem"}}>View Live Demo →</Link>
+            <Link href="/dashboard" style={{display:"inline-block",background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:700,fontSize:"0.9rem"}}>View Live Dashboard →</Link>
           </div>
         </div>
       </section>
