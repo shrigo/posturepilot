@@ -133,16 +133,16 @@ export default function Page() {
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:"1rem"}}>
             {[
-              {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   domain:"qualys.com",           methods:["Upload","API"]},
-              {name:"Tenable.io",     c:"#1d4ed8", initials:"Te",  domain:"tenable.com",          methods:["Upload","API"]},
-              {name:"Nessus Pro",     c:"#991b1b", initials:"Ne",  domain:"tenable.com",          methods:["Upload"]},
-              {name:"OpenVAS",        c:"#16a34a", initials:"OV",  domain:"greenbone.net",        methods:["Upload","API"]},
-              {name:"CrowdStrike",    c:"#dc2626", initials:"CS",  domain:"crowdstrike.com",      methods:["Webhook","API"]},
-              {name:"AWS Sec Hub",    c:"#f59e0b", initials:"AWS", domain:"aws.amazon.com",       methods:["Webhook"]},
-              {name:"MS Defender",    c:"#0078d4", initials:"MSD", domain:"microsoft.com",        methods:["Webhook","API"]},
-              {name:"Rapid7",         c:"#1e40af", initials:"R7",  domain:"rapid7.com",           methods:["Upload","API"]},
-              {name:"Wiz",            c:"#7c3aed", initials:"Wiz", domain:"wiz.io",               methods:["Upload","API"]},
-              {name:"Prisma Cloud",   c:"#0891b2", initials:"PC",  domain:"paloaltonetworks.com", methods:["Webhook"]},
+              {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",                         methods:["Upload","API"]},
+              {name:"Tenable.io",     c:"#1d4ed8", initials:"Te",  logoUrl:"https://cdn.simpleicons.org/tenable/0054A6",                                    methods:["Upload","API"]},
+              {name:"Nessus Pro",     c:"#991b1b", initials:"Ne",  logoUrl:"https://logo.clearbit.com/tenable.com",                                         methods:["Upload"]},
+              {name:"OpenVAS",        c:"#16a34a", initials:"OV",  logoUrl:"https://cdn.simpleicons.org/greenbone/9AC320",                                   methods:["Upload","API"]},
+              {name:"CrowdStrike",    c:"#dc2626", initials:"CS",  logoUrl:"https://cdn.simpleicons.org/crowdstrike/E00400",                                 methods:["Webhook","API"]},
+              {name:"AWS Sec Hub",    c:"#f59e0b", initials:"AWS", logoUrl:"https://cdn.simpleicons.org/amazonaws/FF9900",                                   methods:["Webhook"]},
+              {name:"MS Defender",    c:"#0078d4", initials:"MSD", logoUrl:"https://cdn.simpleicons.org/microsoft/0078D4",                                   methods:["Webhook","API"]},
+              {name:"Rapid7",         c:"#1e40af", initials:"R7",  logoUrl:"https://logo.clearbit.com/rapid7.com",                                          methods:["Upload","API"]},
+              {name:"Wiz",            c:"#7c3aed", initials:"Wiz", logoUrl:"https://logo.clearbit.com/wiz.io",                                              methods:["Upload","API"]},
+              {name:"Prisma Cloud",   c:"#0891b2", initials:"PC",  logoUrl:"https://cdn.simpleicons.org/paloaltonetworks/FA582D",                            methods:["Webhook"]},
             ].map(tool=>(
               <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.25rem",borderTop:`3px solid ${tool.c}`,boxShadow:"0 2px 8px rgba(0,0,0,0.04)",transition:"all 0.2s",cursor:"default"}}
                 onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-3px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 8px 24px ${tool.c}22`;}}
@@ -150,7 +150,7 @@ export default function Page() {
                 {/* Logo area */}
                 <div style={{width:52,height:52,borderRadius:12,background:"#f8fafc",border:"1px solid #e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"0.875rem",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
                   <img
-                    src={`https://logo.clearbit.com/${tool.domain}`}
+                    src={tool.logoUrl}
                     alt={tool.name}
                     width={36} height={36}
                     style={{objectFit:"contain"}}
