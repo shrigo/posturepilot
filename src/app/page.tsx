@@ -179,8 +179,8 @@ export default function Page() {
       </section>
 
       {/* ── MONITOR ── */}
-      <section id="monitor" style={{scrollMarginTop:64,padding:"3.5rem 2rem 5rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
-        <div style={{maxWidth:1100,margin:"0 auto"}}>
+      <section id="monitor" style={{scrollMarginTop:64,padding:"2.5rem 1.5rem 4rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+        <div style={{maxWidth:1300,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>9 live dashboards. Everything in one place.</h2>
@@ -205,7 +205,7 @@ export default function Page() {
               </div>
             </div>
 
-            <div style={{display:"grid",gridTemplateColumns:"160px 1fr",minHeight:480}}>
+            <div style={{display:"grid",gridTemplateColumns:"180px 1fr",minHeight:560}}>
               {/* Mini sidebar */}
               <div style={{background:"#f8fafc",padding:"0.875rem 0",borderRight:"1px solid #e2e8f0"}}>
                 {[
