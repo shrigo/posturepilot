@@ -35,10 +35,10 @@ export default function LoginPage() {
           {/* Real logo — place posturepilot-logo.png in /public */}
           <div style={{ marginBottom: '0.75rem' }}>
             <Image
-              src="/posturepilot.jpg"
+              src="/navbarlogoh.jpg"
               alt="PosturePilot"
-              width={220}
-              height={74}
+              width={260}
+              height={88}
               style={{ objectFit: 'contain' }}
               priority
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}

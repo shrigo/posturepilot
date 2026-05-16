@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─── Org / Tenant ────────────────────────────────────────────────────────────
+model Org {
+  id        String     @id @default(cuid())
+  name      String
+  createdAt DateTime   @default(now())
+  scanJobs  ScanJob[]
+  findings  Finding[]
+}
+
+// ─── Scan Job (each uploaded file or API pull) ────────────────────────────────
+model ScanJob {
+  id          String    @id @default(cuid())
+  orgId       String
+  org         Org       @relation(fields: [orgId], references: [id])
+  sourceTool  String    // "qualys" | "nessus" | "openvas" | "tenable" | "csv"
+  fileName    String?
+  status      String    @default("pending") // pending | processing | done | error
+  findingCount Int      @default(0)
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+  findings    Finding[]
+}
+
+// ─── Universal Finding Schema (UFS) ──────────────────────────────────────────
+model Finding {
+  id              String   @id @default(cuid())
+  orgId           String
+  org             Org      @relation(fields: [orgId], references: [id])
+  scanJobId       String
+  scanJob         ScanJob  @relation(fields: [scanJobId], references: [id])
+
+  // Identity
+  sourceTool      String   // qualys | nessus | openvas | tenable | crowdstrike
+  pluginId        String?  // tool-specific plugin/check ID
+  cveId           String?  // e.g. CVE-2021-44228
+
+  // Asset
+  host            String?
+  ip              String?
+  port            String?
+  protocol        String?
+  assetGroup      String?
+
+  // Vulnerability
+  title           String
+  description     String?
+  solution        String?
+
+  // Risk
+  severity        String   // Critical | High | Medium | Low | Info
+  cvssScore       Float?   // 0.0 - 10.0
+  cvssVector      String?
+  epssScore       Float?   // 0.0 - 1.0 (enriched from NVD)
+  isKev           Boolean  @default(false) // CISA Known Exploited Vulnerability
+
+  // Status / SLA
+  status          String   @default("open") // open | resolved | accepted | sla_breach
+  firstSeen       DateTime @default(now())
+  lastSeen        DateTime @default(now())
+  slaDeadline     DateTime?
+
+  createdAt       DateTime @default(now())
+
+  @@index([orgId])
+  @@index([cveId])
+  @@index([severity])
+  @@index([status])
+}

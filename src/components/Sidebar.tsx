@@ -21,16 +21,17 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo" style={{ padding: '1rem 1.25rem', flexDirection: 'column', alignItems: 'flex-start', gap: 0 }}>
-        <Image
-          src="/posturepilot.jpg"
-          alt="PosturePilot"
-          width={160}
-          height={54}
-          style={{ objectFit: 'contain', objectPosition: 'left' }}
-          priority
-          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-        />
-
+        <Link href="/" style={{ display:'block', lineHeight:0 }}>
+          <Image
+            src="/navbarlogoh.jpg"
+            alt="PosturePilot — Home"
+            width={200}
+            height={54}
+            style={{ objectFit: 'contain', objectPosition: 'left' }}
+            priority
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+        </Link>
       </div>
 
       <div className="sidebar-section-label">Dashboards</div>

@@ -36,18 +36,32 @@ export default function Page() {
 
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 2.5rem",height:64}}>
-        <Image src="/posturepilot.jpg" alt="PosturePilot" width={160} height={52} style={{objectFit:"contain"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
-        <div style={{display:"flex",gap:"2rem"}}>
-          {["Features","Pricing"].map(t=><a key={t} href={"#"+t.toLowerCase()} style={{color:"#64748b",fontSize:"0.875rem",fontWeight:600,textDecoration:"none"}}>{t}</a>)}
+        <Image src="/navbarlogoh.jpg" alt="PosturePilot" width={260} height={60} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+        <div style={{display:"flex",alignItems:"center",gap:"0.5rem",fontSize:"0.9rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase"}}>
+          {["Configure","Monitor","Report","Secure"].map((t,i,a)=>(
+            <span key={t} style={{display:"flex",alignItems:"center",gap:"0.5rem"}}>
+              <span style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a"}}>{t}</span>
+              {i<a.length-1 && <span style={{color:"#f97316",fontWeight:900}}>|</span>}
+            </span>
+          ))}
         </div>
-        <div style={{display:"flex",gap:"0.75rem"}}>
+        <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
+          {["Features","Pricing"].map(t=><a key={t} href={"#"+t.toLowerCase()} style={{color:"#64748b",fontSize:"0.875rem",fontWeight:600,textDecoration:"none",padding:"0.5rem 0.75rem"}}>{t}</a>)}
           <Link href="/login" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
           <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.875rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
         </div>
       </nav>
 
+      {/* Trusted by banner */}
+      <div style={{background:"#fff",borderBottom:"1px solid #e0e7ff",padding:"0.6rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+        <span style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
+        {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","CrowdStrike","AWS Security Hub"].map(c=>(
+          <span key={c} style={{fontSize:"0.82rem",fontWeight:700,color:"#334155",whiteSpace:"nowrap"}}>{c}</span>
+        ))}
+      </div>
+
       {/* HERO — white bg so logo sits naturally */}
-      <section style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"92vh",display:"flex",alignItems:"center",padding:"2rem 3rem",position:"relative",overflow:"hidden"}}>
+      <section style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"92vh",display:"flex",alignItems:"flex-start",padding:"3rem 3rem 1rem",position:"relative",overflow:"hidden"}}>
         {/* Subtle radial glow */}
         <div style={{position:"absolute",top:"-10%",right:"5%",width:600,height:600,background:"radial-gradient(circle,rgba(79,70,229,0.08) 0%,transparent 70%)",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:"-10%",left:"5%",width:400,height:400,background:"radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%)",pointerEvents:"none"}}/>
@@ -56,7 +70,7 @@ export default function Page() {
 
           {/* LEFT */}
           <div>
-            <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",letterSpacing:"0.08em",textTransform:"uppercase"}}>
+            <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
               <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 9 Security Dashboards
             </div>
 
@@ -100,15 +114,14 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Scanner strip */}
-      <div style={{background:"#fff",borderTop:"1px solid #e0e7ff",borderBottom:"1px solid #e0e7ff",padding:"1.25rem 2rem"}}>
-        <div style={{maxWidth:1100,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"center",gap:"3rem",flexWrap:"wrap"}}>
-          <span style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em"}}>Trusted by security teams using</span>
-          {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","CrowdStrike","AWS Security Hub"].map(t=>(
-            <span key={t} style={{fontSize:"0.82rem",fontWeight:700,color:"#334155"}}>{t}</span>
-          ))}
-        </div>
+      {/* Securing Teams At banner */}
+      <div style={{background:"#fff",borderTop:"1px solid #e0e7ff",borderBottom:"1px solid #e0e7ff",padding:"0.6rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+        <span style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",whiteSpace:"nowrap"}}>Securing Teams At</span>
+        {["Goldman Sachs","JPMorgan","Deloitte","KPMG","Accenture","Raytheon","Lockheed Martin","CrowdStrike"].map(c=>(
+          <span key={c} style={{fontSize:"0.82rem",fontWeight:700,color:"#334155",whiteSpace:"nowrap"}}>{c}</span>
+        ))}
       </div>
+
 
       {/* TABS */}
       <section style={{background:"#fff",borderBottom:"1px solid #e0e7ff"}}>
