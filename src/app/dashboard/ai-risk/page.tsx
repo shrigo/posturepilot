@@ -98,9 +98,9 @@ export default function AiRiskPage() {
                   {aiRiskData.shadowAiTools.map(t => (
                     <tr key={t.tool}>
                       <td style={{ fontWeight:600, color:'#0f172a' }}>{t.tool}</td>
-                      <td style={{ fontSize:'0.78rem' }}>{t.department}</td>
-                      <td><span className={`badge badge-${t.riskLevel.toLowerCase()}`}>{t.riskLevel}</span></td>
-                      <td><span className={`badge badge-${t.status === 'Blocked' ? 'low' : t.status === 'Monitored' ? 'medium' : 'critical'}`}>{t.status}</span></td>
+                      <td style={{ fontSize:'0.78rem' }}>{t.category}</td>
+                      <td><span className={`badge badge-${t.dataShared === 'High' ? 'critical' : t.dataShared === 'Medium' ? 'medium' : 'low'}`}>{t.dataShared}</span></td>
+                      <td><span className={`badge badge-${t.policyStatus === 'Blocked' ? 'critical' : t.policyStatus === 'Allowed' ? 'low' : 'medium'}`}>{t.policyStatus}</span></td>
                     </tr>
                   ))}
                 </tbody>
