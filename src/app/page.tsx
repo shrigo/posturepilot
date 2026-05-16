@@ -124,7 +124,7 @@ export default function Page() {
 
 
       {/* ── CONFIGURE ── */}
-      <section id="configure" style={{scrollMarginTop:64,padding:"2.5rem 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="configure" style={{scrollMarginTop:64,padding:"3rem 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:1200,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#1e2d6e",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔧 Configure</div>
@@ -179,7 +179,7 @@ export default function Page() {
       </section>
 
       {/* ── MONITOR ── */}
-      <section id="monitor" style={{scrollMarginTop:64,padding:"2rem 2rem 4rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="monitor" style={{scrollMarginTop:64,padding:"3rem 2rem 4rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:1100,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
@@ -327,7 +327,7 @@ export default function Page() {
       </section>
 
       {/* ── REPORT ── */}
-      <section id="report" style={{scrollMarginTop:64,padding:"2rem 2rem 4rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="report" style={{scrollMarginTop:64,padding:"3rem 2rem 4rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#7c3aed",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📄 Report</div>
@@ -504,7 +504,7 @@ export default function Page() {
         </div>
       </section>
       {/* ── SECURE ── */}
-      <section id="secure" style={{scrollMarginTop:64,padding:"2.5rem 2rem 4rem",background:"linear-gradient(135deg,#14532d 0%,#15803d 50%,#16a34a 100%)",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="secure" style={{scrollMarginTop:64,padding:"3rem 2rem 4rem",background:"linear-gradient(135deg,#14532d 0%,#15803d 50%,#16a34a 100%)",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#bbf7d0",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
