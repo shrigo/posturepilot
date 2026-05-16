@@ -133,23 +133,43 @@ export default function Page() {
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:"1rem"}}>
             {[
-              {name:"Qualys VMDR",    c:"#dc2626",methods:["Upload","API"],emoji:"🔵"},
-              {name:"Tenable.io",     c:"#2563eb",methods:["Upload","API"],emoji:"🟦"},
-              {name:"Nessus Pro",     c:"#991b1b",methods:["Upload"],emoji:"🔴"},
-              {name:"OpenVAS",        c:"#16a34a",methods:["Upload","API"],emoji:"🟢"},
-              {name:"CrowdStrike",    c:"#dc2626",methods:["Webhook","API"],emoji:"🦅"},
-              {name:"AWS Sec Hub",    c:"#f59e0b",methods:["Webhook"],emoji:"☁️"},
-              {name:"MS Defender",    c:"#2563eb",methods:["Webhook","API"],emoji:"🛡️"},
-              {name:"Rapid7",         c:"#1e40af",methods:["Upload","API"],emoji:"⚡"},
-              {name:"Wiz",            c:"#7c3aed",methods:["Upload","API"],emoji:"🌩️"},
-              {name:"Prisma Cloud",   c:"#0891b2",methods:["Webhook"],emoji:"🔐"},
+              {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   domain:"qualys.com",           methods:["Upload","API"]},
+              {name:"Tenable.io",     c:"#1d4ed8", initials:"Te",  domain:"tenable.com",          methods:["Upload","API"]},
+              {name:"Nessus Pro",     c:"#991b1b", initials:"Ne",  domain:"tenable.com",          methods:["Upload"]},
+              {name:"OpenVAS",        c:"#16a34a", initials:"OV",  domain:"greenbone.net",        methods:["Upload","API"]},
+              {name:"CrowdStrike",    c:"#dc2626", initials:"CS",  domain:"crowdstrike.com",      methods:["Webhook","API"]},
+              {name:"AWS Sec Hub",    c:"#f59e0b", initials:"AWS", domain:"aws.amazon.com",       methods:["Webhook"]},
+              {name:"MS Defender",    c:"#0078d4", initials:"MSD", domain:"microsoft.com",        methods:["Webhook","API"]},
+              {name:"Rapid7",         c:"#1e40af", initials:"R7",  domain:"rapid7.com",           methods:["Upload","API"]},
+              {name:"Wiz",            c:"#7c3aed", initials:"Wiz", domain:"wiz.io",               methods:["Upload","API"]},
+              {name:"Prisma Cloud",   c:"#0891b2", initials:"PC",  domain:"paloaltonetworks.com", methods:["Webhook"]},
             ].map(tool=>(
-              <div key={tool.name} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:12,padding:"1.25rem",borderTop:`3px solid ${tool.c}`}}>
-                <div style={{fontSize:"1.5rem",marginBottom:"0.5rem"}}>{tool.emoji}</div>
+              <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.25rem",borderTop:`3px solid ${tool.c}`,boxShadow:"0 2px 8px rgba(0,0,0,0.04)",transition:"all 0.2s",cursor:"default"}}
+                onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-3px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 8px 24px ${tool.c}22`;}}
+                onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.transform="none";(e.currentTarget as HTMLDivElement).style.boxShadow="0 2px 8px rgba(0,0,0,0.04)";}}>
+                {/* Logo area */}
+                <div style={{width:52,height:52,borderRadius:12,background:"#f8fafc",border:"1px solid #e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"0.875rem",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
+                  <img
+                    src={`https://logo.clearbit.com/${tool.domain}`}
+                    alt={tool.name}
+                    width={36} height={36}
+                    style={{objectFit:"contain"}}
+                    onError={e=>{
+                      const img = e.currentTarget;
+                      img.style.display="none";
+                      const fallback = img.nextElementSibling as HTMLElement;
+                      if(fallback) fallback.style.display="flex";
+                    }}
+                  />
+                  {/* Fallback initials */}
+                  <div style={{display:"none",width:36,height:36,borderRadius:8,background:`linear-gradient(135deg,${tool.c},${tool.c}cc)`,alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:800,fontSize:tool.initials.length>2?"0.65rem":"0.875rem",letterSpacing:"-0.02em"}}>
+                    {tool.initials}
+                  </div>
+                </div>
                 <div style={{fontWeight:700,fontSize:"0.875rem",color:"#0f172a",marginBottom:"0.625rem"}}>{tool.name}</div>
                 <div style={{display:"flex",gap:"0.375rem",flexWrap:"wrap"}}>
                   {tool.methods.map(m=>(
-                    <span key={m} style={{fontSize:"0.62rem",fontWeight:700,padding:"2px 7px",borderRadius:20,background: m==="Webhook"?"#fef3c7":m==="API"?"#ede9fe":"#f0fdf4",color: m==="Webhook"?"#b45309":m==="API"?"#6d28d9":"#15803d",border: `1px solid ${m==="Webhook"?"#fcd34d":m==="API"?"#c4b5fd":"#86efac"}`}}>{m}</span>
+                    <span key={m} style={{fontSize:"0.62rem",fontWeight:700,padding:"2px 7px",borderRadius:20,background:m==="Webhook"?"#fef3c7":m==="API"?"#ede9fe":"#f0fdf4",color:m==="Webhook"?"#b45309":m==="API"?"#6d28d9":"#15803d",border:`1px solid ${m==="Webhook"?"#fcd34d":m==="API"?"#c4b5fd":"#86efac"}`}}>{m}</span>
                   ))}
                 </div>
               </div>
