@@ -504,12 +504,12 @@ export default function Page() {
         </div>
       </section>
       {/* ── SECURE ── */}
-      <section id="secure" style={{scrollMarginTop:64,padding:"2.5rem 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="secure" style={{scrollMarginTop:64,padding:"2.5rem 2rem 4rem",background:"linear-gradient(135deg,#14532d 0%,#15803d 50%,#16a34a 100%)",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
-            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#16a34a",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
-            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Triple-Filter Triage — fix what actually matters</h2>
-            <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>Stop drowning in 10,000 findings. Our 3-layer engine surfaces only the ones that need action today.</p>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#bbf7d0",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#fff",letterSpacing:"-0.03em"}}>Triple-Filter Triage — fix what actually matters</h2>
+            <p style={{color:"#bbf7d0",marginTop:"0.5rem",fontSize:"0.9rem"}}>Stop drowning in 10,000 findings. Our 3-layer engine surfaces only the ones that need action today.</p>
           </div>
 
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.5rem",marginBottom:"1.5rem"}}>
