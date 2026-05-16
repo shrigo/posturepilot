@@ -20,7 +20,7 @@ export default function KpiPage() {
       .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
   }, []);
 
-  const sevChart = live
+  const sevChart: any[] = live
     ? Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))
     : kpiData.monthlyKpis;
 
