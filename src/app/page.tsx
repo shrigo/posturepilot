@@ -327,33 +327,182 @@ export default function Page() {
       </section>
 
       {/* ── REPORT ── */}
-      <section id="report" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"center"}}>
-        <div style={{maxWidth:1100,margin:"0 auto"}}>
+      <section id="report" style={{scrollMarginTop:64,padding:"3.5rem 2rem 5rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+        <div style={{maxWidth:1300,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#7c3aed",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📄 Report</div>
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Board-ready reports in one click</h2>
-            <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>From executive PDF to compliance mapping — white-labeled with your brand.</p>
+            <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>From executive PDF to compliance mapping — auto-generated, white-labeled, delivered to your stakeholders.</p>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(230px,1fr))",gap:"1rem"}}>
-            {[
-              {icon:"📊",title:"Executive Summary",desc:"CISO & board-level posture overview with risk trend",formats:["PDF","PPT"],c:"#4f46e5"},
-              {icon:"🔍",title:"Technical Detail",desc:"Full CVE list with CVSS, EPSS, asset mapping",formats:["PDF","CSV"],c:"#0891b2"},
-              {icon:"⏰",title:"SLA Breach Report",desc:"Overdue findings with owner, deadline, and escalation",formats:["PDF","Email"],c:"#dc2626"},
-              {icon:"✅",title:"Compliance Mapping",desc:"SOC2 · ISO 27001 · NIST CSF control coverage",formats:["PDF"],c:"#16a34a"},
-            ].map(r=>(
-              <div key={r.title} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.5rem",borderLeft:`4px solid ${r.c}`,boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
-                <div style={{fontSize:"2rem",marginBottom:"0.75rem"}}>{r.icon}</div>
-                <div style={{fontWeight:800,color:"#0f172a",marginBottom:"0.375rem",fontSize:"0.95rem"}}>{r.title}</div>
-                <div style={{fontSize:"0.8rem",color:"#64748b",marginBottom:"1rem",lineHeight:1.5}}>{r.desc}</div>
-                <div style={{display:"flex",gap:"0.375rem"}}>
-                  {r.formats.map(f=>(<span key={f} style={{fontSize:"0.65rem",fontWeight:700,padding:"2px 8px",borderRadius:20,background:`${r.c}15`,color:r.c,border:`1px solid ${r.c}33`}}>{f}</span>))}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 360px",gap:"1.5rem",marginBottom:"1.25rem"}}>
+            <div style={{display:"flex",flexDirection:"column",gap:"0.875rem"}}>
+              {[
+                {icon:"📊",title:"Executive Summary",c:"#4f46e5",audience:"CISO · Board · CXO",time:"~8 sec",
+                  desc:"High-level posture snapshot for non-technical leadership. Risk trends, SLA compliance, top findings — no jargon.",
+                  includes:["Risk Score trend (30/60/90 day)","Critical & High count by BU","SLA compliance rate","Top 5 CVEs with business impact","Remediation velocity chart"],
+                  formats:["PDF","PPT","Email"]},
+                {icon:"🔍",title:"Technical Findings",c:"#0891b2",audience:"Security Engineers · SOC",time:"~12 sec",
+                  desc:"Full CVE inventory with CVSS scores, EPSS probabilities, CISA KEV flags, affected assets and remediation steps.",
+                  includes:["Full CVE list with CVSS v3 + EPSS","Asset-level mapping (host, IP, port)","CISA KEV flag & exploit availability","Patch & remediation guidance","Tool-by-tool breakdown"],
+                  formats:["PDF","CSV","JSON"]},
+                {icon:"⏰",title:"SLA Breach Report",c:"#dc2626",audience:"Risk Managers · Compliance",time:"~5 sec",
+                  desc:"All overdue findings beyond their SLA window — with owner, deadline, days overdue, and escalation status.",
+                  includes:["Findings past SLA deadline","Owner & assignee details","Days overdue + escalation tier","Business impact classification","Auto-generated action items"],
+                  formats:["PDF","Email","Slack"]},
+                {icon:"✅",title:"Compliance Mapping",c:"#16a34a",audience:"Auditors · GRC · Legal",time:"~15 sec",
+                  desc:"Maps every finding to SOC2, ISO 27001, NIST CSF, PCI-DSS and HIPAA framework controls with gap analysis.",
+                  includes:["Control coverage % per framework","Gap analysis with evidence","Failed controls linked to CVEs","Remediation roadmap","Audit-ready evidence trail"],
+                  formats:["PDF","XLSX"]},
+              ].map(r=>(
+                <div key={r.title} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.1rem 1.25rem",borderLeft:`4px solid ${r.c}`,boxShadow:"0 2px 8px rgba(0,0,0,0.04)",display:"grid",gridTemplateColumns:"44px 1fr",gap:"1rem",alignItems:"start"}}>
+                  <div style={{width:44,height:44,borderRadius:12,background:`${r.c}12`,border:`1px solid ${r.c}25`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.35rem",flexShrink:0}}>{r.icon}</div>
+                  <div>
+                    <div style={{display:"flex",alignItems:"center",gap:"0.5rem",flexWrap:"wrap",marginBottom:"0.25rem"}}>
+                      <span style={{fontWeight:800,color:"#0f172a",fontSize:"0.92rem"}}>{r.title}</span>
+                      <span style={{fontSize:"0.6rem",fontWeight:600,color:"#64748b",background:"#f1f5f9",padding:"1px 7px",borderRadius:20}}>{r.audience}</span>
+                      <span style={{fontSize:"0.6rem",fontWeight:700,color:"#16a34a",marginLeft:"auto"}}>⚡ {r.time}</span>
+                    </div>
+                    <div style={{fontSize:"0.75rem",color:"#64748b",marginBottom:"0.625rem",lineHeight:1.55}}>{r.desc}</div>
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.175rem 0.875rem",marginBottom:"0.625rem"}}>
+                      {r.includes.map(item=>(
+                        <div key={item} style={{display:"flex",alignItems:"flex-start",gap:"0.3rem",fontSize:"0.7rem",color:"#475569"}}>
+                          <span style={{color:r.c,fontWeight:700,flexShrink:0}}>✓</span>{item}
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{display:"flex",gap:"0.35rem"}}>
+                      {r.formats.map(f=><span key={f} style={{fontSize:"0.62rem",fontWeight:700,padding:"2px 7px",borderRadius:20,background:`${r.c}12`,color:r.c,border:`1px solid ${r.c}30`}}>{f}</span>)}
+                    </div>
+                  </div>
                 </div>
+              ))}
+            </div>
+            <div>
+              <div style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,overflow:"hidden",boxShadow:"0 8px 32px rgba(0,0,0,0.1)",position:"sticky",top:80}}>
+                {/* PDF Header */}
+                <div style={{background:"linear-gradient(135deg,#1e2d6e,#4f46e5)",padding:"1rem 1.125rem"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"0.75rem"}}>
+                    <div>
+                      <div style={{fontSize:"0.5rem",color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:"0.1em"}}>PosturePilot · Confidential · CISO Brief</div>
+                      <div style={{fontSize:"0.88rem",fontWeight:800,color:"#fff",marginTop:2}}>Executive Security Report</div>
+                      <div style={{fontSize:"0.55rem",color:"rgba(255,255,255,0.5)",marginTop:1}}>May 2026 · Acme Corp · Generated 2 min ago</div>
+                    </div>
+                    <div style={{textAlign:"right"}}>
+                      <div style={{fontSize:"2.25rem",fontWeight:900,color:"#fb923c",lineHeight:1}}>74</div>
+                      <div style={{fontSize:"0.5rem",color:"rgba(255,255,255,0.5)"}}>Risk Score /100</div>
+                      <div style={{fontSize:"0.5rem",color:"#fb923c",fontWeight:700}}>▲ +4 from last month</div>
+                    </div>
+                  </div>
+                  {/* 6-KPI strip */}
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"0.3rem"}}>
+                    {[{l:"Critical",v:"23",c:"#f87171",sub:"↓5 this week"},{l:"SLA Compliance",v:"91%",c:"#34d399",sub:"↑3% MoM"},{l:"Avg CVSS",v:"7.4",c:"#fb923c",sub:"stable"},
+                      {l:"MTTR",v:"18d",c:"#a78bfa",sub:"target: 14d"},{l:"Patched",v:"68%",c:"#60a5fa",sub:"of total 334"},{l:"Open High",v:"67",c:"#fbbf24",sub:"14 SLA breach"}
+                    ].map(k=>(
+                      <div key={k.l} style={{background:"rgba(255,255,255,0.1)",borderRadius:7,padding:"0.35rem 0.5rem"}}>
+                        <div style={{fontSize:"0.48rem",color:"rgba(255,255,255,0.45)",marginBottom:1}}>{k.l}</div>
+                        <div style={{fontSize:"0.92rem",fontWeight:900,color:k.c,lineHeight:1}}>{k.v}</div>
+                        <div style={{fontSize:"0.45rem",color:"rgba(255,255,255,0.4)",marginTop:1}}>{k.sub}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* PDF Body */}
+                <div style={{padding:"0.75rem 1rem"}}>
+                  {/* Risk trend */}
+                  <div style={{marginBottom:"0.75rem"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.4rem"}}>
+                      <span style={{fontSize:"0.6rem",fontWeight:700,color:"#475569"}}>📈 Risk Trend — 90 Days</span>
+                      <span style={{fontSize:"0.52rem",color:"#16a34a",fontWeight:700}}>↓ Improving</span>
+                    </div>
+                    <div style={{display:"flex",alignItems:"flex-end",gap:"2px",height:40}}>
+                      {[82,79,77,80,76,74,71,74,72,70,74,72].map((v,i)=>(
+                        <div key={i} style={{flex:1,borderRadius:"2px 2px 0 0",background:i===11?"#4f46e5":i>=9?"#818cf8":"#e2e8f0",height:`${(v/82)*100}%`,minHeight:3}}/>
+                      ))}
+                    </div>
+                    <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.45rem",color:"#94a3b8",marginTop:2}}>
+                      <span>Feb</span><span>Mar</span><span>Apr</span><span>May ▲</span>
+                    </div>
+                  </div>
+
+                  {/* Vuln + Patch summary */}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem",marginBottom:"0.75rem"}}>
+                    <div style={{background:"#f8fafc",borderRadius:8,padding:"0.5rem 0.625rem",border:"1px solid #e2e8f0"}}>
+                      <div style={{fontSize:"0.58rem",fontWeight:700,color:"#475569",marginBottom:"0.35rem"}}>🔢 Vulnerability Summary</div>
+                      {[{l:"Total Found",v:"334",c:"#475569"},{l:"Critical",v:"23",c:"#dc2626"},{l:"High",v:"67",c:"#ea580c"},{l:"Medium",v:"148",c:"#d97706"},{l:"Low / Info",v:"96",c:"#16a34a"}].map(r=>(
+                        <div key={r.l} style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",padding:"1px 0",borderBottom:"1px solid #f1f5f9"}}>
+                          <span style={{color:"#64748b"}}>{r.l}</span><span style={{fontWeight:700,color:r.c}}>{r.v}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{background:"#f8fafc",borderRadius:8,padding:"0.5rem 0.625rem",border:"1px solid #e2e8f0"}}>
+                      <div style={{fontSize:"0.58rem",fontWeight:700,color:"#475569",marginBottom:"0.35rem"}}>🩹 Patch Coverage</div>
+                      {[{l:"Patched",v:"227",c:"#16a34a"},{l:"In Progress",v:"61",c:"#d97706"},{l:"Pending",v:"46",c:"#dc2626"},{l:"MTTR (avg)",v:"18 days",c:"#a78bfa"},{l:"SLA Breached",v:"14",c:"#dc2626"}].map(r=>(
+                        <div key={r.l} style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",padding:"1px 0",borderBottom:"1px solid #f1f5f9"}}>
+                          <span style={{color:"#64748b"}}>{r.l}</span><span style={{fontWeight:700,color:r.c}}>{r.v}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Top CVEs */}
+                  <div style={{marginBottom:"0.75rem"}}>
+                    <div style={{fontSize:"0.6rem",fontWeight:700,color:"#475569",marginBottom:"0.4rem"}}>🎯 Top Critical CVEs</div>
+                    {[{cve:"CVE-2024-3400",cvss:"10.0",s:"CRIT",asset:"fw-01"},{cve:"CVE-2024-21762",cvss:"9.8",s:"CRIT",asset:"vpn-gw"},{cve:"CVE-2023-44487",cvss:"7.5",s:"HIGH",asset:"lb-01"}].map(c=>(
+                      <div key={c.cve} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"0.2rem 0.375rem",borderRadius:5,marginBottom:3,background:"#f8fafc"}}>
+                        <span style={{fontSize:"0.56rem",fontFamily:"monospace",color:"#1e2d6e",fontWeight:700}}>{c.cve}</span>
+                        <span style={{fontSize:"0.52rem",color:"#64748b"}}>{c.asset}</span>
+                        <div style={{display:"flex",gap:"0.3rem",alignItems:"center"}}>
+                          <span style={{fontSize:"0.54rem",fontWeight:700,color:c.s==="CRIT"?"#dc2626":"#ea580c"}}>{c.cvss}</span>
+                          <span style={{fontSize:"0.48rem",fontWeight:800,padding:"1px 4px",borderRadius:3,background:c.s==="CRIT"?"#fef2f2":"#fff7ed",color:c.s==="CRIT"?"#dc2626":"#ea580c"}}>{c.s}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Framework coverage */}
+                  <div>
+                    <div style={{fontSize:"0.6rem",fontWeight:700,color:"#475569",marginBottom:"0.4rem"}}>⚖️ Compliance Coverage</div>
+                    {[{f:"SOC2",v:87},{f:"ISO 27001",v:79},{f:"NIST CSF",v:92},{f:"PCI-DSS",v:68},{f:"HIPAA",v:74}].map(fw=>(
+                      <div key={fw.f} style={{display:"flex",alignItems:"center",gap:"0.4rem",marginBottom:"0.28rem"}}>
+                        <span style={{fontSize:"0.54rem",color:"#64748b",width:44,flexShrink:0}}>{fw.f}</span>
+                        <div style={{flex:1,height:4,background:"#f1f5f9",borderRadius:99}}>
+                          <div style={{height:"100%",width:`${fw.v}%`,background:fw.v>=85?"#16a34a":fw.v>=70?"#d97706":"#dc2626",borderRadius:99}}/>
+                        </div>
+                        <span style={{fontSize:"0.54rem",fontWeight:700,color:fw.v>=85?"#16a34a":fw.v>=70?"#d97706":"#dc2626",width:24,textAlign:"right"}}>{fw.v}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div style={{background:"#f8fafc",borderTop:"1px solid #e2e8f0",padding:"0.45rem 1rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <span style={{fontSize:"0.5rem",color:"#94a3b8"}}>PosturePilot · posturepilot.io</span>
+                  <span style={{fontSize:"0.5rem",color:"#7c3aed",fontWeight:700}}>⬇ Download PDF</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.1rem 1.5rem",marginBottom:"1rem"}}>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#475569",marginBottom:"0.875rem",textTransform:"uppercase",letterSpacing:"0.08em"}}>📬 Delivery Methods</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:"0.875rem"}}>
+              {[{icon:"📧",l:"Email",d:"Stakeholder list"},{icon:"💬",l:"Slack",d:"#security channel"},{icon:"⏰",l:"Scheduled",d:"Daily/Weekly/Monthly"},{icon:"📱",l:"Webhook",d:"JIRA · ServiceNow"},{icon:"🌐",l:"Portal",d:"Shareable link"},{icon:"🖨️",l:"Print-Ready",d:"A4/Letter PDF"}].map(d=>(
+                <div key={d.l} style={{textAlign:"center"}}>
+                  <div style={{fontSize:"1.5rem",marginBottom:"0.25rem"}}>{d.icon}</div>
+                  <div style={{fontSize:"0.72rem",fontWeight:700,color:"#0f172a"}}>{d.l}</div>
+                  <div style={{fontSize:"0.62rem",color:"#94a3b8"}}>{d.d}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.875rem"}}>
+            {[{v:"8 sec",l:"Avg generation time"},{v:"5+",l:"Compliance frameworks"},{v:"4 types",l:"Report formats"},{v:"6",l:"Delivery channels"}].map(s=>(
+              <div key={s.l} style={{textAlign:"center",background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
+                <div style={{fontSize:"1.5rem",fontWeight:900,color:"#7c3aed"}}>{s.v}</div>
+                <div style={{fontSize:"0.7rem",color:"#64748b",marginTop:"0.25rem"}}>{s.l}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
-
       {/* ── SECURE ── */}
       <section id="secure" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:900,margin:"0 auto"}}>
