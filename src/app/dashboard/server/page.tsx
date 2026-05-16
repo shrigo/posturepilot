@@ -41,10 +41,10 @@ export default function ServerPage() {
 
         <div className="grid-4">
           {[
-            { label:'Total Findings',    value: live ? live.total.toLocaleString()         : serverData.totalEndpoints,   accent:'#3b82f6', delta: live ? 'Real scans'           : 'Managed endpoints' },
-            { label:'Critical',          value: live ? live.critical.toLocaleString()       : serverData.criticalPatches,  accent:'#dc2626', delta: live ? 'Immediate action'     : 'Critical patches' },
-            { label:'Unhealthy Hosts',   value: live ? live.unhealthyHosts.toLocaleString() : serverData.unhealthyHosts,   accent:'#ea580c', delta: live ? 'Need attention'       : 'Failing checks' },
-            { label:'SLA Breached',      value: live ? live.slaBreached.toLocaleString()    : serverData.offlineHosts,     accent:'#d97706', delta: live ? 'Past deadline'         : 'Offline hosts' },
+            { label:'Total Servers',     value: live ? live.total.toLocaleString()          : serverData.totalServers,                accent:'#3b82f6', delta: live ? 'Real scans'       : 'Managed servers' },
+            { label:'Critical Findings', value: live ? live.critical.toLocaleString()        : serverData.critical,                   accent:'#dc2626', delta: live ? 'Immediate action' : 'Critical health' },
+            { label:'Unhealthy',         value: live ? live.unhealthyHosts.toLocaleString()  : serverData.warning + serverData.critical, accent:'#ea580c', delta: live ? 'Need attention'  : 'Warning + Critical' },
+            { label:'SLA Breached',      value: live ? live.slaBreached.toLocaleString()     : serverData.critical,                   accent:'#d97706', delta: live ? 'Past deadline'    : 'Critical servers' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
@@ -95,18 +95,19 @@ export default function ServerPage() {
           </div>
         ) : (
           <div className="card">
-            <div className="card-title">🖥️ Endpoint Health Overview</div>
+            <div className="card-title">🖥️ Server Health Overview</div>
             <table className="data-table">
-              <thead><tr><th>Host</th><th>OS</th><th>Patch Status</th><th>EDR</th><th>Last Seen</th><th>Health</th></tr></thead>
+              <thead><tr><th>Server ID</th><th>Role</th><th>CPU %</th><th>Memory %</th><th>Disk %</th><th>Uptime</th><th>Health</th></tr></thead>
               <tbody>
-                {serverData.endpoints.map(e => (
-                  <tr key={e.host}>
-                    <td style={{ fontFamily:'monospace', fontSize:'0.78rem', fontWeight:600, color:'#0f172a' }}>{e.host}</td>
-                    <td style={{ fontSize:'0.78rem' }}>{e.os}</td>
-                    <td><span className={`badge badge-${e.patchStatus === 'Up to date' ? 'low' : e.patchStatus === 'Pending' ? 'medium' : 'critical'}`}>{e.patchStatus}</span></td>
-                    <td><span style={{ fontSize:'0.75rem', fontWeight:700, color: e.edrInstalled ? '#16a34a' : '#dc2626' }}>{e.edrInstalled ? '✓ Active' : '✗ Missing'}</span></td>
-                    <td style={{ fontSize:'0.75rem', color:'#64748b' }}>{e.lastSeen}</td>
-                    <td><span className="stat-card-accent" style={{ display:'inline-block', width:10, height:10, borderRadius:'50%', background: healthColor[e.health] }} /></td>
+                {serverData.servers.map(s => (
+                  <tr key={s.id}>
+                    <td style={{ fontFamily:'monospace', fontSize:'0.78rem', fontWeight:600, color:'#0f172a' }}>{s.id}</td>
+                    <td style={{ fontSize:'0.78rem' }}>{s.role}</td>
+                    <td style={{ fontWeight:700, color: s.cpu > 80 ? '#dc2626' : s.cpu > 60 ? '#d97706' : '#16a34a' }}>{s.cpu}%</td>
+                    <td style={{ fontWeight:700, color: s.memory > 80 ? '#dc2626' : s.memory > 60 ? '#d97706' : '#16a34a' }}>{s.memory}%</td>
+                    <td style={{ fontWeight:700, color: s.disk > 80 ? '#dc2626' : s.disk > 60 ? '#d97706' : '#16a34a' }}>{s.disk}%</td>
+                    <td style={{ fontSize:'0.75rem', color:'#64748b' }}>{s.uptime}</td>
+                    <td><span style={{ display:'inline-block', width:10, height:10, borderRadius:'50%', background: healthColor[s.health] }} /></td>
                   </tr>
                 ))}
               </tbody>

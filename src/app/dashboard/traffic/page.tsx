@@ -31,7 +31,7 @@ export default function TrafficPage() {
               <span style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'inline-block', boxShadow:'0 0 8px #22c55e' }} />
               <div>
                 <div style={{ fontWeight:800, color:'#15803d', fontSize:'0.9rem' }}>Live Traffic Findings — {live.total.toLocaleString()} total</div>
-                <div style={{ fontSize:'0.75rem', color:'#16a34a' }}>Active alerts: {live.activeAlerts} · Anomalies detected: {live.anomalies} · Critical: {live.critical}</div>
+                <div style={{ fontSize:'0.75rem', color:'#16a34a' }}>Active alerts: {live.activeAlerts} · Anomalies: {live.anomalies} · Critical: {live.critical}</div>
               </div>
             </div>
             <Link href="/dashboard/findings" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>View Findings →</Link>
@@ -40,10 +40,10 @@ export default function TrafficPage() {
 
         <div className="grid-4">
           {[
-            { label:'Total Findings',   value: live ? live.total.toLocaleString()         : trafficData.totalBandwidth,  accent:'#0891b2', delta: live ? 'Real data'          : 'Today' },
-            { label:'Active Alerts',    value: live ? live.activeAlerts.toLocaleString()   : trafficData.activeAlerts,    accent:'#dc2626', delta: live ? 'Critical severity'  : 'Needs action' },
-            { label:'Anomalies',        value: live ? live.anomalies.toLocaleString()       : trafficData.anomalies,       accent:'#d97706', delta: live ? 'Detected patterns'  : 'Unusual patterns' },
-            { label:'High Severity',    value: live ? live.high.toLocaleString()            : trafficData.blockedThreats,  accent:'#ea580c', delta: live ? 'Escalate 7 days'   : 'Blocked today' },
+            { label:'Inbound Traffic',  value: live ? live.total.toLocaleString()        : `${trafficData.inboundGbps} Gbps`,     accent:'#0891b2', delta: live ? 'Real data'         : 'Current' },
+            { label:'Active Alerts',    value: live ? live.activeAlerts.toLocaleString() : trafficData.activeAlerts,              accent:'#dc2626', delta: live ? 'Critical severity' : 'Needs action' },
+            { label:'Anomalies',        value: live ? live.anomalies.toLocaleString()    : trafficData.anomaliesDetected,         accent:'#d97706', delta: live ? 'Detected patterns' : 'Detected today' },
+            { label:'High Severity',    value: live ? live.high.toLocaleString()         : `${trafficData.outboundGbps} Gbps`,   accent:'#ea580c', delta: live ? 'Escalate 7 days'  : 'Outbound' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
@@ -71,7 +71,7 @@ export default function TrafficPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                   <XAxis dataKey="hour" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                   <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} />
-                  <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} formatter={(v: any) => `${v} GB`} />
+                  <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} formatter={(v: any) => `${v} Gbps`} />
                   <Area type="monotone" dataKey="inbound" stroke="#0891b2" fill="#e0f2fe" strokeWidth={2} />
                   <Area type="monotone" dataKey="outbound" stroke="#7c3aed" fill="#f3e8ff" strokeWidth={2} />
                 </AreaChart>
@@ -80,7 +80,7 @@ export default function TrafficPage() {
           </div>
 
           <div className="card">
-            <div className="card-title">{live ? '🎯 Top CVEs (Live)' : '🚨 Top Anomalies'}</div>
+            <div className="card-title">{live ? '🎯 Top CVEs (Live)' : '🚨 Traffic Spikes'}</div>
             {live ? (
               <table className="data-table">
                 <thead><tr><th>CVE ID</th><th>Count</th><th>Type</th></tr></thead>
@@ -96,14 +96,14 @@ export default function TrafficPage() {
               </table>
             ) : (
               <table className="data-table">
-                <thead><tr><th>Type</th><th>Source</th><th>Severity</th><th>Count</th></tr></thead>
+                <thead><tr><th>Time</th><th>Magnitude</th><th>Type</th><th>Status</th></tr></thead>
                 <tbody>
-                  {trafficData.topAnomalies.map(a => (
-                    <tr key={a.type}>
-                      <td style={{ fontWeight:600, color:'#0f172a' }}>{a.type}</td>
-                      <td style={{ fontSize:'0.78rem', color:'#64748b' }}>{a.source}</td>
-                      <td><span className={`badge badge-${a.severity.toLowerCase()}`}>{a.severity}</span></td>
-                      <td style={{ fontWeight:700 }}>{a.count}</td>
+                  {trafficData.trafficSpikes.map((s, i) => (
+                    <tr key={i}>
+                      <td style={{ fontSize:'0.75rem', color:'#64748b' }}>{s.time}</td>
+                      <td style={{ fontWeight:700, color:'#dc2626' }}>{s.magnitude}</td>
+                      <td style={{ fontSize:'0.78rem', fontWeight:600 }}>{s.type}</td>
+                      <td><span className={`badge badge-${s.resolved ? 'low' : 'critical'}`}>{s.resolved ? 'Resolved' : 'Active'}</span></td>
                     </tr>
                   ))}
                 </tbody>

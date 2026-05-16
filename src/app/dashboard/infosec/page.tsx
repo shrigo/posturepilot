@@ -20,10 +20,6 @@ export default function InfosecPage() {
       .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
   }, []);
 
-  const sevChart = live
-    ? Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))
-    : infosecData.policyViolations;
-
   return (
     <>
       <Topbar title="🔏 InfoSec & Compliance" subtitle="Policy violations, access control audits & data classification" />
@@ -44,10 +40,10 @@ export default function InfosecPage() {
 
         <div className="grid-4">
           {[
-            { label:'Total Findings',      value: live ? live.total.toLocaleString()           : infosecData.totalFindings,     accent:'#3b82f6', delta: live ? 'Real scans'          : 'Active issues' },
-            { label:'Critical',            value: live ? live.critical.toLocaleString()         : infosecData.critical,          accent:'#dc2626', delta: live ? 'Immediate action'    : 'High risk' },
-            { label:'Compliance Score',    value: live ? `${live.complianceScore}%`             : `${infosecData.complianceScore}%`, accent:'#059669', delta: live ? 'Computed live'  : 'Overall' },
-            { label:'Open Findings',       value: live ? live.open.toLocaleString()             : infosecData.openIssues,        accent:'#d97706', delta: live ? `${live.closed} closed` : 'Unresolved' },
+            { label:'Total Findings',    value: live ? live.total.toLocaleString()       : infosecData.auditFindings.total,      accent:'#3b82f6', delta: live ? 'Real scans'           : 'Audit findings' },
+            { label:'Critical',          value: live ? live.critical.toLocaleString()     : infosecData.auditFindings.open,       accent:'#dc2626', delta: live ? 'Immediate action'     : 'Open issues' },
+            { label:'Compliance Score',  value: live ? `${live.complianceScore}%`         : `${infosecData.overallCompliance}%`,  accent:'#059669', delta: live ? 'Computed live'        : 'Overall score' },
+            { label:'Open Findings',     value: live ? live.open.toLocaleString()         : infosecData.auditFindings.overdue,    accent:'#d97706', delta: live ? `${live.closed} closed` : 'Overdue' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
@@ -60,20 +56,36 @@ export default function InfosecPage() {
 
         <div className="grid-2">
           <div className="card">
-            <div className="card-title">{live ? '📊 Findings by Severity (Live)' : '📋 Policy Violations'}</div>
-            <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={sevChart}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} />
-                <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
-                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-                <Bar dataKey={live ? 'value' : 'count'} name="Count" fill="#3b82f6" radius={[3,3,0,0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="card-title">{live ? '📊 Findings by Severity (Live)' : '📋 Framework Compliance Progress'}</div>
+            {live ? (
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                  <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                  <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+                  <Bar dataKey="value" name="Count" fill="#3b82f6" radius={[3,3,0,0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
+                {infosecData.frameworks.map(f => (
+                  <div key={f.name} style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+                    <span style={{ fontSize:'0.78rem', color:'#0f172a', fontWeight:600, width:110, flexShrink:0 }}>{f.name}</span>
+                    <div style={{ flex:1 }}>
+                      <div className="progress-bar-wrap">
+                        <div className="progress-bar-fill" style={{ width:`${f.progress}%`, background: f.progress >= 80 ? '#16a34a' : f.progress >= 60 ? '#d97706' : '#dc2626' }} />
+                      </div>
+                    </div>
+                    <span style={{ fontWeight:700, fontSize:'0.82rem', color: f.progress >= 80 ? '#16a34a' : f.progress >= 60 ? '#d97706' : '#dc2626', width:36, textAlign:'right' }}>{f.progress}%</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="card">
-            <div className="card-title">{live ? '🎯 Top CVEs (Live)' : '🔐 Access Review'}</div>
+            <div className="card-title">{live ? '🎯 Top CVEs (Live)' : '📝 Policy Review Status'}</div>
             {live ? (
               <table className="data-table">
                 <thead><tr><th>CVE ID</th><th>Count</th><th>Category</th></tr></thead>
@@ -89,13 +101,13 @@ export default function InfosecPage() {
               </table>
             ) : (
               <table className="data-table">
-                <thead><tr><th>Category</th><th>Count</th><th>Status</th></tr></thead>
+                <thead><tr><th>Policy</th><th>Progress</th><th>Status</th></tr></thead>
                 <tbody>
-                  {infosecData.accessReview.map(a => (
-                    <tr key={a.category}>
-                      <td style={{ fontWeight:600, color:'#0f172a' }}>{a.category}</td>
-                      <td style={{ fontWeight:700 }}>{a.count}</td>
-                      <td><span className={`badge badge-${a.status === 'Reviewed' ? 'low' : a.status === 'Pending' ? 'medium' : 'critical'}`}>{a.status}</span></td>
+                  {infosecData.policyReview.map(p => (
+                    <tr key={p.policy}>
+                      <td style={{ fontWeight:600, color:'#0f172a', fontSize:'0.78rem' }}>{p.policy}</td>
+                      <td style={{ fontWeight:700 }}>{p.progress}%</td>
+                      <td><span className={`badge badge-${p.status === 'On Track' ? 'low' : p.status === 'At Risk' ? 'high' : 'critical'}`}>{p.status}</span></td>
                     </tr>
                   ))}
                 </tbody>
