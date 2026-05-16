@@ -54,6 +54,10 @@ export default function Sidebar() {
 
       <div className="sidebar-section-label">Data</div>
       <nav className="sidebar-nav" style={{ paddingTop: 0 }}>
+        <Link href="/dashboard/findings" className={`nav-item${pathname === '/dashboard/findings' ? ' active' : ''}`}>
+          <span className="nav-icon">🔍</span>
+          <span className="nav-label">Findings</span>
+        </Link>
         <Link href="/dashboard/upload" className={`nav-item${pathname === '/dashboard/upload' ? ' active' : ''}`}>
           <span className="nav-icon">📤</span>
           <span className="nav-label">Upload Scan</span>
