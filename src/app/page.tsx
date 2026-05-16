@@ -179,12 +179,12 @@ export default function Page() {
       </section>
 
       {/* ── MONITOR ── */}
-      <section id="monitor" style={{scrollMarginTop:64,padding:"3.5rem 2rem 5rem",background:"linear-gradient(135deg,#7f1d1d 0%,#991b1b 40%,#b91c1c 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="monitor" style={{scrollMarginTop:64,padding:"3.5rem 2rem 5rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:1100,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
-            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#fecaca",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>9 live dashboards. Everything in one place.</h2>
-            <p style={{color:"#fecaca",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
+            <p style={{color:"#a5b4fc",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
           </div>
 
           {/* SOC Dashboard Mockup */}
@@ -321,7 +321,7 @@ export default function Page() {
           </div>
 
           <div style={{textAlign:"center",marginTop:"1.5rem"}}>
-            <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#b91c1c",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:800,fontSize:"0.9rem",border:"2px solid rgba(255,255,255,0.4)",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>View Live Dashboard →</Link>
+            <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#1e2d6e",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:800,fontSize:"0.9rem",border:"2px solid rgba(255,255,255,0.4)",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>View Live Dashboard →</Link>
           </div>
         </div>
       </section>
