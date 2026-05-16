@@ -134,7 +134,7 @@ export default function Page() {
           <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"1.5rem",width:"100%"}}>
             {[
               {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",  methods:["Upload","API"]},
-              {name:"Tenable.io",     c:"#0054A6", initials:"Te",  logoUrl:"/logos/tenable.png",                                  methods:["Upload","API"]},
+              {name:"Tenable.io",     c:"#1e2a38", initials:"Te",  logoUrl:"/logos/tenable.png",                                  methods:["Upload","API"]},
               {name:"Nessus Pro",     c:"#3eae2e", initials:"Ne",  logoUrl:"/logos/nessus.png",                                   methods:["Upload"]},
               {name:"OpenVAS",        c:"#2d2d2d", initials:"OV",  logoUrl:"/logos/openvas.png",                                  methods:["Upload","API"]},
               {name:"CrowdStrike",    c:"#E00400", initials:"CS",  logoUrl:"/logos/crowdstrike.png",                              methods:["Webhook","API"]},
