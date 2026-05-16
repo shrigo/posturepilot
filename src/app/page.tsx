@@ -179,24 +179,24 @@ export default function Page() {
       </section>
 
       {/* ── MONITOR ── */}
-      <section id="monitor" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="monitor" style={{scrollMarginTop:64,padding:"3.5rem 2rem 5rem",background:"linear-gradient(135deg,#7f1d1d 0%,#991b1b 40%,#b91c1c 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:1100,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
-            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#fecaca",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>9 live dashboards. Everything in one place.</h2>
-            <p style={{color:"#a5b4fc",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
+            <p style={{color:"#fecaca",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
           </div>
 
           {/* SOC Dashboard Mockup */}
-          <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:18,overflow:"hidden",backdropFilter:"blur(12px)"}}>
+          <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:18,overflow:"hidden",boxShadow:"0 24px 64px rgba(0,0,0,0.3)"}}>
 
             {/* Topbar */}
-            <div style={{background:"rgba(0,0,0,0.25)",padding:"0.625rem 1.25rem",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+            <div style={{background:"#f1f5f9",padding:"0.625rem 1.25rem",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid #e2e8f0"}}>
               <div style={{display:"flex",alignItems:"center",gap:"0.5rem"}}>
                 <div style={{width:8,height:8,borderRadius:"50%",background:"#f87171"}}/>
                 <div style={{width:8,height:8,borderRadius:"50%",background:"#fbbf24"}}/>
                 <div style={{width:8,height:8,borderRadius:"50%",background:"#34d399"}}/>
-                <span style={{fontSize:"0.72rem",color:"#64748b",marginLeft:"0.5rem"}}>PosturePilot Security Command Center</span>
+                <span style={{fontSize:"0.72rem",color:"#475569",fontWeight:600,marginLeft:"0.5rem"}}>PosturePilot Security Command Center</span>
               </div>
               <div style={{display:"flex",gap:"0.5rem",alignItems:"center"}}>
                 <span style={{width:6,height:6,borderRadius:"50%",background:"#34d399",display:"inline-block",boxShadow:"0 0 8px #34d399"}}/>
@@ -207,7 +207,7 @@ export default function Page() {
 
             <div style={{display:"grid",gridTemplateColumns:"160px 1fr",minHeight:480}}>
               {/* Mini sidebar */}
-              <div style={{background:"rgba(0,0,0,0.3)",padding:"0.875rem 0",borderRight:"1px solid rgba(255,255,255,0.06)"}}>
+              <div style={{background:"#f8fafc",padding:"0.875rem 0",borderRight:"1px solid #e2e8f0"}}>
                 {[
                   {icon:"🏠",label:"Overview",active:false},
                   {icon:"🛡️",label:"Cyber Posture",active:true,badge:"3"},
@@ -220,13 +220,13 @@ export default function Page() {
                   {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
                 ].map(item=>(
                   <div key={item.label} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.45rem 0.875rem",
-                    background:item.active?"rgba(99,102,241,0.2)":"transparent",
-                    borderLeft:item.active?"2px solid #818cf8":"2px solid transparent",marginBottom:2,cursor:"default"}}>
+                    background:item.active?"#eff6ff":"transparent",
+                    borderLeft:item.active?"2px solid #b91c1c":"2px solid transparent",marginBottom:2,cursor:"default"}}>
                     <span style={{fontSize:"0.75rem"}}>{item.icon}</span>
-                    <span style={{fontSize:"0.68rem",color:item.active?"#e0e7ff":"#64748b",fontWeight:item.active?700:400,flex:1}}>{item.label}</span>
+                    <span style={{fontSize:"0.68rem",color:item.active?"#b91c1c":"#64748b",fontWeight:item.active?700:400,flex:1}}>{item.label}</span>
                     {item.badge && <span style={{fontSize:"0.55rem",fontWeight:800,padding:"1px 5px",borderRadius:99,
-                      background:item.badge==="NEW"?"#7c3aed":"rgba(248,113,113,0.2)",
-                      color:item.badge==="NEW"?"#fff":"#f87171"}}>{item.badge}</span>}
+                      background:item.badge==="NEW"?"#7c3aed":"#fee2e2",
+                      color:item.badge==="NEW"?"#fff":"#dc2626"}}>{item.badge}</span>}
                   </div>
                 ))}
               </div>
@@ -242,10 +242,10 @@ export default function Page() {
                     {label:"SLA Compliance",val:"91%",unit:"on-track",c:"#34d399",trend:"↑3%"},
                     {label:"Avg CVSS",val:"7.4",unit:"score",c:"#fb923c",trend:"stable"},
                   ].map(s=>(
-                    <div key={s.label} style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"0.75rem",borderTop:`2px solid ${s.c}`}}>
+                    <div key={s.label} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.75rem",borderTop:`3px solid ${s.c}`}}>
                       <div style={{fontSize:"0.58rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",marginBottom:"0.2rem"}}>{s.label}</div>
-                      <div style={{fontSize:"1.5rem",fontWeight:900,color:s.c,lineHeight:1}}>{s.val}<span style={{fontSize:"0.62rem",fontWeight:400,color:"#64748b",marginLeft:3}}>{s.unit}</span></div>
-                      <div style={{fontSize:"0.58rem",color:"#475569",marginTop:"0.25rem"}}>{s.trend} this week</div>
+                      <div style={{fontSize:"1.5rem",fontWeight:900,color:s.c,lineHeight:1}}>{s.val}<span style={{fontSize:"0.62rem",fontWeight:400,color:"#94a3b8",marginLeft:3}}>{s.unit}</span></div>
+                      <div style={{fontSize:"0.58rem",color:"#94a3b8",marginTop:"0.25rem"}}>{s.trend} this week</div>
                     </div>
                   ))}
                 </div>
@@ -253,15 +253,15 @@ export default function Page() {
                 {/* Middle row: severity bars + live alerts */}
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.625rem"}}>
                   {/* Severity breakdown */}
-                  <div style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"0.875rem"}}>
-                    <div style={{fontSize:"0.65rem",fontWeight:700,color:"#a5b4fc",marginBottom:"0.625rem"}}>📊 Findings by Severity</div>
-                    {[["Critical",14,"#f87171",312],["High",67,"#fb923c",312],["Medium",148,"#fbbf24",312],["Low",83,"#34d399",312],["Info",22,"#60a5fa",312]].map(([s,n,c,max])=>(
+                  <div style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.875rem"}}>
+                    <div style={{fontSize:"0.65rem",fontWeight:700,color:"#475569",marginBottom:"0.625rem"}}>📊 Findings by Severity</div>
+                    {[["Critical",14,"#dc2626",312],["High",67,"#ea580c",312],["Medium",148,"#d97706",312],["Low",83,"#16a34a",312],["Info",22,"#3b82f6",312]].map(([s,n,c,max])=>(
                       <div key={String(s)} style={{marginBottom:"0.45rem"}}>
                         <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.65rem",marginBottom:2}}>
-                          <span style={{color:"#cbd5e1"}}>{s}</span>
+                          <span style={{color:"#475569"}}>{s}</span>
                           <span style={{color:String(c),fontWeight:700}}>{n}</span>
                         </div>
-                        <div style={{height:5,background:"rgba(255,255,255,0.07)",borderRadius:99}}>
+                        <div style={{height:5,background:"#e2e8f0",borderRadius:99}}>
                           <div style={{height:"100%",width:`${Math.round(Number(n)/Number(max)*100)}%`,background:String(c),borderRadius:99}}/>
                         </div>
                       </div>
@@ -269,18 +269,18 @@ export default function Page() {
                   </div>
 
                   {/* Live alerts */}
-                  <div style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"0.875rem"}}>
-                    <div style={{fontSize:"0.65rem",fontWeight:700,color:"#a5b4fc",marginBottom:"0.625rem"}}>🚨 Active Alerts</div>
+                  <div style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.875rem"}}>
+                    <div style={{fontSize:"0.65rem",fontWeight:700,color:"#475569",marginBottom:"0.625rem"}}>🚨 Active Alerts</div>
                     {[
-                      {sev:"CRIT",cve:"CVE-2024-3400",host:"web-01",c:"#f87171",bg:"rgba(248,113,113,0.1)"},
-                      {sev:"HIGH",cve:"CVE-2024-21762",host:"db-02",c:"#fb923c",bg:"rgba(251,146,60,0.1)"},
-                      {sev:"HIGH",cve:"CVE-2023-44487",host:"lb-01",c:"#fb923c",bg:"rgba(251,146,60,0.1)"},
-                      {sev:"MED",cve:"CVE-2024-1086",host:"app-03",c:"#fbbf24",bg:"rgba(251,191,36,0.1)"},
+                      {sev:"CRIT",cve:"CVE-2024-3400",host:"web-01",c:"#dc2626",bg:"#fef2f2"},
+                      {sev:"HIGH",cve:"CVE-2024-21762",host:"db-02",c:"#ea580c",bg:"#fff7ed"},
+                      {sev:"HIGH",cve:"CVE-2023-44487",host:"lb-01",c:"#ea580c",bg:"#fff7ed"},
+                      {sev:"MED",cve:"CVE-2024-1086",host:"app-03",c:"#d97706",bg:"#fffbeb"},
                     ].map((a,i)=>(
                       <div key={i} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.35rem 0.5rem",borderRadius:6,marginBottom:4,background:a.bg}}>
                         <span style={{fontSize:"0.55rem",fontWeight:800,padding:"1px 5px",borderRadius:4,background:a.c,color:"#fff",minWidth:28,textAlign:"center"}}>{a.sev}</span>
-                        <span style={{fontSize:"0.65rem",color:"#e2e8f0",fontFamily:"monospace",flex:1}}>{a.cve}</span>
-                        <span style={{fontSize:"0.6rem",color:"#475569"}}>{a.host}</span>
+                        <span style={{fontSize:"0.65rem",color:"#1e293b",fontFamily:"monospace",flex:1}}>{a.cve}</span>
+                        <span style={{fontSize:"0.6rem",color:"#64748b"}}>{a.host}</span>
                       </div>
                     ))}
                   </div>
@@ -294,11 +294,11 @@ export default function Page() {
                     {icon:"🌐",label:"Network",val:"34 open ports",sub:"2 SLA breach",c:"#f87171"},
                     {icon:"🔐",label:"App Security",val:"14 vulns",sub:"OWASP Top 10",c:"#a78bfa"},
                   ].map(d=>(
-                    <div key={d.label} style={{background:"rgba(255,255,255,0.05)",borderRadius:10,padding:"0.75rem",borderLeft:`3px solid ${d.c}`}}>
+                    <div key={d.label} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.75rem",borderLeft:`3px solid ${d.c}`}}>
                       <div style={{fontSize:"0.78rem",marginBottom:"0.25rem"}}>{d.icon}</div>
-                      <div style={{fontSize:"0.65rem",fontWeight:700,color:"#e2e8f0",marginBottom:"0.2rem"}}>{d.label}</div>
+                      <div style={{fontSize:"0.65rem",fontWeight:700,color:"#0f172a",marginBottom:"0.2rem"}}>{d.label}</div>
                       <div style={{fontSize:"0.78rem",fontWeight:900,color:d.c}}>{d.val}</div>
-                      <div style={{fontSize:"0.6rem",color:"#475569",marginTop:2}}>{d.sub}</div>
+                      <div style={{fontSize:"0.6rem",color:"#94a3b8",marginTop:2}}>{d.sub}</div>
                     </div>
                   ))}
                 </div>
@@ -307,21 +307,21 @@ export default function Page() {
             </div>
 
             {/* Status bar */}
-            <div style={{background:"rgba(0,0,0,0.25)",padding:"0.5rem 1.25rem",borderTop:"1px solid rgba(255,255,255,0.06)",display:"flex",gap:"1.5rem",alignItems:"center"}}>
+            <div style={{background:"#f1f5f9",padding:"0.5rem 1.25rem",borderTop:"1px solid #e2e8f0",display:"flex",gap:"1.5rem",alignItems:"center"}}>
               {[
-                {label:"3 Scanners Active",c:"#34d399"},
-                {label:"12 Assets Monitored",c:"#60a5fa"},
-                {label:"2 SLA Breaches",c:"#f87171"},
-                {label:"Last Scan: 4 min ago",c:"#475569"},
+                {label:"3 Scanners Active",c:"#16a34a"},
+                {label:"12 Assets Monitored",c:"#2563eb"},
+                {label:"2 SLA Breaches",c:"#dc2626"},
+                {label:"Last Scan: 4 min ago",c:"#64748b"},
               ].map(s=>(
                 <span key={s.label} style={{fontSize:"0.62rem",color:s.c,fontWeight:600}}>{s.label}</span>
               ))}
-              <span style={{marginLeft:"auto",fontSize:"0.62rem",color:"#334155"}}>PosturePilot v2.0 · posturepilot.io</span>
+              <span style={{marginLeft:"auto",fontSize:"0.62rem",color:"#94a3b8"}}>PosturePilot v2.0 · posturepilot.io</span>
             </div>
           </div>
 
           <div style={{textAlign:"center",marginTop:"1.5rem"}}>
-            <Link href="/dashboard" style={{display:"inline-block",background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:700,fontSize:"0.9rem"}}>View Live Dashboard →</Link>
+            <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#b91c1c",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:800,fontSize:"0.9rem",border:"2px solid rgba(255,255,255,0.4)",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>View Live Dashboard →</Link>
           </div>
         </div>
       </section>
