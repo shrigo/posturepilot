@@ -20,7 +20,7 @@ export default function NetworkPage() {
       .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
   }, []);
 
-  const sevChartData = live
+  const sevChartData: any[] = live
     ? Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))
     : networkData.weeklyFirewallTrend;
 
