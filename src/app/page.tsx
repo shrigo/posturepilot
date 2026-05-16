@@ -124,14 +124,14 @@ export default function Page() {
 
 
       {/* ── CONFIGURE ── */}
-      <section id="configure" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
-        <div style={{maxWidth:1100,margin:"0 auto"}}>
+      <section id="configure" style={{scrollMarginTop:64,padding:"2.5rem 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+        <div style={{maxWidth:1200,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#1e2d6e",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔧 Configure</div>
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Works with your existing scanner stack</h2>
             <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>No rip-and-replace. Connect in minutes via upload, API, or webhook.</p>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"1.5rem",width:"100%"}}>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1.25rem",width:"100%"}}>
             {[
               {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",  logoSize:108, methods:["Upload","API"]},
               {name:"Tenable.io",     c:"#1e2a38", initials:"Te",  logoUrl:"/logos/tenable.png",                                  logoSize:108, methods:["Upload","API"]},
@@ -179,8 +179,8 @@ export default function Page() {
       </section>
 
       {/* ── MONITOR ── */}
-      <section id="monitor" style={{scrollMarginTop:64,padding:"2.5rem 1.5rem 4rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
-        <div style={{maxWidth:1300,margin:"0 auto",width:"100%"}}>
+      <section id="monitor" style={{scrollMarginTop:64,padding:"2rem 2rem 4rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+        <div style={{maxWidth:1100,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>9 live dashboards. Everything in one place.</h2>
@@ -327,8 +327,8 @@ export default function Page() {
       </section>
 
       {/* ── REPORT ── */}
-      <section id="report" style={{scrollMarginTop:64,padding:"3.5rem 2rem 5rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"center"}}>
-        <div style={{maxWidth:1300,margin:"0 auto",width:"100%"}}>
+      <section id="report" style={{scrollMarginTop:64,padding:"2rem 2rem 4rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+        <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#7c3aed",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📄 Report</div>
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Board-ready reports in one click</h2>
@@ -504,7 +504,7 @@ export default function Page() {
         </div>
       </section>
       {/* ── SECURE ── */}
-      <section id="secure" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="secure" style={{scrollMarginTop:64,padding:"2.5rem 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
         <div style={{maxWidth:900,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#16a34a",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
