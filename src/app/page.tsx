@@ -388,9 +388,9 @@ export default function Page() {
                       <div style={{fontSize:"0.55rem",color:"rgba(255,255,255,0.5)",marginTop:1}}>May 2026 · Acme Corp · Generated 2 min ago</div>
                     </div>
                     <div style={{textAlign:"right"}}>
-                      <div style={{fontSize:"2.25rem",fontWeight:900,color:"#fb923c",lineHeight:1}}>74</div>
+                      <div style={{fontSize:"2.25rem",fontWeight:900,color:"#fff",lineHeight:1}}>74</div>
                       <div style={{fontSize:"0.5rem",color:"rgba(255,255,255,0.5)"}}>Risk Score /100</div>
-                      <div style={{fontSize:"0.5rem",color:"#fb923c",fontWeight:700}}>▲ +4 from last month</div>
+                      <div style={{fontSize:"0.5rem",color:"rgba(255,255,255,0.65)",fontWeight:700}}>▲ +4 from last month</div>
                     </div>
                   </div>
                   {/* 6-KPI strip */}
@@ -400,7 +400,7 @@ export default function Page() {
                     ].map(k=>(
                       <div key={k.l} style={{background:"rgba(255,255,255,0.1)",borderRadius:7,padding:"0.35rem 0.5rem"}}>
                         <div style={{fontSize:"0.48rem",color:"rgba(255,255,255,0.45)",marginBottom:1}}>{k.l}</div>
-                        <div style={{fontSize:"0.92rem",fontWeight:900,color:k.c,lineHeight:1}}>{k.v}</div>
+                        <div style={{fontSize:"0.92rem",fontWeight:900,color:"#fff",lineHeight:1}}>{k.v}</div>
                         <div style={{fontSize:"0.45rem",color:"rgba(255,255,255,0.4)",marginTop:1}}>{k.sub}</div>
                       </div>
                     ))}
