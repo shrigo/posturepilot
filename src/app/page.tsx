@@ -142,7 +142,7 @@ export default function Page() {
               {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.svg",                               methods:["Webhook","API"]},
               {name:"Rapid7",         c:"#E6242A", initials:"R7",  logoUrl:"/logos/rapid7.png",                                   methods:["Upload","API"]},
               {name:"Wiz",            c:"#2F6FED", initials:"Wiz", logoUrl:"/logos/wiz.png",                                      methods:["Upload","API"]},
-              {name:"Prisma Cloud",   c:"#FA582D", initials:"PC",  logoUrl:"/logos/prisma.svg",                                   methods:["Webhook"]},
+              {name:"Prisma Cloud",   c:"#00C0E8", initials:"PC",  logoUrl:"/logos/prisma.png",                                   methods:["Webhook"]},
             ].map(tool=>(
               <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,padding:"1.25rem 1.75rem 2rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
                 onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-4px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 12px 32px ${tool.c}25`;}}
