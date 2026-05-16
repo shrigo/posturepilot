@@ -19,7 +19,7 @@ export default function AppsecPage() {
       .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
   }, []);
 
-  const sevChart = live
+  const sevChart: any[] = live
     ? Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))
     : appsecData.owaspTop10;
 
@@ -43,10 +43,10 @@ export default function AppsecPage() {
 
         <div className="grid-4">
           {[
-            { label:'Total App Findings', value: live ? live.total.toLocaleString()        : appsecData.totalVulns,       accent:'#7c3aed', delta: live ? 'Real scan data'    : 'Active vulnerabilities' },
-            { label:'Critical',           value: live ? live.critical.toLocaleString()      : appsecData.critical,         accent:'#dc2626', delta: live ? 'Immediate action'  : 'CVSS ≥ 9.0' },
-            { label:'High Severity',      value: live ? live.high.toLocaleString()          : appsecData.high,             accent:'#ea580c', delta: live ? 'Within 7 days'    : 'CVSS 7.0–8.9' },
-            { label:'Patch Backlog',      value: live ? live.patchBacklog.toLocaleString()  : appsecData.patchBacklog,     accent:'#d97706', delta: live ? 'Crit + High'       : 'Awaiting fix' },
+            { label:'Total App Findings', value: live ? live.total.toLocaleString()        : appsecData.totalFindings,       accent:'#7c3aed', delta: live ? 'Real scan data'    : 'Active vulnerabilities' },
+            { label:'Critical',           value: live ? live.critical.toLocaleString()      : appsecData.critical,            accent:'#dc2626', delta: live ? 'Immediate action'  : 'CVSS ≥ 9.0' },
+            { label:'High Severity',      value: live ? live.high.toLocaleString()          : appsecData.high,                accent:'#ea580c', delta: live ? 'Within 7 days'    : 'CVSS 7.0–8.9' },
+            { label:'Patch Backlog',      value: live ? live.patchBacklog.toLocaleString()  : appsecData.patchBacklogApps,    accent:'#d97706', delta: live ? 'Crit + High'       : 'Awaiting fix' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
