@@ -139,7 +139,7 @@ export default function Page() {
               {name:"OpenVAS",        c:"#2d2d2d", initials:"OV",  logoUrl:"/logos/openvas.png",                                  methods:["Upload","API"]},
               {name:"CrowdStrike",    c:"#E00400", initials:"CS",  logoUrl:"/logos/crowdstrike.png",                              methods:["Webhook","API"]},
               {name:"AWS Sec Hub",    c:"#FF9900", initials:"AWS", logoUrl:"/logos/aws.svg",                                      methods:["Webhook"]},
-              {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.svg",                               methods:["Webhook","API"]},
+              {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.png",                               methods:["Webhook","API"]},
               {name:"Rapid7",         c:"#E6242A", initials:"R7",  logoUrl:"/logos/rapid7.png",                                   methods:["Upload","API"]},
               {name:"Wiz",            c:"#2F6FED", initials:"Wiz", logoUrl:"/logos/wiz.png",                                      methods:["Upload","API"]},
               {name:"Prisma Cloud",   c:"#00C0E8", initials:"PC",  logoUrl:"/logos/prisma.png",                                   methods:["Webhook"]},
