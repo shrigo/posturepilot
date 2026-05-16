@@ -148,11 +148,11 @@ export default function Page() {
                 onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-3px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 8px 24px ${tool.c}22`;}}
                 onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.transform="none";(e.currentTarget as HTMLDivElement).style.boxShadow="0 2px 8px rgba(0,0,0,0.04)";}}>
                 {/* Logo area */}
-                <div style={{width:52,height:52,borderRadius:12,background:"#f8fafc",border:"1px solid #e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"0.875rem",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
+                <div style={{width:72,height:72,borderRadius:14,background:"#f8fafc",border:"1px solid #e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"0.875rem",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
                   <img
                     src={tool.logoUrl}
                     alt={tool.name}
-                    width={36} height={36}
+                    width={52} height={52}
                     style={{objectFit:"contain"}}
                     onError={e=>{
                       const img = e.currentTarget;
@@ -162,7 +162,7 @@ export default function Page() {
                     }}
                   />
                   {/* Fallback initials */}
-                  <div style={{display:"none",width:36,height:36,borderRadius:8,background:`linear-gradient(135deg,${tool.c},${tool.c}cc)`,alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:800,fontSize:tool.initials.length>2?"0.65rem":"0.875rem",letterSpacing:"-0.02em"}}>
+                  <div style={{display:"none",width:52,height:52,borderRadius:10,background:`linear-gradient(135deg,${tool.c},${tool.c}cc)`,alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:800,fontSize:tool.initials.length>2?"0.75rem":"1rem",letterSpacing:"-0.02em"}}>
                     {tool.initials}
                   </div>
                 </div>
