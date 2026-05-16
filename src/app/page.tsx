@@ -131,7 +131,7 @@ export default function Page() {
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Works with your existing scanner stack</h2>
             <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>No rip-and-replace. Connect in minutes via upload, API, or webhook.</p>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:"1rem"}}>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1.25rem",width:"100%"}}>
             {[
               {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",                         methods:["Upload","API"]},
               {name:"Tenable.io",     c:"#1d4ed8", initials:"Te",  logoUrl:"https://cdn.simpleicons.org/tenable/0054A6",                                    methods:["Upload","API"]},
@@ -148,11 +148,11 @@ export default function Page() {
                 onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-3px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 8px 24px ${tool.c}22`;}}
                 onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.transform="none";(e.currentTarget as HTMLDivElement).style.boxShadow="0 2px 8px rgba(0,0,0,0.04)";}}>
                 {/* Logo area */}
-                <div style={{width:72,height:72,borderRadius:14,background:"#f8fafc",border:"1px solid #e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"0.875rem",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,0,0,0.06)"}}>
+                <div style={{width:88,height:88,borderRadius:16,background:"#f8fafc",border:"1px solid #e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"1.25rem",overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,0.07)"}}>
                   <img
                     src={tool.logoUrl}
                     alt={tool.name}
-                    width={52} height={52}
+                    width={64} height={64}
                     style={{objectFit:"contain"}}
                     onError={e=>{
                       const img = e.currentTarget;
@@ -162,11 +162,11 @@ export default function Page() {
                     }}
                   />
                   {/* Fallback initials */}
-                  <div style={{display:"none",width:52,height:52,borderRadius:10,background:`linear-gradient(135deg,${tool.c},${tool.c}cc)`,alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:800,fontSize:tool.initials.length>2?"0.75rem":"1rem",letterSpacing:"-0.02em"}}>
+                  <div style={{display:"none",width:64,height:64,borderRadius:12,background:`linear-gradient(135deg,${tool.c},${tool.c}cc)`,alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:800,fontSize:tool.initials.length>2?"1rem":"1.25rem",letterSpacing:"-0.02em"}}>
                     {tool.initials}
                   </div>
                 </div>
-                <div style={{fontWeight:700,fontSize:"0.875rem",color:"#0f172a",marginBottom:"0.625rem"}}>{tool.name}</div>
+                <div style={{fontWeight:800,fontSize:"1.05rem",color:"#0f172a",marginBottom:"0.75rem",letterSpacing:"-0.01em"}}>{tool.name}</div>
                 <div style={{display:"flex",gap:"0.375rem",flexWrap:"wrap"}}>
                   {tool.methods.map(m=>(
                     <span key={m} style={{fontSize:"0.62rem",fontWeight:700,padding:"2px 7px",borderRadius:20,background:m==="Webhook"?"#fef3c7":m==="API"?"#ede9fe":"#f0fdf4",color:m==="Webhook"?"#b45309":m==="API"?"#6d28d9":"#15803d",border:`1px solid ${m==="Webhook"?"#fcd34d":m==="API"?"#c4b5fd":"#86efac"}`}}>{m}</span>
