@@ -144,15 +144,15 @@ export default function Page() {
               {name:"Wiz",            c:"#2F6FED", initials:"Wiz", logoUrl:"/logos/wiz.png",                                      methods:["Upload","API"]},
               {name:"Prisma Cloud",   c:"#00C0E8", initials:"PC",  logoUrl:"/logos/prisma.png",                                   methods:["Webhook"]},
             ].map(tool=>(
-              <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,padding:"1.25rem 1.75rem 2rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
+              <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:18,padding:"2rem 2rem 2.5rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
                 onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-4px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 12px 32px ${tool.c}25`;}}
                 onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.transform="none";(e.currentTarget as HTMLDivElement).style.boxShadow="0 2px 12px rgba(0,0,0,0.05)";}}>
                 {/* Logo area */}
-                <div style={{width:120,height:120,borderRadius:20,background:"#f8fafc",border:"1px solid #e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"1.5rem",overflow:"hidden",boxShadow:"0 4px 16px rgba(0,0,0,0.08)"}}>
+                <div style={{width:140,height:140,borderRadius:18,background:"#ffffff",border:"1px solid #f1f5f9",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"1.5rem",overflow:"hidden",boxShadow:"0 2px 12px rgba(0,0,0,0.06)"}}>
                   <img
                     src={tool.logoUrl}
                     alt={tool.name}
-                    width={88} height={88}
+                    width={108} height={108}
                     style={{objectFit:"contain"}}
                     onError={e=>{
                       const img = e.currentTarget;
@@ -162,7 +162,7 @@ export default function Page() {
                     }}
                   />
                   {/* Fallback initials */}
-                  <div style={{display:"none",width:88,height:88,borderRadius:16,background:`linear-gradient(135deg,${tool.c},${tool.c}cc)`,alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:800,fontSize:tool.initials.length>2?"1.1rem":"1.5rem",letterSpacing:"-0.02em"}}>
+                  <div style={{display:"none",width:108,height:108,borderRadius:16,background:`linear-gradient(135deg,${tool.c},${tool.c}cc)`,alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:800,fontSize:tool.initials.length>2?"1.1rem":"1.5rem",letterSpacing:"-0.02em"}}>
                     {tool.initials}
                   </div>
                 </div>
