@@ -144,9 +144,9 @@ export default function Page() {
               {name:"Wiz",            c:"#7c3aed", initials:"Wiz", logoUrl:"https://logo.clearbit.com/wiz.io",                                              methods:["Upload","API"]},
               {name:"Prisma Cloud",   c:"#0891b2", initials:"PC",  logoUrl:"https://cdn.simpleicons.org/paloaltonetworks/FA582D",                            methods:["Webhook"]},
             ].map(tool=>(
-              <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.25rem",borderTop:`3px solid ${tool.c}`,boxShadow:"0 2px 8px rgba(0,0,0,0.04)",transition:"all 0.2s",cursor:"default"}}
-                onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-3px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 8px 24px ${tool.c}22`;}}
-                onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.transform="none";(e.currentTarget as HTMLDivElement).style.boxShadow="0 2px 8px rgba(0,0,0,0.04)";}}>
+              <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,padding:"1.25rem 1.75rem 2rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
+                onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-4px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 12px 32px ${tool.c}25`;}}
+                onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.transform="none";(e.currentTarget as HTMLDivElement).style.boxShadow="0 2px 12px rgba(0,0,0,0.05)";}}>
                 {/* Logo area */}
                 <div style={{width:88,height:88,borderRadius:16,background:"#f8fafc",border:"1px solid #e2e8f0",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"1.25rem",overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,0.07)"}}>
                   <img
