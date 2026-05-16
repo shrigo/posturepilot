@@ -88,15 +88,15 @@ export default function AppsecPage() {
               </table>
             ) : (
               <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
-                {appsecData.scanCoverage.map(s => (
-                  <div key={s.type} style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
-                    <span style={{ fontSize:'0.78rem', color:'#0f172a', fontWeight:600, width:90 }}>{s.type}</span>
+                {appsecData.applications.map((s: any) => (
+                  <div key={s.name} style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+                    <span style={{ fontSize:'0.78rem', color:'#0f172a', fontWeight:600, width:130, flexShrink:0 }}>{s.name}</span>
                     <div style={{ flex:1 }}>
                       <div className="progress-bar-wrap">
-                        <div className="progress-bar-fill" style={{ width:`${s.coverage}%`, background:'#7c3aed' }} />
+                        <div className="progress-bar-fill" style={{ width:`${Math.min(100, (s.sast + s.dast) * 2)}%`, background:'#7c3aed' }} />
                       </div>
                     </div>
-                    <span style={{ fontWeight:700, fontSize:'0.82rem', color:'#7c3aed', width:40, textAlign:'right' }}>{s.coverage}%</span>
+                    <span style={{ fontWeight:700, fontSize:'0.82rem', color:'#7c3aed', width:60, textAlign:'right' }}>{s.sast + s.dast} vulns</span>
                   </div>
                 ))}
               </div>
