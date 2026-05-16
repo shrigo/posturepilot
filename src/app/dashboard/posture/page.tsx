@@ -20,8 +20,9 @@ interface LiveSummary {
 }
 
 export default function PosturePage() {
-  const [live, setLive]       = useState<LiveSummary | null>(null);
-  const [liveErr, setLiveErr] = useState(false);
+  const [live, setLive]           = useState<LiveSummary | null>(null);
+  const [liveErr, setLiveErr]     = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     fetch('/api/findings/summary')
@@ -29,6 +30,22 @@ export default function PosturePage() {
       .then(d => { if (d.total > 0) setLive(d); })
       .catch(() => setLiveErr(true));
   }, []);
+
+  const downloadPDF = async () => {
+    setDownloading(true);
+    try {
+      const res  = await fetch('/api/reports/executive');
+      if (!res.ok) throw new Error('Failed');
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `PosturePilot-Report-${new Date().toISOString().slice(0,10)}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch { alert('Report generation failed — please upload a scan first.'); }
+    finally { setDownloading(false); }
+  };
 
   const hasLive = !!live;
 
@@ -40,7 +57,7 @@ export default function PosturePage() {
         {/* Live data banner */}
         {hasLive && (
           <div style={{ background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', border:'1px solid #86efac', borderRadius:12, padding:'0.875rem 1.25rem', marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.75rem' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
               <span style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'inline-block', boxShadow:'0 0 8px #22c55e' }} />
               <div>
                 <div style={{ fontWeight:800, color:'#15803d', fontSize:'0.9rem' }}>Live Data Active — {live!.total.toLocaleString()} findings from real scans</div>
@@ -49,9 +66,14 @@ export default function PosturePage() {
                 </div>
               </div>
             </div>
-            <Link href="/dashboard/upload" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>
-              + Upload More →
-            </Link>
+            <div style={{ display:'flex', gap:'0.625rem' }}>
+              <button onClick={downloadPDF} disabled={downloading} style={{ fontSize:'0.78rem', fontWeight:700, color:'#fff', background:'linear-gradient(135deg,#4f46e5,#7c3aed)', border:'none', padding:'0.375rem 0.875rem', borderRadius:8, cursor: downloading ? 'not-allowed' : 'pointer', opacity: downloading ? 0.7 : 1 }}>
+                {downloading ? '⏳ Generating…' : '📄 Download Report'}
+              </button>
+              <Link href="/dashboard/upload" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>
+                + Upload More →
+              </Link>
+            </div>
           </div>
         )}
 
