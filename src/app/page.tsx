@@ -133,16 +133,16 @@ export default function Page() {
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1.25rem",width:"100%"}}>
             {[
-              {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",                         methods:["Upload","API"]},
-              {name:"Tenable.io",     c:"#1d4ed8", initials:"Te",  logoUrl:"https://cdn.simpleicons.org/tenable/0054A6",                                    methods:["Upload","API"]},
-              {name:"Nessus Pro",     c:"#991b1b", initials:"Ne",  logoUrl:"https://logo.clearbit.com/tenable.com",                                         methods:["Upload"]},
-              {name:"OpenVAS",        c:"#16a34a", initials:"OV",  logoUrl:"https://cdn.simpleicons.org/greenbone/9AC320",                                   methods:["Upload","API"]},
-              {name:"CrowdStrike",    c:"#dc2626", initials:"CS",  logoUrl:"https://cdn.simpleicons.org/crowdstrike/E00400",                                 methods:["Webhook","API"]},
-              {name:"AWS Sec Hub",    c:"#f59e0b", initials:"AWS", logoUrl:"https://cdn.simpleicons.org/amazonaws/FF9900",                                   methods:["Webhook"]},
-              {name:"MS Defender",    c:"#0078d4", initials:"MSD", logoUrl:"https://cdn.simpleicons.org/microsoft/0078D4",                                   methods:["Webhook","API"]},
-              {name:"Rapid7",         c:"#1e40af", initials:"R7",  logoUrl:"https://logo.clearbit.com/rapid7.com",                                          methods:["Upload","API"]},
-              {name:"Wiz",            c:"#7c3aed", initials:"Wiz", logoUrl:"https://logo.clearbit.com/wiz.io",                                              methods:["Upload","API"]},
-              {name:"Prisma Cloud",   c:"#0891b2", initials:"PC",  logoUrl:"https://cdn.simpleicons.org/paloaltonetworks/FA582D",                            methods:["Webhook"]},
+              {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",  methods:["Upload","API"]},
+              {name:"Tenable.io",     c:"#0054A6", initials:"Te",  logoUrl:"/logos/tenable.svg",                                  methods:["Upload","API"]},
+              {name:"Nessus Pro",     c:"#1a0050", initials:"Ne",  logoUrl:"/logos/nessus.svg",                                   methods:["Upload"]},
+              {name:"OpenVAS",        c:"#9AC320", initials:"OV",  logoUrl:"/logos/openvas.svg",                                  methods:["Upload","API"]},
+              {name:"CrowdStrike",    c:"#E00400", initials:"CS",  logoUrl:"/logos/crowdstrike.svg",                              methods:["Webhook","API"]},
+              {name:"AWS Sec Hub",    c:"#FF9900", initials:"AWS", logoUrl:"/logos/aws.svg",                                      methods:["Webhook"]},
+              {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.svg",                               methods:["Webhook","API"]},
+              {name:"Rapid7",         c:"#E6242A", initials:"R7",  logoUrl:"/logos/rapid7.svg",                                   methods:["Upload","API"]},
+              {name:"Wiz",            c:"#7c3aed", initials:"Wiz", logoUrl:"/logos/wiz.svg",                                      methods:["Upload","API"]},
+              {name:"Prisma Cloud",   c:"#FA582D", initials:"PC",  logoUrl:"/logos/prisma.svg",                                   methods:["Webhook"]},
             ].map(tool=>(
               <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,padding:"1.25rem 1.75rem 2rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
                 onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-4px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 12px 32px ${tool.c}25`;}}
