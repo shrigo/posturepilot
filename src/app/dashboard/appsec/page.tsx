@@ -1,82 +1,106 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { appsecData } from '@/data/mockData';
 import Topbar from '@/components/Topbar';
+import Link from 'next/link';
+
+interface LiveData {
+  hasLiveData: boolean; total: number; critical: number; high: number; patchBacklog: number;
+  bySeverity: Record<string,number>; byTool: Record<string,number>;
+  topCVEs: { cveId: string|null; count: number }[];
+}
 
 export default function AppsecPage() {
+  const [live, setLive] = useState<LiveData | null>(null);
+
+  useEffect(() => {
+    fetch('/api/findings/appsec').then(r => r.json())
+      .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
+  }, []);
+
+  const sevChart = live
+    ? Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))
+    : appsecData.owaspTop10;
+
   return (
     <>
-      <Topbar title="🔐 Application Security" subtitle="SAST/DAST findings, OWASP coverage & container security" />
+      <Topbar title="🔐 Application Security" subtitle="OWASP findings, SAST/DAST results & dependency vulnerabilities" />
       <div className="page-content animate-in">
+
+        {live && (
+          <div style={{ background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', border:'1px solid #86efac', borderRadius:12, padding:'0.875rem 1.25rem', marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.75rem' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+              <span style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'inline-block', boxShadow:'0 0 8px #22c55e' }} />
+              <div>
+                <div style={{ fontWeight:800, color:'#15803d', fontSize:'0.9rem' }}>Live Data — {live.total.toLocaleString()} AppSec findings</div>
+                <div style={{ fontSize:'0.75rem', color:'#16a34a' }}>Tools: {Object.keys(live.byTool).join(', ') || 'AppSec scanners'} · Patch backlog: {live.patchBacklog}</div>
+              </div>
+            </div>
+            <Link href="/dashboard/findings?severity=Critical" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>View Critical →</Link>
+          </div>
+        )}
 
         <div className="grid-4">
           {[
-            { label: 'Total Findings',    value: appsecData.totalFindings, accent: '#7c3aed', delta: `${appsecData.openFindings} open` },
-            { label: 'Critical',          value: appsecData.critical,      accent: '#dc2626', delta: 'Payment GW + API GW', up: true },
-            { label: 'High',              value: appsecData.high,          accent: '#ea580c', delta: 'Customer Portal, HR Portal', up: true },
-            { label: 'Patch Backlog',     value: appsecData.patchBacklogApps, accent: '#d97706', delta: `${appsecData.criticalApps} critical apps`, up: true },
+            { label:'Total App Findings', value: live ? live.total.toLocaleString()        : appsecData.totalVulns,       accent:'#7c3aed', delta: live ? 'Real scan data'    : 'Active vulnerabilities' },
+            { label:'Critical',           value: live ? live.critical.toLocaleString()      : appsecData.critical,         accent:'#dc2626', delta: live ? 'Immediate action'  : 'CVSS ≥ 9.0' },
+            { label:'High Severity',      value: live ? live.high.toLocaleString()          : appsecData.high,             accent:'#ea580c', delta: live ? 'Within 7 days'    : 'CVSS 7.0–8.9' },
+            { label:'Patch Backlog',      value: live ? live.patchBacklog.toLocaleString()  : appsecData.patchBacklog,     accent:'#d97706', delta: live ? 'Crit + High'       : 'Awaiting fix' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
               <div className="stat-label">{s.label}</div>
               <div className="stat-value">{s.value}</div>
-              <div className={`stat-delta ${(s as any).up ? 'delta-up' : 'delta-neutral'}`}>{s.delta}</div>
+              <div className="stat-delta delta-down">{s.delta}</div>
             </div>
           ))}
         </div>
 
-        {/* Severity donut summary */}
         <div className="grid-2">
           <div className="card">
-            <div className="card-title">📱 Application Findings (SAST + DAST)</div>
-            <table className="data-table">
-              <thead><tr><th>Application</th><th>SAST</th><th>DAST</th><th>Severity</th><th>Remediation</th></tr></thead>
-              <tbody>
-                {appsecData.applications.map(a => (
-                  <tr key={a.name}>
-                    <td style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.8rem' }}>{a.name}</td>
-                    <td style={{ fontWeight: 700, color: '#7c3aed' }}>{a.sast}</td>
-                    <td style={{ fontWeight: 700, color: '#3b82f6' }}>{a.dast}</td>
-                    <td><span className={`badge badge-${a.severity.toLowerCase()}`}>{a.severity}</span></td>
-                    <td><span className={`badge badge-${a.remediation === 'Overdue' ? 'critical' : a.remediation === 'In Progress' ? 'medium' : 'info'}`}>{a.remediation}</span></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="card">
-            <div className="card-title">🔟 OWASP Top 10 Finding Distribution</div>
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={appsecData.owaspTop10} layout="vertical">
+            <div className="card-title">{live ? '📊 Findings by Severity (Live)' : '📊 OWASP Top 10 Distribution'}</div>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={sevChart}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                <XAxis type="number" tick={{ fontSize: 10, fill: '#94a3b8' }} />
-                <YAxis type="category" dataKey="id" tick={{ fontSize: 10, fill: '#94a3b8' }} width={40} />
-                <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} formatter={(v, _, p) => [`${v} findings`, p.payload.name]} />
-                <Bar dataKey="findings" fill="#7c3aed" radius={[0,3,3,0]} />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+                <Bar dataKey="value" name={live ? 'Findings' : 'Count'} fill="#7c3aed" radius={[3,3,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
 
-        {/* Container security */}
-        <div className="card">
-          <div className="card-title">🐳 Container & DevSecOps Security</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1rem' }}>
-            {[
-              { label: 'Total Images',       value: appsecData.containerSecurity.totalImages,        color: '#3b82f6' },
-              { label: 'Scanned',            value: appsecData.containerSecurity.scannedImages,       color: '#059669' },
-              { label: 'Critical Vuln',      value: appsecData.containerSecurity.criticalVulnImages,  color: '#dc2626' },
-              { label: 'IaC Misconfigs',     value: appsecData.containerSecurity.iacMisconfigs,       color: '#ea580c' },
-            ].map(m => (
-              <div key={m.label} style={{ padding: '0.875rem', background: '#f8fafc', borderRadius: 10, border: '1px solid #e2e8f0', textAlign: 'center' }}>
-                <div style={{ fontSize: '1.625rem', fontWeight: 800, color: m.color }}>{m.value}</div>
-                <div style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', marginTop: '0.25rem' }}>{m.label}</div>
+          <div className="card">
+            <div className="card-title">{live ? '🎯 Top CVEs (Live)' : '🔍 Scan Coverage'}</div>
+            {live ? (
+              <table className="data-table">
+                <thead><tr><th>CVE ID</th><th>Count</th><th>Type</th></tr></thead>
+                <tbody>
+                  {live.topCVEs.map((c, i) => (
+                    <tr key={i}>
+                      <td style={{ fontFamily:'monospace', fontSize:'0.78rem', color:'#7c3aed', fontWeight:600 }}>{c.cveId || 'N/A'}</td>
+                      <td style={{ fontWeight:700 }}>{c.count}</td>
+                      <td><span className="badge badge-critical">AppSec</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
+                {appsecData.scanCoverage.map(s => (
+                  <div key={s.type} style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+                    <span style={{ fontSize:'0.78rem', color:'#0f172a', fontWeight:600, width:90 }}>{s.type}</span>
+                    <div style={{ flex:1 }}>
+                      <div className="progress-bar-wrap">
+                        <div className="progress-bar-fill" style={{ width:`${s.coverage}%`, background:'#7c3aed' }} />
+                      </div>
+                    </div>
+                    <span style={{ fontWeight:700, fontSize:'0.82rem', color:'#7c3aed', width:40, textAlign:'right' }}>{s.coverage}%</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div style={{ padding: '0.75rem', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, fontSize: '0.8rem', color: '#dc2626', fontWeight: 600 }}>
-            ⚠️ {appsecData.containerSecurity.pipelineFailures} CI/CD pipeline security gate failures in the last 7 days. Review pipeline configurations.
+            )}
           </div>
         </div>
       </div>

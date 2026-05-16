@@ -1,96 +1,106 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { infosecData } from '@/data/mockData';
 import Topbar from '@/components/Topbar';
+import Link from 'next/link';
+
+interface LiveData {
+  hasLiveData: boolean; total: number; critical: number; high: number;
+  open: number; closed: number; complianceScore: number;
+  bySeverity: Record<string,number>;
+  topCVEs: { cveId: string|null; count: number }[];
+}
 
 export default function InfosecPage() {
+  const [live, setLive] = useState<LiveData | null>(null);
+
+  useEffect(() => {
+    fetch('/api/findings/infosec').then(r => r.json())
+      .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
+  }, []);
+
+  const sevChart = live
+    ? Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))
+    : infosecData.policyViolations;
+
   return (
     <>
-      <Topbar title="📋 Information Security" subtitle="Policy compliance, audit findings & framework coverage" />
+      <Topbar title="🔏 InfoSec & Compliance" subtitle="Policy violations, access control audits & data classification" />
       <div className="page-content animate-in">
+
+        {live && (
+          <div style={{ background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', border:'1px solid #86efac', borderRadius:12, padding:'0.875rem 1.25rem', marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.75rem' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+              <span style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'inline-block', boxShadow:'0 0 8px #22c55e' }} />
+              <div>
+                <div style={{ fontWeight:800, color:'#15803d', fontSize:'0.9rem' }}>Live Data — {live.total.toLocaleString()} InfoSec findings · Compliance Score: {live.complianceScore}%</div>
+                <div style={{ fontSize:'0.75rem', color:'#16a34a' }}>Open: {live.open} · Closed: {live.closed} · Critical: {live.critical}</div>
+              </div>
+            </div>
+            <Link href="/dashboard/findings" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>View All →</Link>
+          </div>
+        )}
 
         <div className="grid-4">
           {[
-            { label: 'Overall Compliance',  value: `${infosecData.overallCompliance}%`, accent: '#7c3aed', delta: '↑5% this quarter' },
-            { label: 'Open Audit Findings', value: infosecData.auditFindings.open,       accent: '#dc2626', delta: `${infosecData.auditFindings.overdue} overdue`, up: true },
-            { label: 'Frameworks Tracked',  value: infosecData.frameworks.length,        accent: '#3b82f6', delta: 'SOC2, ISO, NIST, PCI, HIPAA' },
-            { label: 'Policies Overdue',    value: 1,                                     accent: '#ea580c', delta: 'Business Continuity', up: true },
+            { label:'Total Findings',      value: live ? live.total.toLocaleString()           : infosecData.totalFindings,     accent:'#3b82f6', delta: live ? 'Real scans'          : 'Active issues' },
+            { label:'Critical',            value: live ? live.critical.toLocaleString()         : infosecData.critical,          accent:'#dc2626', delta: live ? 'Immediate action'    : 'High risk' },
+            { label:'Compliance Score',    value: live ? `${live.complianceScore}%`             : `${infosecData.complianceScore}%`, accent:'#059669', delta: live ? 'Computed live'  : 'Overall' },
+            { label:'Open Findings',       value: live ? live.open.toLocaleString()             : infosecData.openIssues,        accent:'#d97706', delta: live ? `${live.closed} closed` : 'Unresolved' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
               <div className="stat-label">{s.label}</div>
-              <div className="stat-value" style={{ fontSize: typeof s.value === 'string' ? '1.75rem' : '2rem' }}>{s.value}</div>
-              <div className={`stat-delta ${(s as any).up ? 'delta-up' : 'delta-down'}`}>{s.delta}</div>
+              <div className="stat-value">{s.value}</div>
+              <div className="stat-delta delta-down">{s.delta}</div>
             </div>
           ))}
         </div>
 
-        {/* Framework progress */}
-        <div className="card" style={{ marginBottom: '1.25rem' }}>
-          <div className="card-title">⚖️ Compliance Framework Progress</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {infosecData.frameworks.map(f => (
-              <div key={f.name}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.375rem' }}>
-                  <div>
-                    <span style={{ fontWeight: 700, fontSize: '0.85rem', color: '#0f172a' }}>{f.name}</span>
-                    <span style={{ marginLeft: '0.75rem', fontSize: '0.72rem', color: '#94a3b8' }}>Owner: {f.owner} · Due: {f.dueDate}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={`badge badge-${f.status === 'On Track' ? 'low' : f.status === 'In Progress' ? 'info' : 'critical'}`}>{f.status}</span>
-                    <span style={{ fontWeight: 800, fontSize: '0.9rem', color: f.progress >= 80 ? '#16a34a' : f.progress >= 60 ? '#d97706' : '#dc2626' }}>{f.progress}%</span>
-                  </div>
-                </div>
-                <div className="progress-bar-wrap" style={{ height: 10 }}>
-                  <div className="progress-bar-fill" style={{ width: `${f.progress}%`, background: f.progress >= 80 ? '#16a34a' : f.progress >= 60 ? '#d97706' : '#dc2626' }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         <div className="grid-2">
-          {/* Policy review */}
           <div className="card">
-            <div className="card-title">📄 Policy Review Status</div>
-            <table className="data-table">
-              <thead><tr><th>Policy</th><th>Owner</th><th>Progress</th><th>Status</th></tr></thead>
-              <tbody>
-                {infosecData.policyReview.map(p => (
-                  <tr key={p.policy}>
-                    <td style={{ fontWeight: 600, fontSize: '0.78rem', color: '#0f172a' }}>{p.policy}</td>
-                    <td style={{ fontSize: '0.75rem', color: '#64748b' }}>{p.owner}</td>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <div className="progress-bar-wrap" style={{ flex: 1, height: 5 }}>
-                          <div className="progress-bar-fill" style={{ width: `${p.progress}%`, background: p.progress >= 80 ? '#16a34a' : p.progress >= 60 ? '#d97706' : '#dc2626' }} />
-                        </div>
-                        <span style={{ fontSize: '0.72rem', fontWeight: 700 }}>{p.progress}%</span>
-                      </div>
-                    </td>
-                    <td><span className={`badge badge-${p.status === 'On Track' ? 'low' : p.status === 'At Risk' ? 'high' : 'critical'}`}>{p.status}</span></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="card-title">{live ? '📊 Findings by Severity (Live)' : '📋 Policy Violations'}</div>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={sevChart}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+                <Bar dataKey={live ? 'value' : 'count'} name="Count" fill="#3b82f6" radius={[3,3,0,0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
-          {/* Training completion */}
           <div className="card">
-            <div className="card-title">🎓 Security Training Completion</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {Object.entries(infosecData.trainingCompletion).map(([key, pct]) => (
-                <div key={key}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#475569', textTransform: 'capitalize' }}>{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                    <span style={{ fontWeight: 700, fontSize: '0.82rem', color: pct >= 90 ? '#16a34a' : pct >= 75 ? '#d97706' : '#dc2626' }}>{pct}%</span>
-                  </div>
-                  <div className="progress-bar-wrap">
-                    <div className="progress-bar-fill" style={{ width: `${pct}%`, background: pct >= 90 ? '#16a34a' : pct >= 75 ? '#d97706' : '#dc2626' }} />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <div className="card-title">{live ? '🎯 Top CVEs (Live)' : '🔐 Access Review'}</div>
+            {live ? (
+              <table className="data-table">
+                <thead><tr><th>CVE ID</th><th>Count</th><th>Category</th></tr></thead>
+                <tbody>
+                  {live.topCVEs.map((c, i) => (
+                    <tr key={i}>
+                      <td style={{ fontFamily:'monospace', fontSize:'0.78rem', color:'#3b82f6', fontWeight:600 }}>{c.cveId || 'N/A'}</td>
+                      <td style={{ fontWeight:700 }}>{c.count}</td>
+                      <td><span className="badge badge-high">InfoSec</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <table className="data-table">
+                <thead><tr><th>Category</th><th>Count</th><th>Status</th></tr></thead>
+                <tbody>
+                  {infosecData.accessReview.map(a => (
+                    <tr key={a.category}>
+                      <td style={{ fontWeight:600, color:'#0f172a' }}>{a.category}</td>
+                      <td style={{ fontWeight:700 }}>{a.count}</td>
+                      <td><span className={`badge badge-${a.status === 'Reviewed' ? 'low' : a.status === 'Pending' ? 'medium' : 'critical'}`}>{a.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

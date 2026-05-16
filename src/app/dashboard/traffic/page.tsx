@@ -1,93 +1,114 @@
 'use client';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { useEffect, useState } from 'react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { trafficData } from '@/data/mockData';
 import Topbar from '@/components/Topbar';
+import Link from 'next/link';
+
+interface LiveData {
+  hasLiveData: boolean; total: number; critical: number; high: number;
+  activeAlerts: number; anomalies: number;
+  bySeverity: Record<string,number>;
+  topCVEs: { cveId: string|null; count: number }[];
+}
 
 export default function TrafficPage() {
+  const [live, setLive] = useState<LiveData | null>(null);
+
+  useEffect(() => {
+    fetch('/api/findings/traffic').then(r => r.json())
+      .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
+  }, []);
+
   return (
     <>
-      <Topbar title="📡 Traffic Monitoring" subtitle="Inbound/outbound traffic, protocol mix & anomaly detection" />
+      <Topbar title="📡 Traffic Monitor" subtitle="Network traffic analysis, anomaly detection & bandwidth usage" />
       <div className="page-content animate-in">
+
+        {live && (
+          <div style={{ background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', border:'1px solid #86efac', borderRadius:12, padding:'0.875rem 1.25rem', marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.75rem' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+              <span style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'inline-block', boxShadow:'0 0 8px #22c55e' }} />
+              <div>
+                <div style={{ fontWeight:800, color:'#15803d', fontSize:'0.9rem' }}>Live Traffic Findings — {live.total.toLocaleString()} total</div>
+                <div style={{ fontSize:'0.75rem', color:'#16a34a' }}>Active alerts: {live.activeAlerts} · Anomalies detected: {live.anomalies} · Critical: {live.critical}</div>
+              </div>
+            </div>
+            <Link href="/dashboard/findings" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>View Findings →</Link>
+          </div>
+        )}
 
         <div className="grid-4">
           {[
-            { label: 'Inbound Traffic',      value: `${trafficData.inboundGbps} Gbps`,  accent: '#3b82f6', delta: 'Peak: 14.1 Gbps at noon' },
-            { label: 'Outbound Traffic',     value: `${trafficData.outboundGbps} Gbps`, accent: '#7c3aed', delta: 'Normal range' },
-            { label: 'Anomalies Detected',   value: trafficData.anomaliesDetected,        accent: '#dc2626', delta: 'Last 24 hours', up: true },
-            { label: 'Active Alerts',        value: trafficData.activeAlerts,             accent: '#ea580c', delta: '1 unresolved spike', up: true },
+            { label:'Total Findings',   value: live ? live.total.toLocaleString()         : trafficData.totalBandwidth,  accent:'#0891b2', delta: live ? 'Real data'          : 'Today' },
+            { label:'Active Alerts',    value: live ? live.activeAlerts.toLocaleString()   : trafficData.activeAlerts,    accent:'#dc2626', delta: live ? 'Critical severity'  : 'Needs action' },
+            { label:'Anomalies',        value: live ? live.anomalies.toLocaleString()       : trafficData.anomalies,       accent:'#d97706', delta: live ? 'Detected patterns'  : 'Unusual patterns' },
+            { label:'High Severity',    value: live ? live.high.toLocaleString()            : trafficData.blockedThreats,  accent:'#ea580c', delta: live ? 'Escalate 7 days'   : 'Blocked today' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
               <div className="stat-label">{s.label}</div>
-              <div className="stat-value" style={{ fontSize: typeof s.value === 'string' ? '1.625rem' : '2rem' }}>{s.value}</div>
-              <div className={`stat-delta ${(s as any).up ? 'delta-up' : 'delta-neutral'}`}>{s.delta}</div>
+              <div className="stat-value">{s.value}</div>
+              <div className="stat-delta delta-down">{s.delta}</div>
             </div>
           ))}
         </div>
 
-        {/* Traffic area chart */}
-        <div className="card" style={{ marginBottom: '1.25rem' }}>
-          <div className="card-title">📈 24-Hour Traffic (Inbound vs Outbound Gbps)</div>
-          <ResponsiveContainer width="100%" height={240}>
-            <AreaChart data={trafficData.hourlyTraffic}>
-              <defs>
-                <linearGradient id="inboundGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#3b82f6" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="outboundGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#7c3aed" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#7c3aed" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="hour" tick={{ fontSize: 11, fill: '#94a3b8' }} />
-              <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} unit=" G" />
-              <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} formatter={(v: any) => `${v} Gbps`} />
-              <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Area type="monotone" dataKey="inbound"  name="Inbound"  stroke="#3b82f6" fill="url(#inboundGrad)"  strokeWidth={2} />
-              <Area type="monotone" dataKey="outbound" name="Outbound" stroke="#7c3aed" fill="url(#outboundGrad)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-
         <div className="grid-2">
-          {/* Protocol mix */}
           <div className="card">
-            <div className="card-title">🥧 Protocol Distribution</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-              <PieChart width={180} height={180}>
-                <Pie data={trafficData.protocolMix} cx={90} cy={90} innerRadius={55} outerRadius={85} dataKey="value" paddingAngle={3}>
-                  {trafficData.protocolMix.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                </Pie>
-                <Tooltip formatter={(v: any) => `${v}%`} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-              </PieChart>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {trafficData.protocolMix.map(p => (
-                  <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <div style={{ width: 10, height: 10, borderRadius: 2, background: p.color, flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.78rem', color: '#475569', fontWeight: 500 }}>{p.name}</span>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0f172a', marginLeft: 'auto' }}>{p.value}%</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <div className="card-title">📈 {live ? 'Severity Distribution (Live)' : 'Traffic Volume (24h)'}</div>
+            <ResponsiveContainer width="100%" height={220}>
+              {live ? (
+                <AreaChart data={Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                  <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                  <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
+                  <Area type="monotone" dataKey="value" stroke="#0891b2" fill="#e0f2fe" strokeWidth={2} />
+                </AreaChart>
+              ) : (
+                <AreaChart data={trafficData.hourlyTraffic}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="hour" tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                  <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                  <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} formatter={(v: any) => `${v} GB`} />
+                  <Area type="monotone" dataKey="inbound" stroke="#0891b2" fill="#e0f2fe" strokeWidth={2} />
+                  <Area type="monotone" dataKey="outbound" stroke="#7c3aed" fill="#f3e8ff" strokeWidth={2} />
+                </AreaChart>
+              )}
+            </ResponsiveContainer>
           </div>
 
-          {/* Traffic spikes */}
           <div className="card">
-            <div className="card-title">⚡ Traffic Spike Alerts</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {trafficData.trafficSpikes.map((spike, i) => (
-                <div key={i} style={{ padding: '0.875rem', background: spike.resolved ? '#f8fafc' : '#fef2f2', borderRadius: 10, border: `1px solid ${spike.resolved ? '#e2e8f0' : '#fecaca'}` }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0f172a' }}>{spike.type}</span>
-                    <span className={`badge badge-${spike.resolved ? 'low' : 'critical'}`}>{spike.resolved ? 'Resolved' : 'Active'}</span>
-                  </div>
-                  <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{spike.time} · Magnitude: <span style={{ fontWeight: 700, color: '#dc2626' }}>{spike.magnitude}</span></div>
-                </div>
-              ))}
-            </div>
+            <div className="card-title">{live ? '🎯 Top CVEs (Live)' : '🚨 Top Anomalies'}</div>
+            {live ? (
+              <table className="data-table">
+                <thead><tr><th>CVE ID</th><th>Count</th><th>Type</th></tr></thead>
+                <tbody>
+                  {live.topCVEs.map((c, i) => (
+                    <tr key={i}>
+                      <td style={{ fontFamily:'monospace', fontSize:'0.78rem', color:'#0891b2', fontWeight:600 }}>{c.cveId || 'N/A'}</td>
+                      <td style={{ fontWeight:700 }}>{c.count}</td>
+                      <td><span className="badge badge-critical">Traffic</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <table className="data-table">
+                <thead><tr><th>Type</th><th>Source</th><th>Severity</th><th>Count</th></tr></thead>
+                <tbody>
+                  {trafficData.topAnomalies.map(a => (
+                    <tr key={a.type}>
+                      <td style={{ fontWeight:600, color:'#0f172a' }}>{a.type}</td>
+                      <td style={{ fontSize:'0.78rem', color:'#64748b' }}>{a.source}</td>
+                      <td><span className={`badge badge-${a.severity.toLowerCase()}`}>{a.severity}</span></td>
+                      <td style={{ fontWeight:700 }}>{a.count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
