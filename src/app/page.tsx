@@ -38,9 +38,9 @@ export default function Page() {
       <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 2.5rem",height:64}}>
         <Image src="/navbarlogoh.jpg" alt="PosturePilot" width={260} height={60} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         <div style={{display:"flex",alignItems:"center",gap:"0.5rem",fontSize:"0.9rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase"}}>
-          {["Configure","Monitor","Report","Secure"].map((t,i,a)=>(
+          {(["Configure","Monitor","Report","Secure"] as const).map((t,i,a)=>(
             <span key={t} style={{display:"flex",alignItems:"center",gap:"0.5rem"}}>
-              <span style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a"}}>{t}</span>
+              <a href={"#"+t.toLowerCase()} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none"}}>{t}</a>
               {i<a.length-1 && <span style={{color:"#f97316",fontWeight:900}}>|</span>}
             </span>
           ))}
@@ -123,17 +123,158 @@ export default function Page() {
       </div>
 
 
-      {/* TABS */}
-      <section style={{background:"#fff",borderBottom:"1px solid #e0e7ff"}}>
-        <div style={{maxWidth:1100,margin:"0 auto",display:"flex"}}>
-          {TABS.map(t=>(
-            <button key={t} onClick={()=>setTab(t)} style={{flex:1,background:"none",border:"none",cursor:"pointer",padding:"1.25rem",fontSize:"0.9rem",fontWeight:700,color:tab===t?"#4f46e5":"#64748b",borderBottom:tab===t?"3px solid #4f46e5":"3px solid transparent",transition:"all 0.2s"}}>{t}</button>
-          ))}
+      {/* ── CONFIGURE ── */}
+      <section id="configure" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"#fff"}}>
+        <div style={{maxWidth:1100,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#1e2d6e",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔧 Configure</div>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Works with your existing scanner stack</h2>
+            <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>No rip-and-replace. Connect in minutes via upload, API, or webhook.</p>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:"1rem"}}>
+            {[
+              {name:"Qualys VMDR",    c:"#dc2626",methods:["Upload","API"],emoji:"🔵"},
+              {name:"Tenable.io",     c:"#2563eb",methods:["Upload","API"],emoji:"🟦"},
+              {name:"Nessus Pro",     c:"#991b1b",methods:["Upload"],emoji:"🔴"},
+              {name:"OpenVAS",        c:"#16a34a",methods:["Upload","API"],emoji:"🟢"},
+              {name:"CrowdStrike",    c:"#dc2626",methods:["Webhook","API"],emoji:"🦅"},
+              {name:"AWS Sec Hub",    c:"#f59e0b",methods:["Webhook"],emoji:"☁️"},
+              {name:"MS Defender",    c:"#2563eb",methods:["Webhook","API"],emoji:"🛡️"},
+              {name:"Rapid7",         c:"#1e40af",methods:["Upload","API"],emoji:"⚡"},
+              {name:"Wiz",            c:"#7c3aed",methods:["Upload","API"],emoji:"🌩️"},
+              {name:"Prisma Cloud",   c:"#0891b2",methods:["Webhook"],emoji:"🔐"},
+            ].map(tool=>(
+              <div key={tool.name} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:12,padding:"1.25rem",borderTop:`3px solid ${tool.c}`}}>
+                <div style={{fontSize:"1.5rem",marginBottom:"0.5rem"}}>{tool.emoji}</div>
+                <div style={{fontWeight:700,fontSize:"0.875rem",color:"#0f172a",marginBottom:"0.625rem"}}>{tool.name}</div>
+                <div style={{display:"flex",gap:"0.375rem",flexWrap:"wrap"}}>
+                  {tool.methods.map(m=>(
+                    <span key={m} style={{fontSize:"0.62rem",fontWeight:700,padding:"2px 7px",borderRadius:20,background: m==="Webhook"?"#fef3c7":m==="API"?"#ede9fe":"#f0fdf4",color: m==="Webhook"?"#b45309":m==="API"?"#6d28d9":"#15803d",border: `1px solid ${m==="Webhook"?"#fcd34d":m==="API"?"#c4b5fd":"#86efac"}`}}>{m}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── MONITOR ── */}
+      <section id="monitor" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff"}}>
+        <div style={{maxWidth:1100,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>9 live dashboards. Everything in one place.</h2>
+            <p style={{color:"#a5b4fc",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
+          </div>
+          {/* Mini dashboard mockup */}
+          <div style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:16,padding:"1.5rem",backdropFilter:"blur(8px)"}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:"0.875rem",marginBottom:"1.25rem"}}>
+              {[
+                {label:"Risk Score",val:"74",unit:"/100",c:"#818cf8"},
+                {label:"Open Criticals",val:"23",unit:"findings",c:"#f87171"},
+                {label:"SLA Compliance",val:"91%",unit:"on-track",c:"#34d399"},
+                {label:"Avg CVSS",val:"7.4",unit:"score",c:"#fb923c"},
+              ].map(s=>(
+                <div key={s.label} style={{background:"rgba(255,255,255,0.06)",borderRadius:10,padding:"1rem",borderTop:`2px solid ${s.c}`}}>
+                  <div style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",marginBottom:"0.25rem"}}>{s.label}</div>
+                  <div style={{fontSize:"1.75rem",fontWeight:900,color:s.c,lineHeight:1}}>{s.val}<span style={{fontSize:"0.75rem",fontWeight:500,color:"#64748b",marginLeft:4}}>{s.unit}</span></div>
+                </div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:"0.875rem"}}>
+              <div style={{background:"rgba(255,255,255,0.06)",borderRadius:10,padding:"1rem"}}>
+                <div style={{fontSize:"0.72rem",fontWeight:700,color:"#a5b4fc",marginBottom:"0.875rem"}}>📊 Findings by Severity</div>
+                {[["Critical",14,"#f87171"],["High",67,"#fb923c"],["Medium",148,"#fbbf24"],["Low",83,"#34d399"]].map(([s,n,c])=>(
+                  <div key={String(s)} style={{marginBottom:"0.625rem"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.72rem",marginBottom:"3px"}}><span style={{color:"#cbd5e1"}}>{s}</span><span style={{color:String(c),fontWeight:700}}>{n}</span></div>
+                    <div style={{height:6,background:"rgba(255,255,255,0.08)",borderRadius:99}}><div style={{height:"100%",width:`${Math.round(Number(n)/148*100)}%`,background:String(c),borderRadius:99}}/></div>
+                  </div>
+                ))}
+              </div>
+              <div style={{background:"rgba(255,255,255,0.06)",borderRadius:10,padding:"1rem"}}>
+                <div style={{fontSize:"0.72rem",fontWeight:700,color:"#a5b4fc",marginBottom:"0.875rem"}}>🔧 Connected Tools</div>
+                {["Qualys VMDR","Nessus Pro","AWS Sec Hub"].map(t=>(
+                  <div key={t} style={{display:"flex",alignItems:"center",gap:"0.5rem",marginBottom:"0.5rem"}}>
+                    <span style={{width:6,height:6,borderRadius:"50%",background:"#34d399",display:"inline-block",boxShadow:"0 0 6px #34d399"}}/>
+                    <span style={{fontSize:"0.78rem",color:"#cbd5e1"}}>{t}</span>
+                  </div>
+                ))}
+                <div style={{marginTop:"0.75rem",paddingTop:"0.75rem",borderTop:"1px solid rgba(255,255,255,0.08)",fontSize:"0.68rem",color:"#64748b"}}>Last sync: 2 min ago</div>
+              </div>
+            </div>
+          </div>
+          <div style={{textAlign:"center",marginTop:"1.5rem"}}>
+            <Link href="/dashboard" style={{display:"inline-block",background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:700,fontSize:"0.9rem"}}>View Live Demo →</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── REPORT ── */}
+      <section id="report" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"#f8fafc"}}>
+        <div style={{maxWidth:1100,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#7c3aed",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📄 Report</div>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Board-ready reports in one click</h2>
+            <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>From executive PDF to compliance mapping — white-labeled with your brand.</p>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(230px,1fr))",gap:"1rem"}}>
+            {[
+              {icon:"📊",title:"Executive Summary",desc:"CISO & board-level posture overview with risk trend",formats:["PDF","PPT"],c:"#4f46e5"},
+              {icon:"🔍",title:"Technical Detail",desc:"Full CVE list with CVSS, EPSS, asset mapping",formats:["PDF","CSV"],c:"#0891b2"},
+              {icon:"⏰",title:"SLA Breach Report",desc:"Overdue findings with owner, deadline, and escalation",formats:["PDF","Email"],c:"#dc2626"},
+              {icon:"✅",title:"Compliance Mapping",desc:"SOC2 · ISO 27001 · NIST CSF control coverage",formats:["PDF"],c:"#16a34a"},
+            ].map(r=>(
+              <div key={r.title} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.5rem",borderLeft:`4px solid ${r.c}`,boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
+                <div style={{fontSize:"2rem",marginBottom:"0.75rem"}}>{r.icon}</div>
+                <div style={{fontWeight:800,color:"#0f172a",marginBottom:"0.375rem",fontSize:"0.95rem"}}>{r.title}</div>
+                <div style={{fontSize:"0.8rem",color:"#64748b",marginBottom:"1rem",lineHeight:1.5}}>{r.desc}</div>
+                <div style={{display:"flex",gap:"0.375rem"}}>
+                  {r.formats.map(f=>(<span key={f} style={{fontSize:"0.65rem",fontWeight:700,padding:"2px 8px",borderRadius:20,background:`${r.c}15`,color:r.c,border:`1px solid ${r.c}33`}}>{f}</span>))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECURE ── */}
+      <section id="secure" style={{scrollMarginTop:64,padding:"5rem 2rem",background:"#fff"}}>
+        <div style={{maxWidth:900,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#16a34a",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Triple-Filter Triage — fix what actually matters</h2>
+            <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>Stop drowning in 10,000 findings. Our 3-layer engine surfaces only the ones that need action today.</p>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:"1rem",marginBottom:"2rem"}}>
+            {[
+              {step:"Filter 1",title:"Severity Gate",rule:"CVSS ≥ 7.0",desc:"Eliminates informational and low-noise findings immediately",c:"#4f46e5",icon:"🎯"},
+              {step:"Filter 2",title:"Exploitability Check",rule:"EPSS > 10% OR in CISA KEV",desc:"Only surfaces findings with real-world exploit evidence",c:"#ea580c",icon:"⚡"},
+              {step:"Filter 3",title:"Asset Criticality",rule:"Tier-1 · Production · External-facing",desc:"Prioritizes findings on your most valuable assets",c:"#dc2626",icon:"🏢"},
+            ].map((f,i)=>(
+              <div key={f.step} style={{display:"grid",gridTemplateColumns:"auto 1fr auto",alignItems:"center",gap:"1.25rem",background:"#f8fafc",border:`1px solid ${f.c}30`,borderLeft:`4px solid ${f.c}`,borderRadius:12,padding:"1.25rem 1.5rem"}}>
+                <div style={{width:48,height:48,borderRadius:"50%",background:`${f.c}15`,border:`2px solid ${f.c}40`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.25rem",flexShrink:0}}>{f.icon}</div>
+                <div>
+                  <div style={{display:"flex",alignItems:"center",gap:"0.5rem",marginBottom:"0.25rem"}}>
+                    <span style={{fontSize:"0.62rem",fontWeight:700,color:f.c,textTransform:"uppercase",letterSpacing:"0.08em"}}>{f.step}</span>
+                    <span style={{fontWeight:800,fontSize:"0.9rem",color:"#0f172a"}}>{f.title}</span>
+                  </div>
+                  <code style={{fontSize:"0.78rem",color:f.c,background:`${f.c}10`,padding:"2px 8px",borderRadius:6,fontWeight:700}}>{f.rule}</code>
+                  <div style={{fontSize:"0.78rem",color:"#64748b",marginTop:"0.25rem"}}>{f.desc}</div>
+                </div>
+                <div style={{fontSize:"1.5rem",color:`${f.c}60`}}>{i<2?"↓":""}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{background:"linear-gradient(135deg,#f0fdf4,#dcfce7)",border:"1px solid #86efac",borderRadius:14,padding:"1.25rem 1.75rem",textAlign:"center"}}>
+            <div style={{fontSize:"1.25rem",marginBottom:"0.375rem"}}>✅</div>
+            <div style={{fontWeight:800,color:"#15803d",fontSize:"1rem"}}>Result: Prioritized Action List</div>
+            <div style={{fontSize:"0.82rem",color:"#16a34a",marginTop:"0.25rem"}}>Typically reduces 10,000 raw findings → 20-50 actionable items that need immediate attention</div>
+          </div>
         </div>
       </section>
 
       {/* DASHBOARDS */}
-      <section id="features" style={{padding:"4rem 2rem",maxWidth:1200,margin:"0 auto"}}>
+      <section id="features" style={{padding:"4rem 2rem",maxWidth:1200,margin:"0 auto",scrollMarginTop:64}}>
         <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
           <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>9 Modules · One Command Center</div>
           <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em",color:"#0f172a"}}>Everything your team needs to see</h2>
