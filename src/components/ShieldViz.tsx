@@ -74,22 +74,18 @@ export default function ShieldViz(){
     return()=>clearTimeout(t);
   },[trStep]);
 
-  // Swap pattern exactly at animation cycle boundary (opacity=0) — no jerk
+  // Cycle pattern every 12s matching CSS animation duration
   useEffect(()=>{
-    const el = lineRef.current;
-    if(!el) return;
-    let currentIdx = 0;
-    const onIter = ()=>{
-      const next = (currentIdx + 1) % PATTERNS.length;
-      currentIdx = next;
-      const p = PATTERNS[next];
+    let idx = 0;
+    const iv = setInterval(()=>{
+      idx = (idx + 1) % PATTERNS.length;
+      const p = PATTERNS[idx];
       setYs(p);
-      setPatIdx(next);
+      setPatIdx(idx);
       setPct(Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100)));
       setPctGood(p[p.length-1] < p[0]);
-    };
-    el.addEventListener('animationiteration', onIter);
-    return()=>el.removeEventListener('animationiteration', onIter);
+    }, 12000);
+    return ()=> clearInterval(iv);
   },[]);
 
   if(!mounted) return(
@@ -292,10 +288,10 @@ export default function ShieldViz(){
               style={{animation:`dot${i} 12s linear infinite`}}/>
           )})}
         </g>
-        {/* % label — synced fade with line chart */}
+        {/* % label — always visible, updates every 12s */}
         <text x="393" y="244" textAnchor="end" fontSize="8" fontWeight="800"
           fill={pctGood?'#16a34a':'#ef4444'}
-          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease',animation:'pctFade 12s linear infinite'}}>
+          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>
           {pctGood?'▼':'▲'} {pct}%
         </text>
         {/* BC bullets — horizontal, two-line each */}
