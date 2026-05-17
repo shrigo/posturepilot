@@ -37,9 +37,9 @@ export default function Page() {
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 2.5rem",height:64}}>
         <Image src="/navbarlogoh.jpg" alt="PosturePilot" width={220} height={52} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
-        <div style={{display:"flex",alignItems:"center",gap:"1.75rem",fontSize:"0.82rem",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase"}}>
+        <div style={{display:"flex",alignItems:"center",gap:"1.75rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Report","Secure"] as const).map((t,i)=>(
-            <a key={t} href={"#"+t.toLowerCase()} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none",opacity:0.85}}>{t}</a>
+            <a key={t} href={"#"+t.toLowerCase()} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none"}}>{t}</a>
           ))}
         </div>
         <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
