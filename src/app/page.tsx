@@ -26,7 +26,7 @@ const PLANS = [
 export default function Page() {
   const [tab,setTab]=useState("Monitor");
   return(
-    <div style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh"}}>
+    <div id="top" style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh"}}>
       <style>{`
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap");
         *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
@@ -41,7 +41,9 @@ export default function Page() {
 
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 2.5rem",height:64}}>
-        <Image src="/navbarlogoh.jpg" alt="PosturePilot" width={220} height={52} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+        <a href="#top" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
+          <Image src="/navbarlogoh.jpg" alt="PosturePilot" width={220} height={52} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+        </a>
         <div style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Report","Secure"] as const).map((t,i,a)=>(
             <span key={t} style={{display:"flex",alignItems:"center"}}>
