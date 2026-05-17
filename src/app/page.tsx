@@ -121,10 +121,10 @@ export default function Page() {
       </section>
 
       {/* Securing Teams At banner */}
-      <div style={{background:"#fff",borderTop:"1px solid #e0e7ff",borderBottom:"1px solid #e0e7ff",padding:"0.6rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
-        <span style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",whiteSpace:"nowrap"}}>Securing Teams At</span>
+      <div style={{background:"linear-gradient(90deg,#ea580c,#f97316,#ea580c)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+        <span style={{fontSize:"0.72rem",color:"#fff",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Securing Teams At</span>
         {["Goldman Sachs","JPMorgan","Deloitte","KPMG","Accenture","Raytheon","Lockheed Martin","CrowdStrike"].map(c=>(
-          <span key={c} style={{fontSize:"0.82rem",fontWeight:700,color:"#334155",whiteSpace:"nowrap"}}>{c}</span>
+          <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#fff7ed",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
 
