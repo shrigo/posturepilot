@@ -49,10 +49,10 @@ export default function Page() {
       </nav>
 
       {/* Trusted by banner */}
-      <div style={{background:"#fff",borderBottom:"1px solid #e0e7ff",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
-        <span style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
+      <div style={{background:"linear-gradient(90deg,#eef2ff,#f0f9ff,#eef2ff)",borderBottom:"1px solid #c7d7f8",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+        <span style={{fontSize:"0.65rem",color:"#6366f1",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
         {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","CrowdStrike","AWS Security Hub"].map(c=>(
-          <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#334155",whiteSpace:"nowrap"}}>{c}</span>
+          <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#1e2d6e",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
 
