@@ -78,16 +78,16 @@ export default function ShieldViz(){
   useEffect(()=>{
     const el = lineRef.current;
     if(!el) return;
-    const onIter = ()=>setPatIdx(n=>{
-      const next=(n+1)%PATTERNS.length;
+    let currentIdx = 0;
+    const onIter = ()=>{
+      const next = (currentIdx + 1) % PATTERNS.length;
+      currentIdx = next;
       const p = PATTERNS[next];
       setYs(p);
-      const newVal = Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100));
-      const newGood = p[p.length-1] < p[0];
-      setPct(newVal);
-      setPctGood(newGood);
-      return next;
-    });
+      setPatIdx(next);
+      setPct(Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100)));
+      setPctGood(p[p.length-1] < p[0]);
+    };
     el.addEventListener('animationiteration', onIter);
     return()=>el.removeEventListener('animationiteration', onIter);
   },[]);
