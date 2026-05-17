@@ -32,14 +32,19 @@ export default function Page() {
         *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
         .hcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,70,229,0.15)!important}
         .hcard{transition:all 0.2s}
+        .nav-link{transition:all 0.18s ease;border-radius:8px;padding:0.35rem 0.75rem;}
+        .nav-configure:hover{background:#1e2d6e;color:#fff!important;}
+        .nav-monitor:hover{background:#4f46e5;color:#fff!important;}
+        .nav-report:hover{background:#7c3aed;color:#fff!important;}
+        .nav-secure:hover{background:#16a34a;color:#fff!important;}
       `}</style>
 
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 2.5rem",height:64}}>
         <Image src="/navbarlogoh.jpg" alt="PosturePilot" width={220} height={52} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
-        <div style={{display:"flex",alignItems:"center",gap:"1.75rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
+        <div style={{display:"flex",alignItems:"center",gap:"0.5rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Report","Secure"] as const).map((t,i)=>(
-            <a key={t} href={"#"+t.toLowerCase()} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none"}}>{t}</a>
+            <a key={t} href={"#"+t.toLowerCase()} className={`nav-link nav-${t.toLowerCase()}`} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none"}}>{t}</a>
           ))}
         </div>
         <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
