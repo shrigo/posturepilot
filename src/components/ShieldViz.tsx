@@ -293,7 +293,7 @@ export default function ShieldViz(){
           )})}
         </g>
         {/* % label — synced fade with line chart */}
-        <text x="391" y="244" textAnchor="end" fontSize="8" fontWeight="800"
+        <text x="393" y="244" textAnchor="end" fontSize="8" fontWeight="800"
           fill={pctGood?'#16a34a':'#ef4444'}
           style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease',animation:'pctFade 12s linear infinite'}}>
           {pctGood?'▼':'▲'} {pct}%
