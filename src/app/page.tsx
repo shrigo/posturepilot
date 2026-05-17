@@ -67,7 +67,7 @@ export default function Page() {
       </div>
 
       {/* HERO — white bg so logo sits naturally */}
-      <section style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"92vh",display:"flex",alignItems:"flex-start",padding:"3rem 3rem 1rem",position:"relative",overflow:"hidden"}}>
+      <section style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"92vh",display:"flex",alignItems:"flex-start",padding:"4.5rem 3rem 1rem",position:"relative",overflow:"hidden"}}>
         {/* Subtle radial glow */}
         <div style={{position:"absolute",top:"-10%",right:"5%",width:600,height:600,background:"radial-gradient(circle,rgba(79,70,229,0.08) 0%,transparent 70%)",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:"-10%",left:"5%",width:400,height:400,background:"radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%)",pointerEvents:"none"}}/>
