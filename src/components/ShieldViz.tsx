@@ -78,7 +78,16 @@ export default function ShieldViz(){
   useEffect(()=>{
     const el = lineRef.current;
     if(!el) return;
-    const onIter = ()=>setPatIdx(n=>{ const next=(n+1)%PATTERNS.length; setYs(PATTERNS[next]); return next; });
+    const onIter = ()=>setPatIdx(n=>{
+      const next=(n+1)%PATTERNS.length;
+      const p = PATTERNS[next];
+      setYs(p);
+      const newVal = Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100));
+      const newGood = p[p.length-1] < p[0];
+      setPct(newVal);
+      setPctGood(newGood);
+      return next;
+    });
     el.addEventListener('animationiteration', onIter);
     return()=>el.removeEventListener('animationiteration', onIter);
   },[]);
@@ -283,10 +292,12 @@ export default function ShieldViz(){
               style={{animation:`dot${i} 12s linear infinite`}}/>
           )})}
         </g>
-        {/* % label — fixed position, outside translate group */}
-        <text x="391" y="242" textAnchor="end" fontSize="8" fontWeight="800"
-          fill={good?'#16a34a':'#ef4444'}
-          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>{sym} {val}%</text>
+        {/* % label — synced fade with line chart */}
+        <text x="391" y="244" textAnchor="end" fontSize="8" fontWeight="800"
+          fill={pctGood?'#16a34a':'#ef4444'}
+          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease',animation:'pctFade 12s linear infinite'}}>
+          {pctGood?'▼':'▲'} {pct}%
+        </text>
         {/* BC bullets — horizontal, two-line each */}
         <circle cx="235" cy="305" r="3" fill="#4f46e5" opacity="0.9"/>
         <text x="241" y="308" fontSize="9" fill="#4f46e5" fontWeight="700"
