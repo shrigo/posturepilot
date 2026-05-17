@@ -1,13 +1,12 @@
-// src/lib/db.ts — singleton Prisma client (Prisma 7 + LibSQL adapter)
+// src/lib/db.ts — Prisma 7 PostgreSQL client with pg driver adapter
 import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 function createPrisma() {
-  const dbUrl = process.env.DATABASE_URL || 'file:./prisma/dev.db';
-  const url = dbUrl.startsWith('file:') ? dbUrl : `file:${dbUrl}`;
-  const adapter = new PrismaLibSql({ url });
+  const connectionString = process.env.DATABASE_URL!;
+  const adapter = new PrismaPg({ connectionString });
   return new PrismaClient({
     adapter,
     log: process.env.NODE_ENV === 'development' ? ['error'] : [],
