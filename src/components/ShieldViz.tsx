@@ -152,6 +152,11 @@ export default function ShieldViz(){
           <linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#4f46e5"/><stop offset="100%" stopColor="#7c3aed"/>
           </linearGradient>
+          <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ef4444"/>
+            <stop offset="50%" stopColor="#f97316"/>
+            <stop offset="100%" stopColor="#eab308"/>
+          </linearGradient>
           <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#6d28d9"/><stop offset="60%" stopColor="#4f46e5"/>
             <stop offset="100%" stopColor="#818cf8"/>
@@ -186,11 +191,10 @@ export default function ShieldViz(){
 
         {/* ── TL: Donut cx=168, cy=142, r=22 (10% smaller) ── */}
         <circle cx="168" cy="142" r="22" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="6"/>
-        <circle cx="168" cy="142" r="22" fill="none" stroke="url(#dg)" strokeWidth="6"
+        <circle cx="168" cy="142" r="22" fill="none" stroke="url(#sg)" strokeWidth="6"
           strokeDasharray={`${d1} 200`} strokeLinecap="round" filter="url(#gw)"
           style={{transformOrigin:'168px 142px',transform:'rotate(-90deg)',
-            transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)',
-            stroke:riskVal>70?'#f97316':'url(#dg)'}}/>
+            transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)'}}/>
         <text x="170" y="139" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900"
           fill={riskVal>70?'#f97316':'#4f46e5'}
           style={{fontFamily:'Inter,sans-serif'}}>{riskVal}%</text>
@@ -349,11 +353,11 @@ export default function ShieldViz(){
           <text x="445" y="287" textAnchor="middle" dominantBaseline="middle" fontSize="9"
             fill={brSla>=90?'#15803d':'#4f46e5'} fontWeight="700">SLA</text>
         </g>
-        {/* BR bullet — 5° tilt up */}
+        {/* BR bullet — matches ring color */}
         <g transform="rotate(7, 413, 313)">
-          <circle cx="413" cy="313" r="3" fill="#7c3aed" opacity="0.9"/>
-          <text x="419" y="317" fontSize="9" fill="#7c3aed" fontWeight="700"
-            style={{fontFamily:'Inter,sans-serif'}}>Compliance</text>
+          <circle cx="413" cy="313" r="3" fill={brSla>=90?'#16a34a':'#7c3aed'} opacity="0.9"/>
+          <text x="419" y="317" fontSize="9" fill={brSla>=90?'#16a34a':'#7c3aed'} fontWeight="700"
+            style={{fontFamily:'Inter,sans-serif',transition:'fill 0.8s ease'}}>Compliance</text>
         </g>
 
         {/* LIVE badge */}
