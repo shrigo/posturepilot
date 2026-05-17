@@ -39,6 +39,8 @@ export default function ShieldViz(){
   const [trStep,setTrStep]=useState(0);
   const [mTk,setMTk]=useState(false);
   const [mounted,setMounted]=useState(false);
+  const startTimeRef = useRef(Date.now());
+  const patIdxRef = useRef(0);
 
   const ln = XS.map((x,i)=>`${x},${ys[i]}`).join(' ');
   const sym = ys[ys.length-1]<ys[0]?'▼':'▲';
@@ -74,17 +76,44 @@ export default function ShieldViz(){
     return()=>clearTimeout(t);
   },[trStep]);
 
-  // Cycle pattern every 12s matching CSS animation duration
+  // Live-track the line as it draws — pct fluctuates with the line movement
   useEffect(()=>{
-    let idx = 0;
+    const CYCLE = 12000;
+    const DRAW_START = 0.05; // when line starts drawing
+    const DRAW_END   = 0.42; // when line finishes drawing
+
     const iv = setInterval(()=>{
-      idx = (idx + 1) % PATTERNS.length;
-      const p = PATTERNS[idx];
-      setYs(p);
-      setPatIdx(idx);
-      setPct(Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100)));
-      setPctGood(p[p.length-1] < p[0]);
-    }, 12000);
+      const elapsed = Date.now() - startTimeRef.current;
+      const cycleElapsed = elapsed % CYCLE;
+      const progress = cycleElapsed / CYCLE;
+
+      // Switch pattern at cycle boundary
+      const newPatIdx = Math.floor(elapsed / CYCLE) % PATTERNS.length;
+      if (newPatIdx !== patIdxRef.current) {
+        patIdxRef.current = newPatIdx;
+        setYs(PATTERNS[newPatIdx]);
+        setPatIdx(newPatIdx);
+      }
+
+      const p = PATTERNS[patIdxRef.current];
+
+      if (progress >= DRAW_START && progress <= DRAW_END) {
+        // Line is actively drawing — interpolate current tip y position
+        const drawFrac = (progress - DRAW_START) / (DRAW_END - DRAW_START);
+        const pointPos = drawFrac * (p.length - 1);
+        const i = Math.min(Math.floor(pointPos), p.length - 2);
+        const frac = pointPos - i;
+        const currentY = p[i] + (p[i+1] - p[i]) * frac;
+        const changePct = Math.max(1, Math.round(Math.abs((p[0] - currentY) / p[0] * 100)));
+        setPct(changePct);
+        setPctGood(currentY < p[0]);
+      } else {
+        // Line complete or invisible — show settled final value
+        setPct(Math.max(1, Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100))));
+        setPctGood(p[p.length-1] < p[0]);
+      }
+    }, 200);
+
     return ()=> clearInterval(iv);
   },[]);
 
