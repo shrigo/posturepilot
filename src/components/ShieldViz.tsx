@@ -51,10 +51,14 @@ export default function ShieldViz(){
   const [ys,setYs]=useState(PATTERNS[0]);
   const [ys2,setYs2]=useState(PATCH_PATTERNS[0]);
   const [patIdx,setPatIdx]=useState(0);
-  const lineRef = useRef<SVGPolylineElement>(null);
+  // Line + dot refs for RAF-driven animation (no CSS animation)
+  const line1Ref = useRef<SVGPathElement>(null);
+  const line2Ref = useRef<SVGPathElement>(null);
+  const dot1Refs = useRef<(SVGCircleElement|null)[]>([null,null,null]);
+  const dot2Refs = useRef<(SVGCircleElement|null)[]>([null,null,null]);
+  const rafStartRef = useRef(0);
   const [pct,setPct]=useState(7);
   const [pctGood,setPctGood]=useState(true);
-  const [pct2Good,setPct2Good]=useState(false);
   const [lineVisible,setLineVisible]=useState(false);
   const [dots,setDots]=useState<boolean[]>(Array(12).fill(false));
   const [scan,setScan]=useState(0);
@@ -104,52 +108,76 @@ export default function ShieldViz(){
     return()=>clearTimeout(t);
   },[trStep]);
 
-  // Live-track the line as it draws — pct fluctuates with the line movement
+  // Single RAF loop — drives line drawing + dots with perfect sync, no CSS animation
   useEffect(()=>{
-    const CYCLE = 12000;
-    const DRAW_START = 0.05;
-    const DRAW_END   = 0.42;
-    const INVISIBLE  = 0.88; // line fades out after this point
+    const CYCLE = 12000, DASH = 140;
+    const DS = 0.05, DE = 0.42, HE = 0.72, FE = 0.88; // draw/hold/fade phase boundaries
+    const DOT_AT = [DS, (DS+DE)/2, DE]; // dot appears when line tip reaches 0%, 50%, 100% of draw
 
+    const getState = (p:number)=>{
+      if(p < DS) return {dash:DASH, op:0};
+      if(p <= DE) return {dash:DASH*(1-(p-DS)/(DE-DS)), op:1};
+      if(p <= HE) return {dash:0, op:1};
+      if(p <= FE) return {dash:0, op:1-(p-HE)/(FE-HE)};
+      return {dash:DASH, op:0};
+    };
+
+    let rafId:number;
+    const tick = (ts:number)=>{
+      if(!rafStartRef.current) rafStartRef.current = ts;
+      const elapsed = ts - rafStartRef.current;
+      const p1 = (elapsed % CYCLE) / CYCLE;
+      const p2 = ((elapsed + 400) % CYCLE) / CYCLE; // line2 offset 0.4s
+
+      const s1 = getState(p1), s2 = getState(p2);
+      if(line1Ref.current){ line1Ref.current.style.strokeDashoffset=`${s1.dash}`; line1Ref.current.style.opacity=`${s1.op}`; }
+      if(line2Ref.current){ line2Ref.current.style.strokeDashoffset=`${s2.dash}`; line2Ref.current.style.opacity=`${s2.op}`; }
+
+      // Dots appear exactly when line tip passes their position
+      DOT_AT.forEach((threshold,i)=>{
+        const v1 = p1 >= threshold && p1 <= FE ? '1':'0';
+        const v2 = p2 >= threshold && p2 <= FE ? '1':'0';
+        if(dot1Refs.current[i]) dot1Refs.current[i]!.style.opacity = v1;
+        if(dot2Refs.current[i]) dot2Refs.current[i]!.style.opacity = v2;
+      });
+
+      setLineVisible(p1 >= DS && p1 <= FE);
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+    return ()=> cancelAnimationFrame(rafId);
+  },[]);
+
+  // Slow updates — pattern cycling + % counter (200ms is fine here)
+  useEffect(()=>{
+    const CYCLE = 12000, DS = 0.05, DE = 0.42, INV = 0.88;
     const iv = setInterval(()=>{
       const elapsed = Date.now() - startTimeRef.current;
-      const cycleElapsed = elapsed % CYCLE;
-      const progress = cycleElapsed / CYCLE;
+      const progress = (elapsed % CYCLE) / CYCLE;
 
-      // Only swap pattern while line is invisible — prevents visual jump
-      if (progress >= INVISIBLE) {
-        const newPatIdx = Math.floor(elapsed / CYCLE) % PATTERNS.length;
-        if (newPatIdx !== patIdxRef.current) {
-          patIdxRef.current = newPatIdx;
-          setYs(PATTERNS[newPatIdx]);
-          setYs2(PATCH_PATTERNS[newPatIdx]);
-          setPatIdx(newPatIdx);
+      // Pattern swap only during invisible phase
+      if(progress >= INV){
+        const newIdx = Math.floor(elapsed/CYCLE) % PATTERNS.length;
+        if(newIdx !== patIdxRef.current){
+          patIdxRef.current = newIdx;
+          setYs(PATTERNS[newIdx]); setYs2(PATCH_PATTERNS[newIdx]); setPatIdx(newIdx);
         }
       }
 
-      // Show/hide % label based on whether line is on screen
-      setLineVisible(progress >= DRAW_START && progress <= INVISIBLE);
-
-      const p  = PATTERNS[patIdxRef.current];
-      const p2 = PATCH_PATTERNS[patIdxRef.current];
-
-      if (progress >= DRAW_START && progress <= DRAW_END) {
-        const drawFrac = (progress - DRAW_START) / (DRAW_END - DRAW_START);
-        const pointPos = drawFrac * (p.length - 1);
-        const i = Math.min(Math.floor(pointPos), p.length - 2);
-        const frac = pointPos - i;
-        const currentY  = p[i]  + (p[i+1]  - p[i])  * frac;
-        const currentY2 = p2[i] + (p2[i+1] - p2[i]) * frac;
-        setPct(Math.max(1, Math.round(Math.abs((p[0] - currentY) / p[0] * 100))));
-        setPctGood(currentY < p[0]);
-        setPct2Good(currentY2 < p2[0]);
+      // % counter — interpolates current risk value
+      const p = PATTERNS[patIdxRef.current];
+      if(progress >= DS && progress <= DE){
+        const f = (progress-DS)/(DE-DS);
+        const pos = f*(p.length-1);
+        const i = Math.min(Math.floor(pos), p.length-2);
+        const y = p[i]+(p[i+1]-p[i])*(pos-i);
+        setPct(Math.max(1,Math.round(Math.abs((p[0]-y)/p[0]*100))));
+        setPctGood(y < p[0]);
       } else {
-        setPct(Math.max(1, Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100))));
+        setPct(Math.max(1,Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100))));
         setPctGood(p[p.length-1] < p[0]);
-        setPct2Good(p2[p2.length-1] < p2[0]);
       }
-    }, 200);
-
+    },200);
     return ()=> clearInterval(iv);
   },[]);
 
@@ -216,9 +244,6 @@ export default function ShieldViz(){
               88%  { stroke-dashoffset: 0;   opacity: 0; }
               100% { stroke-dashoffset: 125; opacity: 0; }
             }
-            @keyframes dot0 { 0%{opacity:0} 5%{opacity:0}  8%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
-            @keyframes dot2 { 0%{opacity:0} 21%{opacity:0} 24%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
-            @keyframes dot4 { 0%{opacity:0} 38%{opacity:0} 41%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
             @keyframes pctFade { 0%{opacity:0} 42%{opacity:0} 45%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
           `}</style>
         </defs>
@@ -348,31 +373,35 @@ export default function ShieldViz(){
             style={{fontFamily:'Inter,sans-serif'}}>CVE Severity</text>
         </g>
 
-        {/* ── BC: Line chart — smooth bezier curves ── */}
+        {/* ── BC: Line chart — RAF-driven, butter smooth ── */}
         <g transform="translate(10, -147)">
-          {/* Line 1: 30-Day Risk Trend — smooth indigo */}
-          <path ref={lineRef as React.RefObject<SVGPathElement>} d={lp} fill="none" stroke="url(#lg)" strokeWidth="2.5"
+          {/* Line 1: 30-Day Risk — RAF controls dashoffset+opacity */}
+          <path ref={line1Ref} d={lp} fill="none" stroke="url(#lg)" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
-            strokeDasharray="140"
-            style={{animation:'lineDrawCycle 12s linear infinite'}}
+            strokeDasharray="140" strokeDashoffset="140"
+            style={{opacity:0}}
           />
-          {/* Line 2: Patch Rate — smooth orange */}
-          <path d={lp2} fill="none" stroke="#f97316" strokeWidth="2.5"
+          {/* Line 2: Patch Rate — same, offset 0.4s */}
+          <path ref={line2Ref} d={lp2} fill="none" stroke="#f97316" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
-            strokeDasharray="140"
-            style={{animation:'lineDrawCycle 12s linear infinite', animationDelay:'0.4s'}}
+            strokeDasharray="140" strokeDashoffset="140"
+            style={{opacity:0}}
           />
-          {/* Dots Line 1 — 3 dots: start, mid, end */}
-          {[0,2,4].map(i=>(
-            <circle key={i} cx={pts[i][0]} cy={pts[i][1]} r="3.5" fill="#4f46e5" stroke="white" strokeWidth="1.5"
-              filter="url(#gw)"
-              style={{animation:`dot${i} 12s linear infinite`, transition:'opacity 0.3s ease'}}/>
+          {/* Dots Line 1 — appear when line tip reaches each position */}
+          {[0,2,4].map((idx,i)=>(
+            <circle key={idx}
+              ref={el=>{ dot1Refs.current[i]=el; }}
+              cx={pts[idx][0]} cy={pts[idx][1]} r="3.5"
+              fill="#4f46e5" stroke="white" strokeWidth="1.5" filter="url(#gw)"
+              style={{opacity:0, transition:'opacity 0.35s ease'}}/>
           ))}
-          {/* Dots Line 2 — 3 dots: start, mid, end */}
-          {[0,2,4].map(i=>(
-            <circle key={`p${i}`} cx={pts2[i][0]} cy={pts2[i][1]} r="3.5" fill="#f97316" stroke="white" strokeWidth="1.5"
-              filter="url(#gw)"
-              style={{animation:`dot${i} 12s linear infinite`, animationDelay:'0.4s', transition:'opacity 0.3s ease'}}/>
+          {/* Dots Line 2 */}
+          {[0,2,4].map((idx,i)=>(
+            <circle key={`p${idx}`}
+              ref={el=>{ dot2Refs.current[i]=el; }}
+              cx={pts2[idx][0]} cy={pts2[idx][1]} r="3.5"
+              fill="#f97316" stroke="white" strokeWidth="1.5" filter="url(#gw)"
+              style={{opacity:0, transition:'opacity 0.35s ease'}}/>
           ))}
         </g>
         {/* % label — only visible when line is on screen */}
