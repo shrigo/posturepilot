@@ -313,7 +313,7 @@ export default function ShieldViz(){
             const baseY = 318 - i*2;
             return(
               <rect key={i} x={143+i*12} y={baseY-h*0.87} width="8" height={h*0.87} rx="2"
-                fill={i===1||i===3?'#ef4444':'url(#bg)'} opacity="0.9" filter="url(#gw)"
+                fill={i===1?'#ef4444':i===3?'#f97316':'url(#bg)'} opacity="0.9" filter="url(#gw)"
                 style={{transition:'y 0.65s cubic-bezier(0.4,0,0.2,1),height 0.65s cubic-bezier(0.4,0,0.2,1)'}}/>
             );
           })}
