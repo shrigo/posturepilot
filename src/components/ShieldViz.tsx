@@ -17,9 +17,14 @@ function useCountUp(target:number,dur=1600,delay=0){
 
 const XS = [236,264,292,320,348];
 const PATTERNS = [
-  [430,418,424,410,400], // gradual improvement  ▼ green
-  [400,412,420,430,438], // upward worsening     ▲ red
-  [430,420,436,412,404], // spike up then settle  ▼ green
+  [430,418,424,410,400], // risk: gradual improvement  ▼
+  [400,412,420,430,438], // risk: upward worsening     ▲
+  [430,420,436,412,404], // risk: spike then settle     ▼
+];
+const PATCH_PATTERNS = [
+  [413,417,412,420,424], // patch rate lagging (teams catching up slowly)
+  [423,418,413,409,405], // patch rate rising (teams responding to risk spike)
+  [415,421,410,418,422], // patch rate fluctuating
 ];
 
 export default function ShieldViz(){
@@ -27,6 +32,7 @@ export default function ShieldViz(){
   const [d1,setD1]=useState(0);
   const [d2,setD2]=useState(0);
   const [ys,setYs]=useState(PATTERNS[0]);
+  const [ys2,setYs2]=useState(PATCH_PATTERNS[0]);
   const [patIdx,setPatIdx]=useState(0);
   const lineRef = useRef<SVGPolylineElement>(null);
   const [pct,setPct]=useState(7);
@@ -42,7 +48,8 @@ export default function ShieldViz(){
   const startTimeRef = useRef(Date.now());
   const patIdxRef = useRef(0);
 
-  const ln = XS.map((x,i)=>`${x},${ys[i]}`).join(' ');
+  const ln  = XS.map((x,i)=>`${x},${ys[i]}`).join(' ');
+  const ln2 = XS.map((x,i)=>`${x},${ys2[i]}`).join(' ');
   const sym = ys[ys.length-1]<ys[0]?'▼':'▲';
   const val = Math.abs(Math.round((ys[0]-ys[ys.length-1])/ys[0]*100));
   const good = ys[ys.length-1]<ys[0];
@@ -92,6 +99,7 @@ export default function ShieldViz(){
       if (newPatIdx !== patIdxRef.current) {
         patIdxRef.current = newPatIdx;
         setYs(PATTERNS[newPatIdx]);
+        setYs2(PATCH_PATTERNS[newPatIdx]);
         setPatIdx(newPatIdx);
       }
 
@@ -310,10 +318,18 @@ export default function ShieldViz(){
 
         {/* ── BC: Line chart — draw-in cycle ── */}
         <g transform="translate(10, -147)">
+          {/* Line 1: 30-Day Risk Trend — solid indigo */}
           <polyline ref={lineRef} points={ln} fill="none" stroke="url(#lg)" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
             strokeDasharray="125"
             style={{animation:'lineDrawCycle 12s linear infinite'}}
+          />
+          {/* Line 2: Patch Rate — dashed violet, inversely correlated */}
+          <polyline points={ln2} fill="none" stroke="#7c3aed" strokeWidth="1.8"
+            strokeLinecap="round" strokeLinejoin="round"
+            strokeDasharray="125"
+            opacity="0.75"
+            style={{animation:'lineDrawCycle 12s linear infinite', animationDelay:'0.4s'}}
           />
           {ln.split(' ').map((pt,i)=>{const[x,y]=pt.split(',');return(
             <circle key={i} cx={+x} cy={+y} r="4" fill="#4f46e5" stroke="white" strokeWidth="1.5"
@@ -327,12 +343,12 @@ export default function ShieldViz(){
           style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>
           {pctGood?'▼':'▲'} {pct}%
         </text>
-        {/* BC bullets — horizontal, two-line each */}
+        {/* BC bullets — 30-Day Risk (indigo) + Patch Rate (violet) */}
         <circle cx="235" cy="305" r="3" fill="#4f46e5" opacity="0.9"/>
         <text x="241" y="308" fontSize="9" fill="#4f46e5" fontWeight="700"
           style={{fontFamily:'Inter,sans-serif'}}>30-Day</text>
         <text x="241" y="318" fontSize="9" fill="#4f46e5" fontWeight="600" opacity="0.7"
-          style={{fontFamily:'Inter,sans-serif'}}>Trend</text>
+          style={{fontFamily:'Inter,sans-serif'}}>Risk</text>
         <circle cx="350" cy="305" r="3" fill="#7c3aed" opacity="0.9"/>
         <text x="356" y="308" fontSize="9" fill="#7c3aed" fontWeight="700"
           style={{fontFamily:'Inter,sans-serif'}}>Patch</text>
