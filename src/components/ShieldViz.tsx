@@ -147,7 +147,7 @@ export default function ShieldViz(){
       if(!rafStartRef.current) rafStartRef.current = ts;
       const elapsed = ts - rafStartRef.current;
       const p1 = (elapsed % CYCLE) / CYCLE;
-      const p2 = ((elapsed + 600) % CYCLE) / CYCLE;
+      const p2 = ((elapsed - 600 + CYCLE) % CYCLE) / CYCLE; // line2 starts 600ms AFTER line1
 
       // ONE shared fade value — all elements disappear simultaneously
       const sharedOp = p1 < DS ? 0
@@ -158,15 +158,21 @@ export default function ShieldViz(){
       const len1 = len1Ref.current;
       const len2 = len2Ref.current;
 
-      // Line 1
-      const dash1 = p1 < DS ? len1 : p1 <= DE ? len1*(1-(p1-DS)/(DE-DS)) : 0;
+      // Line 1: hidden→drawing→held→fading→reset hidden
+      const dash1 = p1 < DS  ? len1
+        : p1 <= DE ? len1*(1-(p1-DS)/(DE-DS))
+        : p1 <= FE ? 0
+        : len1; // invisible phase: reset for next cycle
       if(line1Ref.current){
         line1Ref.current.style.strokeDashoffset=`${dash1}`;
         line1Ref.current.style.opacity=`${p1>=DS ? sharedOp : 0}`;
       }
 
-      // Line 2
-      const dash2 = p2 < DS ? len2 : p2 <= DE ? len2*(1-(p2-DS)/(DE-DS)) : 0;
+      // Line 2: same but on p2 clock
+      const dash2 = p2 < DS  ? len2
+        : p2 <= DE ? len2*(1-(p2-DS)/(DE-DS))
+        : p2 <= FE ? 0
+        : len2; // invisible phase: reset for next cycle
       if(line2Ref.current){
         line2Ref.current.style.strokeDashoffset=`${dash2}`;
         line2Ref.current.style.opacity=`${p2>=DS ? sharedOp : 0}`;
