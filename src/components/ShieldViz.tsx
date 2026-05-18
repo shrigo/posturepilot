@@ -129,24 +129,41 @@ export default function ShieldViz(){
       if(!rafStartRef.current) rafStartRef.current = ts;
       const elapsed = ts - rafStartRef.current;
       const p1 = (elapsed % CYCLE) / CYCLE;
-      const p2 = ((elapsed + 600) % CYCLE) / CYCLE; // line2 starts 0.6s after line1
+      const p2 = ((elapsed + 600) % CYCLE) / CYCLE;
+
+      // ONE shared fade value — all elements disappear simultaneously
+      const sharedOp = p1 < DS ? 0
+        : p1 <= HE ? 1
+        : p1 <= FE ? 1-(p1-HE)/(FE-HE)
+        : 0;
 
       const len1 = line1Ref.current?.getTotalLength() ?? DASH;
       const len2 = line2Ref.current?.getTotalLength() ?? DASH;
-      const s1 = getState(p1,len1), s2 = getState(p2,len2);
-      if(line1Ref.current){ line1Ref.current.style.strokeDasharray=`${len1}`; line1Ref.current.style.strokeDashoffset=`${s1.dash}`; line1Ref.current.style.opacity=`${s1.op}`; }
-      if(line2Ref.current){ line2Ref.current.style.strokeDasharray=`${len2}`; line2Ref.current.style.strokeDashoffset=`${s2.dash}`; line2Ref.current.style.opacity=`${s2.op}`; }
 
-      // Dots fade with their line
+      // Line 1 draw progress (dashoffset) + shared fade opacity
+      const dash1 = p1 < DS ? len1 : p1 <= DE ? len1*(1-(p1-DS)/(DE-DS)) : 0;
+      if(line1Ref.current){
+        line1Ref.current.style.strokeDasharray=`${len1}`;
+        line1Ref.current.style.strokeDashoffset=`${dash1}`;
+        line1Ref.current.style.opacity=`${p1>=DS ? sharedOp : 0}`;
+      }
+
+      // Line 2 draw progress (dashoffset) + same shared fade opacity
+      const dash2 = p2 < DS ? len2 : p2 <= DE ? len2*(1-(p2-DS)/(DE-DS)) : 0;
+      if(line2Ref.current){
+        line2Ref.current.style.strokeDasharray=`${len2}`;
+        line2Ref.current.style.strokeDashoffset=`${dash2}`;
+        line2Ref.current.style.opacity=`${p2>=DS ? sharedOp : 0}`;
+      }
+
+      // All dots use shared fade — disappear with lines
       DOT_AT.forEach((threshold,i)=>{
-        const op1 = (p1 >= threshold && p1 <= FE) ? s1.op : 0;
-        const op2 = (p2 >= threshold && p2 <= FE) ? s2.op : 0;
-        if(dot1Refs.current[i]) dot1Refs.current[i]!.style.opacity = `${op1}`;
-        if(dot2Refs.current[i]) dot2Refs.current[i]!.style.opacity = `${op2}`;
+        if(dot1Refs.current[i]) dot1Refs.current[i]!.style.opacity=`${p1>=threshold ? sharedOp : 0}`;
+        if(dot2Refs.current[i]) dot2Refs.current[i]!.style.opacity=`${p2>=threshold ? sharedOp : 0}`;
       });
 
-      // Only update React state when visibility changes — avoids 60fps re-renders
-      const nowVisible = p1 >= DS && p1 <= FE;
+      // % counter visibility — same shared timing
+      const nowVisible = sharedOp > 0 && p1 >= DE;
       if(nowVisible !== lineVisibleRef.current){
         lineVisibleRef.current = nowVisible;
         setLineVisible(nowVisible);
