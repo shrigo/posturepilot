@@ -318,22 +318,29 @@ export default function ShieldViz(){
 
         {/* ── BC: Line chart — draw-in cycle ── */}
         <g transform="translate(10, -147)">
-          {/* Line 1: 30-Day Risk Trend — solid indigo */}
+          {/* Line 1: 30-Day Risk Trend — solid indigo with dots */}
           <polyline ref={lineRef} points={ln} fill="none" stroke="url(#lg)" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
             strokeDasharray="125"
             style={{animation:'lineDrawCycle 12s linear infinite'}}
           />
-          {/* Line 2: Patch Rate — same style as risk, violet */}
-          <polyline points={ln2} fill="none" stroke="#7c3aed" strokeWidth="2.5"
+          {/* Line 2: Patch Rate — orange, same style */}
+          <polyline points={ln2} fill="none" stroke="#f97316" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
             strokeDasharray="125"
             style={{animation:'lineDrawCycle 12s linear infinite', animationDelay:'0.4s'}}
           />
+          {/* Dots Line 1 — indigo */}
           {ln.split(' ').map((pt,i)=>{const[x,y]=pt.split(',');return(
             <circle key={i} cx={+x} cy={+y} r="4" fill="#4f46e5" stroke="white" strokeWidth="1.5"
               filter="url(#gw)"
               style={{animation:`dot${i} 12s linear infinite`}}/>
+          )})}
+          {/* Dots Line 2 — orange, same delay as line */}
+          {ln2.split(' ').map((pt,i)=>{const[x,y]=pt.split(',');return(
+            <circle key={`p${i}`} cx={+x} cy={+y} r="4" fill="#f97316" stroke="white" strokeWidth="1.5"
+              filter="url(#gw)"
+              style={{animation:`dot${i} 12s linear infinite`, animationDelay:'0.4s'}}/>
           )})}
         </g>
         {/* % label — always visible, updates every 12s */}
@@ -342,16 +349,16 @@ export default function ShieldViz(){
           style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>
           {pctGood?'▼':'▲'} {pct}%
         </text>
-        {/* BC bullets — 30-Day Risk (indigo) + Patch Rate (violet) */}
+        {/* BC bullets — 30-Day Risk (indigo) + Patch Rate (orange) */}
         <circle cx="235" cy="305" r="3" fill="#4f46e5" opacity="0.9"/>
         <text x="241" y="308" fontSize="9" fill="#4f46e5" fontWeight="700"
           style={{fontFamily:'Inter,sans-serif'}}>30-Day</text>
         <text x="241" y="318" fontSize="9" fill="#4f46e5" fontWeight="600" opacity="0.7"
           style={{fontFamily:'Inter,sans-serif'}}>Risk</text>
-        <circle cx="350" cy="305" r="3" fill="#7c3aed" opacity="0.9"/>
-        <text x="356" y="308" fontSize="9" fill="#7c3aed" fontWeight="700"
+        <circle cx="350" cy="305" r="3" fill="#f97316" opacity="0.9"/>
+        <text x="356" y="308" fontSize="9" fill="#f97316" fontWeight="700"
           style={{fontFamily:'Inter,sans-serif'}}>Patch</text>
-        <text x="356" y="318" fontSize="9" fill="#7c3aed" fontWeight="600" opacity="0.7"
+        <text x="356" y="318" fontSize="9" fill="#f97316" fontWeight="600" opacity="0.7"
           style={{fontFamily:'Inter,sans-serif'}}>Rate</text>
 
         {/* ── BR: Ring cx=445, cy=280, r=22 ── */}
