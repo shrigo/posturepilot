@@ -127,10 +127,10 @@ export default function ShieldViz(){
         line1Ref.current.style.opacity=`${s1.op}`;
       }
 
-      // Dots appear when drawn arc length reaches their position
+      // Dots fade with the line — same opacity during fade-out
       DOT_AT.forEach((threshold,i)=>{
-        const v1 = p1 >= threshold && p1 <= FE ? '1':'0';
-        if(dot1Refs.current[i]) dot1Refs.current[i]!.style.opacity = v1;
+        const dotOp = (p1 >= threshold && p1 <= FE) ? s1.op : 0;
+        if(dot1Refs.current[i]) dot1Refs.current[i]!.style.opacity = `${dotOp}`;
       });
 
       setLineVisible(p1 >= DS && p1 <= FE);
