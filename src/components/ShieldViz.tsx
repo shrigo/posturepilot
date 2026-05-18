@@ -205,19 +205,7 @@ export default function ShieldViz(){
         }
       }
 
-      // % counter — interpolates current risk value
-      const p = PATTERNS[patIdxRef.current];
-      if(progress >= DS && progress <= DE){
-        const f = (progress-DS)/(DE-DS);
-        const pos = f*(p.length-1);
-        const i = Math.min(Math.floor(pos), p.length-2);
-        const y = p[i]+(p[i+1]-p[i])*(pos-i);
-        setPct(Math.max(1,Math.round(Math.abs((p[0]-y)/p[0]*100))));
-        setPctGood(y < p[0]);
-      } else {
-        setPct(Math.max(1,Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100))));
-        setPctGood(p[p.length-1] < p[0]);
-      }
+      // % counter now fully RAF-driven via pctTextRef — nothing to do here
     },200);
     return ()=> clearInterval(iv);
   },[]);
