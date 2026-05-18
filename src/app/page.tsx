@@ -47,10 +47,16 @@ export default function Page() {
           .nav-links{display:none!important;}
           .nav-signin{display:none!important;}
           .hamburger{display:flex!important;}
-          .hero-grid{grid-template-columns:1fr!important;}
-          .shield-wrap{display:none!important;}
-          .hero-btns{flex-direction:column!important;}
-          .hero-btns a{text-align:center!important;}
+          /* Hero */
+          .hero-grid{grid-template-columns:1fr!important;text-align:center;}
+          .hero-grid p{margin-left:auto!important;margin-right:auto!important;}
+          .shield-wrap{justify-content:center!important;}
+          .shield-wrap svg{width:100%!important;max-width:400px!important;height:auto!important;margin:0 auto;}
+          .hero-btns{flex-direction:column!important;align-items:center!important;}
+          .hero-btns a{text-align:center!important;width:100%!important;}
+          .hero-stats{justify-content:center!important;gap:2rem!important;}
+          /* Sections */
+          section{padding-left:1rem!important;padding-right:1rem!important;}
           .config-grid{grid-template-columns:repeat(2,1fr)!important;}
           .monitor-inner{grid-template-columns:1fr!important;}
           .monitor-sidebar{display:none!important;}
@@ -65,8 +71,7 @@ export default function Page() {
           .secure-tiles{grid-template-columns:1fr!important;}
           .pricing-grid{grid-template-columns:1fr!important;}
           .pricing-grid>div{transform:none!important;}
-          .trusted-banner{gap:1rem!important;padding:0.875rem 1rem!important;}
-          .hero-stats{gap:1.5rem!important;}
+          .trusted-banner{gap:0.75rem!important;padding:0.875rem 1rem!important;justify-content:center!important;}
           .funnel-result{gap:0.5rem!important;}
         }
       `}</style>
