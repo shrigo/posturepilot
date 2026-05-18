@@ -15,6 +15,23 @@ function useCountUp(target:number,dur=1600,delay=0){
   return v;
 }
 
+function smoothPath(pts:[number,number][],tension=0.35):string{
+  if(pts.length<2) return '';
+  let d=`M${pts[0][0]},${pts[0][1]}`;
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[Math.max(0,i-1)];
+    const p1=pts[i];
+    const p2=pts[i+1];
+    const p3=pts[Math.min(pts.length-1,i+2)];
+    const cp1x=p1[0]+(p2[0]-p0[0])*tension;
+    const cp1y=p1[1]+(p2[1]-p0[1])*tension;
+    const cp2x=p2[0]-(p3[0]-p1[0])*tension;
+    const cp2y=p2[1]-(p3[1]-p1[1])*tension;
+    d+=` C${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2[0]},${p2[1]}`;
+  }
+  return d;
+}
+
 const XS = [236,264,292,320,348];
 const PATTERNS = [
   [430,418,424,410,400], // risk: gradual improvement  ▼
@@ -50,8 +67,10 @@ export default function ShieldViz(){
   const startTimeRef = useRef(Date.now());
   const patIdxRef = useRef(0);
 
-  const ln  = XS.map((x,i)=>`${x},${ys[i]}`).join(' ');
-  const ln2 = XS.map((x,i)=>`${x},${ys2[i]}`).join(' ');
+  const pts  = XS.map((x,i)=>[x,ys[i]]  as [number,number]);
+  const pts2 = XS.map((x,i)=>[x,ys2[i]] as [number,number]);
+  const lp  = smoothPath(pts);
+  const lp2 = smoothPath(pts2);
   const sym = ys[ys.length-1]<ys[0]?'▼':'▲';
   const val = Math.abs(Math.round((ys[0]-ys[ys.length-1])/ys[0]*100));
   const good = ys[ys.length-1]<ys[0];
@@ -331,32 +350,32 @@ export default function ShieldViz(){
             style={{fontFamily:'Inter,sans-serif'}}>CVE Severity</text>
         </g>
 
-        {/* ── BC: Line chart — draw-in cycle ── */}
+        {/* ── BC: Line chart — smooth bezier curves ── */}
         <g transform="translate(10, -147)">
-          {/* Line 1: 30-Day Risk Trend — solid indigo with dots */}
-          <polyline ref={lineRef} points={ln} fill="none" stroke="url(#lg)" strokeWidth="2.5"
+          {/* Line 1: 30-Day Risk Trend — smooth indigo */}
+          <path ref={lineRef as React.RefObject<SVGPathElement>} d={lp} fill="none" stroke="url(#lg)" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
-            strokeDasharray="125"
+            strokeDasharray="140"
             style={{animation:'lineDrawCycle 12s linear infinite'}}
           />
-          {/* Line 2: Patch Rate — orange, same style */}
-          <polyline points={ln2} fill="none" stroke="#f97316" strokeWidth="2.5"
+          {/* Line 2: Patch Rate — smooth orange */}
+          <path d={lp2} fill="none" stroke="#f97316" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
-            strokeDasharray="125"
+            strokeDasharray="140"
             style={{animation:'lineDrawCycle 12s linear infinite', animationDelay:'0.4s'}}
           />
-          {/* Dots Line 1 — indigo */}
-          {ln.split(' ').map((pt,i)=>{const[x,y]=pt.split(',');return(
-            <circle key={i} cx={+x} cy={+y} r="4" fill="#4f46e5" stroke="white" strokeWidth="1.5"
+          {/* Dots Line 1 — indigo, at data points */}
+          {pts.map(([x,y],i)=>(
+            <circle key={i} cx={x} cy={y} r="4" fill="#4f46e5" stroke="white" strokeWidth="1.5"
               filter="url(#gw)"
               style={{animation:`dot${i} 12s linear infinite`}}/>
-          )})}
-          {/* Dots Line 2 — orange, same delay as line */}
-          {ln2.split(' ').map((pt,i)=>{const[x,y]=pt.split(',');return(
-            <circle key={`p${i}`} cx={+x} cy={+y} r="4" fill="#f97316" stroke="white" strokeWidth="1.5"
+          ))}
+          {/* Dots Line 2 — orange, at data points */}
+          {pts2.map(([x,y],i)=>(
+            <circle key={`p${i}`} cx={x} cy={y} r="4" fill="#f97316" stroke="white" strokeWidth="1.5"
               filter="url(#gw)"
               style={{animation:`dot${i} 12s linear infinite`, animationDelay:'0.4s'}}/>
-          )})}
+          ))}
         </g>
         {/* % label — only visible when line is on screen */}
         {lineVisible && (
