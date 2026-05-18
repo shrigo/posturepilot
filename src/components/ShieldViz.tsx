@@ -37,6 +37,7 @@ export default function ShieldViz(){
   const lineRef = useRef<SVGPolylineElement>(null);
   const [pct,setPct]=useState(7);
   const [pctGood,setPctGood]=useState(true);
+  const [pct2Good,setPct2Good]=useState(false);
   const [dots,setDots]=useState<boolean[]>(Array(12).fill(false));
   const [scan,setScan]=useState(0);
   const [pulse,setPulse]=useState(false);
@@ -105,20 +106,22 @@ export default function ShieldViz(){
 
       const p = PATTERNS[patIdxRef.current];
 
+      const p2 = PATCH_PATTERNS[patIdxRef.current];
+
       if (progress >= DRAW_START && progress <= DRAW_END) {
-        // Line is actively drawing — interpolate current tip y position
         const drawFrac = (progress - DRAW_START) / (DRAW_END - DRAW_START);
         const pointPos = drawFrac * (p.length - 1);
         const i = Math.min(Math.floor(pointPos), p.length - 2);
         const frac = pointPos - i;
-        const currentY = p[i] + (p[i+1] - p[i]) * frac;
-        const changePct = Math.max(1, Math.round(Math.abs((p[0] - currentY) / p[0] * 100)));
-        setPct(changePct);
+        const currentY  = p[i]  + (p[i+1]  - p[i])  * frac;
+        const currentY2 = p2[i] + (p2[i+1] - p2[i]) * frac;
+        setPct(Math.max(1, Math.round(Math.abs((p[0] - currentY) / p[0] * 100))));
         setPctGood(currentY < p[0]);
+        setPct2Good(currentY2 < p2[0]);
       } else {
-        // Line complete or invisible — show settled final value
         setPct(Math.max(1, Math.abs(Math.round((p[0]-p[p.length-1])/p[0]*100))));
         setPctGood(p[p.length-1] < p[0]);
+        setPct2Good(p2[p2.length-1] < p2[0]);
       }
     }, 200);
 
@@ -349,17 +352,19 @@ export default function ShieldViz(){
           style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>
           {pctGood?'▼':'▲'} {pct}%
         </text>
-        {/* BC bullets — 30-Day Risk (indigo) + Patch Rate (orange) */}
-        <circle cx="235" cy="305" r="3" fill="#4f46e5" opacity="0.9"/>
-        <text x="241" y="308" fontSize="9" fill="#4f46e5" fontWeight="700"
-          style={{fontFamily:'Inter,sans-serif'}}>30-Day</text>
-        <text x="241" y="318" fontSize="9" fill="#4f46e5" fontWeight="600" opacity="0.7"
-          style={{fontFamily:'Inter,sans-serif'}}>Risk</text>
-        <circle cx="350" cy="305" r="3" fill="#f97316" opacity="0.9"/>
-        <text x="356" y="308" fontSize="9" fill="#f97316" fontWeight="700"
-          style={{fontFamily:'Inter,sans-serif'}}>Patch</text>
-        <text x="356" y="318" fontSize="9" fill="#f97316" fontWeight="600" opacity="0.7"
-          style={{fontFamily:'Inter,sans-serif'}}>Rate</text>
+        {/* BC bullets — color reacts to each line's live direction */}
+        <circle cx="235" cy="305" r="3" fill={pctGood?'#16a34a':'#ef4444'} opacity="0.9"
+          style={{transition:'fill 0.6s ease'}}/>
+        <text x="241" y="308" fontSize="9" fill={pctGood?'#16a34a':'#ef4444'} fontWeight="700"
+          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>30-Day</text>
+        <text x="241" y="318" fontSize="9" fill={pctGood?'#16a34a':'#ef4444'} fontWeight="600" opacity="0.7"
+          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>Risk</text>
+        <circle cx="350" cy="305" r="3" fill={pct2Good?'#16a34a':'#ef4444'} opacity="0.9"
+          style={{transition:'fill 0.6s ease'}}/>
+        <text x="356" y="308" fontSize="9" fill={pct2Good?'#16a34a':'#ef4444'} fontWeight="700"
+          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>Patch</text>
+        <text x="356" y="318" fontSize="9" fill={pct2Good?'#16a34a':'#ef4444'} fontWeight="600" opacity="0.7"
+          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>Rate</text>
 
         {/* ── BR: Ring cx=445, cy=280, r=22 ── */}
         <circle cx="445" cy="280" r="22" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="6"/>
