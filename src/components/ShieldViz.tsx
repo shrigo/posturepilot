@@ -216,11 +216,9 @@ export default function ShieldViz(){
               88%  { stroke-dashoffset: 0;   opacity: 0; }
               100% { stroke-dashoffset: 125; opacity: 0; }
             }
-            @keyframes dot0 { 0%{opacity:0} 1%{opacity:0}  3%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
-            @keyframes dot1 { 0%{opacity:0} 7%{opacity:0}  9%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
-            @keyframes dot2 { 0%{opacity:0} 14%{opacity:0} 16%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
-            @keyframes dot3 { 0%{opacity:0} 24%{opacity:0} 26%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
-            @keyframes dot4 { 0%{opacity:0} 34%{opacity:0} 36%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
+            @keyframes dot0 { 0%{opacity:0} 5%{opacity:0}  8%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
+            @keyframes dot2 { 0%{opacity:0} 21%{opacity:0} 24%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
+            @keyframes dot4 { 0%{opacity:0} 38%{opacity:0} 41%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
             @keyframes pctFade { 0%{opacity:0} 42%{opacity:0} 45%{opacity:1} 72%{opacity:1} 86%{opacity:0} 100%{opacity:0} }
           `}</style>
         </defs>
@@ -364,17 +362,17 @@ export default function ShieldViz(){
             strokeDasharray="140"
             style={{animation:'lineDrawCycle 12s linear infinite', animationDelay:'0.4s'}}
           />
-          {/* Dots Line 1 — indigo, at data points */}
-          {pts.map(([x,y],i)=>(
-            <circle key={i} cx={x} cy={y} r="4" fill="#4f46e5" stroke="white" strokeWidth="1.5"
+          {/* Dots Line 1 — 3 dots: start, mid, end */}
+          {[0,2,4].map(i=>(
+            <circle key={i} cx={pts[i][0]} cy={pts[i][1]} r="3.5" fill="#4f46e5" stroke="white" strokeWidth="1.5"
               filter="url(#gw)"
-              style={{animation:`dot${i} 12s linear infinite`}}/>
+              style={{animation:`dot${i} 12s linear infinite`, transition:'opacity 0.3s ease'}}/>
           ))}
-          {/* Dots Line 2 — orange, at data points */}
-          {pts2.map(([x,y],i)=>(
-            <circle key={`p${i}`} cx={x} cy={y} r="4" fill="#f97316" stroke="white" strokeWidth="1.5"
+          {/* Dots Line 2 — 3 dots: start, mid, end */}
+          {[0,2,4].map(i=>(
+            <circle key={`p${i}`} cx={pts2[i][0]} cy={pts2[i][1]} r="3.5" fill="#f97316" stroke="white" strokeWidth="1.5"
               filter="url(#gw)"
-              style={{animation:`dot${i} 12s linear infinite`, animationDelay:'0.4s'}}/>
+              style={{animation:`dot${i} 12s linear infinite`, animationDelay:'0.4s', transition:'opacity 0.3s ease'}}/>
           ))}
         </g>
         {/* % label — only visible when line is on screen */}
