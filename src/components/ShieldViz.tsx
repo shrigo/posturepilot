@@ -38,6 +38,7 @@ export default function ShieldViz(){
   const [pct,setPct]=useState(7);
   const [pctGood,setPctGood]=useState(true);
   const [pct2Good,setPct2Good]=useState(false);
+  const [lineVisible,setLineVisible]=useState(false);
   const [dots,setDots]=useState<boolean[]>(Array(12).fill(false));
   const [scan,setScan]=useState(0);
   const [pulse,setPulse]=useState(false);
@@ -106,6 +107,9 @@ export default function ShieldViz(){
           setPatIdx(newPatIdx);
         }
       }
+
+      // Show/hide % label based on whether line is on screen
+      setLineVisible(progress >= DRAW_START && progress <= INVISIBLE);
 
       const p  = PATTERNS[patIdxRef.current];
       const p2 = PATCH_PATTERNS[patIdxRef.current];
@@ -348,12 +352,14 @@ export default function ShieldViz(){
               style={{animation:`dot${i} 12s linear infinite`, animationDelay:'0.4s'}}/>
           )})}
         </g>
-        {/* % label — always visible, updates every 12s */}
+        {/* % label — only visible when line is on screen */}
+        {lineVisible && (
         <text x="393" y="244" textAnchor="end" fontSize="8" fontWeight="800"
           fill={pctGood?'#16a34a':'#ef4444'}
           style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>
           {pctGood?'▼':'▲'} {pct}%
         </text>
+        )}
         {/* BC bullets — color reacts to each line's live direction */}
         <circle cx="235" cy="305" r="3" fill={pctGood?'#16a34a':'#ef4444'} opacity="0.9"
           style={{transition:'fill 0.6s ease'}}/>
