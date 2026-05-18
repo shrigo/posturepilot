@@ -324,11 +324,10 @@ export default function ShieldViz(){
             strokeDasharray="125"
             style={{animation:'lineDrawCycle 12s linear infinite'}}
           />
-          {/* Line 2: Patch Rate — dashed violet, inversely correlated */}
-          <polyline points={ln2} fill="none" stroke="#7c3aed" strokeWidth="1.8"
-            strokeLinecap="round" strokeLinejoin="round"
+          {/* Line 2: Patch Rate — same style as risk, violet */}
+          <polyline points={ln2} fill="none" stroke="#7c3aed" strokeWidth="2.5"
+            strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
             strokeDasharray="125"
-            opacity="0.75"
             style={{animation:'lineDrawCycle 12s linear infinite', animationDelay:'0.4s'}}
           />
           {ln.split(' ').map((pt,i)=>{const[x,y]=pt.split(',');return(
