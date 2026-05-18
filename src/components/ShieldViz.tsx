@@ -60,6 +60,8 @@ export default function ShieldViz(){
   const rafStartRef = useRef(0);
   const lineVisibleRef = useRef(false);
   const pctTextRef = useRef<SVGTextElement>(null);
+  const len1Ref = useRef(140);
+  const len2Ref = useRef(140);
   const [dots,setDots]=useState<boolean[]>(Array(12).fill(false));
   const [scan,setScan]=useState(0);
   const [pulse,setPulse]=useState(false);
@@ -73,8 +75,26 @@ export default function ShieldViz(){
 
   const pts  = XS.map((x,i)=>[x,ys[i]]  as [number,number]);
   const pts2 = XS.map((x,i)=>[x,ys2[i]] as [number,number]);
-  const lp  = smoothPath(pts);
-  const lp2 = smoothPath(pts2);
+  const lp   = smoothPath(pts);
+  const lp2  = smoothPath(pts2);
+
+  // Cache path lengths — recompute only when path changes, not every RAF frame
+  useEffect(()=>{
+    if(line1Ref.current){
+      const l = line1Ref.current.getTotalLength();
+      len1Ref.current = l;
+      line1Ref.current.style.strokeDasharray = `${l}`;
+      line1Ref.current.style.strokeDashoffset = `${l}`;
+    }
+  },[lp]);
+  useEffect(()=>{
+    if(line2Ref.current){
+      const l = line2Ref.current.getTotalLength();
+      len2Ref.current = l;
+      line2Ref.current.style.strokeDasharray = `${l}`;
+      line2Ref.current.style.strokeDashoffset = `${l}`;
+    }
+  },[lp2]);
   const sym = ys[ys.length-1]<ys[0]?'▼':'▲';
   const val = Math.abs(Math.round((ys[0]-ys[ys.length-1])/ys[0]*100));
   const good = ys[ys.length-1]<ys[0];
@@ -135,21 +155,19 @@ export default function ShieldViz(){
         : p1 <= FE ? 1-(p1-HE)/(FE-HE)
         : 0;
 
-      const len1 = line1Ref.current?.getTotalLength() ?? DASH;
-      const len2 = line2Ref.current?.getTotalLength() ?? DASH;
+      const len1 = len1Ref.current;
+      const len2 = len2Ref.current;
 
-      // Line 1 draw progress (dashoffset) + shared fade opacity
+      // Line 1
       const dash1 = p1 < DS ? len1 : p1 <= DE ? len1*(1-(p1-DS)/(DE-DS)) : 0;
       if(line1Ref.current){
-        line1Ref.current.style.strokeDasharray=`${len1}`;
         line1Ref.current.style.strokeDashoffset=`${dash1}`;
         line1Ref.current.style.opacity=`${p1>=DS ? sharedOp : 0}`;
       }
 
-      // Line 2 draw progress (dashoffset) + same shared fade opacity
+      // Line 2
       const dash2 = p2 < DS ? len2 : p2 <= DE ? len2*(1-(p2-DS)/(DE-DS)) : 0;
       if(line2Ref.current){
-        line2Ref.current.style.strokeDasharray=`${len2}`;
         line2Ref.current.style.strokeDashoffset=`${dash2}`;
         line2Ref.current.style.opacity=`${p2>=DS ? sharedOp : 0}`;
       }
