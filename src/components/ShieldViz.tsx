@@ -360,19 +360,17 @@ export default function ShieldViz(){
           {pctGood?'▼':'▲'} {pct}%
         </text>
         )}
-        {/* BC bullets — color reacts to each line's live direction */}
-        <circle cx="235" cy="305" r="3" fill={pctGood?'#16a34a':'#ef4444'} opacity="0.9"
-          style={{transition:'fill 0.6s ease'}}/>
-        <text x="241" y="308" fontSize="9" fill={pctGood?'#16a34a':'#ef4444'} fontWeight="700"
-          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>30-Day</text>
-        <text x="241" y="318" fontSize="9" fill={pctGood?'#16a34a':'#ef4444'} fontWeight="600" opacity="0.7"
-          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>Risk</text>
-        <circle cx="350" cy="305" r="3" fill={pct2Good?'#16a34a':'#ef4444'} opacity="0.9"
-          style={{transition:'fill 0.6s ease'}}/>
-        <text x="356" y="308" fontSize="9" fill={pct2Good?'#16a34a':'#ef4444'} fontWeight="700"
-          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>Patch</text>
-        <text x="356" y="318" fontSize="9" fill={pct2Good?'#16a34a':'#ef4444'} fontWeight="600" opacity="0.7"
-          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>Rate</text>
+        {/* BC bullets — colors match their lines */}
+        <circle cx="235" cy="305" r="3" fill="#4f46e5" opacity="0.9"/>
+        <text x="241" y="308" fontSize="9" fill="#4f46e5" fontWeight="700"
+          style={{fontFamily:'Inter,sans-serif'}}>30-Day</text>
+        <text x="241" y="318" fontSize="9" fill="#4f46e5" fontWeight="600" opacity="0.7"
+          style={{fontFamily:'Inter,sans-serif'}}>Risk</text>
+        <circle cx="350" cy="305" r="3" fill="#f97316" opacity="0.9"/>
+        <text x="356" y="308" fontSize="9" fill="#f97316" fontWeight="700"
+          style={{fontFamily:'Inter,sans-serif'}}>Patch</text>
+        <text x="356" y="318" fontSize="9" fill="#f97316" fontWeight="600" opacity="0.7"
+          style={{fontFamily:'Inter,sans-serif'}}>Rate</text>
 
         {/* ── BR: Ring cx=445, cy=280, r=22 ── */}
         <circle cx="445" cy="280" r="22" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="6"/>
