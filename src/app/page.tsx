@@ -25,6 +25,7 @@ const PLANS = [
 
 export default function Page() {
   const [tab,setTab]=useState("Monitor");
+  const [menuOpen,setMenuOpen]=useState(false);
   return(
     <div id="top" style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh"}}>
       <style>{`
@@ -37,14 +38,45 @@ export default function Page() {
         .nav-monitor:hover{background:#4f46e5;color:#fff!important;}
         .nav-report:hover{background:#7c3aed;color:#fff!important;}
         .nav-secure:hover{background:#16a34a;color:#fff!important;}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
+        .hamburger span{display:block;width:22px;height:2px;background:#0f172a;border-radius:2px;transition:all 0.2s;}
+        .mobile-menu{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e7ff;padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+        .mobile-menu.open{display:flex;}
+        .mobile-menu a{font-size:1rem;font-weight:700;padding:0.6rem 0;border-bottom:1px solid #f1f5f9;text-decoration:none;}
+        @media(max-width:768px){
+          .nav-links{display:none!important;}
+          .nav-signin{display:none!important;}
+          .hamburger{display:flex!important;}
+          .hero-grid{grid-template-columns:1fr!important;}
+          .shield-wrap{display:none!important;}
+          .hero-btns{flex-direction:column!important;}
+          .hero-btns a{text-align:center!important;}
+          .config-grid{grid-template-columns:repeat(2,1fr)!important;}
+          .monitor-inner{grid-template-columns:1fr!important;}
+          .monitor-sidebar{display:none!important;}
+          .monitor-kpi{grid-template-columns:repeat(2,1fr)!important;}
+          .monitor-mid{grid-template-columns:1fr!important;}
+          .monitor-bot{grid-template-columns:1fr!important;}
+          .report-grid{grid-template-columns:1fr!important;}
+          .report-pdf{display:none!important;}
+          .report-stats{grid-template-columns:repeat(2,1fr)!important;}
+          .report-delivery{grid-template-columns:repeat(3,1fr)!important;}
+          .secure-main{grid-template-columns:1fr!important;}
+          .secure-tiles{grid-template-columns:1fr!important;}
+          .pricing-grid{grid-template-columns:1fr!important;}
+          .pricing-grid>div{transform:none!important;}
+          .trusted-banner{gap:1rem!important;padding:0.875rem 1rem!important;}
+          .hero-stats{gap:1.5rem!important;}
+          .funnel-result{gap:0.5rem!important;}
+        }
       `}</style>
 
       {/* NAV */}
-      <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 2.5rem",height:64}}>
+      <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
         <a href="#top" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
           <Image src="/navbarlogoh.jpg" alt="PosturePilot" width={220} height={52} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         </a>
-        <div style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
+        <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Report","Secure"] as const).map((t,i,a)=>(
             <span key={t} style={{display:"flex",alignItems:"center"}}>
               <a href={"#"+t.toLowerCase()} className={`nav-link nav-${t.toLowerCase()}`} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none"}}>{t}</a>
@@ -53,13 +85,27 @@ export default function Page() {
           ))}
         </div>
         <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
-          <Link href="/login" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
+          <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
           <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.875rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
+          <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
+            <span style={{transform:menuOpen?"rotate(45deg) translate(5px,5px)":"none"}}/>
+            <span style={{opacity:menuOpen?0:1}}/>
+            <span style={{transform:menuOpen?"rotate(-45deg) translate(5px,-5px)":"none"}}/>
+          </button>
         </div>
       </nav>
+      {/* Mobile menu */}
+      <div className={`mobile-menu${menuOpen?" open":""}`}>
+        {(["Configure","Monitor","Report","Secure"] as const).map((t,i)=>(
+          <a key={t} href={"#"+t.toLowerCase()} onClick={()=>setMenuOpen(false)}
+            style={{color:i===0?"#1e2d6e":i===1?"#4f46e5":i===2?"#7c3aed":"#16a34a"}}>{t}</a>
+        ))}
+        <Link href="/login" onClick={()=>setMenuOpen(false)} style={{color:"#64748b"}}>Sign in</Link>
+        <Link href="/login" onClick={()=>setMenuOpen(false)} style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",padding:"0.6rem 1rem",borderRadius:8,textAlign:"center",fontWeight:700,textDecoration:"none",marginTop:"0.25rem"}}>Try Free →</Link>
+      </div>
 
       {/* Trusted by banner */}
-      <div style={{background:"linear-gradient(90deg,#1e2d6e,#1e3a8a,#1e2d6e)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+      <div className="trusted-banner" style={{background:"linear-gradient(90deg,#1e2d6e,#1e3a8a,#1e2d6e)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
         <span style={{fontSize:"0.72rem",color:"#fff",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
         {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","CrowdStrike","AWS Security Hub"].map(c=>(
           <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#e2e8f0",whiteSpace:"nowrap",letterSpacing:"0.01em"}}>{c}</span>
@@ -72,7 +118,7 @@ export default function Page() {
         <div style={{position:"absolute",top:"-10%",right:"5%",width:600,height:600,background:"radial-gradient(circle,rgba(79,70,229,0.08) 0%,transparent 70%)",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:"-10%",left:"5%",width:400,height:400,background:"radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%)",pointerEvents:"none"}}/>
 
-        <div style={{maxWidth:1300,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem",alignItems:"center",width:"100%",position:"relative",zIndex:1}}>
+        <div className="hero-grid" style={{maxWidth:1300,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem",alignItems:"center",width:"100%",position:"relative",zIndex:1}}>
 
           {/* LEFT */}
           <div>
@@ -89,12 +135,12 @@ export default function Page() {
               Upload Qualys · Tenable · Nessus scans. Get a board-ready security posture dashboard in 5 minutes — with Triple-Filter Triage built in.
             </p>
 
-            <div style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
+            <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
               <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Start Free Trial →</Link>
               <Link href="/dashboard" style={{background:"#fff",color:"#4f46e5",fontWeight:600,fontSize:"1rem",padding:"0.875rem 1.5rem",borderRadius:10,textDecoration:"none",border:"1px solid #c4b5fd"}}>View Demo</Link>
             </div>
 
-            <div style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
+            <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
               {[["9","Dashboards"],["5 min","First Report"],["80%","Less Reporting"]].map(([v,l])=>(
                 <div key={l}>
                   <div style={{fontSize:"2.25rem",fontWeight:900,background:"linear-gradient(135deg,#4f46e5,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{v}</div>
@@ -114,7 +160,7 @@ export default function Page() {
           </div>
 
           {/* RIGHT — GIF + animated SVG overlay on 6 panel positions */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div className="shield-wrap" style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
             <ShieldViz/>
           </div>
         </div>
@@ -137,7 +183,7 @@ export default function Page() {
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Works with your existing scanner stack</h2>
             <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>No rip-and-replace. Connect in minutes via upload, API, or webhook.</p>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1.25rem",width:"100%"}}>
+          <div className="config-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1.25rem",width:"100%"}}>
             {[
               {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",  logoSize:108, methods:["Upload","API"]},
               {name:"Tenable.io",     c:"#1e2a38", initials:"Te",  logoUrl:"/logos/tenable.png",                                  logoSize:108, methods:["Upload","API"]},
@@ -211,9 +257,8 @@ export default function Page() {
               </div>
             </div>
 
-            <div style={{display:"grid",gridTemplateColumns:"180px 1fr",minHeight:560}}>
-              {/* Mini sidebar */}
-              <div style={{background:"#f8fafc",padding:"0.875rem 0",borderRight:"1px solid #e2e8f0"}}>
+            <div className="monitor-inner" style={{display:"grid",gridTemplateColumns:"180px 1fr",minHeight:560}}>
+              <div className="monitor-sidebar" style={{background:"#f8fafc",padding:"0.875rem 0",borderRight:"1px solid #e2e8f0"}}>
                 {[
                   {icon:"🏠",label:"Overview",active:false},
                   {icon:"🛡️",label:"Cyber Posture",active:true,badge:"3"},
@@ -241,7 +286,7 @@ export default function Page() {
               <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"0.875rem",overflow:"hidden"}}>
 
                 {/* KPI row */}
-                <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.625rem"}}>
+                <div className="monitor-kpi" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.625rem"}}>
                   {[
                     {label:"Risk Score",val:"74",unit:"/100",c:"#818cf8",trend:"↑2"},
                     {label:"Open Criticals",val:"23",unit:"CVEs",c:"#f87171",trend:"↓5"},
@@ -257,7 +302,7 @@ export default function Page() {
                 </div>
 
                 {/* Middle row: severity bars + live alerts */}
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.625rem"}}>
+                <div className="monitor-mid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.625rem"}}>
                   {/* Severity breakdown */}
                   <div style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.875rem"}}>
                     <div style={{fontSize:"0.65rem",fontWeight:700,color:"#475569",marginBottom:"0.625rem"}}>📊 Findings by Severity</div>
@@ -293,7 +338,7 @@ export default function Page() {
                 </div>
 
                 {/* Bottom row: dashboard tiles + tools */}
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"0.625rem"}}>
+                <div className="monitor-bot" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"0.625rem"}}>
                   {/* Dashboard mini tiles */}
                   {[
                     {icon:"☁️",label:"Cloud Security",val:"47 findings",sub:"3 misconfigs",c:"#60a5fa"},
@@ -340,7 +385,7 @@ export default function Page() {
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Board-ready reports in one click</h2>
             <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>From executive PDF to compliance mapping — auto-generated, white-labeled, delivered to your stakeholders.</p>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 360px",gap:"1.5rem",marginBottom:"1.25rem"}}>
+          <div className="report-grid" style={{display:"grid",gridTemplateColumns:"1fr 360px",gap:"1.5rem",marginBottom:"1.25rem"}}>
             <div style={{display:"flex",flexDirection:"column",gap:"0.875rem"}}>
               {[
                 {icon:"📊",title:"Executive Summary",c:"#4f46e5",audience:"CISO · Board · CXO",time:"~8 sec",
@@ -383,7 +428,7 @@ export default function Page() {
                 </div>
               ))}
             </div>
-            <div>
+            <div className="report-pdf">
               <div style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,overflow:"hidden",boxShadow:"0 8px 32px rgba(0,0,0,0.1)",position:"sticky",top:80}}>
                 {/* PDF Header */}
                 <div style={{background:"linear-gradient(135deg,#1e2d6e,#4f46e5)",padding:"1rem 1.125rem"}}>
@@ -489,7 +534,7 @@ export default function Page() {
           </div>
           <div style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.1rem 1.5rem",marginBottom:"1rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#475569",marginBottom:"0.875rem",textTransform:"uppercase",letterSpacing:"0.08em"}}>📬 Delivery Methods</div>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:"0.875rem"}}>
+            <div className="report-delivery" style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:"0.875rem"}}>
               {[{icon:"📧",l:"Email",d:"Stakeholder list"},{icon:"💬",l:"Slack",d:"#security channel"},{icon:"⏰",l:"Scheduled",d:"Daily/Weekly/Monthly"},{icon:"📱",l:"Webhook",d:"JIRA · ServiceNow"},{icon:"🌐",l:"Portal",d:"Shareable link"},{icon:"🖨️",l:"Print-Ready",d:"A4/Letter PDF"}].map(d=>(
                 <div key={d.l} style={{textAlign:"center"}}>
                   <div style={{fontSize:"1.5rem",marginBottom:"0.25rem"}}>{d.icon}</div>
@@ -499,7 +544,7 @@ export default function Page() {
               ))}
             </div>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.875rem"}}>
+          <div className="report-stats" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.875rem"}}>
             {[{v:"8 sec",l:"Avg generation time"},{v:"5+",l:"Compliance frameworks"},{v:"4 types",l:"Report formats"},{v:"6",l:"Delivery channels"}].map(s=>(
               <div key={s.l} style={{textAlign:"center",background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
                 <div style={{fontSize:"1.5rem",fontWeight:900,color:"#7c3aed"}}>{s.v}</div>
@@ -518,7 +563,7 @@ export default function Page() {
             <p style={{color:"#bbf7d0",marginTop:"0.5rem",fontSize:"0.9rem"}}>Stop drowning in 10,000 findings. Our 3-layer engine surfaces only the ones that need action today.</p>
           </div>
 
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.5rem",marginBottom:"1.5rem"}}>
+          <div className="secure-main" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.5rem",marginBottom:"1.5rem"}}>
 
             {/* Left: Filter funnel */}
             <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
@@ -559,7 +604,7 @@ export default function Page() {
             </div>
 
             {/* Right: 6 mini dashboard tiles with bar graphs */}
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem",alignContent:"start"}}>
+            <div className="secure-tiles" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem",alignContent:"start"}}>
               {[
                 {title:"Vuln Reduction",icon:"📉",c:"#16a34a",note:"99.6% noise cut",
                   bars:[{l:"Raw (10K)",v:100,n:"10K"},{l:"After F1",v:25,n:"2.5K"},{l:"After F2",v:8,n:"800"},{l:"Actionable",v:0.5,n:"40"}]},
@@ -597,7 +642,7 @@ export default function Page() {
           </div>
 
           {/* Before → After funnel result */}
-          <div style={{background:"linear-gradient(135deg,#f0fdf4,#dcfce7)",border:"1px solid #86efac",borderRadius:14,padding:"1.1rem 1.75rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"0.75rem",flexWrap:"wrap",textAlign:"center"}}>
+          <div className="funnel-result" style={{background:"linear-gradient(135deg,#f0fdf4,#dcfce7)",border:"1px solid #86efac",borderRadius:14,padding:"1.1rem 1.75rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"0.75rem",flexWrap:"wrap",textAlign:"center"}}>
             {[{n:"10,000",l:"Raw Findings",c:"#dc2626",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"2,500",l:"After Severity",c:"#ea580c",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"800",l:"Exploitable",c:"#d97706",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"20–50",l:"Action Items",c:"#16a34a",arrow:false}].map((item,i)=>
               item.arrow ? (
                 <span key={i} style={{fontSize:"1.5rem",color:"#86efac",fontWeight:700}}>→</span>
@@ -644,7 +689,7 @@ export default function Page() {
             <h2 style={{fontSize:"2rem",fontWeight:800,letterSpacing:"-0.03em",color:"#0f172a"}}>No six-figure contracts</h2>
             <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.875rem"}}>14-day free trial · No credit card required</p>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"1.25rem"}}>
+          <div className="pricing-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"1.25rem"}}>
             {PLANS.map(p=>(
               <div key={p.name} style={{background:"#fff",border:"1px solid "+(p.pop?p.c+"60":"#e0e7ff"),borderRadius:16,padding:"1.75rem",position:"relative",transform:p.pop?"scale(1.03)":"none",boxShadow:p.pop?"0 8px 40px rgba(79,70,229,0.15)":"0 2px 8px rgba(0,0,0,0.04)"}}>
                 {p.pop&&<div style={{position:"absolute",top:-12,left:"50%",transform:"translateX(-50%)",background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.6rem",fontWeight:800,padding:"3px 14px",borderRadius:20,whiteSpace:"nowrap"}}>MOST POPULAR</div>}
