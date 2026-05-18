@@ -38,16 +38,25 @@ const PATTERNS = [
   [400,412,420,430,438], // risk: upward worsening     ▲
   [430,420,436,412,404], // risk: spike then settle     ▼
 ];
+// Opposite direction to PATTERNS — inversely correlated
+const PATCH_PATTERNS = [
+  [400,412,418,426,434], // patch rate: declining (inverse of risk improving)
+  [438,428,418,410,402], // patch rate: improving (inverse of risk worsening)
+  [404,418,408,428,436], // patch rate: opposite spike
+];
 
 export default function ShieldViz(){
   const [bars,setBars]=useState([0,0,0,0,0]);
   const [d1,setD1]=useState(0);
   const [d2,setD2]=useState(0);
   const [ys,setYs]=useState(PATTERNS[0]);
+  const [ys2,setYs2]=useState(PATCH_PATTERNS[0]);
   const [patIdx,setPatIdx]=useState(0);
   // Line + dot refs for RAF-driven animation
   const line1Ref = useRef<SVGPathElement>(null);
+  const line2Ref = useRef<SVGPathElement>(null);
   const dot1Refs = useRef<(SVGCircleElement|null)[]>([null,null,null]);
+  const dot2Refs = useRef<(SVGCircleElement|null)[]>([null,null,null]);
   const rafStartRef = useRef(0);
   const [pct,setPct]=useState(7);
   const [pctGood,setPctGood]=useState(true);
@@ -63,8 +72,10 @@ export default function ShieldViz(){
   const startTimeRef = useRef(Date.now());
   const patIdxRef = useRef(0);
 
-  const pts = XS.map((x,i)=>[x,ys[i]] as [number,number]);
+  const pts  = XS.map((x,i)=>[x,ys[i]]  as [number,number]);
+  const pts2 = XS.map((x,i)=>[x,ys2[i]] as [number,number]);
   const lp  = smoothPath(pts);
+  const lp2 = smoothPath(pts2);
   const sym = ys[ys.length-1]<ys[0]?'▼':'▲';
   const val = Math.abs(Math.round((ys[0]-ys[ys.length-1])/ys[0]*100));
   const good = ys[ys.length-1]<ys[0];
@@ -117,20 +128,20 @@ export default function ShieldViz(){
       if(!rafStartRef.current) rafStartRef.current = ts;
       const elapsed = ts - rafStartRef.current;
       const p1 = (elapsed % CYCLE) / CYCLE;
-      const p2 = ((elapsed + 400) % CYCLE) / CYCLE; // line2 offset 0.4s
+      const p2 = ((elapsed + 600) % CYCLE) / CYCLE; // line2 starts 0.6s after line1
 
       const len1 = line1Ref.current?.getTotalLength() ?? DASH;
-      const s1 = getState(p1,len1);
-      if(line1Ref.current){
-        line1Ref.current.style.strokeDasharray=`${len1}`;
-        line1Ref.current.style.strokeDashoffset=`${s1.dash}`;
-        line1Ref.current.style.opacity=`${s1.op}`;
-      }
+      const len2 = line2Ref.current?.getTotalLength() ?? DASH;
+      const s1 = getState(p1,len1), s2 = getState(p2,len2);
+      if(line1Ref.current){ line1Ref.current.style.strokeDasharray=`${len1}`; line1Ref.current.style.strokeDashoffset=`${s1.dash}`; line1Ref.current.style.opacity=`${s1.op}`; }
+      if(line2Ref.current){ line2Ref.current.style.strokeDasharray=`${len2}`; line2Ref.current.style.strokeDashoffset=`${s2.dash}`; line2Ref.current.style.opacity=`${s2.op}`; }
 
-      // Dots fade with the line — same opacity during fade-out
+      // Dots fade with their line
       DOT_AT.forEach((threshold,i)=>{
-        const dotOp = (p1 >= threshold && p1 <= FE) ? s1.op : 0;
-        if(dot1Refs.current[i]) dot1Refs.current[i]!.style.opacity = `${dotOp}`;
+        const op1 = (p1 >= threshold && p1 <= FE) ? s1.op : 0;
+        const op2 = (p2 >= threshold && p2 <= FE) ? s2.op : 0;
+        if(dot1Refs.current[i]) dot1Refs.current[i]!.style.opacity = `${op1}`;
+        if(dot2Refs.current[i]) dot2Refs.current[i]!.style.opacity = `${op2}`;
       });
 
       setLineVisible(p1 >= DS && p1 <= FE);
@@ -147,12 +158,12 @@ export default function ShieldViz(){
       const elapsed = Date.now() - startTimeRef.current;
       const progress = (elapsed % CYCLE) / CYCLE;
 
-      // Pattern swap only during invisible phase
-      if(progress >= INV){
+      // Swap only when BOTH lines are fully invisible (p1>=0.93 guarantees p2>=0.88)
+      if(progress >= 0.93){
         const newIdx = Math.floor(elapsed/CYCLE) % PATTERNS.length;
         if(newIdx !== patIdxRef.current){
           patIdxRef.current = newIdx;
-          setYs(PATTERNS[newIdx]); setPatIdx(newIdx);
+          setYs(PATTERNS[newIdx]); setYs2(PATCH_PATTERNS[newIdx]); setPatIdx(newIdx);
         }
       }
 
@@ -365,19 +376,25 @@ export default function ShieldViz(){
             style={{fontFamily:'Inter,sans-serif'}}>CVE Severity</text>
         </g>
 
-        {/* ── BC: Line chart — one clean risk trend line ── */}
+        {/* ── BC: Two lines — Risk (indigo) + Patch Rate (red), RAF driven ── */}
         <g transform="translate(10, -147)">
           <path ref={line1Ref} d={lp} fill="none" stroke="url(#lg)" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
-            strokeDasharray="140" strokeDashoffset="140"
-            style={{opacity:0}}
-          />
+            strokeDasharray="140" strokeDashoffset="140" style={{opacity:0}}/>
+          <path ref={line2Ref} d={lp2} fill="none" stroke="#ef4444" strokeWidth="2.5"
+            strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
+            strokeDasharray="140" strokeDashoffset="140" style={{opacity:0}}/>
           {[0,2,4].map((idx,i)=>(
-            <circle key={idx}
-              ref={el=>{ dot1Refs.current[i]=el; }}
+            <circle key={idx} ref={el=>{ dot1Refs.current[i]=el; }}
               cx={pts[idx][0]} cy={pts[idx][1]} r="3.5"
               fill="#4f46e5" stroke="white" strokeWidth="1.5" filter="url(#gw)"
-              style={{opacity:0, transition:'opacity 0.35s ease'}}/>
+              style={{opacity:0}}/>
+          ))}
+          {[0,2,4].map((idx,i)=>(
+            <circle key={`p${idx}`} ref={el=>{ dot2Refs.current[i]=el; }}
+              cx={pts2[idx][0]} cy={pts2[idx][1]} r="3.5"
+              fill="#ef4444" stroke="white" strokeWidth="1.5" filter="url(#gw)"
+              style={{opacity:0}}/>
           ))}
         </g>
         {/* % label — only visible when line is on screen */}
@@ -388,12 +405,17 @@ export default function ShieldViz(){
           {pctGood?'▼':'▲'} {pct}%
         </text>
         )}
-        {/* BC bullet — single 30-Day Trend */}
-        <circle cx="288" cy="305" r="3" fill="#4f46e5" opacity="0.9"/>
-        <text x="294" y="308" fontSize="9" fill="#4f46e5" fontWeight="700"
+        {/* BC bullets — indigo=Risk, red=Patch Rate */}
+        <circle cx="235" cy="305" r="3" fill="#4f46e5" opacity="0.9"/>
+        <text x="241" y="308" fontSize="9" fill="#4f46e5" fontWeight="700"
           style={{fontFamily:'Inter,sans-serif'}}>30-Day</text>
-        <text x="294" y="318" fontSize="9" fill="#4f46e5" fontWeight="600" opacity="0.7"
-          style={{fontFamily:'Inter,sans-serif'}}>Risk Trend</text>
+        <text x="241" y="318" fontSize="9" fill="#4f46e5" fontWeight="600" opacity="0.7"
+          style={{fontFamily:'Inter,sans-serif'}}>Risk</text>
+        <circle cx="350" cy="305" r="3" fill="#ef4444" opacity="0.9"/>
+        <text x="356" y="308" fontSize="9" fill="#ef4444" fontWeight="700"
+          style={{fontFamily:'Inter,sans-serif'}}>Patch</text>
+        <text x="356" y="318" fontSize="9" fill="#ef4444" fontWeight="600" opacity="0.7"
+          style={{fontFamily:'Inter,sans-serif'}}>Rate</text>
 
         {/* ── BR: Ring cx=445, cy=280, r=22 ── */}
         <circle cx="445" cy="280" r="22" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="6"/>
