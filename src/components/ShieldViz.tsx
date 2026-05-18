@@ -59,9 +59,7 @@ export default function ShieldViz(){
   const dot2Refs = useRef<(SVGCircleElement|null)[]>([null,null,null]);
   const rafStartRef = useRef(0);
   const lineVisibleRef = useRef(false);
-  const [pct,setPct]=useState(7);
-  const [pctGood,setPctGood]=useState(true);
-  const [lineVisible,setLineVisible]=useState(false);
+  const pctTextRef = useRef<SVGTextElement>(null);
   const [dots,setDots]=useState<boolean[]>(Array(12).fill(false));
   const [scan,setScan]=useState(0);
   const [pulse,setPulse]=useState(false);
@@ -162,11 +160,28 @@ export default function ShieldViz(){
         if(dot2Refs.current[i]) dot2Refs.current[i]!.style.opacity=`${p2>=threshold ? sharedOp : 0}`;
       });
 
-      // % counter visibility — same shared timing
-      const nowVisible = sharedOp > 0 && p1 >= DE;
-      if(nowVisible !== lineVisibleRef.current){
-        lineVisibleRef.current = nowVisible;
-        setLineVisible(nowVisible);
+      // % label — follows indigo line tip, all RAF-driven
+      const pat = PATTERNS[patIdxRef.current];
+      let tipX = XS[4] + 10 + 6; // default: end of line
+      let tipY = pat[4] - 147 - 8;
+      let pctVal = Math.max(1,Math.abs(Math.round((pat[0]-pat[pat.length-1])/pat[0]*100)));
+      let pctGood = pat[pat.length-1] < pat[0];
+      if(p1 >= DS && p1 <= DE){
+        const f=(p1-DS)/(DE-DS), pos=f*(XS.length-1);
+        const idx=Math.min(Math.floor(pos),XS.length-2), fr=pos-idx;
+        tipX = XS[idx]+(XS[idx+1]-XS[idx])*fr + 10 + 6;
+        tipY = pat[idx]+(pat[idx+1]-pat[idx])*fr - 147 - 8;
+        const y = pat[idx]+(pat[idx+1]-pat[idx])*fr;
+        pctVal = Math.max(1,Math.round(Math.abs((pat[0]-y)/pat[0]*100)));
+        pctGood = y < pat[0];
+      }
+      if(pctTextRef.current){
+        const show = sharedOp > 0 && p1 >= DS;
+        pctTextRef.current.setAttribute('x',`${tipX}`);
+        pctTextRef.current.setAttribute('y',`${tipY}`);
+        pctTextRef.current.textContent = `${pctGood?'▼':'▲'} ${pctVal}%`;
+        pctTextRef.current.style.fill = pctGood?'#16a34a':'#ef4444';
+        pctTextRef.current.style.opacity = show?`${sharedOp}`:'0';
       }
       rafId = requestAnimationFrame(tick);
     };
@@ -422,14 +437,9 @@ export default function ShieldViz(){
               style={{opacity:0}}/>
           ))}
         </g>
-        {/* % label — only visible when line is on screen */}
-        {lineVisible && (
-        <text x="393" y="244" textAnchor="end" fontSize="8" fontWeight="800"
-          fill={pctGood?'#16a34a':'#ef4444'}
-          style={{fontFamily:'Inter,sans-serif',transition:'fill 0.6s ease'}}>
-          {pctGood?'▼':'▲'} {pct}%
-        </text>
-        )}
+        {/* % label — follows indigo line tip, RAF-driven */}
+        <text ref={pctTextRef} fontSize="8" fontWeight="800" textAnchor="start"
+          style={{fontFamily:'Inter,sans-serif',opacity:0}}/>
         {/* BC bullets — indigo=Risk, red=Patch Rate */}
         <circle cx="235" cy="305" r="3" fill="#4f46e5" opacity="0.9"/>
         <text x="241" y="308" fontSize="9" fill="#4f46e5" fontWeight="700"
