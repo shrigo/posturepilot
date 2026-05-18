@@ -87,25 +87,27 @@ export default function ShieldViz(){
   // Live-track the line as it draws — pct fluctuates with the line movement
   useEffect(()=>{
     const CYCLE = 12000;
-    const DRAW_START = 0.05; // when line starts drawing
-    const DRAW_END   = 0.42; // when line finishes drawing
+    const DRAW_START = 0.05;
+    const DRAW_END   = 0.42;
+    const INVISIBLE  = 0.88; // line fades out after this point
 
     const iv = setInterval(()=>{
       const elapsed = Date.now() - startTimeRef.current;
       const cycleElapsed = elapsed % CYCLE;
       const progress = cycleElapsed / CYCLE;
 
-      // Switch pattern at cycle boundary
-      const newPatIdx = Math.floor(elapsed / CYCLE) % PATTERNS.length;
-      if (newPatIdx !== patIdxRef.current) {
-        patIdxRef.current = newPatIdx;
-        setYs(PATTERNS[newPatIdx]);
-        setYs2(PATCH_PATTERNS[newPatIdx]);
-        setPatIdx(newPatIdx);
+      // Only swap pattern while line is invisible — prevents visual jump
+      if (progress >= INVISIBLE) {
+        const newPatIdx = Math.floor(elapsed / CYCLE) % PATTERNS.length;
+        if (newPatIdx !== patIdxRef.current) {
+          patIdxRef.current = newPatIdx;
+          setYs(PATTERNS[newPatIdx]);
+          setYs2(PATCH_PATTERNS[newPatIdx]);
+          setPatIdx(newPatIdx);
+        }
       }
 
-      const p = PATTERNS[patIdxRef.current];
-
+      const p  = PATTERNS[patIdxRef.current];
       const p2 = PATCH_PATTERNS[patIdxRef.current];
 
       if (progress >= DRAW_START && progress <= DRAW_END) {
