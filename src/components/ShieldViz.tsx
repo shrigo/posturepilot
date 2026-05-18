@@ -58,6 +58,7 @@ export default function ShieldViz(){
   const dot1Refs = useRef<(SVGCircleElement|null)[]>([null,null,null]);
   const dot2Refs = useRef<(SVGCircleElement|null)[]>([null,null,null]);
   const rafStartRef = useRef(0);
+  const lineVisibleRef = useRef(false);
   const [pct,setPct]=useState(7);
   const [pctGood,setPctGood]=useState(true);
   const [lineVisible,setLineVisible]=useState(false);
@@ -144,7 +145,12 @@ export default function ShieldViz(){
         if(dot2Refs.current[i]) dot2Refs.current[i]!.style.opacity = `${op2}`;
       });
 
-      setLineVisible(p1 >= DS && p1 <= FE);
+      // Only update React state when visibility changes — avoids 60fps re-renders
+      const nowVisible = p1 >= DS && p1 <= FE;
+      if(nowVisible !== lineVisibleRef.current){
+        lineVisibleRef.current = nowVisible;
+        setLineVisible(nowVisible);
+      }
       rafId = requestAnimationFrame(tick);
     };
     rafId = requestAnimationFrame(tick);
@@ -380,10 +386,12 @@ export default function ShieldViz(){
         <g transform="translate(10, -147)">
           <path ref={line1Ref} d={lp} fill="none" stroke="url(#lg)" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
-            strokeDasharray="140" strokeDashoffset="140" style={{opacity:0}}/>
+            strokeDasharray="140" strokeDashoffset="140"
+            style={{opacity:0, willChange:'opacity'}}/>
           <path ref={line2Ref} d={lp2} fill="none" stroke="#ef4444" strokeWidth="2.5"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
-            strokeDasharray="140" strokeDashoffset="140" style={{opacity:0}}/>
+            strokeDasharray="140" strokeDashoffset="140"
+            style={{opacity:0, willChange:'opacity'}}/>
           {[0,2,4].map((idx,i)=>(
             <circle key={idx} ref={el=>{ dot1Refs.current[i]=el; }}
               cx={pts[idx][0]} cy={pts[idx][1]} r="3.5"
