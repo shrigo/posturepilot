@@ -406,15 +406,10 @@ export default function ShieldViz(){
         <g transform="rotate(1, 173, 318)">
           {lb.map((h,i)=>{
             const baseY = 318 - i*2;
-            const minH = Math.min(...lb);
-            const maxH12 = lb[1]>=lb[3];
-            const fill = h===minH ? '#16a34a'
-              : i===1||i===3 ? (maxH12 ? (i===1?'#ef4444':'#f97316') : (i===3?'#ef4444':'#f97316'))
-              : i===2 ? '#eab308'
-              : 'url(#bg)';
+            const BAR_COLORS = ['url(#bg)','#f97316','#eab308','#ef4444','#16a34a'];
             return(
               <rect key={i} x={143+i*12} y={baseY-h*0.87} width="8" height={h*0.87} rx="2"
-                fill={fill} opacity="0.9" filter="url(#gw)"
+                fill={BAR_COLORS[i]} opacity="0.9" filter="url(#gw)"
                 style={{transition:'y 0.65s cubic-bezier(0.4,0,0.2,1),height 0.65s cubic-bezier(0.4,0,0.2,1)'}}/>
             );
           })}
