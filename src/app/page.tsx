@@ -31,6 +31,7 @@ export default function Page() {
       <style>{`
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap");
         *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
+        html,body{overflow-x:hidden;max-width:100%;}
         .hcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,70,229,0.15)!important}
         .hcard{transition:all 0.2s}
         .nav-link{transition:all 0.18s ease;border-radius:8px;padding:0.35rem 0.75rem;}
