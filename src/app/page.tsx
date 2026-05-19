@@ -47,7 +47,7 @@ export default function Page() {
           .nav-links{display:none!important;}
           .nav-signin{display:none!important;}
           .hamburger{display:flex!important;}
-          /* Hero */
+          .mobile-banner{display:none!important;}
           .hero-grid{grid-template-columns:1fr!important;text-align:center;}
           .hero-grid p{margin-left:auto!important;margin-right:auto!important;}
           .shield-wrap{justify-content:center!important;}
@@ -110,7 +110,7 @@ export default function Page() {
       </div>
 
       {/* Trusted by banner */}
-      <div className="trusted-banner" style={{background:"linear-gradient(90deg,#1e2d6e,#1e3a8a,#1e2d6e)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+      <div className="trusted-banner mobile-banner" style={{background:"linear-gradient(90deg,#1e2d6e,#1e3a8a,#1e2d6e)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
         <span style={{fontSize:"0.72rem",color:"#fff",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
         {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","CrowdStrike","AWS Security Hub"].map(c=>(
           <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#e2e8f0",whiteSpace:"nowrap",letterSpacing:"0.01em"}}>{c}</span>
@@ -172,7 +172,7 @@ export default function Page() {
       </section>
 
       {/* Securing Teams At banner */}
-      <div style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed,#6d28d9)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+      <div className="mobile-banner" style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed,#6d28d9)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
         <span style={{fontSize:"0.72rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Securing Teams At</span>
         {["Goldman Sachs","JPMorgan","Deloitte","KPMG","Accenture","Raytheon","Lockheed Martin","CrowdStrike"].map(c=>(
           <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
