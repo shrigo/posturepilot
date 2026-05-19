@@ -85,7 +85,7 @@ export default function Page() {
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
         <a href="#top" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
-          <Image src="/hlogotag.jpg" alt="PosturePilot" width={260} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <Image src="/hlogotag.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         </a>
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Report","Secure"] as const).map((t,i,a)=>(
@@ -97,7 +97,7 @@ export default function Page() {
         </div>
         <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
-          <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.875rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
+          <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
           <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
             <span style={{transform:menuOpen?"rotate(45deg) translate(5px,5px)":"none"}}/>
             <span style={{opacity:menuOpen?0:1}}/>
