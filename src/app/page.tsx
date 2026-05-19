@@ -59,8 +59,11 @@ export default function Page() {
           .hero-stats{justify-content:center!important;gap:2rem!important;}
           .hero-section{padding-top:1rem!important;}
           /* Sections */
-          section{padding-left:1rem!important;padding-right:1rem!important;}
-          .config-grid{grid-template-columns:repeat(2,1fr)!important;}
+          section{padding-left:0.875rem!important;padding-right:0.875rem!important;}
+          .config-grid{grid-template-columns:repeat(2,1fr)!important;gap:0.5rem!important;}
+          .config-grid>div{padding:0.875rem 0.625rem 1rem!important;}
+          .config-grid>div>div:first-child{width:72px!important;height:72px!important;margin-bottom:0.625rem!important;}
+          .config-grid img{width:56px!important;height:56px!important;}
           .monitor-inner{grid-template-columns:1fr!important;}
           .monitor-sidebar{display:none!important;}
           .monitor-kpi{grid-template-columns:repeat(2,1fr)!important;}
