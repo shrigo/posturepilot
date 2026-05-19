@@ -85,7 +85,7 @@ export default function Page() {
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
         <a href="#top" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
-          <Image src="/navbarlogoh.jpg" alt="PosturePilot" width={220} height={52} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <Image src="/hlogotag.jpg" alt="PosturePilot" width={220} height={52} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         </a>
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Report","Secure"] as const).map((t,i,a)=>(
