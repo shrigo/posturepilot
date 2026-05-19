@@ -50,8 +50,9 @@ export default function Page() {
           .mobile-banner{display:none!important;}
           .hero-grid{grid-template-columns:1fr!important;text-align:center;}
           .hero-grid p{margin-left:auto!important;margin-right:auto!important;}
-          .shield-wrap{justify-content:center!important;}
+          .shield-wrap{justify-content:center!important;order:1!important;}
           .shield-wrap svg{width:100%!important;max-width:400px!important;height:auto!important;margin:0 auto;}
+          .hero-left{order:2!important;}
           .hero-btns{flex-direction:column!important;align-items:center!important;}
           .hero-btns a{text-align:center!important;width:100%!important;}
           .hero-stats{justify-content:center!important;gap:2rem!important;}
@@ -126,7 +127,7 @@ export default function Page() {
         <div className="hero-grid" style={{maxWidth:1300,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem",alignItems:"center",width:"100%",position:"relative",zIndex:1}}>
 
           {/* LEFT */}
-          <div>
+          <div className="hero-left">
             <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
               <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 9 Security Dashboards
             </div>
