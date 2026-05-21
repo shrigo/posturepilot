@@ -724,8 +724,11 @@ export default function Page() {
       </section>
 
       <footer style={{background:"#0f172a",padding:"2rem 2.5rem",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"1rem"}}>
-        <span style={{fontWeight:800,color:"#f1f5f9"}}>Posture<span style={{color:"#a5b4fc"}}>Pilot</span><span style={{color:"#334155",fontWeight:400,fontSize:"0.75rem"}}> · Configure · Monitor · Report · Secure</span></span>
-        <span style={{fontSize:"0.7rem",color:"#334155"}}>© 2026 PosturePilot · posturepilot.io</span>
+        <div style={{display:"flex",flexDirection:"column",gap:"0.25rem"}}>
+          <Image src="/hlogotag.jpg" alt="PosturePilot" width={180} height={44} style={{objectFit:"contain",objectPosition:"left",mixBlendMode:"screen"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <span style={{color:"#94a3b8",fontWeight:400,fontSize:"0.72rem"}}>Configure · Monitor · Report · Secure</span>
+        </div>
+        <span style={{fontSize:"0.7rem",color:"#f1f5f9"}}>© 2026 PosturePilot · posturepilot.io</span>
       </footer>
     </div>
   );
