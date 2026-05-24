@@ -315,8 +315,8 @@ export default function OverviewPage() {
               </ResponsiveContainer>
               
               {/* Center Stat Overlay */}
-              <div style={{ position: 'absolute', bottom: '22%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
-                <div style={{ fontSize: '2.25rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
+              <div style={{ position: 'absolute', bottom: '18%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
+                <div style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
                   {postureData.score}
                 </div>
                 <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginTop: 4 }}>
