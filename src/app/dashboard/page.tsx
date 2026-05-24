@@ -166,23 +166,111 @@ export default function OverviewPage() {
           </Link>
         </div>
 
-        {/* Core Posture KPI Head-Up Display */}
-        <div style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: 16, padding: '1.5rem 2rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}>
-          <div>
-            <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>Overall Posture Level</div>
-            <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#f8fafc', letterSpacing: '-0.04em', lineHeight: 1 }}>74 <span style={{ fontSize: '1rem', fontWeight: 600, color: '#64748b' }}>/ 100</span></div>
-            <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '0.375rem' }}>↓ 3 pts from last month · <span style={{ color: '#ea580c', fontWeight: 700 }}>Elevated alert state</span></div>
+        {/* Core Posture KPI Head-Up Display (Not just static numbers — fully dynamic visual cards!) */}
+        <div style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: 20, padding: '1.5rem 1.75rem', marginBottom: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'center', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}>
+          <div style={{ flex: '1 1 200px' }}>
+            <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>Overall Posture Level</div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#f8fafc', letterSpacing: '-0.04em', lineHeight: 1 }}>74</div>
+              <div style={{ fontSize: '1rem', fontWeight: 600, color: '#64748b' }}>/ 100</div>
+            </div>
+            <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.375rem' }}>↓ 3 pts from last month · <span style={{ color: '#ea580c', fontWeight: 700 }}>Elevated Risk</span></div>
           </div>
-          <div style={{ display: 'flex', gap: '2rem' }}>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', flex: '3 1 600px' }}>
             {[
-              { label: 'Open Criticals', value: '14', color: '#dc2626' },
-              { label: 'Active Threats', value: '3',  color: '#ea580c' },
-              { label: 'Patch Backlog',  value: '234', color: '#d97706' },
-              { label: 'Monitored Assets', value: '1,247', color: '#3b82f6' },
+              { 
+                label: 'Open Criticals', 
+                value: '14', 
+                color: '#dc2626', 
+                bg: 'rgba(220,38,38,0.12)', 
+                border: 'rgba(220,38,38,0.3)',
+                desc: 'CVSS ≥ 9.0 Active',
+                svg: (
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(220,38,38,0.4))' }}>
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <circle cx="12" cy="11" r="2.5" fill="#dc2626">
+                      <animate attributeName="r" values="1.5;3;1.5" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+                  </svg>
+                )
+              },
+              { 
+                label: 'Active Threats', 
+                value: '3',  
+                color: '#ea580c', 
+                bg: 'rgba(234,88,12,0.12)', 
+                border: 'rgba(234,88,12,0.3)',
+                desc: 'Targeting Financials',
+                svg: (
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" style={{ filter: 'drop-shadow(0 0 4px rgba(234,88,12,0.4))' }}>
+                    <circle cx="12" cy="12" r="9" strokeDasharray="3 3" />
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="3" x2="12" y2="12">
+                      <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite" />
+                    </line>
+                    <circle cx="16" cy="9" r="1.5" fill="#ea580c" />
+                  </svg>
+                )
+              },
+              { 
+                label: 'Patch Backlog',  
+                value: '234', 
+                color: '#d97706', 
+                bg: 'rgba(217,119,6,0.12)', 
+                border: 'rgba(217,119,6,0.3)',
+                desc: '84% SLA Compliant',
+                svg: (
+                  <svg width="26" height="26" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="16" fill="none" stroke="#334155" strokeWidth="3.5" />
+                    <circle cx="18" cy="18" r="16" fill="none" stroke="#d97706" strokeWidth="3.5" strokeDasharray="100" strokeDashoffset="16" strokeLinecap="round" transform="rotate(-90 18 18)" style={{ filter: 'drop-shadow(0 0 3px rgba(217,119,6,0.5))' }} />
+                  </svg>
+                )
+              },
+              { 
+                label: 'Assets Tracked', 
+                value: '1,247', 
+                color: '#3b82f6', 
+                bg: 'rgba(59,130,246,0.12)', 
+                border: 'rgba(59,130,246,0.3)',
+                desc: 'Endpoint Nodes Sync',
+                svg: (
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" style={{ filter: 'drop-shadow(0 0 4px rgba(59,130,246,0.4))' }}>
+                    <rect x="3" y="3" width="6" height="6" rx="1" />
+                    <rect x="15" y="3" width="6" height="6" rx="1" />
+                    <rect x="3" y="15" width="6" height="6" rx="1" />
+                    <rect x="15" y="15" width="6" height="6" rx="1" />
+                    <path d="M9 6h6M6 9v6M18 9v6M9 18h6" strokeDasharray="2 2" />
+                    <circle cx="12" cy="12" r="1.5" fill="#3b82f6">
+                      <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                  </svg>
+                )
+              },
             ].map(s => (
-              <div key={s.label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '1.625rem', fontWeight: 800, color: s.color, letterSpacing: '-0.03em' }}>{s.value}</div>
-                <div style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</div>
+              <div 
+                key={s.label} 
+                style={{ 
+                  background: s.bg, 
+                  border: `1px solid ${s.border}`, 
+                  borderRadius: 12, 
+                  padding: '0.625rem 0.85rem', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '0.75rem',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                <div style={{ flexShrink: 0 }}>
+                  {s.svg}
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#f8fafc', letterSpacing: '-0.03em', lineHeight: 1.1 }}>{s.value}</div>
+                  <div style={{ fontSize: '0.6rem', color: s.color, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: 2 }}>{s.label}</div>
+                  <div style={{ fontSize: '0.55rem', color: '#64748b', fontWeight: 500, marginTop: 1 }}>{s.desc}</div>
+                </div>
               </div>
             ))}
           </div>
