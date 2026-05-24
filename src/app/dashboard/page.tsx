@@ -1,6 +1,5 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { 
   postureData, 
   cloudData, 
@@ -67,7 +66,7 @@ export default function OverviewPage() {
       icon: '☁️', 
       label: 'Cloud Security', 
       color: '#0891b2', 
-      stat: `${cloudData.misconfiguredAssets} misconfigs`, 
+ stat: `${cloudData.misconfiguredAssets} misconfigs`, 
       sub: `${cloudData.totalAssets} assets`, 
       bg: 'linear-gradient(135deg,#ecfeff,#cffafe)',
       progress: cloudData.complianceScore
@@ -148,103 +147,108 @@ export default function OverviewPage() {
     <>
       <div className="page-content animate-in">
 
-        {/* Global Dashboard Subheading Sticky Alert Banner */}
-        <div className="sticky-alert-banner" style={{ background: 'linear-gradient(135deg, #e0f2fe, #f0f9ff)', border: '1px solid #bae6fd', borderRadius: 12, padding: '0.875rem 1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#3b82f6', display: 'inline-block', boxShadow: '0 0 8px #3b82f6' }} />
-            <div>
-              <div style={{ fontWeight: 800, color: '#0369a1', fontSize: '0.9rem' }}>
-                Acme Cybersecurity Command Cockpit — Live Enterprise Posture Sync
-              </div>
-              <div style={{ fontSize: '0.75rem', color: '#0284c7' }}>
-                Active Modules: <span style={{ fontWeight: 800 }}>9 / 9 Online</span> · Last Scan Sync: <span style={{ fontWeight: 800 }}>May 13, 6:42 PM</span> · Monitored Assets: <span style={{ fontWeight: 800 }}>1,247 Nodes</span>
+        {/* Sleek, Space-Saving Overall Posture KPI & Client Command HUD (Reduced height, matching Topbar, no standalone alert space killer needed!) */}
+        <div style={{ 
+          background: 'linear-gradient(135deg, #0f172a, #1e293b)', 
+          borderRadius: 14, 
+          padding: '0.625rem 1.5rem', 
+          marginBottom: '1.25rem', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          flexWrap: 'wrap', 
+          gap: '1rem',
+          border: '1px solid rgba(255,255,255,0.08)', 
+          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+          minHeight: '74px'
+        }}>
+          {/* Left: Acme Client & Overall Posture Score */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+            {/* Pulsing Command Indicator */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+              <span className="hud-pulse" style={{ background: '#3b82f6', width: 8, height: 8, flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 900, color: '#f8fafc', letterSpacing: '-0.01em', lineHeight: 1.1 }}>
+                  Acme Financial Corp
+                </div>
+                <div style={{ fontSize: '0.62rem', color: '#94a3b8', fontWeight: 600 }}>
+                  Telemetry Sync Active ●
+                </div>
               </div>
             </div>
-          </div>
-          <Link href="/dashboard/findings" style={{ fontSize: '0.78rem', fontWeight: 700, color: '#0284c7', textDecoration: 'none', border: '1px solid #bae6fd', padding: '0.375rem 0.875rem', borderRadius: 8 }}>
-            Browse All CVE Findings →
-          </Link>
-        </div>
+            
+            {/* Sleek vertical divider */}
+            <div style={{ width: 1, height: 26, background: 'rgba(255,255,255,0.12)' }} />
 
-        {/* Core Posture KPI Head-Up Display (Not just static numbers — fully dynamic visual cards!) */}
-        <div style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: 20, padding: '1.5rem 1.75rem', marginBottom: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'center', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}>
-          <div style={{ flex: '1 1 200px' }}>
-            <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>Overall Posture Level</div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#f8fafc', letterSpacing: '-0.04em', lineHeight: 1 }}>74</div>
-              <div style={{ fontSize: '1rem', fontWeight: 600, color: '#64748b' }}>/ 100</div>
+            {/* Score HUD Display */}
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', marginRight: 4 }}>Posture Level:</span>
+                <span style={{ fontSize: '1.375rem', fontWeight: 900, color: '#f8fafc', lineHeight: 1 }}>74</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>/100</span>
+                <span style={{ fontSize: '0.65rem', color: '#ea580c', background: 'rgba(234,88,12,0.15)', border: '1px solid rgba(234,88,12,0.3)', borderRadius: 4, padding: '1px 6px', marginLeft: 8, fontWeight: 800 }}>
+                  Elevated Risk
+                </span>
+              </div>
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.375rem' }}>↓ 3 pts from last month · <span style={{ color: '#ea580c', fontWeight: 700 }}>Elevated Risk</span></div>
           </div>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', flex: '3 1 600px' }}>
+
+          {/* Right: Sleek Interactive HUD Cards */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
             {[
               { 
-                label: 'Open Criticals', 
+                label: 'Criticals', 
                 value: '14', 
                 color: '#dc2626', 
                 bg: 'rgba(220,38,38,0.12)', 
-                border: 'rgba(220,38,38,0.3)',
-                desc: 'CVSS ≥ 9.0 Active',
+                border: 'rgba(220,38,38,0.25)',
                 svg: (
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(220,38,38,0.4))' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     <circle cx="12" cy="11" r="2.5" fill="#dc2626">
                       <animate attributeName="r" values="1.5;3;1.5" dur="1.5s" repeatCount="indefinite" />
-                      <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite" />
                     </circle>
                   </svg>
                 )
               },
               { 
-                label: 'Active Threats', 
+                label: 'Threats', 
                 value: '3',  
                 color: '#ea580c', 
                 bg: 'rgba(234,88,12,0.12)', 
-                border: 'rgba(234,88,12,0.3)',
-                desc: 'Targeting Financials',
+                border: 'rgba(234,88,12,0.25)',
                 svg: (
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" style={{ filter: 'drop-shadow(0 0 4px rgba(234,88,12,0.4))' }}>
-                    <circle cx="12" cy="12" r="9" strokeDasharray="3 3" />
-                    <circle cx="12" cy="12" r="5" />
-                    <line x1="12" y1="3" x2="12" y2="12">
-                      <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite" />
-                    </line>
-                    <circle cx="16" cy="9" r="1.5" fill="#ea580c" />
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5">
+                    <circle cx="12" cy="12" r="9" strokeDasharray="2 2" />
+                    <circle cx="12" cy="12" r="4" />
                   </svg>
                 )
               },
               { 
-                label: 'Patch Backlog',  
+                label: 'Backlog',  
                 value: '234', 
                 color: '#d97706', 
                 bg: 'rgba(217,119,6,0.12)', 
-                border: 'rgba(217,119,6,0.3)',
-                desc: '84% SLA Compliant',
+                border: 'rgba(217,119,6,0.25)',
                 svg: (
-                  <svg width="26" height="26" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="16" fill="none" stroke="#334155" strokeWidth="3.5" />
-                    <circle cx="18" cy="18" r="16" fill="none" stroke="#d97706" strokeWidth="3.5" strokeDasharray="100" strokeDashoffset="16" strokeLinecap="round" transform="rotate(-90 18 18)" style={{ filter: 'drop-shadow(0 0 3px rgba(217,119,6,0.5))' }} />
+                  <svg width="18" height="18" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="16" fill="none" stroke="#334155" strokeWidth="4" />
+                    <circle cx="18" cy="18" r="16" fill="none" stroke="#d97706" strokeWidth="4" strokeDasharray="100" strokeDashoffset="16" transform="rotate(-90 18 18)" />
                   </svg>
                 )
               },
               { 
-                label: 'Assets Tracked', 
+                label: 'Assets', 
                 value: '1,247', 
                 color: '#3b82f6', 
                 bg: 'rgba(59,130,246,0.12)', 
-                border: 'rgba(59,130,246,0.3)',
-                desc: 'Endpoint Nodes Sync',
+                border: 'rgba(59,130,246,0.25)',
                 svg: (
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" style={{ filter: 'drop-shadow(0 0 4px rgba(59,130,246,0.4))' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5">
                     <rect x="3" y="3" width="6" height="6" rx="1" />
                     <rect x="15" y="3" width="6" height="6" rx="1" />
                     <rect x="3" y="15" width="6" height="6" rx="1" />
                     <rect x="15" y="15" width="6" height="6" rx="1" />
-                    <path d="M9 6h6M6 9v6M18 9v6M9 18h6" strokeDasharray="2 2" />
-                    <circle cx="12" cy="12" r="1.5" fill="#3b82f6">
-                      <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" />
-                    </circle>
                   </svg>
                 )
               },
@@ -254,22 +258,17 @@ export default function OverviewPage() {
                 style={{ 
                   background: s.bg, 
                   border: `1px solid ${s.border}`, 
-                  borderRadius: 12, 
-                  padding: '0.625rem 0.85rem', 
+                  borderRadius: 8, 
+                  padding: '0.35rem 0.65rem', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  gap: '0.75rem',
-                  position: 'relative',
-                  overflow: 'hidden'
+                  gap: '0.4rem',
                 }}
               >
-                <div style={{ flexShrink: 0 }}>
-                  {s.svg}
-                </div>
-                <div>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#f8fafc', letterSpacing: '-0.03em', lineHeight: 1.1 }}>{s.value}</div>
-                  <div style={{ fontSize: '0.6rem', color: s.color, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: 2 }}>{s.label}</div>
-                  <div style={{ fontSize: '0.55rem', color: '#64748b', fontWeight: 500, marginTop: 1 }}>{s.desc}</div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>{s.svg}</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 3 }}>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 900, color: '#f8fafc', lineHeight: 1 }}>{s.value}</span>
+                  <span style={{ fontSize: '0.55rem', color: s.color, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.01em' }}>{s.label}</span>
                 </div>
               </div>
             ))}
