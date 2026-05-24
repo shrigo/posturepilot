@@ -137,39 +137,39 @@ export default function AppsecPage() {
     setScanComplete(false);
     setScanLogs([
       `[INIT] Spawning ASPM security orchestration worker...`,
-      `[CONFIG] Loading scanner definitions matching active target pipelines...`
+      `[CONFIG] Connecting API tunnels to Checkmarx One Cloud and Wiz CNAPP...`
     ]);
 
     const scannerSteps: Record<string, { progress: number; log: string }[]> = {
       SAST: [
-        { progress: 20, log: `[SAST] Initiating code analyzer on local directories...` },
-        { progress: 50, log: `[SAST] Warning: Identified weak JWT decoding in middleware/auth.ts (AST.LLM.03)` },
-        { progress: 80, log: `[SAST] Parsing package controller nodes... No new code leaks discovered.` },
-        { progress: 100, log: `[COMPLETE] SAST engine run complete. 1 High vulnerability logged.` }
+        { progress: 20, log: `[SAST] Initiating Checkmarx One AST Engine on local repositories...` },
+        { progress: 50, log: `[SAST] Checkmarx Alert: Identified weak JWT decoding in middleware/auth.ts (CX-AST-3810)` },
+        { progress: 80, log: `[SAST] Compiling code flow graph matching signature algorithms...` },
+        { progress: 100, log: `[COMPLETE] Checkmarx SAST engine check complete. 1 High vulnerability logged.` }
       ],
       DAST: [
-        { progress: 20, log: `[DAST] Launching headless browser crawler against corporate endpoints...` },
-        { progress: 50, log: `[DAST] Injecting payload strings across active login parameters...` },
-        { progress: 80, log: `[DAST] Server responded with standard HTTP 403 Forbidden. CSRF protection verified.` },
-        { progress: 100, log: `[COMPLETE] DAST test sweeps completed successfully. 0 new findings.` }
+        { progress: 20, log: `[DAST] Launching Checkmarx One DAST scanner sweep on production endpoints...` },
+        { progress: 50, log: `[DAST] Probing cross-site scripting (XSS) and SQL injection payloads...` },
+        { progress: 80, log: `[DAST] Ingress router returned standard HTTP 403 Forbidden. Safe endpoint state verified.` },
+        { progress: 100, log: `[COMPLETE] Checkmarx DAST automated probe finished. 0 new findings.` }
       ],
       SCA: [
-        { progress: 25, log: `[SCA] Parsing package.json manifest dependencies...` },
-        { progress: 55, log: `[SCA] Alert: Exposed third-party dependency 'body-parser@1.19.0' is vulnerable to CVE-2022-29153!` },
-        { progress: 80, log: `[SCA] Verifying active tree overrides... Node graph updated.` },
-        { progress: 100, log: `[COMPLETE] SCA inventory scan finished. 1 Critical dependency vulnerability discovered.` }
+        { progress: 25, log: `[SCA] Invoking Checkmarx One SCA Package Dependency scanner...` },
+        { progress: 55, log: `[SCA] Checkmarx SCA Alert: Dependency 'body-parser@1.19.0' is vulnerable to CVE-2022-29153!` },
+        { progress: 80, log: `[SCA] Matching active node overrides inside package-lock.json...` },
+        { progress: 100, log: `[COMPLETE] Checkmarx SCA check finished. 1 Critical dependency vulnerability discovered.` }
       ],
       Secrets: [
-        { progress: 30, log: `[SECRETS] Initializing regex-matching scanner for hardcoded API keys...` },
-        { progress: 65, log: `[SECRETS] Alert: Found active GitHub OAuth secret inside server.ts (line 12)!` },
-        { progress: 85, log: `[SECRETS] Scanning secondary configuration modules... Done.` },
-        { progress: 100, log: `[COMPLETE] Secrets scanning finished. 1 High secret leak logged.` }
+        { progress: 30, log: `[SECRETS] Spawning Wiz Secrets scanner and regex credentials scraper...` },
+        { progress: 65, log: `[SECRETS] Wiz Alert: Found hardcoded GitHub Client Secret inside server.ts (line 12)!` },
+        { progress: 85, log: `[SECRETS] Auditing configuration parameters & .env profiles...` },
+        { progress: 100, log: `[COMPLETE] Wiz Secrets scan finished. 1 High secret credentials leak discovered.` }
       ],
       IaC: [
-        { progress: 25, log: `[IaC] Evaluating Terraform configuration main.tf against NIST standards...` },
-        { progress: 60, log: `[IaC] Alert: Open security group ingress rule detected on main.tf (CIDR: 0.0.0.0/0)` },
-        { progress: 85, log: `[IaC] Auditing internal VPC subnet architectures...` },
-        { progress: 100, log: `[COMPLETE] Infrastructure config analysis complete. 1 High security warning logged.` }
+        { progress: 25, log: `[IaC] Running Wiz CLI Ingress Analyzer on IaC Terraform configurations...` },
+        { progress: 60, log: `[IaC] Wiz Alert: Open security group ingress rule detected on main.tf (CIDR: 0.0.0.0/0)` },
+        { progress: 85, log: `[IaC] Checking compliance against NIST SP 800-53 cloud controls...` },
+        { progress: 100, log: `[COMPLETE] Wiz CNAPP IaC configuration scan finished. 1 High warning logged.` }
       ]
     };
 
@@ -243,10 +243,10 @@ export default function AppsecPage() {
             <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
             <div>
               <div style={{ fontWeight: 800, color: '#6d28d9', fontSize: '0.9rem' }}>
-                Active Application Security Posture Management (ASPM) Controls Synced
+                ASPM Unified Command Center // Checkmarx One & Wiz CNAPP Synced
               </div>
               <div style={{ fontSize: '0.75rem', color: '#7c3aed' }}>
-                Auto-Patched Assets: {activePatchedCount} of {vulnerabilities.length} · Live Code Findings: {dynamicFindings.toLocaleString()} · Ingress Shield: {iacShieldActive ? 'ENFORCED' : 'AWAITING'}
+                Checkmarx One (SAST/SCA): <span style={{ color: '#16a34a', fontWeight: 800 }}>Connected ●</span> · Wiz CNAPP (IaC/Secrets): <span style={{ color: '#16a34a', fontWeight: 800 }}>Active ●</span> · Auto-Patched Assets: {activePatchedCount} of {vulnerabilities.length}
               </div>
             </div>
           </div>
