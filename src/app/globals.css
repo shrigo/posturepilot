@@ -893,7 +893,7 @@ html, body {
 /* ─── Sticky Alert Banner ─── */
 .sticky-alert-banner {
   position: sticky !important;
-  top: calc(var(--topbar-height) + 1.25rem) !important;
+  top: calc(var(--topbar-height) + 2.5rem) !important;
   z-index: 40 !important;
   box-shadow: 
     0 10px 15px -3px rgba(0, 0, 0, 0.05),
@@ -903,6 +903,6 @@ html, body {
 
 @media (max-width: 768px) {
   .sticky-alert-banner {
-    top: calc(var(--topbar-height) + 0.75rem) !important;
+    top: calc(var(--topbar-height) + 1.5rem) !important;
   }
 }
