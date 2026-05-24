@@ -1,6 +1,5 @@
 'use client';
 import { useState, useRef } from 'react';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 interface UploadResult {
@@ -84,7 +83,6 @@ export default function UploadPage() {
 
   return (
     <>
-      <Topbar title="📤 Upload Scan Results" subtitle="Import findings from Qualys, Tenable, Nessus or CSV — results go live instantly" />
       <div className="page-content animate-in">
 
         {/* Supported formats */}

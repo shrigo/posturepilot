@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { networkData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 interface LiveData {
@@ -26,7 +25,6 @@ export default function NetworkPage() {
 
   return (
     <>
-      <Topbar title="🌐 Network Security" subtitle="Firewall events, IDS alerts, blocked IPs & VPN sessions" />
       <div className="page-content animate-in">
 
         {/* Live banner */}

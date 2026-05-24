@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { postureData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 const statusColor: Record<string, string> = {
@@ -51,7 +50,6 @@ export default function PosturePage() {
 
   return (
     <>
-      <Topbar title="🛡️ Cyber Posture" subtitle="Overall risk score, threat level & threat intelligence feed" />
       <div className="page-content animate-in">
 
         {/* Live data banner */}

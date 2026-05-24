@@ -1,11 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import Topbar from '@/components/Topbar';
 
 export default function SettingsPage() {
   return (
     <>
-      <Topbar title="⚙️ Settings" subtitle="Tenant configuration, API keys & integrations" />
       <div className="page-content animate-in">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <div className="card">

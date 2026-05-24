@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
-import Topbar from '@/components/Topbar';
 
 const SEV_COLOR: Record<string, { bg: string; text: string; border: string }> = {
   Critical: { bg: '#fef2f2', text: '#dc2626', border: '#fecaca' },
@@ -99,7 +98,6 @@ export default function FindingsPage() {
 
   return (
     <>
-      <Topbar title="🔍 Findings" subtitle="All parsed CVEs & vulnerabilities from uploaded scans" />
       <div className="page-content animate-in">
 
         {/* Summary pills */}

@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { postureData, cloudData, networkData, kpiData, appsecData, serverData, aiRiskData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 
 const modules = [
   { href: '/dashboard/posture', icon: '🛡️', label: 'Cyber Posture',     color: '#3b82f6', stat: `${postureData.score}/100`,     sub: `${postureData.openCriticals} critical open`,   bg: 'linear-gradient(135deg,#eff6ff,#dbeafe)' },
@@ -19,7 +18,6 @@ export default function OverviewPage() {
   const router = useRouter();
   return (
     <>
-      <Topbar title="Command Center" subtitle="All dashboards · Acme Financial Corp" />
       <div className="page-content animate-in">
         {/* Banner */}
         <div style={{ background: 'linear-gradient(135deg, #0f172a, #1e3a5f)', borderRadius: 16, padding: '1.5rem 2rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid #1e3a5f' }}>

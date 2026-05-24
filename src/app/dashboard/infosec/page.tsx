@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { infosecData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 interface LiveData {
@@ -22,7 +21,6 @@ export default function InfosecPage() {
 
   return (
     <>
-      <Topbar title="🔏 InfoSec & Compliance" subtitle="Policy violations, access control audits & data classification" />
       <div className="page-content animate-in">
 
         {live && (

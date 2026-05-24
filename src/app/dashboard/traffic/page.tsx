@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { trafficData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 interface LiveData {
@@ -22,7 +21,6 @@ export default function TrafficPage() {
 
   return (
     <>
-      <Topbar title="📡 Traffic Monitor" subtitle="Network traffic analysis, anomaly detection & bandwidth usage" />
       <div className="page-content animate-in">
 
         {live && (

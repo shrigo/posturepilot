@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { cloudData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 const riskColor: Record<string, string> = { High: '#dc2626', Medium: '#d97706', Low: '#16a34a', Compliant: '#059669', 'At Risk': '#dc2626' };
@@ -41,7 +40,6 @@ export default function CloudPage() {
 
   return (
     <>
-      <Topbar title="☁️ Cloud Security" subtitle="Misconfigurations, IAM risk & storage exposure across cloud assets" />
       <div className="page-content animate-in">
 
         {/* Live banner */}
@@ -187,7 +185,7 @@ export default function CloudPage() {
 
         {/* No data CTA */}
         {!hasLive && (
-          <div style={{ textAlign:'center', padding:'1.5rem', color:'#94a3b8', borderTop:'1px solid #e2e8f0', marginTop:'1.25rem' }}>
+          <div style={{ textAlign:'center', padding:'1.5rem', color:'#94a3b8', marginTop:'1.25rem' }}>
             <div style={{ fontSize:'0.85rem', marginBottom:'0.75rem' }}>
               Connect <strong>AWS Security Hub</strong>, <strong>Wiz</strong>, or <strong>Prisma Cloud</strong> for live cloud findings
             </div>

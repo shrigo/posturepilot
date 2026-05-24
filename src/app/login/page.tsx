@@ -35,7 +35,7 @@ export default function LoginPage() {
           {/* Real logo — place posturepilot-logo.png in /public */}
           <div style={{ marginBottom: '0.75rem' }}>
             <Image
-              src="/navbarlogoh.jpg"
+              src="/hlogotag.jpg"
               alt="PosturePilot"
               width={260}
               height={88}

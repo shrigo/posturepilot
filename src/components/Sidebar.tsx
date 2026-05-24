@@ -20,14 +20,14 @@ export default function Sidebar() {
   const pathname = usePathname();
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo" style={{ padding: '1rem 1.25rem', flexDirection: 'column', alignItems: 'flex-start', gap: 0 }}>
-        <Link href="/" style={{ display:'block', lineHeight:0 }}>
+      <div className="sidebar-logo">
+        <Link href="/" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           <Image
-            src="/navbarlogoh.jpg"
+            src="/hlogotag.jpg"
             alt="PosturePilot — Home"
-            width={200}
-            height={54}
-            style={{ objectFit: 'contain', objectPosition: 'left' }}
+            width={248}
+            height={84}
+            style={{ objectFit: 'contain' }}
             priority
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
@@ -72,8 +72,8 @@ export default function Sidebar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #3b82f6, #0891b2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, color: '#fff', flexShrink: 0 }}>AF</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#f1f5f9', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Acme Financial</div>
-            <div style={{ fontSize: '0.65rem', color: '#475569' }}>Professional Plan</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Acme Financial</div>
+            <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Professional Plan</div>
           </div>
         </div>
       </div>

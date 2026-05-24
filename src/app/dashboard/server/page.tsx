@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { serverData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 const healthColor: Record<string, string> = { good: '#16a34a', warning: '#d97706', critical: '#dc2626' };
@@ -23,7 +22,6 @@ export default function ServerPage() {
 
   return (
     <>
-      <Topbar title="🖥️ Server & Endpoint Security" subtitle="Patch status, EDR coverage & endpoint health monitoring" />
       <div className="page-content animate-in">
 
         {live && (

@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { kpiData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 interface LiveData {
@@ -26,7 +25,6 @@ export default function KpiPage() {
 
   return (
     <>
-      <Topbar title="📊 Security KPIs" subtitle="MTTA, MTTR, Patch SLA compliance & team performance" />
       <div className="page-content animate-in">
 
         {live && (

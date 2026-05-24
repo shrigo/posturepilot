@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import ShieldViz from "@/components/ShieldViz";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const TABS = ["Configure","Monitor","Report","Secure"];
 const BOARDS = [
@@ -26,12 +26,53 @@ const PLANS = [
 export default function Page() {
   const [tab,setTab]=useState("Monitor");
   const [menuOpen,setMenuOpen]=useState(false);
+  const [showTop,setShowTop]=useState(false);
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    const navElement = document.querySelector("nav");
+    if (element) {
+      const navHeight = navElement ? navElement.offsetHeight : 64;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - navHeight + 1,
+        behavior: "auto"
+      });
+    }
+    setMenuOpen(false);
+  };
+
+  useEffect(()=>{
+    const onScroll=()=>setShowTop(window.scrollY>300);
+    window.addEventListener("scroll",onScroll,{passive:true});
+    return()=>window.removeEventListener("scroll",onScroll);
+  },[]);
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const id = window.location.hash.substring(1);
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        const navElement = document.querySelector("nav");
+        if (element) {
+          const navHeight = navElement ? navElement.offsetHeight : 64;
+          const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({
+            top: elementPosition - navHeight + 1,
+            behavior: "auto"
+          });
+        }
+      }, 150);
+    }
+  }, []);
+
   return(
-    <div id="top" style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh"}}>
+    <div id="top" style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh",maxWidth:"100%"}}>
       <style>{`
-        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap");
-        *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
-        html,body{overflow-x:hidden;max-width:100%;}
+        *{box-sizing:border-box;margin:0;padding:0}
+        #configure, #monitor, #report, #secure, #features { scroll-margin-top: 64px; }
+        html,body{max-width:100%;}
         .hcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,70,229,0.15)!important}
         .hcard{transition:all 0.2s}
         .nav-link{transition:all 0.18s ease;border-radius:8px;padding:0.35rem 0.75rem;}
@@ -83,14 +124,14 @@ export default function Page() {
       `}</style>
 
       {/* NAV */}
-      <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.96)",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
-        <a href="#top" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
+      <nav style={{position:"sticky",top:0,zIndex:100,background:"#fff",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
+        <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
           <Image src="/hlogotag.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         </a>
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Report","Secure"] as const).map((t,i,a)=>(
             <span key={t} style={{display:"flex",alignItems:"center"}}>
-              <a href={"#"+t.toLowerCase()} className={`nav-link nav-${t.toLowerCase()}`} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none"}}>{t}</a>
+              <a href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())} className={`nav-link nav-${t.toLowerCase()}`} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none"}}>{t}</a>
               {i<a.length-1 && <span style={{display:"inline-block",width:6,height:18,background:"#f97316",borderRadius:3,margin:"0 0.35rem",flexShrink:0}}/>}
             </span>
           ))}
@@ -108,7 +149,7 @@ export default function Page() {
       {/* Mobile menu */}
       <div className={`mobile-menu${menuOpen?" open":""}`}>
         {(["Configure","Monitor","Report","Secure"] as const).map((t,i)=>(
-          <a key={t} href={"#"+t.toLowerCase()} onClick={()=>setMenuOpen(false)}
+          <a key={t} href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())}
             style={{color:i===0?"#1e2d6e":i===1?"#4f46e5":i===2?"#7c3aed":"#16a34a"}}>{t}</a>
         ))}
         <Link href="/login" onClick={()=>setMenuOpen(false)} style={{color:"#64748b"}}>Sign in</Link>
@@ -187,7 +228,7 @@ export default function Page() {
 
 
       {/* ── CONFIGURE ── */}
-      <section id="configure" style={{scrollMarginTop:64,padding:"2rem 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="configure" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
         <div style={{maxWidth:1200,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#1e2d6e",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔧 Configure</div>
@@ -242,7 +283,7 @@ export default function Page() {
       </section>
 
       {/* ── MONITOR ── */}
-      <section id="monitor" style={{scrollMarginTop:64,padding:"2rem 2rem 4rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="monitor" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
         <div style={{maxWidth:1100,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
@@ -389,7 +430,7 @@ export default function Page() {
       </section>
 
       {/* ── REPORT ── */}
-      <section id="report" style={{scrollMarginTop:64,padding:"2rem 2rem 4rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="report" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
         <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#7c3aed",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📄 Report</div>
@@ -566,7 +607,7 @@ export default function Page() {
         </div>
       </section>
       {/* ── SECURE ── */}
-      <section id="secure" style={{scrollMarginTop:64,padding:"2rem 2rem 4rem",background:"linear-gradient(135deg,#14532d 0%,#15803d 50%,#16a34a 100%)",minHeight:"100vh",display:"flex",alignItems:"center"}}>
+      <section id="secure" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"linear-gradient(135deg,#14532d 0%,#15803d 50%,#16a34a 100%)",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
         <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#bbf7d0",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
@@ -669,7 +710,7 @@ export default function Page() {
       </section>
 
       {/* DASHBOARDS */}
-      <section id="features" style={{padding:"4rem 2rem",maxWidth:1200,margin:"0 auto",scrollMarginTop:64}}>
+      <section id="features" style={{padding:"25px 2rem 4rem",maxWidth:1200,margin:"0 auto",scrollMarginTop:"64px"}}>
         <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
           <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>9 Modules · One Command Center</div>
           <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em",color:"#0f172a"}}>Everything your team needs to see</h2>
@@ -693,7 +734,7 @@ export default function Page() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" style={{padding:"4rem 2rem",background:"linear-gradient(135deg,#f5f3ff,#eff6ff)"}}>
+      <section id="pricing" style={{padding:"25px 2rem 4rem",background:"linear-gradient(135deg,#f5f3ff,#eff6ff)"}}>
         <div style={{maxWidth:900,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>Transparent Pricing</div>
@@ -730,6 +771,24 @@ export default function Page() {
         </div>
         <span style={{fontSize:"0.7rem",color:"#f1f5f9"}}>© 2026 PosturePilot · posturepilot.io</span>
       </footer>
+      <button
+        onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}
+        aria-label="Back to top"
+        style={{
+          position:"fixed",bottom:"2rem",right:"2rem",zIndex:200,
+          width:44,height:44,borderRadius:"50%",border:"none",cursor:"pointer",
+          background:"linear-gradient(135deg,#4f46e5,#7c3aed)",
+          color:"#fff",fontSize:"1.25rem",fontWeight:700,
+          boxShadow:"0 4px 20px rgba(79,70,229,0.45)",
+          display:"flex",alignItems:"center",justifyContent:"center",
+          opacity:showTop?1:0,
+          pointerEvents:showTop?"auto":"none",
+          transform:showTop?"translateY(0)":"translateY(12px)",
+          transition:"opacity 0.3s ease,transform 0.3s ease,box-shadow 0.2s",
+        }}
+        onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.transform="scale(1.12)";(e.currentTarget as HTMLButtonElement).style.boxShadow="0 8px 28px rgba(79,70,229,0.55)";}}
+        onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.transform="scale(1)";(e.currentTarget as HTMLButtonElement).style.boxShadow="0 4px 20px rgba(79,70,229,0.45)";}}
+      >↑</button>
     </div>
   );
 }

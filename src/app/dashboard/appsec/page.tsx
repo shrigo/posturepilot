@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { appsecData } from '@/data/mockData';
-import Topbar from '@/components/Topbar';
 import Link from 'next/link';
 
 interface LiveData {
@@ -25,7 +24,6 @@ export default function AppsecPage() {
 
   return (
     <>
-      <Topbar title="🔐 Application Security" subtitle="OWASP findings, SAST/DAST results & dependency vulnerabilities" />
       <div className="page-content animate-in">
 
         {live && (
