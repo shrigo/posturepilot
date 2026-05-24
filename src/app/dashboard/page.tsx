@@ -193,8 +193,8 @@ export default function OverviewPage() {
             </div>
           </div>
 
-          {/* Right: Sleek Interactive HUD Cards */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {/* Right: Sleek Interactive HUD Cards (Taller, highly prominent metric boxes!) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', flexWrap: 'wrap' }}>
             {[
               { 
                 label: 'Criticals', 
@@ -203,7 +203,7 @@ export default function OverviewPage() {
                 bg: 'rgba(220,38,38,0.12)', 
                 border: 'rgba(220,38,38,0.25)',
                 svg: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(220,38,38,0.4))' }}>
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     <circle cx="12" cy="11" r="2.5" fill="#dc2626">
                       <animate attributeName="r" values="1.5;3;1.5" dur="1.5s" repeatCount="indefinite" />
@@ -218,7 +218,7 @@ export default function OverviewPage() {
                 bg: 'rgba(234,88,12,0.12)', 
                 border: 'rgba(234,88,12,0.25)',
                 svg: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(234,88,12,0.4))' }}>
                     <circle cx="12" cy="12" r="9" strokeDasharray="2 2" />
                     <circle cx="12" cy="12" r="4" />
                   </svg>
@@ -231,9 +231,9 @@ export default function OverviewPage() {
                 bg: 'rgba(217,119,6,0.12)', 
                 border: 'rgba(217,119,6,0.25)',
                 svg: (
-                  <svg width="18" height="18" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="16" fill="none" stroke="#334155" strokeWidth="4" />
-                    <circle cx="18" cy="18" r="16" fill="none" stroke="#d97706" strokeWidth="4" strokeDasharray="100" strokeDashoffset="16" transform="rotate(-90 18 18)" />
+                  <svg width="22" height="22" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="16" fill="none" stroke="#334155" strokeWidth="4.5" />
+                    <circle cx="18" cy="18" r="16" fill="none" stroke="#d97706" strokeWidth="4.5" strokeDasharray="100" strokeDashoffset="16" transform="rotate(-90 18 18)" style={{ filter: 'drop-shadow(0 0 3px rgba(217,119,6,0.5))' }} />
                   </svg>
                 )
               },
@@ -244,7 +244,7 @@ export default function OverviewPage() {
                 bg: 'rgba(59,130,246,0.12)', 
                 border: 'rgba(59,130,246,0.25)',
                 svg: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(59,130,246,0.4))' }}>
                     <rect x="3" y="3" width="6" height="6" rx="1" />
                     <rect x="15" y="3" width="6" height="6" rx="1" />
                     <rect x="3" y="15" width="6" height="6" rx="1" />
@@ -258,17 +258,18 @@ export default function OverviewPage() {
                 style={{ 
                   background: s.bg, 
                   border: `1px solid ${s.border}`, 
-                  borderRadius: 8, 
-                  padding: '0.35rem 0.65rem', 
+                  borderRadius: 10, 
+                  padding: '0.5rem 0.85rem', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  gap: '0.4rem',
+                  gap: '0.5rem',
+                  minHeight: '44px'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center' }}>{s.svg}</div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 3 }}>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 900, color: '#f8fafc', lineHeight: 1 }}>{s.value}</span>
-                  <span style={{ fontSize: '0.55rem', color: s.color, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.01em' }}>{s.label}</span>
+                <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{s.svg}</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                  <span style={{ fontSize: '1.125rem', fontWeight: 900, color: '#f8fafc', lineHeight: 1 }}>{s.value}</span>
+                  <span style={{ fontSize: '0.6rem', color: s.color, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{s.label}</span>
                 </div>
               </div>
             ))}
