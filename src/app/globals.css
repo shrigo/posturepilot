@@ -901,8 +901,41 @@ html, body {
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
+/* Background mask for sticky alert banner to match page color and prevent content scroll overlaps, matching Topbar design */
+.sticky-alert-banner::before {
+  content: '';
+  position: absolute;
+  top: -1.25rem;
+  left: 0;
+  right: -1.25rem;
+  bottom: -0.25rem;
+  z-index: -2 !important;
+  pointer-events: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Dynamic sticky header backgrounds matching each page's specific background color for subheading banner mask */
+.app-layout.bg-default .sticky-alert-banner::before { background: #f1f5f9; }
+.app-layout.bg-posture .sticky-alert-banner::before { background: #ebf2fe; }
+.app-layout.bg-cloud .sticky-alert-banner::before { background: #ecfeff; }
+.app-layout.bg-network .sticky-alert-banner::before { background: #f0fdf4; }
+.app-layout.bg-infosec .sticky-alert-banner::before { background: #f5f3ff; }
+.app-layout.bg-kpi .sticky-alert-banner::before { background: #fffbeb; }
+.app-layout.bg-appsec .sticky-alert-banner::before { background: #eef2ff; }
+.app-layout.bg-traffic .sticky-alert-banner::before { background: #f0f9ff; }
+.app-layout.bg-server .sticky-alert-banner::before { background: #f0fdf4; }
+.app-layout.bg-ai-risk .sticky-alert-banner::before { background: #faf5ff; }
+.app-layout.bg-findings .sticky-alert-banner::before { background: #f8fafc; }
+.app-layout.bg-upload .sticky-alert-banner::before { background: #fafaf9; }
+.app-layout.bg-settings .sticky-alert-banner::before { background: #fafafa; }
+
 @media (max-width: 768px) {
   .sticky-alert-banner {
     top: calc(var(--topbar-height) + 1.5rem) !important;
+  }
+  .sticky-alert-banner::before {
+    top: -0.75rem;
+    left: -0.75rem;
+    right: -0.75rem;
   }
 }
