@@ -282,7 +282,7 @@ export default function OverviewPage() {
         <div className="grid-3">
 
           {/* 1. HALF-DONUT POSTURE SCORE GAUGE */}
-          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '330px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16, padding: '1.25rem' }}>
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '280px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16, padding: '1.25rem' }}>
             <div className="card-title" style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
               🛡️ Posture Score Gauge
             </div>
@@ -335,7 +335,7 @@ export default function OverviewPage() {
           </div>
 
           {/* 2. FULL DONUT VULNERABILITY SEVERITY CHART */}
-          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '330px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16, padding: '1.25rem' }}>
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '280px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16, padding: '1.25rem' }}>
             <div className="card-title" style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
               🍩 Severity Findings Breakdown
             </div>
@@ -379,7 +379,7 @@ export default function OverviewPage() {
           </div>
 
           {/* 3. MULTI-COLOR CATEGORY COMPLIANCE BAR CHART */}
-          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '330px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16, padding: '1.25rem' }}>
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '280px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16, padding: '1.25rem' }}>
             <div className="card-title" style={{ fontSize: '0.9rem', fontWeight: 800, color: '#0f172a', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
               📊 Category Compliance Scores
             </div>
