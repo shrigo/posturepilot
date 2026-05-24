@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { appsecData } from '@/data/mockData';
 import Link from 'next/link';
 
@@ -225,6 +225,9 @@ export default function AppsecPage() {
   const dynamicBacklog = Math.max(0, baseBacklog - patchedBacklogDeduction);
 
   const activePatchedCount = vulnerabilities.filter(v => v.patched).length;
+  const basePostureScore = 64;
+  const postureImprovement = vulnerabilities.reduce((acc, v) => acc + (v.patched ? (v.id === 'vuln1' ? 12 : v.id === 'vuln2' ? 10 : v.id === 'vuln3' ? 8 : 6) : 0), 0);
+  const currentPostureScore = basePostureScore + postureImprovement;
 
   const sevChart = [
     { name: 'Critical', value: dynamicCritical },
@@ -736,29 +739,123 @@ export default function AppsecPage() {
         </div>
 
         {/* Existing Severity Distribution Chart & scan coverage deck */}
-        <div className="grid-2">
-          <div className="card">
-            <div className="card-title">📊 Live Findings by Severity</div>
-            <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1.25rem' }}>
-              Vulnerability counts distributed across CVSS severity tiers. Deploy patches to reduce counts dynamically.
+        {/* Premium Posture Donut and Severity Charts Grid */}
+        <div className="grid-3">
+          
+          {/* 1. Live Findings Donut Chart */}
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '320px' }}>
+            <div className="card-title">🍩 Live Findings by Severity</div>
+            <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
+              Counts by threat severity level.
             </p>
-            <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={sevChart}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} />
-                <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
-                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-                <Bar dataKey="value" name="Findings" fill="#7c3aed" radius={[3, 3, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+              <ResponsiveContainer width="100%" height={160}>
+                <PieChart>
+                  <Pie
+                    data={sevChart}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={68}
+                    paddingAngle={4}
+                    dataKey="value"
+                  >
+                    {sevChart.map((entry, index) => {
+                      const colors: Record<string, string> = { Critical: '#dc2626', High: '#ea580c', Medium: '#d97706', Low: '#16a34a' };
+                      return <Cell key={`cell-${index}`} fill={colors[entry.name] || '#64748b'} />;
+                    })}
+                  </Pie>
+                  <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
+                </PieChart>
+              </ResponsiveContainer>
+              {/* Inner Circle Dynamic Total Readings */}
+              <div style={{ position: 'absolute', textAlign: 'center', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}>
+                <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0f172a' }}>{dynamicFindings.toLocaleString()}</div>
+                <div style={{ fontSize: '0.58rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>Total</div>
+              </div>
+            </div>
+            
+            {/* Custom mini legend */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.4rem', borderTop: '1px solid #f1f5f9', paddingTop: '0.5rem' }}>
+              {sevChart.slice(0, 4).map(s => {
+                const colors: Record<string, string> = { Critical: '#dc2626', High: '#ea580c', Medium: '#d97706', Low: '#16a34a' };
+                return (
+                  <div key={s.name} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.68rem', fontWeight: 700, color: '#475569' }}>
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors[s.name] || '#64748b' }} />
+                    <span>{s.name}:</span>
+                    <span style={{ marginLeft: 'auto', color: '#0f172a' }}>{s.value}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+          {/* 2. Dynamic Posture Score Donut Gauge */}
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '320px', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ width: '100%', textAlign: 'left' }}>
+              <div className="card-title">🎯 ASPM Security Posture Score</div>
+              <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
+                Calculated dynamic score based on active Checkmarx & Wiz auto-patch deployments.
+              </p>
+            </div>
+            
+            {/* SVG Circular Progress Ring */}
+            <div style={{ position: 'relative', width: 140, height: 140 }}>
+              <svg width="140" height="140" viewBox="0 0 140 140">
+                {/* Background Ring */}
+                <circle
+                  cx="70"
+                  cy="70"
+                  r="52"
+                  fill="transparent"
+                  stroke="#e2e8f0"
+                  strokeWidth="10"
+                />
+                {/* Active Ring with Gradient */}
+                <circle
+                  cx="70"
+                  cy="70"
+                  r="52"
+                  fill="transparent"
+                  stroke="url(#postureGradient)"
+                  strokeWidth="10"
+                  strokeDasharray="326.7"
+                  strokeDashoffset={326.7 - (326.7 * currentPostureScore) / 100}
+                  strokeLinecap="round"
+                  transform="rotate(-90 70 70)"
+                  style={{ transition: 'stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1)' }}
+                />
+                {/* Defs for gradient */}
+                <defs>
+                  <linearGradient id="postureGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#7c3aed" />
+                    <stop offset="100%" stopColor="#3b82f6" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              {/* Central post readout */}
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: '1.75rem', fontWeight: 900, color: '#7c3aed', letterSpacing: '-0.04em' }}>{currentPostureScore}%</span>
+                <span style={{ fontSize: '0.58rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>
+                  {currentPostureScore >= 90 ? 'SECURED' : currentPostureScore >= 75 ? 'ROBUST' : 'WARN'}
+                </span>
+              </div>
+            </div>
+
+            <div style={{ width: '100%', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: '0.45rem 0.75rem', textAlign: 'center', fontSize: '0.68rem', fontWeight: 800, color: '#475569' }}>
+              {currentPostureScore === 100 
+                ? '🏆 Perfect ASPM Posture Achieved!' 
+                : `Deploy ${vulnerabilities.length - activePatchedCount} more auto-patches to hit 100%`}
+            </div>
+          </div>
+
+          {/* 3. Scan Coverage & Integration Metrics */}
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '320px' }}>
             <div className="card-title">🔍 Scan Coverage & Integration Metrics</div>
-            <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1.25rem' }}>
+            <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
               Parsed results from Snyk, Trufflehog, AWS Inspector, and local static analysis.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1, justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', flex: 1, justifyContent: 'center' }}>
               {[
                 { name: 'app-gateway (Root)', sast: 8, dast: 4, color: '#7c3aed' },
                 { name: 'auth-service', sast: 4, dast: 2, color: '#4f46e5' },
@@ -767,14 +864,14 @@ export default function AppsecPage() {
               ].map(s => {
                 const totalVal = s.sast + s.dast;
                 return (
-                  <div key={s.name} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <span style={{ fontSize: '0.78rem', color: '#0f172a', fontWeight: 600, width: 130, flexShrink: 0 }}>{s.name}</span>
+                  <div key={s.name} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '0.74rem', color: '#0f172a', fontWeight: 600, width: 120, flexShrink: 0 }}>{s.name}</span>
                     <div style={{ flex: 1 }}>
-                      <div className="progress-bar-wrap" style={{ height: 8 }}>
+                      <div className="progress-bar-wrap" style={{ height: 6 }}>
                         <div className="progress-bar-fill" style={{ width: `${Math.min(100, totalVal * 8)}%`, background: s.color }} />
                       </div>
                     </div>
-                    <span style={{ fontWeight: 700, fontSize: '0.82rem', color: s.color, width: 60, textTransform: 'uppercase', textAlign: 'right' }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.76rem', color: s.color, width: 48, textTransform: 'uppercase', textAlign: 'right' }}>
                       {totalVal} vulns
                     </span>
                   </div>
@@ -782,6 +879,7 @@ export default function AppsecPage() {
               })}
             </div>
           </div>
+
         </div>
 
       </div>
