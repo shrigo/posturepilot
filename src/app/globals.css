@@ -889,3 +889,20 @@ html, body {
   }
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
 }
+
+/* ─── Sticky Alert Banner ─── */
+.sticky-alert-banner {
+  position: sticky !important;
+  top: calc(var(--topbar-height) + 1.25rem) !important;
+  z-index: 40 !important;
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.02) !important;
+  transition: all 0.2s ease !important;
+}
+
+@media (max-width: 768px) {
+  .sticky-alert-banner {
+    top: calc(var(--topbar-height) + 0.75rem) !important;
+  }
+}

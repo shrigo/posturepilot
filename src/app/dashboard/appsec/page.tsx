@@ -238,7 +238,7 @@ export default function AppsecPage() {
       <div className="page-content animate-in">
 
         {/* Premium Dynamic Alert Banner */}
-        <div style={{ background: 'linear-gradient(135deg, #ede9fe, #dbeafe)', border: '1px solid #c084fc', borderRadius: 12, padding: '0.875rem 1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <div className="sticky-alert-banner" style={{ background: 'linear-gradient(135deg, #ede9fe, #dbeafe)', border: '1px solid #c084fc', borderRadius: 12, padding: '0.875rem 1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
             <div>
