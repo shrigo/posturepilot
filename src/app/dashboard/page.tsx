@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useClient } from '@/context/ClientContext';
 import { 
   postureData, 
   cloudData, 
@@ -25,29 +26,37 @@ import {
 
 export default function OverviewPage() {
   const router = useRouter();
+  const { currentClient } = useClient();
 
-  // 1. Posture Score Half-Donut Data
+  // 1. Posture Score Half-Donut Data (Dynamically loaded based on selected client context)
   const postureScoreData = [
-    { name: 'Secure Score', value: postureData.score, fill: 'url(#postureGradient)' },
-    { name: 'Risk Delta', value: 100 - postureData.score, fill: '#e2e8f0' }
+    { name: 'Secure Score', value: currentClient.score, fill: 'url(#postureGradient)' },
+    { name: 'Risk Delta', value: 100 - currentClient.score, fill: '#e2e8f0' }
   ];
 
-  // 2. Vulnerability Severity Donut Data
-  const totalFindings = appsecData.critical + appsecData.high + appsecData.medium + appsecData.low;
-  const severityDonutData = [
+  // 2. Vulnerability Severity Donut Data (Dynamic based on selected client context)
+  const severityDonutData = currentClient.key === 'UR' ? [
+    { name: 'Critical', value: 4, fill: '#dc2626' },
+    { name: 'High', value: 8, fill: '#ea580c' },
+    { name: 'Medium', value: 26, fill: '#d97706' },
+    { name: 'Low', value: 54, fill: '#16a34a' }
+  ] : [
     { name: 'Critical', value: appsecData.critical, fill: '#dc2626' },
     { name: 'High', value: appsecData.high, fill: '#ea580c' },
     { name: 'Medium', value: appsecData.medium, fill: '#d97706' },
     { name: 'Low', value: appsecData.low, fill: '#16a34a' }
   ];
 
-  // 3. Multi-Color Category Compliance Bar Data
+  const totalFindings = severityDonutData.reduce((acc, curr) => acc + curr.value, 0);
+
+  // 3. Multi-Color Category Compliance Bar Data (Dynamically loads compliance or block rates based on selected client)
   const categoryComplianceData = [
-    { name: 'Cloud Security', score: cloudData.complianceScore, fill: '#0891b2', label: 'CIS Benchmark' },
-    { name: 'Network Firewall', score: Math.round(networkData.firewallEvents.blockRate), fill: '#7c3aed', label: 'Packet Blocks' },
-    { name: 'Compliance Audits', score: infosecData.overallCompliance, fill: '#059669', label: 'Framework Controls' },
-    { name: 'KPI SLA SLA', score: kpiData.patchSla, fill: '#d97706', label: 'Ticket Remediation' },
-    { name: 'Server Health', score: Math.round((serverData.healthy / serverData.totalServers) * 100), fill: '#16a34a', label: 'Host Availability' }
+    { name: 'Cloud Security', score: currentClient.key === 'UR' ? 92 : cloudData.complianceScore, fill: '#0891b2', label: 'CIS Benchmark' },
+    { name: 'Network Firewall', score: currentClient.key === 'UR' ? 96 : Math.round(networkData.firewallEvents.blockRate), fill: '#7c3aed', label: 'Packet Blocks' },
+    { name: 'Compliance Audits', score: currentClient.key === 'UR' ? 89 : 71, fill: '#059669', label: 'Framework Controls' },
+    { name: 'Identity & Access', score: currentClient.key === 'UR' ? 87 : 64, fill: '#a855f7', label: 'Zero Trust (IAM)' },
+    { name: 'KPI SLA SLA', score: currentClient.key === 'UR' ? 94 : kpiData.patchSla, fill: '#d97706', label: 'Ticket Remediation' },
+    { name: 'Server Health', score: currentClient.key === 'UR' ? 99 : Math.round((serverData.healthy / serverData.totalServers) * 100), fill: '#16a34a', label: 'Host Availability' }
   ];
 
   const modules = [
@@ -84,12 +93,12 @@ export default function OverviewPage() {
     { 
       href: '/dashboard/infosec', 
       icon: '📋', 
-      label: 'Info Security', 
+      label: 'Governance & Compliance', 
       color: '#059669', 
-      stat: `${infosecData.overallCompliance}% compliance`, 
+      stat: `${currentClient.key === 'UR' ? 89 : 71}% compliance`, 
       sub: '5 frameworks tracked', 
       bg: 'linear-gradient(135deg,#f0fdf4,#dcfce7)',
-      progress: infosecData.overallCompliance
+      progress: currentClient.key === 'UR' ? 89 : 71
     },
     { 
       href: '/dashboard/kpi', 
@@ -141,6 +150,16 @@ export default function OverviewPage() {
       bg: 'linear-gradient(135deg,#fff7ed,#fed7aa)',
       progress: 68
     },
+    { 
+      href: '/dashboard/identity', 
+      icon: '🔑', 
+      label: 'Identity & Access', 
+      color: '#a855f7', 
+      stat: `${currentClient.key === 'UR' ? 87 : 64}% ZT Score`, 
+      sub: `${currentClient.key === 'UR' ? 'Microsoft Entra ID' : 'Okta SSO Directory'}`, 
+      bg: 'linear-gradient(135deg,#fcf8ff,#f3e8ff)',
+      progress: currentClient.key === 'UR' ? 87 : 64
+    }
   ];
 
   return (
@@ -149,7 +168,7 @@ export default function OverviewPage() {
 
         {/* Sleek, Space-Saving Overall Posture KPI & Client Command HUD (Reduced height, matching Topbar, no standalone alert space killer needed!) */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #0f172a, #1e293b)', 
+          background: '#ffffff', 
           borderRadius: 14, 
           padding: '0.625rem 1.5rem', 
           marginBottom: '1.25rem', 
@@ -158,97 +177,112 @@ export default function OverviewPage() {
           justifyContent: 'space-between', 
           flexWrap: 'wrap', 
           gap: '1rem',
-          border: '1px solid rgba(255,255,255,0.08)', 
-          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+          border: '1px solid #e2e8f0', 
+          boxShadow: '0 4px 16px rgba(15,23,42,0.04)',
           minHeight: '74px'
         }}>
-          {/* Left: Acme Client & Overall Posture Score */}
+          {/* Left: Client & Overall Posture Score */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
             {/* Pulsing Command Indicator */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-              <span className="hud-pulse" style={{ background: '#3b82f6', width: 8, height: 8, flexShrink: 0 }} />
+              <span 
+                className="hud-pulse" 
+                style={{ 
+                  background: currentClient.key === 'UR' ? '#10b981' : '#3b82f6', 
+                  width: 8, 
+                  height: 8, 
+                  flexShrink: 0 
+                }} 
+              />
               <div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 900, color: '#f8fafc', letterSpacing: '-0.01em', lineHeight: 1.1 }}>
-                  Acme Financial Corp
+                <div style={{ fontSize: '0.85rem', fontWeight: 900, color: '#0f172a', letterSpacing: '-0.01em', lineHeight: 1.1 }}>
+                  {currentClient.name}
                 </div>
-                <div style={{ fontSize: '0.62rem', color: '#94a3b8', fontWeight: 600 }}>
+                <div style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: 600 }}>
                   Telemetry Sync Active ●
                 </div>
               </div>
             </div>
             
             {/* Sleek vertical divider */}
-            <div style={{ width: 1, height: 26, background: 'rgba(255,255,255,0.12)' }} />
+            <div style={{ width: 1, height: 26, background: '#e2e8f0' }} />
 
             {/* Score HUD Display */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', marginRight: 4 }}>Posture Level:</span>
-                <span style={{ fontSize: '1.375rem', fontWeight: 900, color: '#f8fafc', lineHeight: 1 }}>74</span>
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginRight: 4 }}>Posture Level:</span>
+                <span style={{ fontSize: '1.375rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>{currentClient.score}</span>
                 <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>/100</span>
-                <span style={{ fontSize: '0.65rem', color: '#ea580c', background: 'rgba(234,88,12,0.15)', border: '1px solid rgba(234,88,12,0.3)', borderRadius: 4, padding: '1px 6px', marginLeft: 8, fontWeight: 800 }}>
-                  Elevated Risk
+                <span style={{ 
+                  fontSize: '0.65rem', 
+                  color: currentClient.key === 'UR' ? '#16a34a' : '#ea580c', 
+                  background: currentClient.key === 'UR' ? 'rgba(22,163,74,0.15)' : 'rgba(234,88,12,0.15)', 
+                  border: currentClient.key === 'UR' ? '1px solid rgba(22,163,74,0.3)' : '1px solid rgba(234,88,12,0.3)', 
+                  borderRadius: 4, 
+                  padding: '1px 6px', 
+                  marginLeft: 8, 
+                  fontWeight: 800 
+                }}>
+                  {currentClient.key === 'UR' ? 'Secure Posture' : 'Elevated Risk'}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Right: Sleek Interactive HUD Cards (Taller, highly prominent metric boxes!) */}
+          {/* Right: Sleek Interactive HUD Cards (Taller, highly prominent board-level CISO KPIs!) */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', flexWrap: 'wrap' }}>
             {[
               { 
-                label: 'Criticals', 
-                value: '14', 
+                label: 'MTTR Speed', 
+                value: currentClient.key === 'UR' ? '3.0 hrs' : '6.5 hrs', 
+                color: '#7c3aed', 
+                bg: 'rgba(124,58,237,0.12)', 
+                border: 'rgba(124,58,237,0.25)',
+                svg: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(124,58,237,0.4))' }}>
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                )
+              },
+              { 
+                label: 'Exposure Index', 
+                value: currentClient.key === 'UR' ? '4 CVEs' : '14 CVEs', 
                 color: '#dc2626', 
                 bg: 'rgba(220,38,38,0.12)', 
                 border: 'rgba(220,38,38,0.25)',
                 svg: (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(220,38,38,0.4))' }}>
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    <circle cx="12" cy="11" r="2.5" fill="#dc2626">
-                      <animate attributeName="r" values="1.5;3;1.5" dur="1.5s" repeatCount="indefinite" />
-                    </circle>
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
                   </svg>
                 )
               },
               { 
-                label: 'Threats', 
-                value: '3',  
+                label: 'GRC Conformance',  
+                value: currentClient.key === 'UR' ? '89%' : '71%', 
+                color: '#10b981', 
+                bg: 'rgba(16,185,129,0.12)', 
+                border: 'rgba(16,185,129,0.25)',
+                svg: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.4))' }}>
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <polyline points="9 15 11 17 15 13" />
+                  </svg>
+                )
+              },
+              { 
+                label: 'Human Risk', 
+                value: currentClient.key === 'UR' ? 'Low' : 'Med-High', 
                 color: '#ea580c', 
                 bg: 'rgba(234,88,12,0.12)', 
                 border: 'rgba(234,88,12,0.25)',
                 svg: (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(234,88,12,0.4))' }}>
-                    <circle cx="12" cy="12" r="9" strokeDasharray="2 2" />
-                    <circle cx="12" cy="12" r="4" />
-                  </svg>
-                )
-              },
-              { 
-                label: 'Backlog',  
-                value: '234', 
-                color: '#d97706', 
-                bg: 'rgba(217,119,6,0.12)', 
-                border: 'rgba(217,119,6,0.25)',
-                svg: (
-                  <svg width="22" height="22" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="16" fill="none" stroke="#334155" strokeWidth="4.5" />
-                    <circle cx="18" cy="18" r="16" fill="none" stroke="#d97706" strokeWidth="4.5" strokeDasharray="100" strokeDashoffset="16" transform="rotate(-90 18 18)" style={{ filter: 'drop-shadow(0 0 3px rgba(217,119,6,0.5))' }} />
-                  </svg>
-                )
-              },
-              { 
-                label: 'Assets', 
-                value: '1,247', 
-                color: '#3b82f6', 
-                bg: 'rgba(59,130,246,0.12)', 
-                border: 'rgba(59,130,246,0.25)',
-                svg: (
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" style={{ filter: 'drop-shadow(0 0 4px rgba(59,130,246,0.4))' }}>
-                    <rect x="3" y="3" width="6" height="6" rx="1" />
-                    <rect x="15" y="3" width="6" height="6" rx="1" />
-                    <rect x="3" y="15" width="6" height="6" rx="1" />
-                    <rect x="15" y="15" width="6" height="6" rx="1" />
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
                   </svg>
                 )
               },
@@ -268,7 +302,7 @@ export default function OverviewPage() {
               >
                 <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>{s.svg}</div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                  <span style={{ fontSize: '1.125rem', fontWeight: 900, color: '#f8fafc', lineHeight: 1 }}>{s.value}</span>
+                  <span style={{ fontSize: '1.125rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>{s.value}</span>
                   <span style={{ fontSize: '0.6rem', color: s.color, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{s.label}</span>
                 </div>
               </div>
@@ -288,7 +322,7 @@ export default function OverviewPage() {
             </div>
             <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
+                <PieChart key={currentClient.key}>
                   <defs>
                     <linearGradient id="postureGradient" x1="0" y1="0" x2="1" y2="0">
                       <stop offset="0%" stopColor="#f97316" />
@@ -302,8 +336,8 @@ export default function OverviewPage() {
                     cy="80%"
                     startAngle={180}
                     endAngle={0}
-                    innerRadius={72}
-                    outerRadius={96}
+                    innerRadius={56}
+                    outerRadius={76}
                     paddingAngle={0}
                     dataKey="value"
                   >
@@ -315,15 +349,15 @@ export default function OverviewPage() {
               </ResponsiveContainer>
               
               {/* Center Stat Overlay */}
-              <div style={{ position: 'absolute', bottom: '18%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
-                <div style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
-                  {postureData.score}
+              <div style={{ position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
+                <div style={{ fontSize: '1.375rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>
+                  {currentClient.score}
                 </div>
-                <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginTop: 4 }}>
+                <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginTop: 3 }}>
                   Overall Posture
                 </div>
-                <div style={{ fontSize: '0.65rem', color: '#ea580c', fontWeight: 800, background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: 4, padding: '1px 6px', display: 'inline-block', marginTop: 4 }}>
-                  GRADE: {postureData.grade}
+                <div style={{ fontSize: '0.62rem', color: '#ea580c', fontWeight: 800, background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: 4, padding: '1px 6px', display: 'inline-block', marginTop: 3 }}>
+                  GRADE: {currentClient.grade}
                 </div>
               </div>
             </div>
@@ -341,13 +375,13 @@ export default function OverviewPage() {
             </div>
             <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
+                <PieChart key={currentClient.key}>
                   <Pie
                     data={severityDonutData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={68}
-                    outerRadius={92}
+                    innerRadius={56}
+                    outerRadius={76}
                     paddingAngle={4}
                     dataKey="value"
                   >
@@ -364,17 +398,17 @@ export default function OverviewPage() {
 
               {/* Central Count Overlay */}
               <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-                <div style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>{totalFindings}</div>
+                <div style={{ fontSize: '1.75rem', fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>{totalFindings}</div>
                 <div style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginTop: 2 }}>Open Findings</div>
               </div>
             </div>
 
             {/* Custom Interactive Color Legend Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px', textAlign: 'center', fontSize: '0.65rem', fontWeight: 700, borderTop: '1px solid #f1f5f9', paddingTop: '0.5rem' }}>
-              <div style={{ color: '#dc2626' }}>🔴 Critical ({appsecData.critical})</div>
-              <div style={{ color: '#ea580c' }}>🟠 High ({appsecData.high})</div>
-              <div style={{ color: '#d97706' }}>🟡 Med ({appsecData.medium})</div>
-              <div style={{ color: '#16a34a' }}>🟢 Low ({appsecData.low})</div>
+              <div style={{ color: '#dc2626' }}>🔴 Critical ({severityDonutData[0].value})</div>
+              <div style={{ color: '#ea580c' }}>🟠 High ({severityDonutData[1].value})</div>
+              <div style={{ color: '#d97706' }}>🟡 Med ({severityDonutData[2].value})</div>
+              <div style={{ color: '#16a34a' }}>🟢 Low ({severityDonutData[3].value})</div>
             </div>
           </div>
 
@@ -385,7 +419,7 @@ export default function OverviewPage() {
             </div>
             <div style={{ flex: 1, paddingTop: '0.5rem' }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={categoryComplianceData} layout="vertical" margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                <BarChart key={currentClient.key} data={categoryComplianceData} layout="vertical" margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
                   <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10, fill: '#94a3b8' }} />
                   <YAxis dataKey="name" type="category" tick={{ fontSize: 9, fill: '#475569', fontWeight: 700 }} width={90} />
@@ -409,13 +443,107 @@ export default function OverviewPage() {
         </div>
 
         {/* ========================================================================= */}
-        {/* RESPONSIVE MODULE GRID */}
+        {/* ZERO TRUST IAM & GRC COMPLIANCE DEEP-DIVE TELEMETRY */}
         {/* ========================================================================= */}
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem', marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: 6 }}>
-          ⚡ Security Control Modules <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: '#eef2ff', color: '#4f46e5' }}>9 active layers</span>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#475569', marginBottom: '0.75rem', marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+          📊 Executive Zero Trust & GRC Framework Analytics <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: '#f5f3ff', color: '#7c3aed' }}>Live Aggregates</span>
         </h3>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+          
+          {/* LEFT COLUMN: GRC COMPLIANCE FRAMEWORK COVERAGE */}
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: '1.25rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a' }}>📋 GRC Framework Audit Progress</span>
+              <span style={{ fontSize: '0.62rem', fontWeight: 800, background: '#ecfdf5', color: '#10b981', padding: '2px 6px', borderRadius: 10 }}>Framework Checklists</span>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1, justifyContent: 'center' }}>
+              {[
+                { name: 'SOC 2 Type II Compliance', pct: currentClient.key === 'UR' ? 89 : 71, color: '#10b981' },
+                { name: 'ISO 27001:2022 Security Rule', pct: currentClient.key === 'UR' ? 85 : 64, color: '#3b82f6' },
+                { name: 'PCI-DSS v4.0 Credit Standards', pct: currentClient.key === 'UR' ? 95 : 78, color: '#7c3aed' },
+                { name: 'HIPAA Privacy Safeguards', pct: currentClient.key === 'UR' ? 88 : 68, color: '#06b6d4' },
+                { name: 'NIST Cyber Security Framework', pct: currentClient.key === 'UR' ? 90 : 70, color: '#ea580c' },
+                { name: 'GDPR Data Privacy Directive', pct: currentClient.key === 'UR' ? 92 : 75, color: '#ec4899' }
+              ].map(f => (
+                <div key={f.name}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', fontWeight: 700, color: '#475569', marginBottom: 3 }}>
+                    <span>{f.name}</span>
+                    <span style={{ color: f.color }}>{f.pct}%</span>
+                  </div>
+                  <div className="progress-bar-wrap" style={{ height: 6, background: '#f1f5f9' }}>
+                    <div className="progress-bar-fill" style={{ width: `${f.pct}%`, background: f.color }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: ZERO TRUST (IAM) DIRECTORY ANALYTICS */}
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: '1.25rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a' }}>🔑 Identity & Access (Zero Trust) Posture</span>
+              <span style={{ fontSize: '0.62rem', fontWeight: 800, background: '#f5f3ff', color: '#7c3aed', padding: '2px 6px', borderRadius: 10 }}>
+                {currentClient.key === 'UR' ? 'Microsoft Entra ID' : 'Okta SSO Directory'}
+              </span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '130px 1fr', gap: '1rem', flex: 1, alignItems: 'center' }}>
+              {/* Circular MFA Progress Dial */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid #f1f5f9', paddingRight: '1rem' }}>
+                <div style={{ position: 'relative', width: 90, height: 90, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="90" height="90" viewBox="0 0 90 90" style={{ transform: 'rotate(-90deg)' }}>
+                    <circle cx="45" cy="45" r="36" stroke="#f1f5f9" strokeWidth="6" fill="transparent" />
+                    <circle 
+                      cx="45" cy="45" r="36" 
+                      stroke="#7c3aed" 
+                      strokeWidth="6" 
+                      fill="transparent" 
+                      strokeDasharray={`${2 * Math.PI * 36}`}
+                      strokeDashoffset={`${2 * Math.PI * 36 * (1 - (currentClient.key === 'UR' ? 98.2 : 85.6) / 100)}`}
+                      style={{ transition: 'stroke-dashoffset 0.8s ease' }}
+                    />
+                  </svg>
+                  <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <span style={{ fontSize: '1.125rem', fontWeight: 900, color: '#7c3aed', letterSpacing: '-0.04em' }}>
+                      {currentClient.key === 'UR' ? '98.2%' : '85.6%'}
+                    </span>
+                  </div>
+                </div>
+                <div style={{ fontSize: '0.62rem', fontWeight: 800, color: '#64748b', marginTop: 6, textTransform: 'uppercase', textAlign: 'center' }}>MFA Coverage</div>
+              </div>
+
+              {/* Identity Telemetry Indicators */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                {[
+                  { label: 'Active SSO Users', value: currentClient.key === 'UR' ? 478 : 312, icon: '👥', color: '#38bdf8' },
+                  { label: 'Privileged Admins', value: currentClient.key === 'UR' ? 12 : 28, icon: '👑', color: '#fca5a5' },
+                  { label: 'API Keys Stale (>90d)', value: currentClient.key === 'UR' ? 2 : 17, icon: '🔑', color: '#fbbf24' },
+                  { label: 'SSO Travel Spikes', value: currentClient.key === 'UR' ? 2 : 3, icon: '🚨', color: '#f87171' }
+                ].map(item => (
+                  <div key={item.label} style={{ padding: '0.5rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.58rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>
+                      <span>{item.icon}</span>
+                      <span>{item.label.split(' ')[0]}</span>
+                    </div>
+                    <div style={{ fontSize: '1rem', fontWeight: 900, color: '#0f172a', marginTop: 2 }}>{item.value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* ========================================================================= */}
+        {/* RESPONSIVE MODULE GRID */}
+        {/* ========================================================================= */}
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#475569', marginBottom: '0.75rem', marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+          ⚡ Security Control Modules <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: '#eef2ff', color: '#4f46e5' }}>10 active layers</span>
+        </h3>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
           {modules.map(m => (
             <div 
               key={m.href} 

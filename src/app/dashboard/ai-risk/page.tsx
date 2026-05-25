@@ -20,7 +20,7 @@ const toolDetails: Record<string, {
 }> = {
   'ChatGPT (Personal)': {
     desc: 'Public instance of ChatGPT where user prompts are used by default for model training. Highly susceptible to IP leakage and business analytics sharing.',
-    remediation: 'Migrate active users to the corporate-approved Acme ChatGPT Enterprise Workspace and enable strict prompt masking rules.',
+    remediation: 'Migrate active users to the corporate-approved Enterprise ChatGPT Workspace and enable strict prompt masking rules.',
     departments: [
       { name: 'Engineering', users: 64 },
       { name: 'Finance & Accounting', users: 48 },
@@ -350,19 +350,19 @@ export default function AiRiskPage() {
       <div className="page-content animate-in">
 
         {/* Dynamic Telemetry Live Banner */}
-        <div className="sticky-alert-banner" style={{ background:'linear-gradient(135deg,#eff6ff,#dbeafe)', border:'1px solid #93c5fd', borderRadius:12, padding:'0.875rem 1.25rem', marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.75rem' }}>
+        <div className="sticky-alert-banner">
           <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
-            <span style={{ width:10, height:10, borderRadius:'50%', background:'#3b82f6', display:'inline-block', boxShadow:'0 0 8px #3b82f6' }} />
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
             <div>
-              <div style={{ fontWeight:800, color:'#1d4ed8', fontSize:'0.9rem' }}>
+              <div style={{ fontWeight:800, color:'#6d28d9', fontSize:'0.9rem' }}>
                 AI Policy Command Active — Global AISPM firewall defending prompts & cloud endpoints dynamically
               </div>
-              <div style={{ fontSize:'0.75rem', color:'#2563eb' }}>
+              <div style={{ fontSize:'0.75rem', color:'#7c3aed', fontWeight: 600 }}>
                 Active Rules: {firewallRules.filter(r => r.active).length} of {firewallRules.length} · Patched Code Assets: {vulnerabilities.filter(v => v.patched).length} of {vulnerabilities.length} · Live Risk Score: {currentRiskScore}/100
               </div>
             </div>
           </div>
-          <Link href="/dashboard/findings" style={{ fontSize:'0.78rem', fontWeight:700, color:'#1d4ed8', textDecoration:'none', border:'1px solid #93c5fd', padding:'0.375rem 0.875rem', borderRadius:8 }}>
+          <Link href="/dashboard/findings" style={{ fontSize:'0.78rem', fontWeight:700, color:'#7c3aed', textDecoration:'none', border:'1px solid #c084fc', padding:'0.375rem 0.875rem', borderRadius:8, background: 'rgba(255, 255, 255, 0.4)' }}>
             View AI Findings →
           </Link>
         </div>

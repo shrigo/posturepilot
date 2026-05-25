@@ -78,19 +78,19 @@ html, body {
 }
 
 /* ─── Dynamic Page Background Colors ─── */
-.app-layout.bg-default { background: #f1f5f9; }
-.app-layout.bg-posture { background: #ebf2fe; }
-.app-layout.bg-cloud { background: #ecfeff; }
-.app-layout.bg-network { background: #f0fdf4; }
-.app-layout.bg-infosec { background: #f5f3ff; }
-.app-layout.bg-kpi { background: #fffbeb; }
+.app-layout.bg-default { background: #eef2ff; }
+.app-layout.bg-posture { background: #eef2ff; }
+.app-layout.bg-cloud { background: #eef2ff; }
+.app-layout.bg-network { background: #eef2ff; }
+.app-layout.bg-infosec { background: #eef2ff; }
+.app-layout.bg-kpi { background: #eef2ff; }
 .app-layout.bg-appsec { background: #eef2ff; }
-.app-layout.bg-traffic { background: #f0f9ff; }
-.app-layout.bg-server { background: #f0fdf4; }
-.app-layout.bg-ai-risk { background: #faf5ff; }
-.app-layout.bg-findings { background: #f8fafc; }
-.app-layout.bg-upload { background: #fafaf9; }
-.app-layout.bg-settings { background: #fafafa; }
+.app-layout.bg-traffic { background: #eef2ff; }
+.app-layout.bg-server { background: #eef2ff; }
+.app-layout.bg-ai-risk { background: #eef2ff; }
+.app-layout.bg-findings { background: #eef2ff; }
+.app-layout.bg-upload { background: #eef2ff; }
+.app-layout.bg-settings { background: #eef2ff; }
 
 
 /* ─── Sidebar ─── */
@@ -184,19 +184,19 @@ html, body {
 }
 
 /* ─── Active Link Custom Page Fusions ─── */
-.app-layout.bg-default .sidebar .nav-item.active { background: #f1f5f9; box-shadow: none; }
-.app-layout.bg-posture .sidebar .nav-item.active { background: #ebf2fe; box-shadow: none; }
-.app-layout.bg-cloud .sidebar .nav-item.active { background: #ecfeff; box-shadow: none; }
-.app-layout.bg-network .sidebar .nav-item.active { background: #f0fdf4; box-shadow: none; }
-.app-layout.bg-infosec .sidebar .nav-item.active { background: #f5f3ff; box-shadow: none; }
-.app-layout.bg-kpi .sidebar .nav-item.active { background: #fffbeb; box-shadow: none; }
+.app-layout.bg-default .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-posture .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-cloud .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-network .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-infosec .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-kpi .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
 .app-layout.bg-appsec .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
-.app-layout.bg-traffic .sidebar .nav-item.active { background: #f0f9ff; box-shadow: none; }
-.app-layout.bg-server .sidebar .nav-item.active { background: #f0fdf4; box-shadow: none; }
-.app-layout.bg-ai-risk .sidebar .nav-item.active { background: #faf5ff; box-shadow: none; }
-.app-layout.bg-findings .sidebar .nav-item.active { background: #f8fafc; box-shadow: none; }
-.app-layout.bg-upload .sidebar .nav-item.active { background: #fafaf9; box-shadow: none; }
-.app-layout.bg-settings .sidebar .nav-item.active { background: #fafafa; box-shadow: none; }
+.app-layout.bg-traffic .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-server .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-ai-risk .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-findings .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-upload .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
+.app-layout.bg-settings .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
 
 
 .nav-item.active .nav-icon {
@@ -262,19 +262,21 @@ html, body {
 }
 
 /* Dynamic sticky header backgrounds matching each page's specific background color */
-.app-layout.bg-default .topbar-wrapper { background: #f1f5f9; }
-.app-layout.bg-posture .topbar-wrapper { background: #ebf2fe; }
-.app-layout.bg-cloud .topbar-wrapper { background: #ecfeff; }
-.app-layout.bg-network .topbar-wrapper { background: #f0fdf4; }
-.app-layout.bg-infosec .topbar-wrapper { background: #f5f3ff; }
-.app-layout.bg-kpi .topbar-wrapper { background: #fffbeb; }
+
+/* Dynamic sticky header backgrounds matching each page's specific background color */
+.app-layout.bg-default .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-posture .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-cloud .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-network .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-infosec .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-kpi .topbar-wrapper { background: #eef2ff; }
 .app-layout.bg-appsec .topbar-wrapper { background: #eef2ff; }
-.app-layout.bg-traffic .topbar-wrapper { background: #f0f9ff; }
-.app-layout.bg-server .topbar-wrapper { background: #f0fdf4; }
-.app-layout.bg-ai-risk .topbar-wrapper { background: #faf5ff; }
-.app-layout.bg-findings .topbar-wrapper { background: #f8fafc; }
-.app-layout.bg-upload .topbar-wrapper { background: #fafaf9; }
-.app-layout.bg-settings .topbar-wrapper { background: #fafafa; }
+.app-layout.bg-traffic .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-server .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-ai-risk .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-findings .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-upload .topbar-wrapper { background: #eef2ff; }
+.app-layout.bg-settings .topbar-wrapper { background: #eef2ff; }
 
 .topbar {
   height: var(--topbar-height);
@@ -899,73 +901,91 @@ html, body {
     0 10px 25px -5px rgba(0, 0, 0, 0.08),
     0 8px 10px -6px rgba(0, 0, 0, 0.03) !important;
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+  background: linear-gradient(135deg, #ede9fe, #dbeafe) !important;
+  border: 1px solid #c084fc !important;
+  border-radius: 12px !important;
+  padding: 0.875rem 1.25rem !important;
+  margin-bottom: 1.0rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 0.75rem !important;
 }
 
-/* External background mask above the banner to cover the top scroll gap */
+/* External background mask above the banner to cover the top scroll gap with a generous 6px sub-pixel overlap */
 .sticky-alert-banner::before {
   content: '';
   position: absolute;
-  top: -1.25rem;
+  top: calc(-1.25rem - 6px); /* Generous 6px overlap under topbar-wrapper */
   left: 0;
-  right: -1.25rem;
-  height: 1.25rem;
+  right: -1.25rem; /* Cover the right scroll gutter padding */
+  height: calc(1.25rem + 6px);
   z-index: -2 !important;
   pointer-events: none;
   transition: background-color 0.3s ease;
+  display: block !important;
 }
 
 /* External background mask to the right of the banner to cover the right scroll gutter */
 .sticky-alert-banner::after {
   content: '';
   position: absolute;
-  top: 0;
+  top: -6px; /* Cover top edge rounding bleed */
   right: -1.25rem;
   width: 1.25rem;
-  bottom: 0;
+  bottom: -6px; /* Cover bottom edge rounding bleed */
   z-index: -2 !important;
   pointer-events: none;
   transition: background-color 0.3s ease;
+  display: block !important;
 }
 
 /* Dynamic sticky header backgrounds matching each page's specific background color for subheading banner masks */
 .app-layout.bg-default .sticky-alert-banner::before,
-.app-layout.bg-default .sticky-alert-banner::after { background: #f1f5f9; }
+.app-layout.bg-default .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-posture .sticky-alert-banner::before,
-.app-layout.bg-posture .sticky-alert-banner::after { background: #ebf2fe; }
+.app-layout.bg-posture .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-cloud .sticky-alert-banner::before,
-.app-layout.bg-cloud .sticky-alert-banner::after { background: #ecfeff; }
+.app-layout.bg-cloud .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-network .sticky-alert-banner::before,
-.app-layout.bg-network .sticky-alert-banner::after { background: #f0fdf4; }
+.app-layout.bg-network .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-infosec .sticky-alert-banner::before,
-.app-layout.bg-infosec .sticky-alert-banner::after { background: #f5f3ff; }
+.app-layout.bg-infosec .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-kpi .sticky-alert-banner::before,
-.app-layout.bg-kpi .sticky-alert-banner::after { background: #fffbeb; }
+.app-layout.bg-kpi .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-appsec .sticky-alert-banner::before,
 .app-layout.bg-appsec .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-traffic .sticky-alert-banner::before,
-.app-layout.bg-traffic .sticky-alert-banner::after { background: #f0f9ff; }
+.app-layout.bg-traffic .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-server .sticky-alert-banner::before,
-.app-layout.bg-server .sticky-alert-banner::after { background: #f0fdf4; }
+.app-layout.bg-server .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-ai-risk .sticky-alert-banner::before,
-.app-layout.bg-ai-risk .sticky-alert-banner::after { background: #faf5ff; }
+.app-layout.bg-ai-risk .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-findings .sticky-alert-banner::before,
-.app-layout.bg-findings .sticky-alert-banner::after { background: #f8fafc; }
+.app-layout.bg-findings .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-upload .sticky-alert-banner::before,
-.app-layout.bg-upload .sticky-alert-banner::after { background: #fafaf9; }
+.app-layout.bg-upload .sticky-alert-banner::after { background: #eef2ff; }
 .app-layout.bg-settings .sticky-alert-banner::before,
-.app-layout.bg-settings .sticky-alert-banner::after { background: #fafafa; }
+.app-layout.bg-settings .sticky-alert-banner::after { background: #eef2ff; }
 
 @media (max-width: 768px) {
   .sticky-alert-banner {
     top: calc(var(--topbar-height) + 1.5rem) !important;
   }
   .sticky-alert-banner::before {
-    top: -0.75rem;
-    left: -0.75rem;
-    right: -0.75rem;
-    height: 0.75rem;
+    content: '';
+    position: absolute;
+    top: calc(-0.75rem - 6px); /* 6px sub-pixel overlap on mobile */
+    left: -0.75rem; /* Cover left gutter on mobile */
+    right: -0.75rem; /* Cover right gutter on mobile */
+    height: calc(0.75rem + 6px);
+    z-index: -2 !important;
+    pointer-events: none;
+    transition: background-color 0.3s ease;
+    display: block !important;
   }
   .sticky-alert-banner::after {
-    display: none;
+    display: none !important;
   }
 }

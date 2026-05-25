@@ -3,6 +3,7 @@ import { usePathname } from 'next/navigation';
 import { useRef, useEffect } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
+import { ClientProvider, useClient } from '@/context/ClientContext';
 
 const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
   '/dashboard': {
@@ -45,6 +46,10 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     title: '🤖 AI Risk',
     subtitle: 'Shadow AI detection, model vulnerabilities & data exposure risks',
   },
+  '/dashboard/ciso': {
+    title: '👑 CISO Executive Cockpit',
+    subtitle: 'Combined multi-tenant executive reporting and customizable security telemetry cockpit',
+  },
   '/dashboard/findings': {
     title: '🔍 Findings',
     subtitle: 'All parsed CVEs & vulnerabilities from uploaded scans',
@@ -60,6 +65,13 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <DashboardLayoutContent>{children}</DashboardLayoutContent>
+  );
+}
+
+function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
+  const { currentClient } = useClient();
   const pathname = usePathname();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -87,11 +99,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                    Object.entries(routeMetadata).find(([key]) => key !== '/dashboard' && pathname.startsWith(key))?.[1] || 
                    routeMetadata['/dashboard'];
 
+  const dynamicSubtitle = metadata.subtitle?.replace('Acme Financial Corp', currentClient.name);
+
   return (
     <div className={`app-layout ${bgClass}`}>
       <Sidebar />
       <div className="main-content">
-        <Topbar title={metadata.title} subtitle={metadata.subtitle} />
+        <Topbar title={metadata.title} subtitle={dynamicSubtitle} />
         <div ref={scrollContainerRef} className="content-scroll-container">
           {children}
         </div>

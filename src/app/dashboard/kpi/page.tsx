@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { kpiData } from '@/data/mockData';
+import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
 
 interface LiveData {
@@ -12,6 +13,7 @@ interface LiveData {
 }
 
 export default function KpiPage() {
+  const { currentClient } = useClient();
   const [live, setLive] = useState<LiveData | null>(null);
 
   useEffect(() => {
@@ -23,29 +25,47 @@ export default function KpiPage() {
     ? Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))
     : kpiData.monthlyKpis;
 
+  // Resolve dynamic CISO metrics based on active client key
+  const totalFindings = live ? live.total : (currentClient.key === 'UR' ? 3842 : 1247);
+  const activeRiskScore = live ? live.riskScore : currentClient.score;
+  const activeSlaCompliance = live ? live.slaCompliance : (currentClient.key === 'UR' ? 89 : 71);
+  const activeRemediationRate = live ? live.remediationRate : (currentClient.key === 'UR' ? 82 : 68);
+  const activeAvgCvss = live ? live.avgCvss : (currentClient.key === 'UR' ? '4.5' : '8.2');
+
+  const criticalCount = live ? live.critical : (currentClient.key === 'UR' ? 4 : 14);
+  const highCount = live ? live.high : (currentClient.key === 'UR' ? 18 : 64);
+  const closedCount = live ? live.closed : (currentClient.key === 'UR' ? 212 : 92);
+  const openCount = live ? live.open : (currentClient.key === 'UR' ? 48 : 142);
+  const breachedCount = live ? live.slaBreached : (currentClient.key === 'UR' ? 1 : 17);
+
   return (
     <>
       <div className="page-content animate-in">
 
-        {live && (
-          <div className="sticky-alert-banner" style={{ background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', border:'1px solid #86efac', borderRadius:12, padding:'0.875rem 1.25rem', marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.75rem' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
-              <span style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'inline-block', boxShadow:'0 0 8px #22c55e' }} />
-              <div>
-                <div style={{ fontWeight:800, color:'#15803d', fontSize:'0.9rem' }}>Live KPIs — {live.total.toLocaleString()} total findings · Risk Score: {live.riskScore}</div>
-                <div style={{ fontSize:'0.75rem', color:'#16a34a' }}>Remediation Rate: {live.remediationRate}% · SLA Compliance: {live.slaCompliance}% · Avg CVSS: {live.avgCvss}</div>
+        {/* Dynamic CISO Executive KPI Sticky Banner */}
+        <div className="sticky-alert-banner">
+          <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
+            <div>
+              <div style={{ fontWeight:800, color:'#6d28d9', fontSize:'0.9rem' }}>
+                Executive Security KPIs & SLA Dashboard — {currentClient.name}
+              </div>
+              <div style={{ fontSize:'0.75rem', color:'#7c3aed', fontWeight: 600 }}>
+                Risk Level: <span style={{ fontWeight: 800 }}>{activeRiskScore}/100</span> · Framework SLA Compliance: <span style={{ fontWeight: 800 }}>{activeSlaCompliance}%</span> · Ticket Remediation: <span style={{ fontWeight: 800 }}>{activeRemediationRate}%</span> · Total Active Findings: {totalFindings.toLocaleString()}
               </div>
             </div>
-            <Link href="/dashboard/findings" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>View All Findings →</Link>
           </div>
-        )}
+          <Link href="/dashboard/findings?tool=kpi" style={{ fontSize:'0.78rem', fontWeight:700, color:'#7c3aed', textDecoration:'none', border:'1px solid #c084fc', padding:'0.375rem 0.875rem', borderRadius:8, background: 'rgba(255, 255, 255, 0.4)' }}>
+            View All GRC Findings →
+          </Link>
+        </div>
 
         <div className="grid-4">
           {[
-            { label:'Risk Score',       value: live ? `${live.riskScore}`            : kpiData.mtta,              suffix: live ? '/100' : 'm',  accent:'#3b82f6', delta: live ? 'Live computed'        : '↓10m from Dec', target: live ? `${live.critical} critical` : '< 30 min ✅' },
-            { label:'SLA Compliance',   value: live ? `${live.slaCompliance}%`       : `${kpiData.patchSla}%`,    suffix:'', accent:'#059669', delta: live ? `${live.slaBreached} breached`  : '↑13% from Dec', target: live ? 'Target: 95%'        : 'Target: 95%' },
-            { label:'Remediation Rate', value: live ? `${live.remediationRate}%`     : `${kpiData.closureRate}%`, suffix:'', accent:'#7c3aed', delta: live ? `${live.closed} closed`        : '↑7% from Dec',  target: live ? `${live.open} still open`    : 'Target: 95%' },
-            { label:'Avg CVSS',         value: live ? live.avgCvss                  : `${kpiData.mttr}`,         suffix: live ? '' : 'h',       accent:'#d97706', delta: live ? 'Weighted average'     : '↓4.9h from Dec', target: live ? `${live.total} findings` : '< 24 hrs ✅' },
+            { label:'Risk Score',       value: `${activeRiskScore}`,            suffix: '/100',  accent:'#3b82f6', delta: 'Unified Tenant Score', target: `${criticalCount} critical · ${highCount} high` },
+            { label:'SLA Compliance',   value: `${activeSlaCompliance}%`,       suffix:'', accent:'#059669', delta: `${breachedCount} breached tickets`, target: 'Target: 95% threshold' },
+            { label:'Remediation Rate', value: `${activeRemediationRate}%`,     suffix:'', accent:'#7c3aed', delta: `${closedCount} tickets closed`,  target: `${openCount} still open` },
+            { label:'Avg CVSS',         value: activeAvgCvss,                   suffix: '',       accent:'#d97706', delta: 'Weighted critical severity', target: `${totalFindings} total findings` },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />

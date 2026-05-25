@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ShieldViz from "@/components/ShieldViz";
 import { useState, useEffect } from "react";
+import { useClient } from "@/context/ClientContext";
 
 const TABS = ["Configure","Monitor","Report","Secure"];
 const BOARDS = [
@@ -24,6 +25,7 @@ const PLANS = [
 ];
 
 export default function Page() {
+  const { isEnterpriseMode } = useClient();
   const [tab,setTab]=useState("Monitor");
   const [menuOpen,setMenuOpen]=useState(false);
   const [showTop,setShowTop]=useState(false);
@@ -245,8 +247,8 @@ export default function Page() {
               {name:"AWS Sec Hub",    c:"#FF9900", initials:"AWS", logoUrl:"/logos/aws.svg",                                      logoSize:100, methods:["Webhook"]},
               {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.png",                               logoSize:130, methods:["Webhook","API"]},
               {name:"Rapid7",         c:"#E6242A", initials:"R7",  logoUrl:"/logos/rapid7.png",                                   logoSize:108, methods:["Upload","API"]},
-              {name:"Wiz",            c:"#2F6FED", initials:"Wiz", logoUrl:"/logos/wiz.png",                                      logoSize:108, methods:["Upload","API"]},
-              {name:"Prisma Cloud",   c:"#00C0E8", initials:"PC",  logoUrl:"/logos/prisma.png",                                   logoSize:108, methods:["Webhook"]},
+              {name: isEnterpriseMode ? "Wiz" : "SkyArmor",       c:"#2F6FED", initials: isEnterpriseMode ? "Wiz" : "SA",  logoUrl: isEnterpriseMode ? "/logos/wiz.png" : "/logos/skyarmor.png",  logoSize:108, methods:["Upload","API"]},
+              {name: isEnterpriseMode ? "Prisma Cloud" : "PrismShield",    c:"#00C0E8", initials: isEnterpriseMode ? "PC" : "PS",  logoUrl: isEnterpriseMode ? "/logos/prisma.png" : "/logos/prismshield.png", logoSize:108, methods:["Webhook"]},
             ].map(tool=>(
               <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:18,padding:"2rem 2rem 2.5rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
                 onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-4px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 12px 32px ${tool.c}25`;}}

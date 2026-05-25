@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { trafficData } from '@/data/mockData';
+import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
 
 interface LiveData {
@@ -12,6 +13,7 @@ interface LiveData {
 }
 
 export default function TrafficPage() {
+  const { currentClient } = useClient();
   const [live, setLive] = useState<LiveData | null>(null);
 
   useEffect(() => {
@@ -19,34 +21,46 @@ export default function TrafficPage() {
       .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
   }, []);
 
+  // Resolve dynamic CISO metrics based on active client key
+  const totalFindings = live ? live.total : (currentClient.key === 'UR' ? 38420 : 12470);
+  const activeAlerts = live ? live.activeAlerts : (currentClient.key === 'UR' ? 3 : 34);
+  const activeAnomalies = live ? live.anomalies : (currentClient.key === 'UR' ? 1 : 3);
+  const activeInbound = live ? `${live.total} Gbps` : (currentClient.key === 'UR' ? '38.4 Gbps' : '12.4 Gbps');
+  const activeOutbound = live ? `${live.high} Gbps` : (currentClient.key === 'UR' ? '12.5 Gbps' : '4.8 Gbps');
+
   return (
     <>
       <div className="page-content animate-in">
 
-        {live && (
-          <div className="sticky-alert-banner" style={{ background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', border:'1px solid #86efac', borderRadius:12, padding:'0.875rem 1.25rem', marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.75rem' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
-              <span style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'inline-block', boxShadow:'0 0 8px #22c55e' }} />
-              <div>
-                <div style={{ fontWeight:800, color:'#15803d', fontSize:'0.9rem' }}>Live Traffic Findings — {live.total.toLocaleString()} total</div>
-                <div style={{ fontSize:'0.75rem', color:'#16a34a' }}>Active alerts: {live.activeAlerts} · Anomalies: {live.anomalies} · Critical: {live.critical}</div>
+        {/* Dynamic CISO Executive Traffic Sticky Banner */}
+        <div className="sticky-alert-banner">
+          <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
+            <div>
+              <div style={{ fontWeight:800, color:'#6d28d9', fontSize:'0.9rem' }}>
+                Perimeter Traffic Monitor & NetFlow Analyzer — {currentClient.name}
+              </div>
+              <div style={{ fontSize:'0.75rem', color:'#7c3aed', fontWeight: 600 }}>
+                Inbound Ingress: <span style={{ fontWeight: 800 }}>{activeInbound}</span> · Outbound egress: <span style={{ fontWeight: 800 }}>{activeOutbound}</span> · Active Firewall Anomalies: <span style={{ fontWeight: 800 }}>{activeAnomalies} flagged</span> · Incident Response Alerts: {activeAlerts}
               </div>
             </div>
-            <Link href="/dashboard/findings" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>View Findings →</Link>
           </div>
-        )}
+          <Link href="/dashboard/findings?tool=traffic" style={{ fontSize:'0.78rem', fontWeight:700, color:'#7c3aed', textDecoration:'none', border:'1px solid #c084fc', padding:'0.375rem 0.875rem', borderRadius:8, background: 'rgba(255, 255, 255, 0.4)' }}>
+            View Network Findings →
+          </Link>
+        </div>
 
         <div className="grid-4">
           {[
-            { label:'Inbound Traffic',  value: live ? live.total.toLocaleString()        : `${trafficData.inboundGbps} Gbps`,     accent:'#0891b2', delta: live ? 'Real data'         : 'Current' },
-            { label:'Active Alerts',    value: live ? live.activeAlerts.toLocaleString() : trafficData.activeAlerts,              accent:'#dc2626', delta: live ? 'Critical severity' : 'Needs action' },
-            { label:'Anomalies',        value: live ? live.anomalies.toLocaleString()    : trafficData.anomaliesDetected,         accent:'#d97706', delta: live ? 'Detected patterns' : 'Detected today' },
-            { label:'High Severity',    value: live ? live.high.toLocaleString()         : `${trafficData.outboundGbps} Gbps`,   accent:'#ea580c', delta: live ? 'Escalate 7 days'  : 'Outbound' },
+            { label:'Inbound Traffic',  value: activeInbound,     accent:'#0891b2', delta: 'Perimeter gateway rates' },
+            { label:'Active Alerts',    value: `${activeAlerts}`, accent:'#dc2626', delta: 'Requires administrative action' },
+            { label:'Anomalies',        value: `${activeAnomalies}`, accent:'#d97706', delta: 'Flagged socket sweeps today' },
+            { label:'Outbound Traffic',  value: activeOutbound,    accent:'#ea580c', delta: 'Encrypted tunnel egress' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
               <div className="stat-label">{s.label}</div>
-              <div className="stat-value">{s.value}</div>
+              <div className="stat-value" style={{ color: s.accent }}>{s.value}</div>
               <div className="stat-delta delta-down">{s.delta}</div>
             </div>
           ))}

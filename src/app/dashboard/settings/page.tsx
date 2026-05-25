@@ -1,7 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useClient } from '@/context/ClientContext';
 
 export default function SettingsPage() {
+  const { currentClient } = useClient();
   return (
     <>
       <div className="page-content animate-in">
@@ -10,12 +12,12 @@ export default function SettingsPage() {
             <div className="card-title">🏢 Tenant Information</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {[
-                { label: 'Organization', value: 'Acme Financial Corp' },
+                { label: 'Organization', value: currentClient.name },
                 { label: 'Industry', value: 'Financial Services' },
                 { label: 'Plan', value: 'Professional' },
-                { label: 'Primary CISO', value: 'admin@acmefinancial.com' },
-                { label: 'Asset Count', value: '1,247 assets' },
-                { label: 'Last Scan', value: 'May 13, 2026 6:42 PM' },
+                { label: 'Primary CISO', value: currentClient.key === 'UR' ? 'admin@unifiedrentals.com' : 'admin@acmefinancial.com' },
+                { label: 'Asset Count', value: `${currentClient.assets} assets` },
+                { label: 'Last Scan', value: currentClient.scanDate },
               ].map(f => (
                 <div key={f.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid #f1f5f9' }}>
                   <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>{f.label}</span>

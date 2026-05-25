@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { serverData } from '@/data/mockData';
+import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
 
 const healthColor: Record<string, string> = { good: '#16a34a', warning: '#d97706', critical: '#dc2626' };
@@ -13,6 +14,7 @@ interface LiveData {
 }
 
 export default function ServerPage() {
+  const { currentClient } = useClient();
   const [live, setLive] = useState<LiveData | null>(null);
 
   useEffect(() => {
@@ -20,34 +22,45 @@ export default function ServerPage() {
       .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
   }, []);
 
+  // Resolve dynamic CISO metrics based on active client key
+  const totalServers = live ? live.total : (currentClient.key === 'UR' ? 3842 : 1247);
+  const criticalFindings = live ? live.critical : (currentClient.key === 'UR' ? 4 : 14);
+  const unhealthyHosts = live ? live.unhealthyHosts : (currentClient.key === 'UR' ? 6 : 17);
+  const slaBreached = live ? live.slaBreached : (currentClient.key === 'UR' ? 4 : 14);
+
   return (
     <>
       <div className="page-content animate-in">
 
-        {live && (
-          <div className="sticky-alert-banner" style={{ background:'linear-gradient(135deg,#f0fdf4,#dcfce7)', border:'1px solid #86efac', borderRadius:12, padding:'0.875rem 1.25rem', marginBottom:'1.5rem', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'0.75rem' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
-              <span style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e', display:'inline-block', boxShadow:'0 0 8px #22c55e' }} />
-              <div>
-                <div style={{ fontWeight:800, color:'#15803d', fontSize:'0.9rem' }}>Live Data — {live.total.toLocaleString()} server/endpoint findings</div>
-                <div style={{ fontSize:'0.75rem', color:'#16a34a' }}>Tools: {Object.keys(live.byTool).join(', ') || 'Endpoint scanners'} · Unhealthy hosts: {live.unhealthyHosts} · SLA breached: {live.slaBreached}</div>
+        {/* Dynamic CISO Executive Server Sticky Banner */}
+        <div className="sticky-alert-banner">
+          <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
+            <div>
+              <div style={{ fontWeight:800, color:'#6d28d9', fontSize:'0.9rem' }}>
+                Server & Endpoint EDR telemetry Center — {currentClient.name}
+              </div>
+              <div style={{ fontSize:'0.75rem', color:'#7c3aed', fontWeight: 600 }}>
+                EDR Agent Enrollment: <span style={{ fontWeight: 800 }}>100% Active ●</span> · Total Managed Workloads: <span style={{ fontWeight: 800 }}>{totalServers.toLocaleString()} servers</span> · Unhealthy Workloads: <span style={{ fontWeight: 800 }}>{unhealthyHosts} flagged</span> · Critical EDR Patches: {criticalFindings}
               </div>
             </div>
-            <Link href="/dashboard/findings" style={{ fontSize:'0.78rem', fontWeight:700, color:'#16a34a', textDecoration:'none', border:'1px solid #86efac', padding:'0.375rem 0.875rem', borderRadius:8 }}>View Findings →</Link>
           </div>
-        )}
+          <Link href="/dashboard/findings?tool=server" style={{ fontSize:'0.78rem', fontWeight:700, color:'#7c3aed', textDecoration:'none', border:'1px solid #c084fc', padding:'0.375rem 0.875rem', borderRadius:8, background: 'rgba(255, 255, 255, 0.4)' }}>
+            View Endpoint Findings →
+          </Link>
+        </div>
 
         <div className="grid-4">
           {[
-            { label:'Total Servers',     value: live ? live.total.toLocaleString()          : serverData.totalServers,                accent:'#3b82f6', delta: live ? 'Real scans'       : 'Managed servers' },
-            { label:'Critical Findings', value: live ? live.critical.toLocaleString()        : serverData.critical,                   accent:'#dc2626', delta: live ? 'Immediate action' : 'Critical health' },
-            { label:'Unhealthy',         value: live ? live.unhealthyHosts.toLocaleString()  : serverData.warning + serverData.critical, accent:'#ea580c', delta: live ? 'Need attention'  : 'Warning + Critical' },
-            { label:'SLA Breached',      value: live ? live.slaBreached.toLocaleString()     : serverData.critical,                   accent:'#d97706', delta: live ? 'Past deadline'    : 'Critical servers' },
+            { label:'Total Servers',     value: totalServers.toLocaleString(), accent:'#3b82f6', delta: 'Enterprise workloads' },
+            { label:'Critical Findings', value: `${criticalFindings}`,         accent:'#dc2626', delta: 'Requires patch sweep' },
+            { label:'Unhealthy',         value: `${unhealthyHosts}`,           accent:'#ea580c', delta: 'Failing EDR diagnostics' },
+            { label:'SLA Breached',      value: `${slaBreached}`,              accent:'#d97706', delta: 'Overdue VM patches' },
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
               <div className="stat-label">{s.label}</div>
-              <div className="stat-value">{s.value}</div>
+              <div className="stat-value" style={{ color: s.accent }}>{s.value}</div>
               <div className="stat-delta delta-down">{s.delta}</div>
             </div>
           ))}

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { appsecData } from '@/data/mockData';
 import Link from 'next/link';
+import { useClient } from '@/context/ClientContext';
 
 interface LiveData {
   hasLiveData: boolean; total: number; critical: number; high: number; patchBacklog: number;
@@ -50,6 +51,7 @@ const packageDetails: Record<string, {
 };
 
 export default function AppsecPage() {
+  const { currentClient, isEnterpriseMode } = useClient();
   const [live, setLive] = useState<LiveData | null>(null);
 
   // ASPM Dynamic Interaction States
@@ -137,39 +139,41 @@ export default function AppsecPage() {
     setScanComplete(false);
     setScanLogs([
       `[INIT] Spawning ASPM security orchestration worker...`,
-      `[CONFIG] Connecting API tunnels to Checkmarx One Cloud and Wiz CNAPP...`
+      isEnterpriseMode 
+        ? `[CONFIG] Connecting API tunnels to Checkmarx AST and Wiz CNAPP...`
+        : `[CONFIG] Connecting API tunnels to CodeVerify AST and SkyArmor CNAPP...`
     ]);
 
     const scannerSteps: Record<string, { progress: number; log: string }[]> = {
       SAST: [
-        { progress: 20, log: `[SAST] Initiating Checkmarx One AST Engine on local repositories...` },
-        { progress: 50, log: `[SAST] Checkmarx Alert: Identified weak JWT decoding in middleware/auth.ts (CX-AST-3810)` },
+        { progress: 20, log: isEnterpriseMode ? `[SAST] Initiating Checkmarx AST Engine on local repositories...` : `[SAST] Initiating CodeVerify AST Engine on local repositories...` },
+        { progress: 50, log: isEnterpriseMode ? `[SAST] Checkmarx Alert: Identified weak JWT decoding in middleware/auth.ts (CX-AST-3810)` : `[SAST] CodeVerify Alert: Identified weak JWT decoding in middleware/auth.ts (CV-AST-3810)` },
         { progress: 80, log: `[SAST] Compiling code flow graph matching signature algorithms...` },
-        { progress: 100, log: `[COMPLETE] Checkmarx SAST engine check complete. 1 High vulnerability logged.` }
+        { progress: 100, log: isEnterpriseMode ? `[COMPLETE] Checkmarx SAST engine check complete. 1 High vulnerability logged.` : `[COMPLETE] CodeVerify SAST engine check complete. 1 High vulnerability logged.` }
       ],
       DAST: [
-        { progress: 20, log: `[DAST] Launching Checkmarx One DAST scanner sweep on production endpoints...` },
+        { progress: 20, log: isEnterpriseMode ? `[DAST] Launching Checkmarx DAST scanner sweep on production endpoints...` : `[DAST] Launching CodeVerify DAST scanner sweep on production endpoints...` },
         { progress: 50, log: `[DAST] Probing cross-site scripting (XSS) and SQL injection payloads...` },
         { progress: 80, log: `[DAST] Ingress router returned standard HTTP 403 Forbidden. Safe endpoint state verified.` },
-        { progress: 100, log: `[COMPLETE] Checkmarx DAST automated probe finished. 0 new findings.` }
+        { progress: 100, log: isEnterpriseMode ? `[COMPLETE] Checkmarx DAST automated probe finished. 0 new findings.` : `[COMPLETE] CodeVerify DAST automated probe finished. 0 new findings.` }
       ],
       SCA: [
-        { progress: 25, log: `[SCA] Invoking Checkmarx One SCA Package Dependency scanner...` },
-        { progress: 55, log: `[SCA] Checkmarx SCA Alert: Dependency 'body-parser@1.19.0' is vulnerable to CVE-2022-29153!` },
+        { progress: 25, log: isEnterpriseMode ? `[SCA] Invoking Checkmarx SCA Package Dependency scanner...` : `[SCA] Invoking CodeVerify SCA Package Dependency scanner...` },
+        { progress: 55, log: isEnterpriseMode ? `[SCA] Checkmarx SCA Alert: Dependency 'body-parser@1.19.0' is vulnerable to CVE-2022-29153!` : `[SCA] CodeVerify SCA Alert: Dependency 'body-parser@1.19.0' is vulnerable to CVE-2022-29153!` },
         { progress: 80, log: `[SCA] Matching active node overrides inside package-lock.json...` },
-        { progress: 100, log: `[COMPLETE] Checkmarx SCA check finished. 1 Critical dependency vulnerability discovered.` }
+        { progress: 100, log: isEnterpriseMode ? `[COMPLETE] Checkmarx SCA check finished. 1 Critical dependency vulnerability discovered.` : `[COMPLETE] CodeVerify SCA check finished. 1 Critical dependency vulnerability discovered.` }
       ],
       Secrets: [
-        { progress: 30, log: `[SECRETS] Spawning Wiz Secrets scanner and regex credentials scraper...` },
-        { progress: 65, log: `[SECRETS] Wiz Alert: Found hardcoded GitHub Client Secret inside server.ts (line 12)!` },
+        { progress: 30, log: isEnterpriseMode ? `[SECRETS] Spawning Wiz Secrets scanner and regex credentials scraper...` : `[SECRETS] Spawning SkyArmor Secrets scanner and regex credentials scraper...` },
+        { progress: 65, log: isEnterpriseMode ? `[SECRETS] Wiz Alert: Found hardcoded GitHub Client Secret inside server.ts (line 12)!` : `[SECRETS] SkyArmor Alert: Found hardcoded GitHub Client Secret inside server.ts (line 12)!` },
         { progress: 85, log: `[SECRETS] Auditing configuration parameters & .env profiles...` },
-        { progress: 100, log: `[COMPLETE] Wiz Secrets scan finished. 1 High secret credentials leak discovered.` }
+        { progress: 100, log: isEnterpriseMode ? `[COMPLETE] Wiz Secrets scan finished. 1 High secret credentials leak discovered.` : `[COMPLETE] SkyArmor Secrets scan finished. 1 High secret credentials leak discovered.` }
       ],
       IaC: [
-        { progress: 25, log: `[IaC] Running Wiz CLI Ingress Analyzer on IaC Terraform configurations...` },
-        { progress: 60, log: `[IaC] Wiz Alert: Open security group ingress rule detected on main.tf (CIDR: 0.0.0.0/0)` },
+        { progress: 25, log: isEnterpriseMode ? `[IaC] Running Wiz CLI Ingress Analyzer on IaC Terraform configurations...` : `[IaC] Running SkyArmor CLI Ingress Analyzer on IaC Terraform configurations...` },
+        { progress: 60, log: isEnterpriseMode ? `[IaC] Wiz Alert: Open security group ingress rule detected on main.tf (CIDR: 0.0.0.0/0)` : `[IaC] SkyArmor Alert: Open security group ingress rule detected on main.tf (CIDR: 0.0.0.0/0)` },
         { progress: 85, log: `[IaC] Checking compliance against NIST SP 800-53 cloud controls...` },
-        { progress: 100, log: `[COMPLETE] Wiz CNAPP IaC configuration scan finished. 1 High warning logged.` }
+        { progress: 100, log: isEnterpriseMode ? `[COMPLETE] Wiz CNAPP IaC configuration scan finished. 1 High warning logged.` : `[COMPLETE] SkyArmor CNAPP IaC configuration scan finished. 1 High warning logged.` }
       ]
     };
 
@@ -208,11 +212,11 @@ export default function AppsecPage() {
     }, 1200);
   };
 
-  // Dynamic Diffs calculations based on applied patches
-  const baseFindings = live ? live.total : 4850;
-  const baseCritical = live ? live.critical : 12;
-  const baseHigh = live ? live.high : 34;
-  const baseBacklog = live ? live.patchBacklog : 46;
+  // Dynamic Diffs calculations based on applied patches (Dynamic based on selected client context)
+  const baseFindings = currentClient.key === 'UR' ? 1240 : (live ? live.total : 4850);
+  const baseCritical = currentClient.key === 'UR' ? 4 : (live ? live.critical : 12);
+  const baseHigh = currentClient.key === 'UR' ? 12 : (live ? live.high : 34);
+  const baseBacklog = currentClient.key === 'UR' ? 18 : (live ? live.patchBacklog : 46);
 
   const patchedBacklogDeduction = vulnerabilities.reduce((acc, v) => acc + (v.patched ? v.impactBacklog : 0), 0);
   const patchedCriticalDeduction = vulnerabilities.reduce((acc, v) => acc + (v.patched && v.metricType === 'critical' ? v.impactFindings : 0), 0);
@@ -225,7 +229,7 @@ export default function AppsecPage() {
   const dynamicBacklog = Math.max(0, baseBacklog - patchedBacklogDeduction);
 
   const activePatchedCount = vulnerabilities.filter(v => v.patched).length;
-  const basePostureScore = 64;
+  const basePostureScore = currentClient.key === 'UR' ? 78 : 64;
   const postureImprovement = vulnerabilities.reduce((acc, v) => acc + (v.patched ? (v.id === 'vuln1' ? 12 : v.id === 'vuln2' ? 10 : v.id === 'vuln3' ? 8 : 6) : 0), 0);
   const currentPostureScore = basePostureScore + postureImprovement;
 
@@ -241,19 +245,19 @@ export default function AppsecPage() {
       <div className="page-content animate-in">
 
         {/* Premium Dynamic Alert Banner */}
-        <div className="sticky-alert-banner" style={{ background: 'linear-gradient(135deg, #ede9fe, #dbeafe)', border: '1px solid #c084fc', borderRadius: 12, padding: '0.875rem 1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <div className="sticky-alert-banner">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
             <div>
               <div style={{ fontWeight: 800, color: '#6d28d9', fontSize: '0.9rem' }}>
-                ASPM Unified Command Center // Checkmarx One & Wiz CNAPP Synced
+                ASPM Unified Command Center // {isEnterpriseMode ? 'Checkmarx AST & Wiz CNAPP' : 'CodeVerify AST & SkyArmor CNAPP'} Synced
               </div>
-              <div style={{ fontSize: '0.75rem', color: '#7c3aed' }}>
-                Checkmarx One (SAST/SCA): <span style={{ color: '#16a34a', fontWeight: 800 }}>Connected ●</span> · Wiz CNAPP (IaC/Secrets): <span style={{ color: '#16a34a', fontWeight: 800 }}>Active ●</span> · Auto-Patched Assets: {activePatchedCount} of {vulnerabilities.length}
+              <div style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 600 }}>
+                {isEnterpriseMode ? 'Checkmarx AST (SAST/SCA)' : 'CodeVerify AST (SAST/SCA)'}: <span style={{ color: '#16a34a', fontWeight: 800 }}>Connected ●</span> · {isEnterpriseMode ? 'Wiz CNAPP (IaC/Secrets)' : 'SkyArmor CNAPP (IaC/Secrets)'}: <span style={{ color: '#16a34a', fontWeight: 800 }}>Active ●</span> · Auto-Patched Assets: {activePatchedCount} of {vulnerabilities.length}
               </div>
             </div>
           </div>
-          <Link href="/dashboard/findings" style={{ fontSize: '0.78rem', fontWeight: 700, color: '#7c3aed', textDecoration: 'none', border: '1px solid #c084fc', padding: '0.375rem 0.875rem', borderRadius: 8 }}>
+          <Link href="/dashboard/findings" style={{ fontSize: '0.78rem', fontWeight: 700, color: '#7c3aed', textDecoration: 'none', border: '1px solid #c084fc', padding: '0.375rem 0.875rem', borderRadius: 8, background: 'rgba(255, 255, 255, 0.4)' }}>
             Browse All CVE Findings →
           </Link>
         </div>
@@ -750,7 +754,7 @@ export default function AppsecPage() {
             </p>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
               <ResponsiveContainer width="100%" height={160}>
-                <PieChart>
+                <PieChart key={currentClient.key}>
                   <Pie
                     data={sevChart}
                     cx="50%"
@@ -795,7 +799,7 @@ export default function AppsecPage() {
             <div style={{ width: '100%', textAlign: 'left' }}>
               <div className="card-title">🎯 ASPM Security Posture Score</div>
               <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
-                Calculated dynamic score based on active Checkmarx & Wiz auto-patch deployments.
+                Calculated dynamic score based on active {isEnterpriseMode ? 'Checkmarx & Wiz' : 'CodeVerify & SkyArmor'} auto-patch deployments.
               </p>
             </div>
             
@@ -853,7 +857,7 @@ export default function AppsecPage() {
           <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '320px' }}>
             <div className="card-title">🔍 Scan Coverage & Integration Metrics</div>
             <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
-              Parsed results from Snyk, Trufflehog, AWS Inspector, and local static analysis.
+              Parsed results from {isEnterpriseMode ? 'Snyk' : 'DepGuard'}, Trufflehog, AWS Inspector, and local static analysis.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', flex: 1, justifyContent: 'center' }}>
               {[
