@@ -101,7 +101,7 @@ export default function FindingsPage() {
       <div className="page-content animate-in">
 
         {/* Summary pills */}
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
           {Object.entries(SEV_ORDER)
             .sort(([a], [b]) => SEV_ORDER[a] - SEV_ORDER[b])
             .map(([sev]) => sc[sev] ? (

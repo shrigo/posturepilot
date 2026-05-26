@@ -86,7 +86,7 @@ export default function UploadPage() {
       <div className="page-content animate-in">
 
         {/* Supported formats */}
-        <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1.5rem', flexWrap:'wrap' }}>
+        <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1rem', flexWrap:'wrap' }}>
           {[
             { icon:'🔵', name:'Qualys VMDR',  format:'.xml',    desc:'VMDR / WAS report'       },
             { icon:'🔴', name:'Nessus',        format:'.nessus', desc:'Export from Nessus Pro'  },
@@ -140,7 +140,7 @@ export default function UploadPage() {
 
         {/* Error */}
         {error && (
-          <div className="card animate-in" style={{ marginTop:'1.5rem', border:'1px solid #fecaca', background:'#fef2f2' }}>
+          <div className="card animate-in" style={{ marginTop:'1rem', border:'1px solid #fecaca', background:'#fef2f2' }}>
             <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
               <span style={{ fontSize:'1.5rem' }}>❌</span>
               <div>
@@ -153,7 +153,7 @@ export default function UploadPage() {
 
         {/* Success result */}
         {result && (
-          <div className="card animate-in" style={{ marginTop:'1.5rem', border:'1px solid #bbf7d0', background:'#f0fdf4' }}>
+          <div className="card animate-in" style={{ marginTop:'1rem', border:'1px solid #bbf7d0', background:'#f0fdf4' }}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1rem', flexWrap:'wrap', gap:'0.75rem' }}>
               <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
                 <span style={{ fontSize:'1.5rem' }}>✅</span>
@@ -188,7 +188,7 @@ export default function UploadPage() {
         )}
 
         {/* Recent scan history */}
-        <div className="card" style={{ marginTop:'2rem' }} onMouseEnter={loadHistory}>
+        <div className="card" style={{ marginTop:'1rem' }} onMouseEnter={loadHistory}>
           <div className="card-title">📋 Recent Scan Jobs</div>
           {history.length === 0 ? (
             <div style={{ color:'#94a3b8', fontSize:'0.85rem', padding:'1rem 0' }}>
