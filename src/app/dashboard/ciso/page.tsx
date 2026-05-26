@@ -6,7 +6,8 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const widgetMeta = {
   summary: { label: 'Aggregate Score HUD', icon: '📊', bg: '#f5f3ff', border: '#ddd6fe', activeBorder: '#7c3aed' },
   posture: { label: 'Joint Compliance Trend', icon: '📈', bg: '#f0f9ff', border: '#bae6fd', activeBorder: '#0284c7' },
-  patching: { label: 'Patching & MTTR Score', icon: '🩹', bg: '#f0fdf4', border: '#bbf7d0', activeBorder: '#10b981' },
+  framework: { label: 'Regulatory Framework Target Conformance', icon: '📋', bg: '#ecfeff', border: '#a5f3fc', activeBorder: '#0891b2' },
+  patching: { label: 'Vulnerability & Patching Efficiency Score', icon: '🩹', bg: '#f0fdf4', border: '#bbf7d0', activeBorder: '#10b981' },
   threats: { label: 'Cross-Tenant Threats', icon: '🛡️', bg: '#fef2f2', border: '#fecaca', activeBorder: '#dc2626' },
   remediation: { label: 'Security Stack Config', icon: '🔌', bg: '#fff7ed', border: '#fed7aa', activeBorder: '#ea580c' }
 };
@@ -19,13 +20,14 @@ export default function CISOPage() {
   const [viewWidgets, setViewWidgets] = useState<Record<string, boolean>>({
     summary: true,
     posture: true,
+    framework: true,
     threats: true,
     remediation: true,
     patching: true
   });
 
   // Widget Order Management (Site-wide layout reordering)
-  const [widgetOrder, setWidgetOrder] = useState<string[]>(['summary', 'posture', 'patching', 'threats', 'remediation']);
+  const [widgetOrder, setWidgetOrder] = useState<string[]>(['summary', 'posture', 'framework', 'patching', 'threats', 'remediation']);
 
   const [authRole, setAuthRole] = useState<'CISO' | 'Auditor' | 'Unauthorized'>('CISO');
   const [pendingRole, setPendingRole] = useState<'CISO' | 'Auditor' | null>(null);
@@ -626,65 +628,67 @@ export default function CISOPage() {
               case 'posture':
                 return (
                   <div key="posture" style={{ marginBottom: '1rem' }}>
-                    {/* WIDGET 2: JOINT COMPLIANCE TRENDS AreaChart & Framework breakdown BarChart */}
-                    <div className="grid-2">
-                      {/* Left: Joint Compliance Ratios (History & Projections) */}
-                      <div className="card" style={{ height: '320px', display: 'flex', flexDirection: 'column', padding: '1.25rem' }}>
-                        <div className="card-title">📈 Joint Compliance Ratios (History & Projections)</div>
-                        <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
-                          Historical posture trajectory comparing subsidiaries to CISO unified target score.
-                        </p>
-                        <div style={{ flex: 1 }}>
-                          {activeTenants.length === 0 ? (
-                            <div style={{ color: '#64748b', fontStyle: 'italic', margin: 'auto', textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              Select at least one subsidiary in the Configurator Panel to plot compliance trends...
-                            </div>
-                          ) : (
-                            <ResponsiveContainer width="100%" height="100%">
-                              <AreaChart data={combinedTrendData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-                                <defs>
-                                  <linearGradient id="colorCombined" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.2}/>
-                                    <stop offset="95%" stopColor="#7c3aed" stopOpacity={0.0}/>
-                                  </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                                <XAxis dataKey="week" tick={{ fontSize: 10, fill: '#94a3b8' }} />
-                                <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[20, 100]} />
-                                <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
-                                {selectedTenants.includes('ACME') && <Area type="monotone" dataKey="ACME" name="Acme Financial" stroke="#3b82f6" strokeWidth={2} fill="none" />}
-                                {selectedTenants.includes('UR') && <Area type="monotone" dataKey="UR" name="Unified Rentals" stroke="#10b981" strokeWidth={2} fill="none" />}
-                                {selectedTenants.length > 1 && <Area type="monotone" dataKey="Combined" name="CISO Combined Average" stroke={isGroupUnderAttack ? '#ef4444' : '#7c3aed'} strokeWidth={3} fill="url(#colorCombined)" />}
-                              </AreaChart>
-                            </ResponsiveContainer>
-                          )}
-                        </div>
+                    {/* Left: Joint Compliance Ratios (History & Projections) */}
+                    <div className="card" style={{ height: '320px', display: 'flex', flexDirection: 'column', padding: '1.25rem' }}>
+                      <div className="card-title">📈 Joint Compliance Ratios (History & Projections)</div>
+                      <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
+                        Historical posture trajectory comparing subsidiaries to CISO unified target score.
+                      </p>
+                      <div style={{ flex: 1 }}>
+                        {activeTenants.length === 0 ? (
+                          <div style={{ color: '#64748b', fontStyle: 'italic', margin: 'auto', textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            Select at least one subsidiary in the Configurator Panel to plot compliance trends...
+                          </div>
+                        ) : (
+                          <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={combinedTrendData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                              <defs>
+                                <linearGradient id="colorCombined" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.2}/>
+                                  <stop offset="95%" stopColor="#7c3aed" stopOpacity={0.0}/>
+                                </linearGradient>
+                              </defs>
+                              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                              <XAxis dataKey="week" tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                              <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[20, 100]} />
+                              <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
+                              {selectedTenants.includes('ACME') && <Area type="monotone" dataKey="ACME" name="Acme Financial" stroke="#3b82f6" strokeWidth={2} fill="none" />}
+                              {selectedTenants.includes('UR') && <Area type="monotone" dataKey="UR" name="Unified Rentals" stroke="#10b981" strokeWidth={2} fill="none" />}
+                              {selectedTenants.length > 1 && <Area type="monotone" dataKey="Combined" name="CISO Combined Average" stroke={isGroupUnderAttack ? '#ef4444' : '#7c3aed'} strokeWidth={3} fill="url(#colorCombined)" />}
+                            </AreaChart>
+                          </ResponsiveContainer>
+                        )}
                       </div>
+                    </div>
+                  </div>
+                );
 
-                      {/* Right: Regulatory Framework Target Conformance */}
-                      <div className="card" style={{ height: '320px', display: 'flex', flexDirection: 'column', padding: '1.25rem' }}>
-                        <div className="card-title">📊 Regulatory Framework Target Conformance</div>
-                        <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
-                          Side-by-side compliance ratings against global standards.
-                        </p>
-                        <div style={{ flex: 1 }}>
-                          {activeTenants.length === 0 ? (
-                            <div style={{ color: '#64748b', fontStyle: 'italic', margin: 'auto', textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              Select at least one subsidiary in the Configurator Panel to plot framework comparison...
-                            </div>
-                          ) : (
-                            <ResponsiveContainer width="100%" height="100%">
-                              <BarChart data={frameworkComplianceData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                                <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} />
-                                <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[0, 100]} />
-                                <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
-                                {selectedTenants.includes('ACME') && <Bar dataKey="ACME" name="Acme Financial" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={8} />}
-                                {selectedTenants.includes('UR') && <Bar dataKey="UR" name="Unified Rentals" fill="#10b981" radius={[4, 4, 0, 0]} barSize={8} />}
-                              </BarChart>
-                            </ResponsiveContainer>
-                          )}
-                        </div>
+              case 'framework':
+                return (
+                  <div key="framework" style={{ marginBottom: '1rem' }}>
+                    {/* Right: Regulatory Framework Target Conformance */}
+                    <div className="card" style={{ height: '320px', display: 'flex', flexDirection: 'column', padding: '1.25rem' }}>
+                      <div className="card-title">📊 Regulatory Framework Target Conformance</div>
+                      <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
+                        Side-by-side compliance ratings against global standards.
+                      </p>
+                      <div style={{ flex: 1 }}>
+                        {activeTenants.length === 0 ? (
+                          <div style={{ color: '#64748b', fontStyle: 'italic', margin: 'auto', textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            Select at least one subsidiary in the Configurator Panel to plot framework comparison...
+                          </div>
+                        ) : (
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={frameworkComplianceData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                              <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                              <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[0, 100]} />
+                              <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
+                              {selectedTenants.includes('ACME') && <Bar dataKey="ACME" name="Acme Financial" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={8} />}
+                              {selectedTenants.includes('UR') && <Bar dataKey="UR" name="Unified Rentals" fill="#10b981" radius={[4, 4, 0, 0]} barSize={8} />}
+                            </BarChart>
+                          </ResponsiveContainer>
+                        )}
                       </div>
                     </div>
                   </div>
