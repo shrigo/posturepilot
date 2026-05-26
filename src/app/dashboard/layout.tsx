@@ -27,7 +27,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'Policy violations, access control audits & data classification',
   },
   '/dashboard/kpi': {
-    title: '📊 Security KPIs',
+    title: '📊 Flight Telemetry (KPIs)',
     subtitle: 'MTTA, MTTR, Patch SLA compliance & team performance',
   },
   '/dashboard/appsec': {

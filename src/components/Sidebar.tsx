@@ -10,7 +10,7 @@ const navItems = [
   { href: '/dashboard/cloud',    icon: '☁️', label: 'Cloud Altitude' },
   { href: '/dashboard/network',  icon: '🌐', label: 'Network Runway',    badge: '34' },
   { href: '/dashboard/infosec',  icon: '📋', label: 'Compliance Checkpoint' },
-  { href: '/dashboard/kpi',      icon: '📊', label: 'Security KPIs' },
+  { href: '/dashboard/kpi',      icon: '📊', label: 'Flight Telemetry (KPIs)' },
   { href: '/dashboard/appsec',   icon: '🔐', label: 'App Security',      badge: '14' },
   { href: '/dashboard/traffic',  icon: '🗼', label: 'ATC Monitor' },
   { href: '/dashboard/server',   icon: '🖥️', label: 'Server Health',     badge: '3' },
