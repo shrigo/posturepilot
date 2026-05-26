@@ -4,11 +4,11 @@ import { useClient } from '@/context/ClientContext';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 const widgetMeta = {
-  summary: { label: 'Aggregate Score HUD', icon: '📊' },
-  posture: { label: 'Joint Compliance Trend', icon: '📈' },
-  threats: { label: 'Cross-Tenant Threats', icon: '🛡️' },
-  patching: { label: 'Patching & MTTR Score', icon: '🩹' },
-  remediation: { label: 'Security Stack Config', icon: '🔌' }
+  summary: { label: 'Aggregate Score HUD', icon: '📊', bg: '#f5f3ff', border: '#ddd6fe', activeBorder: '#7c3aed' },
+  posture: { label: 'Joint Compliance Trend', icon: '📈', bg: '#f0f9ff', border: '#bae6fd', activeBorder: '#0284c7' },
+  patching: { label: 'Patching & MTTR Score', icon: '🩹', bg: '#f0fdf4', border: '#bbf7d0', activeBorder: '#10b981' },
+  threats: { label: 'Cross-Tenant Threats', icon: '🛡️', bg: '#fef2f2', border: '#fecaca', activeBorder: '#dc2626' },
+  remediation: { label: 'Security Stack Config', icon: '🔌', bg: '#fff7ed', border: '#fed7aa', activeBorder: '#ea580c' }
 };
 
 export default function CISOPage() {
@@ -493,8 +493,8 @@ export default function CISOPage() {
                         key={key}
                         style={{ 
                           display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.5rem 0.75rem', 
-                          background: isChecked ? '#f5f3ff' : '#ffffff', 
-                          border: isChecked ? '1.5px solid #7c3aed' : '1px solid #e2e8f0', 
+                          background: isChecked ? meta.bg : '#ffffff', 
+                          border: isChecked ? `1.5px solid ${meta.activeBorder}` : `1.5px solid ${meta.border}`, 
                           borderRadius: 10, transition: 'all 0.15s'
                         }}
                       >
