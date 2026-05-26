@@ -497,11 +497,11 @@ export default function OverviewPage() {
                     <Pie
                       data={postureScoreData}
                       cx="50%"
-                      cy="80%"
+                      cy="85%"
                       startAngle={180}
                       endAngle={0}
-                      innerRadius={56}
-                      outerRadius={76}
+                      innerRadius={75}
+                      outerRadius={98}
                       paddingAngle={0}
                       dataKey="value"
                     >
@@ -513,7 +513,7 @@ export default function OverviewPage() {
                 </ResponsiveContainer>
                 
                 {/* Center Stat Overlay */}
-                <div style={{ position: 'absolute', bottom: '10%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
+                <div style={{ position: 'absolute', bottom: '12%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
                   <div style={{ fontSize: '1.45rem', fontWeight: 900, color: isUnderAttack ? '#dc2626' : '#0f172a', lineHeight: 1 }}>
                     {activePostScore}
                   </div>
@@ -566,8 +566,8 @@ export default function OverviewPage() {
                       data={severityDonutData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={56}
-                      outerRadius={76}
+                      innerRadius={68}
+                      outerRadius={88}
                       paddingAngle={4}
                       dataKey="value"
                     >
