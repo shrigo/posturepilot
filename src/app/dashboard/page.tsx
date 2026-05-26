@@ -613,7 +613,7 @@ export default function OverviewPage() {
                       contentStyle={{ fontSize: 11, borderRadius: 8 }}
                       formatter={(value: any, name: any, props: any) => [`${value}% Compliance`, props.payload.label]}
                     />
-                    <Bar dataKey="score" radius={[0, 4, 4, 0]} barSize={11}>
+                    <Bar dataKey="score" radius={[0, 4, 4, 0]} barSize={8}>
                       {categoryComplianceData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.fill} />
                       ))}
@@ -653,7 +653,7 @@ export default function OverviewPage() {
                       <span>DEPLOYING SECURITY REMEDIATION PLAYBOOK:</span>
                       <span>{simProgress}%</span>
                     </div>
-                    <div style={{ height: 6, background: '#f1f5f9', borderRadius: 99, overflow: 'hidden' }}>
+                    <div style={{ height: 8, background: '#f1f5f9', borderRadius: 99, overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: `${simProgress}%`, background: '#7c3aed', transition: 'width 0.3s ease' }} />
                     </div>
                   </div>
@@ -743,7 +743,7 @@ export default function OverviewPage() {
                       <span>{f.name}</span>
                       <span style={{ color: f.color }}>{f.pct}%</span>
                     </div>
-                    <div className="progress-bar-wrap" style={{ height: 6, background: '#f1f5f9' }}>
+                    <div className="progress-bar-wrap" style={{ height: 8, background: '#f1f5f9' }}>
                       <div className="progress-bar-fill" style={{ width: `${f.pct}%`, background: f.color }} />
                     </div>
                   </div>
@@ -858,7 +858,7 @@ export default function OverviewPage() {
                   <span>Security Health</span>
                   <span>{m.progress}%</span>
                 </div>
-                <div style={{ height: 4, background: 'rgba(255,255,255,0.6)', borderRadius: 99, overflow: 'hidden', border: '1px solid rgba(0,0,0,0.03)' }}>
+                <div style={{ height: 8, background: 'rgba(255,255,255,0.6)', borderRadius: 99, overflow: 'hidden', border: '1px solid rgba(0,0,0,0.03)' }}>
                   <div style={{ height: '100%', width: `${m.progress}%`, background: m.color, borderRadius: 99, transition: 'width 0.6s ease' }} />
                 </div>
               </div>

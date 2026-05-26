@@ -405,7 +405,7 @@ export default function ServerPage() {
                   <span>{edrProvider} CPU Impact</span>
                   <span>{edrMetrics[edrProvider].cpu}</span>
                 </div>
-                <div className="progress-bar-wrap" style={{ height: 6, background: '#f3e8ff' }}>
+                <div className="progress-bar-wrap" style={{ height: 8, background: '#f3e8ff' }}>
                   <div className="progress-bar-fill" style={{ width: edrProvider === 'CrowdStrike' ? '60%' : '35%', background: '#8b5cf6' }} />
                 </div>
               </div>
@@ -414,7 +414,7 @@ export default function ServerPage() {
                   <span>{edrProvider} RAM Hook</span>
                   <span>{edrMetrics[edrProvider].ram}</span>
                 </div>
-                <div className="progress-bar-wrap" style={{ height: 6, background: '#f3e8ff' }}>
+                <div className="progress-bar-wrap" style={{ height: 8, background: '#f3e8ff' }}>
                   <div className="progress-bar-fill" style={{ width: edrProvider === 'CrowdStrike' ? '80%' : '50%', background: '#8b5cf6' }} />
                 </div>
               </div>
@@ -466,7 +466,7 @@ export default function ServerPage() {
                           <span style={{ fontSize: '0.74rem', fontWeight: 800, color: s.cpu > 75 ? '#dc2626' : '#16a34a', width: '32px' }}>
                             {s.cpu}%
                           </span>
-                          <div className="progress-bar-wrap" style={{ flex: 1, height: '5px', marginTop: 0 }}>
+                          <div className="progress-bar-wrap" style={{ flex: 1, height: 8, marginTop: 0 }}>
                             <div className="progress-bar-fill" style={{ width: `${s.cpu}%`, background: s.cpu > 75 ? '#dc2626' : '#22c55e' }} />
                           </div>
                         </div>
@@ -687,7 +687,7 @@ export default function ServerPage() {
                   <span>EDR FLEET ORCHESTRATION SHIELD INJECTING:</span>
                   <span>{syncProgress}%</span>
                 </div>
-                <div style={{ height: 4, background: '#1e293b', borderRadius: 99, overflow: 'hidden' }}>
+                <div style={{ height: 8, background: '#1e293b', borderRadius: 99, overflow: 'hidden' }}>
                   <div style={{ height: '100%', width: `${syncProgress}%`, background: '#7c3aed', transition: 'width 0.3s ease' }} />
                 </div>
               </div>

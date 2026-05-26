@@ -523,7 +523,7 @@ export default function TrafficPage() {
                   <span>GATEWAY SHAPER CONFLICT RESOLUTION:</span>
                   <span>{syncProgress}%</span>
                 </div>
-                <div style={{ height: 4, background: '#1e293b', borderRadius: 99, overflow: 'hidden' }}>
+                <div style={{ height: 8, background: '#1e293b', borderRadius: 99, overflow: 'hidden' }}>
                   <div style={{ height: '100%', width: `${syncProgress}%`, background: '#7c3aed', transition: 'width 0.3s ease' }} />
                 </div>
               </div>
