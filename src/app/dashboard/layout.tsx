@@ -31,7 +31,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'MTTA, MTTR, Patch SLA compliance & team performance',
   },
   '/dashboard/appsec': {
-    title: '🔐 AppSec Check',
+    title: '🔐 App Security Check',
     subtitle: 'OWASP findings, SAST/DAST results & dependency vulnerabilities',
   },
   '/dashboard/traffic': {
