@@ -51,7 +51,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'Combined multi-tenant executive reporting and customizable security telemetry cockpit',
   },
   '/dashboard/findings': {
-    title: '🔍 Baggage Claim',
+    title: '🔍 Customs Check',
     subtitle: 'All parsed CVEs & vulnerabilities from uploaded scans',
   },
   '/dashboard/upload': {

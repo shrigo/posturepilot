@@ -64,7 +64,7 @@ export default function Sidebar() {
         </Link>
         <Link href="/dashboard/findings" className={`nav-item${pathname === '/dashboard/findings' ? ' active' : ''}`}>
           <span className="nav-icon">🔍</span>
-          <span className="nav-label">Baggage Claim</span>
+          <span className="nav-label">Customs Check</span>
         </Link>
         <Link href="/dashboard/upload" className={`nav-item${pathname === '/dashboard/upload' ? ' active' : ''}`}>
           <span className="nav-icon">📤</span>
