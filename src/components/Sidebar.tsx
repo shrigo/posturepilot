@@ -5,18 +5,18 @@ import Image from 'next/image';
 import { useClient } from '@/context/ClientContext';
 
 const navItems = [
-  { href: '/dashboard',          icon: '🏠', label: 'Overview' },
+  { href: '/dashboard',          icon: '🛫', label: 'Flight Deck' },
   { href: '/dashboard/posture',  icon: '🛡️', label: 'Cyber Posture',     badge: '3' },
-  { href: '/dashboard/cloud',    icon: '☁️', label: 'Cloud Security' },
-  { href: '/dashboard/network',  icon: '🌐', label: 'Network Security',  badge: '34' },
-  { href: '/dashboard/infosec',  icon: '📋', label: 'Governance & Compliance' },
-  { href: '/dashboard/kpi',      icon: '📊', label: 'Security KPIs' },
-  { href: '/dashboard/appsec',   icon: '🔐', label: 'App Security',      badge: '14' },
-  { href: '/dashboard/traffic',  icon: '📡', label: 'Traffic Monitor' },
-  { href: '/dashboard/server',   icon: '🖥️', label: 'Server Health',     badge: '3' },
-  { href: '/dashboard/ai-risk',  icon: '🤖', label: 'AI Risk',           badge: 'NEW' },
-  { href: '/dashboard/identity', icon: '🔑', label: 'Identity Shield',    badge: 'NEW' },
-  { href: '/dashboard/secure',   icon: '📡', label: 'Risk Radar',        badge: 'NEW' },
+  { href: '/dashboard/cloud',    icon: '☁️', label: 'Cloud Altitude' },
+  { href: '/dashboard/network',  icon: '🌐', label: 'Network Airspace',  badge: '34' },
+  { href: '/dashboard/infosec',  icon: '📋', label: 'Compliance Checkpoint' },
+  { href: '/dashboard/kpi',      icon: '📊', label: 'Telemetry & Altimeters' },
+  { href: '/dashboard/appsec',   icon: '🔐', label: 'Carry-On Security', badge: '14' },
+  { href: '/dashboard/traffic',  icon: '📡', label: 'Traffic ATC' },
+  { href: '/dashboard/server',   icon: '🖥️', label: 'Server Terminal',    badge: '3' },
+  { href: '/dashboard/ai-risk',  icon: '🤖', label: 'Shadow Copilot',     badge: 'NEW' },
+  { href: '/dashboard/identity', icon: '🔑', label: 'Passport Control',   badge: 'NEW' },
+  { href: '/dashboard/secure',   icon: '📡', label: 'Risk Radar',         badge: 'NEW' },
 ];
 
 export default function Sidebar() {
@@ -64,15 +64,15 @@ export default function Sidebar() {
         </Link>
         <Link href="/dashboard/findings" className={`nav-item${pathname === '/dashboard/findings' ? ' active' : ''}`}>
           <span className="nav-icon">🔍</span>
-          <span className="nav-label">Findings</span>
+          <span className="nav-label">Baggage Claim</span>
         </Link>
         <Link href="/dashboard/upload" className={`nav-item${pathname === '/dashboard/upload' ? ' active' : ''}`}>
           <span className="nav-icon">📤</span>
-          <span className="nav-label">Upload Scan</span>
+          <span className="nav-label">Scan Check-In</span>
         </Link>
         <Link href="/dashboard/settings" className={`nav-item${pathname === '/dashboard/settings' ? ' active' : ''}`}>
           <span className="nav-icon">⚙️</span>
-          <span className="nav-label">Settings</span>
+          <span className="nav-label">Self-Service Kiosk</span>
         </Link>
       </nav>
 
