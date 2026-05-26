@@ -327,7 +327,7 @@ export default function Page() {
                   {icon:"📡",label:"Traffic Monitor",active:false},
                   {icon:"🖥️",label:"Server Health",active:false,badge:"3"},
                   {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
-                  {icon:"🔑",label:"Identity & Access",active:false,badge:"NEW"},
+                  {icon:"🔑",label:"Identity Shield",active:false,badge:"NEW"},
                   {icon:"📡",label:"Risk Radar",active:false,badge:"NEW"},
                 ].map(item=>(
                   <div key={item.label} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.45rem 0.875rem",

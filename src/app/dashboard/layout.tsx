@@ -66,6 +66,10 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     title: '📡 Risk Radar',
     subtitle: 'Vulnerability Triage & Prioritized Exposure Engine',
   },
+  '/dashboard/identity': {
+    title: '🔑 Identity Shield',
+    subtitle: 'Your Gatekeeper — SSO directory auditing, privilege drift scanning & Zero-Trust MFA',
+  },
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

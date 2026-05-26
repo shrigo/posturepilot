@@ -202,7 +202,7 @@ export default function IdentityPage() {
           <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
           <div>
             <div style={{ fontWeight: 800, color: '#6d28d9', fontSize: '0.9rem' }}>
-              Identity Posture Console — {activeMeta.directoryType}
+              Identity Shield — Your Gatekeeper ({activeMeta.directoryType})
             </div>
             <div style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 600 }}>
               {activeMeta.ssoIndicator}
@@ -424,7 +424,7 @@ export default function IdentityPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.50rem' }}>
             <span style={{ width: 10, height: 10, borderRadius: '50%', background: isSyncing ? '#ef4444' : '#10b981', display: 'inline-block' }} />
             <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              Identity Threat Detection & Response (ITDR) Auditor
+              💻 IAM Terminal — Live Session & Privilege Deprovisioner
             </span>
           </div>
           <button 
