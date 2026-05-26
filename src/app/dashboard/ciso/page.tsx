@@ -32,10 +32,51 @@ export default function CISOPage() {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
-  // Business Units Base Metadata
+  // Active Exploit Simulator States
+  const [isGroupUnderAttack, setIsGroupUnderAttack] = useState(false);
+  const [isGroupMitigating, setIsGroupMitigating] = useState(false);
+  const [groupSimProgress, setGroupSimProgress] = useState(0);
+
+  // Active Integrations States
+  const [activeIntegrations, setActiveIntegrations] = useState<Record<string, boolean>>({
+    cspm: true,
+    cnapp: true,
+    sast: true,
+    sca: true
+  });
+
+  // Board Report Modal States
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [isCompilingReport, setIsCompilingReport] = useState(false);
+  const [reportProgress, setReportProgress] = useState(0);
+  const [reportLogs, setReportLogs] = useState<string[]>([]);
+
+  // Dynamic Tenant Metadata based on Integration toggles and Attack Wave
   const tenantsMetadata = [
-    { key: 'ACME', name: 'Acme Financial Corp', avatar: 'AC', assets: 1247, compliance: 71, criticals: 14, backlog: 234, badgeColor: '#3b82f6' },
-    { key: 'UR', name: 'Unified Rentals', avatar: 'UR', assets: 3842, compliance: 89, criticals: 4, backlog: 92, badgeColor: '#10b981' }
+    { 
+      key: 'ACME', 
+      name: 'Acme Financial Corp', 
+      avatar: 'AC', 
+      assets: activeIntegrations.cnapp ? 1247 : 820, 
+      compliance: isGroupUnderAttack 
+        ? 34 
+        : Math.max(20, 71 - (!activeIntegrations.cnapp ? 22 : 0) - (!activeIntegrations.sast ? 15 : 0)), 
+      criticals: isGroupUnderAttack ? 48 : (14 + (!activeIntegrations.cnapp ? 12 : 0)), 
+      backlog: isGroupUnderAttack ? 382 : 234, 
+      badgeColor: '#3b82f6' 
+    },
+    { 
+      key: 'UR', 
+      name: 'Unified Rentals', 
+      avatar: 'UR', 
+      assets: activeIntegrations.cspm ? 3842 : 2210, 
+      compliance: isGroupUnderAttack 
+        ? 44 
+        : Math.max(25, 89 - (!activeIntegrations.cspm ? 25 : 0) - (!activeIntegrations.sca ? 10 : 0)), 
+      criticals: isGroupUnderAttack ? 32 : (4 + (!activeIntegrations.cspm ? 18 : 0)), 
+      backlog: isGroupUnderAttack ? 218 : 92, 
+      badgeColor: '#10b981' 
+    }
   ];
 
   // Filtered active tenants to construct combined view
@@ -53,32 +94,38 @@ export default function CISOPage() {
   const slaStatus = avgCompliance >= 85 ? 'CONFORMANCE' : avgCompliance >= 75 ? 'DEVIATION' : 'CRITICAL BREACH';
 
   // Dynamic Patching & MTTR values based on selected tenants (Aggregate site-wide)
-  const patchingScore = selectedTenants.length === 2 
-    ? 78 
-    : selectedTenants.includes('ACME') 
-      ? 68 
-      : selectedTenants.includes('UR') 
-        ? 87 
-        : 0;
+  const patchingScore = isGroupUnderAttack
+    ? 28
+    : (selectedTenants.length === 2 
+        ? Math.round(78 * (Object.values(activeIntegrations).filter(Boolean).length / 4))
+        : selectedTenants.includes('ACME') 
+          ? Math.round(68 * ((activeIntegrations.cnapp ? 1 : 0.5) + (activeIntegrations.sast ? 1 : 0.5)) / 2)
+          : selectedTenants.includes('UR') 
+            ? Math.round(87 * ((activeIntegrations.cspm ? 1 : 0.5) + (activeIntegrations.sca ? 1 : 0.5)) / 2)
+            : 0);
 
   const patchingGrade = patchingScore >= 85 ? 'A-' : patchingScore >= 75 ? 'B+' : patchingScore >= 65 ? 'B-' : 'N/A';
   const patchingGradeColor = patchingScore >= 85 ? '#10b981' : patchingScore >= 75 ? '#7c3aed' : patchingScore >= 65 ? '#ea580c' : '#94a3b8';
 
-  const mttrCritical = selectedTenants.length === 2 
-    ? 4.8 
-    : selectedTenants.includes('ACME') 
-      ? 6.5 
-      : selectedTenants.includes('UR') 
-        ? 3.0 
-        : 0;
+  const mttrCritical = isGroupUnderAttack
+    ? 24.8
+    : (selectedTenants.length === 2 
+        ? 4.8 
+        : selectedTenants.includes('ACME') 
+          ? 6.5 
+          : selectedTenants.includes('UR') 
+            ? 3.0 
+            : 0);
 
-  const mttrHigh = selectedTenants.length === 2 
-    ? 14.3 
-    : selectedTenants.includes('ACME') 
-      ? 20.5 
-      : selectedTenants.includes('UR') 
-        ? 8.0 
-        : 0;
+  const mttrHigh = isGroupUnderAttack
+    ? 45.3
+    : (selectedTenants.length === 2 
+        ? 14.3 
+        : selectedTenants.includes('ACME') 
+          ? 20.5 
+          : selectedTenants.includes('UR') 
+            ? 8.0 
+            : 0);
 
   // Toggle tenant in combined view
   const toggleTenant = (key: string) => {
@@ -137,13 +184,85 @@ export default function CISOPage() {
     }
   };
 
+  // Group Simulation Handlers
+  const handleTriggerGroupAttack = () => {
+    setIsGroupUnderAttack(true);
+    setIsGroupMitigating(false);
+  };
+
+  const handleTriggerGroupMitigation = () => {
+    setIsGroupMitigating(true);
+    setGroupSimProgress(0);
+    
+    const interval = setInterval(() => {
+      setGroupSimProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsGroupUnderAttack(false);
+          setIsGroupMitigating(false);
+          // Restore all integrations too if they were toggled off
+          setActiveIntegrations({ cspm: true, cnapp: true, sast: true, sca: true });
+          return 100;
+        }
+        return prev + 5;
+      });
+    }, 120);
+  };
+
+  // Board Report Compiler Handler
+  const handleCompileReport = () => {
+    setShowReportModal(true);
+    setIsCompilingReport(true);
+    setReportProgress(0);
+    setReportLogs([]);
+
+    const logsList = [
+      'Initializing CISO Cross-Tenant Security Audit Report Compilation...',
+      'Retrieving subsidiary ledger telemetry from Acme Financial Corp...',
+      'Retrieving subsidiary ledger telemetry from Unified Rentals...',
+      'Querying asset integration databases for active EDR heartbeats...',
+      'Validating GRC framework audits (SOC 2, ISO 27001, HIPAA)...',
+      'Calculating mean MTTR averages and outstanding SLA Warn metrics...',
+      'Generating aggregate CISO posture trend projections...',
+      'Signing briefing document with CISO digital private key...',
+      'Briefing document ready for executive presentation!'
+    ];
+
+    let currentLogIndex = 0;
+    const interval = setInterval(() => {
+      setReportProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsCompilingReport(false);
+          return 100;
+        }
+        
+        // Add log message
+        const newLog = logsList[currentLogIndex];
+        if (newLog) {
+          setReportLogs(l => [...l, `[${new Date().toLocaleTimeString()}] ${newLog}`]);
+          currentLogIndex++;
+        }
+        return prev + 12.5;
+      });
+    }, 200);
+  };
+
   // Combined charts data
   const combinedTrendData = [
     { week: 'Week 1', ACME: 64, UR: 82, Combined: 73 },
     { week: 'Week 2', ACME: 68, UR: 84, Combined: 76 },
-    { week: 'Week 3', ACME: 72, UR: 85, Combined: 785 },
+    { week: 'Week 3', ACME: 72, UR: 85, Combined: 78.5 },
     { week: 'Week 4', ACME: 70, UR: 89, Combined: 79.5 },
-    { week: 'Week 5', ACME: 71, UR: 89, Combined: 80 },
+    { week: 'Week 5', ACME: tenantsMetadata[0].compliance, UR: tenantsMetadata[1].compliance, Combined: avgCompliance },
+  ];
+
+  // Business Unit Framework Breakdown Data
+  const frameworkComplianceData = [
+    { name: 'NIST CSF', ACME: activeIntegrations.cnapp ? 82 : 45, UR: activeIntegrations.cspm ? 94 : 58 },
+    { name: 'SOC 2', ACME: activeIntegrations.sast ? 78 : 50, UR: activeIntegrations.sca ? 89 : 62 },
+    { name: 'ISO 27001', ACME: activeIntegrations.cnapp && activeIntegrations.sast ? 71 : 35, UR: activeIntegrations.cspm && activeIntegrations.sca ? 88 : 48 },
+    { name: 'HIPAA', ACME: activeIntegrations.sast ? 64 : 40, UR: activeIntegrations.cspm ? 85 : 50 }
   ];
 
   return (
@@ -152,37 +271,83 @@ export default function CISOPage() {
       {/* ── CISO SECURE AUTHORIZATION GATE BAR ── */}
       <div style={{
         background: authRole === 'CISO' ? 'linear-gradient(135deg, #0f172a, #1e293b)' : authRole === 'Auditor' ? '#f8fafc' : '#fee2e2',
-        border: authRole === 'CISO' ? '1px solid #10b981' : authRole === 'Auditor' ? '1px solid #cbd5e1' : '1px solid #f87171',
-        borderRadius: 16, padding: '1.25rem 1.5rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem',
-        boxShadow: authRole === 'CISO' ? '0 4px 20px rgba(16, 185, 129, 0.1)' : 'none', transition: 'all 0.3s ease'
+        border: authRole === 'CISO' ? (isGroupUnderAttack ? '1px solid #ef4444' : '1px solid #10b981') : authRole === 'Auditor' ? '1px solid #cbd5e1' : '1px solid #f87171',
+        borderRadius: 16, padding: '1.25rem 1.5rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem',
+        boxShadow: authRole === 'CISO' ? (isGroupUnderAttack ? '0 0 20px rgba(239, 68, 68, 0.2)' : '0 4px 20px rgba(16, 185, 129, 0.1)') : 'none', transition: 'all 0.3s ease'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{
             width: 48, height: 48, borderRadius: '50%',
-            background: authRole === 'CISO' ? 'rgba(16, 185, 129, 0.15)' : authRole === 'Auditor' ? '#e2e8f0' : '#fee2e2',
+            background: authRole === 'CISO' ? (isGroupUnderAttack ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)') : authRole === 'Auditor' ? '#e2e8f0' : '#fee2e2',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem'
           }}>
-            {authRole === 'CISO' ? '👑' : authRole === 'Auditor' ? '💼' : '🔒'}
+            {authRole === 'CISO' ? (isGroupUnderAttack ? '🚨' : '👑') : authRole === 'Auditor' ? '💼' : '🔒'}
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: authRole === 'CISO' ? '#34d399' : authRole === 'Auditor' ? '#64748b' : '#ef4444' }}>
-                {authRole === 'CISO' ? 'EXECUTIVE PROFILE ACTIVE' : authRole === 'Auditor' ? 'AUDIT READ-ONLY ROLE' : 'ACCESS DENIED'}
+              <span style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: authRole === 'CISO' ? (isGroupUnderAttack ? '#ef4444' : '#34d399') : authRole === 'Auditor' ? '#64748b' : '#ef4444' }}>
+                {authRole === 'CISO' ? (isGroupUnderAttack ? '⚠️ LIVE SECURITY CAMPAIGN DETECTED' : 'EXECUTIVE PROFILE ACTIVE') : authRole === 'Auditor' ? 'AUDIT READ-ONLY ROLE' : 'ACCESS DENIED'}
               </span>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: authRole === 'CISO' ? '#10b981' : authRole === 'Auditor' ? '#64748b' : '#ef4444' }} />
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: authRole === 'CISO' ? (isGroupUnderAttack ? '#ef4444' : '#10b981') : authRole === 'Auditor' ? '#64748b' : '#ef4444' }} />
             </div>
             <h4 style={{ fontSize: '1rem', fontWeight: 800, color: authRole === 'CISO' ? '#fff' : '#0f172a', margin: '2px 0 0' }}>
               CISO Executive Management Console
             </h4>
             <p style={{ fontSize: '0.74rem', color: authRole === 'CISO' ? '#94a3b8' : '#64748b', marginTop: 2 }}>
-              {authRole === 'CISO' ? 'Granted root access to aggregate multiple enterprise business units.' : authRole === 'Auditor' ? 'Authorized to view overall scores without control settings.' : 'Unauthorized role. Re-authenticate to access executive views.'}
+              {authRole === 'CISO' ? (isGroupUnderAttack ? 'Critical breach simulation in progress. Multi-tenant assets compromised.' : 'Granted root access to aggregate multiple enterprise business units.') : authRole === 'Auditor' ? 'Authorized to view overall scores without control settings.' : 'Unauthorized role. Re-authenticate to access executive views.'}
             </p>
           </div>
         </div>
 
-        {/* Dynamic Simulator Role Controls */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.7rem', fontWeight: 700, color: authRole === 'CISO' ? '#94a3b8' : '#64748b' }}>Simulation Role Switcher:</span>
+        {/* Dynamic Simulator Role Controls & CISO Action Tools */}
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '6px', marginRight: 12 }}>
+            {authRole === 'CISO' && (
+              <>
+                <button
+                  onClick={handleTriggerGroupAttack}
+                  disabled={isGroupUnderAttack || isGroupMitigating}
+                  style={{
+                    padding: '0.4rem 0.8rem', border: 'none', borderRadius: 8, fontSize: '0.72rem', fontWeight: 800,
+                    cursor: (isGroupUnderAttack || isGroupMitigating) ? 'default' : 'pointer',
+                    background: (isGroupUnderAttack || isGroupMitigating) ? '#334155' : 'linear-gradient(135deg, #ef4444, #dc2626)',
+                    color: (isGroupUnderAttack || isGroupMitigating) ? '#64748b' : '#fff',
+                    transition: 'all 0.2s',
+                    boxShadow: (isGroupUnderAttack || isGroupMitigating) ? 'none' : '0 2px 8px rgba(239, 68, 68, 0.25)'
+                  }}
+                >
+                  💥 Simulate Group Attack
+                </button>
+                <button
+                  onClick={handleTriggerGroupMitigation}
+                  disabled={!isGroupUnderAttack || isGroupMitigating}
+                  style={{
+                    padding: '0.4rem 0.8rem', border: 'none', borderRadius: 8, fontSize: '0.72rem', fontWeight: 800,
+                    cursor: (!isGroupUnderAttack || isGroupMitigating) ? 'default' : 'pointer',
+                    background: (!isGroupUnderAttack || isGroupMitigating) ? '#334155' : 'linear-gradient(135deg, #10b981, #059669)',
+                    color: (!isGroupUnderAttack || isGroupMitigating) ? '#64748b' : '#fff',
+                    transition: 'all 0.2s',
+                    boxShadow: (!isGroupUnderAttack || isGroupMitigating) ? 'none' : '0 2px 8px rgba(16, 185, 129, 0.25)'
+                  }}
+                >
+                  🛡️ Deploy Group Mitigation
+                </button>
+                <button
+                  onClick={handleCompileReport}
+                  style={{
+                    padding: '0.4rem 0.8rem', border: '1px solid #7c3aed', borderRadius: 8, fontSize: '0.72rem', fontWeight: 800,
+                    cursor: 'pointer',
+                    background: 'rgba(124, 58, 237, 0.15)',
+                    color: '#c084fc',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  Briefing Report 📄
+                </button>
+              </>
+            )}
+          </div>
+          <span style={{ fontSize: '0.7rem', fontWeight: 700, color: authRole === 'CISO' ? '#94a3b8' : '#64748b' }}>Role:</span>
           {['CISO', 'Auditor', 'Unauthorized'].map(r => (
             <button
               key={r}
@@ -202,7 +367,7 @@ export default function CISOPage() {
       {/* ── SECURITY CREDENTIALS LOCK PROMPT ── */}
       {pendingRole && (
         <div style={{
-          background: '#f8fafc', border: `1px solid ${pendingRole === 'CISO' ? '#10b981' : '#7c3aed'}`, borderRadius: 12, padding: '1rem 1.25rem', marginBottom: '1.25rem',
+          background: '#f8fafc', border: `1px solid ${pendingRole === 'CISO' ? '#10b981' : '#7c3aed'}`, borderRadius: 12, padding: '1rem 1.25rem', marginBottom: '1rem',
           display: 'flex', flexDirection: 'column', gap: '0.75rem', maxWidth: 420,
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
         }}>
@@ -269,7 +434,7 @@ export default function CISOPage() {
           {/* ========================================================================= */}
           {/* CISO CONFIGURATOR PANEL (COMBINED VIEW SETTINGS) */}
           {/* ========================================================================= */}
-          <div className="card" style={{ marginBottom: '1.25rem', padding: '1.5rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
+          <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
             <div style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.75rem', marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a' }}>⚙️ Executive Cockpit Configurator</h3>
@@ -382,6 +547,19 @@ export default function CISOPage() {
             </div>
           </div>
 
+          {/* Group Mitigation Active Loader */}
+          {isGroupMitigating && (
+            <div className="card" style={{ marginBottom: '1rem', padding: '1.25rem', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', color: '#16a34a', fontFamily: 'monospace', fontWeight: 800, marginBottom: 4 }}>
+                <span>🛡️ ORCHESTRATING CROSS-TENANT HOT-PATCH SERVICE DAEMON:</span>
+                <span>{Math.round(groupSimProgress)}%</span>
+              </div>
+              <div style={{ height: 8, background: '#e2e8f0', borderRadius: 99, overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${groupSimProgress}%`, background: '#10b981', transition: 'width 0.15s ease' }} />
+              </div>
+            </div>
+          )}
+
           {/* ========================================================================= */}
           {/* DYNAMIC TELEMETRY WIDGET FEED */}
           {/* ========================================================================= */}
@@ -391,7 +569,7 @@ export default function CISOPage() {
             switch (widgetId) {
               case 'summary':
                 return (
-                  <div key="summary" style={{ marginBottom: '1.25rem' }}>
+                  <div key="summary" style={{ marginBottom: '1rem' }}>
                     {/* WIDGET 1: AGGREGATED SCORE HUD CARDS */}
                     <div className="grid-4">
                       <div className="stat-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -410,11 +588,11 @@ export default function CISOPage() {
                       </div>
 
                       <div className="stat-card">
-                        <div className="stat-card-accent" style={{ background: '#10b981' }} />
+                        <div className="stat-card-accent" style={{ background: isGroupUnderAttack ? '#ef4444' : '#10b981' }} />
                         <div className="stat-label">Unified Compliance Score</div>
-                        <div className="stat-value" style={{ color: '#10b981', fontSize: '1.8rem' }}>{avgCompliance}%</div>
-                        <div className="stat-delta delta-up" style={{ color: avgCompliance >= 80 ? '#10b981' : '#ea580c' }}>
-                          {avgCompliance >= 80 ? '🟢 Meets target SLA threshold' : '🟡 Needs security patches'}
+                        <div className="stat-value" style={{ color: isGroupUnderAttack ? '#ef4444' : '#10b981', fontSize: '1.8rem' }}>{avgCompliance}%</div>
+                        <div className="stat-delta delta-up" style={{ color: isGroupUnderAttack ? '#dc2626' : (avgCompliance >= 80 ? '#10b981' : '#ea580c') }}>
+                          {isGroupUnderAttack ? '🔴 OUT OF COMPLIANCE SLA' : (avgCompliance >= 80 ? '🟢 Meets target SLA threshold' : '🟡 Needs security patches')}
                         </div>
                       </div>
 
@@ -432,12 +610,12 @@ export default function CISOPage() {
                       </div>
 
                       <div className="stat-card">
-                        <div className="stat-card-accent" style={{ background: '#ea580c' }} />
+                        <div className="stat-card-accent" style={{ background: isGroupUnderAttack ? '#ef4444' : '#ea580c' }} />
                         <div className="stat-label">SLA Warn Status</div>
-                        <div className="stat-value" style={{ color: '#ea580c', fontSize: '1.4rem', fontWeight: 900, textTransform: 'uppercase', height: '100%', display: 'flex', alignItems: 'center' }}>
-                          {slaStatus}
+                        <div className="stat-value" style={{ color: isGroupUnderAttack ? '#dc2626' : '#ea580c', fontSize: '1.4rem', fontWeight: 900, textTransform: 'uppercase', height: '100%', display: 'flex', alignItems: 'center' }}>
+                          {isGroupUnderAttack ? 'CRITICAL SYSTEM BREACH' : slaStatus}
                         </div>
-                        <div className="stat-delta delta-down" style={{ color: slaStatus === 'CONFORMANCE' ? '#10b981' : '#dc2626' }}>
+                        <div className="stat-delta delta-down" style={{ color: slaStatus === 'CONFORMANCE' && !isGroupUnderAttack ? '#10b981' : '#dc2626' }}>
                           {totalBacklog} total issues in queue
                         </div>
                       </div>
@@ -447,37 +625,66 @@ export default function CISOPage() {
 
               case 'posture':
                 return (
-                  <div key="posture" style={{ marginBottom: '1.25rem' }}>
-                    {/* WIDGET 2: JOINT COMPLIANCE TRENDS AreaChart */}
-                    <div className="card" style={{ height: '320px', display: 'flex', flexDirection: 'column' }}>
-                      <div className="card-title">📈 Joint Compliance Ratios (History & Projections)</div>
-                      <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
-                        Historical posture trajectory comparing subsidiaries to CISO unified target score.
-                      </p>
-                      <div style={{ flex: 1 }}>
-                        {activeTenants.length === 0 ? (
-                          <div style={{ color: '#64748b', fontStyle: 'italic', margin: 'auto', textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            Select at least one subsidiary in the Configurator Panel to plot compliance trends...
-                          </div>
-                        ) : (
-                          <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={combinedTrendData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-                              <defs>
-                                <linearGradient id="colorCombined" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.2}/>
-                                  <stop offset="95%" stopColor="#7c3aed" stopOpacity={0.0}/>
-                                </linearGradient>
-                              </defs>
-                              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                              <XAxis dataKey="week" tick={{ fontSize: 10, fill: '#94a3b8' }} />
-                              <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[50, 100]} />
-                              <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
-                              {selectedTenants.includes('ACME') && <Area type="monotone" dataKey="ACME" name="Acme Financial" stroke="#3b82f6" strokeWidth={2} fill="none" />}
-                              {selectedTenants.includes('UR') && <Area type="monotone" dataKey="UR" name="Unified Rentals" stroke="#10b981" strokeWidth={2} fill="none" />}
-                              {selectedTenants.length > 1 && <Area type="monotone" dataKey="Combined" name="CISO Combined Average" stroke="#7c3aed" strokeWidth={3} fill="url(#colorCombined)" />}
-                            </AreaChart>
-                          </ResponsiveContainer>
-                        )}
+                  <div key="posture" style={{ marginBottom: '1rem' }}>
+                    {/* WIDGET 2: JOINT COMPLIANCE TRENDS AreaChart & Framework breakdown BarChart */}
+                    <div className="grid-2">
+                      {/* Left: Joint Compliance Ratios (History & Projections) */}
+                      <div className="card" style={{ height: '320px', display: 'flex', flexDirection: 'column', padding: '1.25rem' }}>
+                        <div className="card-title">📈 Joint Compliance Ratios (History & Projections)</div>
+                        <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
+                          Historical posture trajectory comparing subsidiaries to CISO unified target score.
+                        </p>
+                        <div style={{ flex: 1 }}>
+                          {activeTenants.length === 0 ? (
+                            <div style={{ color: '#64748b', fontStyle: 'italic', margin: 'auto', textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              Select at least one subsidiary in the Configurator Panel to plot compliance trends...
+                            </div>
+                          ) : (
+                            <ResponsiveContainer width="100%" height="100%">
+                              <AreaChart data={combinedTrendData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                                <defs>
+                                  <linearGradient id="colorCombined" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.2}/>
+                                    <stop offset="95%" stopColor="#7c3aed" stopOpacity={0.0}/>
+                                  </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                                <XAxis dataKey="week" tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                                <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[20, 100]} />
+                                <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
+                                {selectedTenants.includes('ACME') && <Area type="monotone" dataKey="ACME" name="Acme Financial" stroke="#3b82f6" strokeWidth={2} fill="none" />}
+                                {selectedTenants.includes('UR') && <Area type="monotone" dataKey="UR" name="Unified Rentals" stroke="#10b981" strokeWidth={2} fill="none" />}
+                                {selectedTenants.length > 1 && <Area type="monotone" dataKey="Combined" name="CISO Combined Average" stroke={isGroupUnderAttack ? '#ef4444' : '#7c3aed'} strokeWidth={3} fill="url(#colorCombined)" />}
+                              </AreaChart>
+                            </ResponsiveContainer>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Right: Regulatory Framework Target Conformance */}
+                      <div className="card" style={{ height: '320px', display: 'flex', flexDirection: 'column', padding: '1.25rem' }}>
+                        <div className="card-title">📊 Regulatory Framework Target Conformance</div>
+                        <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
+                          Side-by-side compliance ratings against global standards.
+                        </p>
+                        <div style={{ flex: 1 }}>
+                          {activeTenants.length === 0 ? (
+                            <div style={{ color: '#64748b', fontStyle: 'italic', margin: 'auto', textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              Select at least one subsidiary in the Configurator Panel to plot framework comparison...
+                            </div>
+                          ) : (
+                            <ResponsiveContainer width="100%" height="100%">
+                              <BarChart data={frameworkComplianceData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                                <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                                <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[0, 100]} />
+                                <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
+                                {selectedTenants.includes('ACME') && <Bar dataKey="ACME" name="Acme Financial" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={8} />}
+                                {selectedTenants.includes('UR') && <Bar dataKey="UR" name="Unified Rentals" fill="#10b981" radius={[4, 4, 0, 0]} barSize={8} />}
+                              </BarChart>
+                            </ResponsiveContainer>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -485,7 +692,7 @@ export default function CISOPage() {
 
               case 'threats':
                 return (
-                  <div key="threats" style={{ marginBottom: '1.25rem' }}>
+                  <div key="threats" style={{ marginBottom: '1rem' }}>
                     {/* WIDGET 3: CROSS-TENANT TARGETED THREATS */}
                     <div className="card" style={{ height: '320px', display: 'flex', flexDirection: 'column' }}>
                       <div className="card-title">🛡️ Cross-Tenant Executive Threat Ledger</div>
@@ -508,6 +715,17 @@ export default function CISOPage() {
                               </tr>
                             </thead>
                             <tbody>
+                              {isGroupUnderAttack && (
+                                <tr style={{ background: '#fef2f2', animation: 'pulse-dot 2s infinite' }}>
+                                  <td style={{ fontWeight: 700, color: '#dc2626' }}>
+                                    group-wide-perimeter
+                                    <span style={{ display: 'block', fontSize: '0.58rem', fontWeight: 600, color: '#ef4444' }}>Joint Enterprise Breach</span>
+                                  </td>
+                                  <td style={{ color: '#dc2626', fontWeight: 700 }}>🔥 SQL Injection & DDoS Exploit Wave Campaign</td>
+                                  <td><span style={{ fontWeight: 700, color: '#dc2626' }}>CRITICAL</span></td>
+                                  <td><span className="badge badge-critical">Active Breach</span></td>
+                                </tr>
+                              )}
                               {[
                                 { name: 'payment-processor', bu: 'Acme Financial', vector: 'Weak JWT Decoding Scheme', severity: 'Critical', status: 'In Review' },
                                 { name: 'telemetry-cache', bu: 'Unified Rentals', vector: 'Public Ingress Bucket Rules', severity: 'High', status: 'Mitigated' },
@@ -544,7 +762,7 @@ export default function CISOPage() {
 
               case 'patching':
                 return (
-                  <div key="patching" style={{ marginBottom: '1.25rem' }}>
+                  <div key="patching" style={{ marginBottom: '1rem' }}>
                     {/* WIDGET 3.5: VULNERABILITY & PATCHING PERFORMANCE COCKPIT */}
                     <div className="card" style={{ padding: '1.5rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
                       <div style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.75rem', marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -637,28 +855,61 @@ export default function CISOPage() {
 
               case 'remediation':
                 return (
-                  <div key="remediation" style={{ marginBottom: '1.25rem' }}>
+                  <div key="remediation" style={{ marginBottom: '1rem' }}>
                     {/* WIDGET 4: REMEDIATION & INTEGRATIONS MAP */}
                     <div className="card" style={{ padding: '1.5rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
                       <div className="card-title" style={{ marginBottom: '1rem' }}>🔌 Combined Scanner Integration Status Mapping</div>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
                         {[
-                          { name: isEnterpriseMode ? 'Wiz CSPM' : 'SkyArmor CSPM', category: 'Cloud Security', bu: 'Joint', state: 'Active', color: '#0ea5e9' },
-                          { name: isEnterpriseMode ? 'Prisma Cloud' : 'PrismShield CNAPP', category: 'Compliance', bu: 'Acme Financial', state: 'Active', color: '#c084fc' },
-                          { name: isEnterpriseMode ? 'Checkmarx AST' : 'CodeVerify AST', category: 'Application SAST', bu: 'Unified Rentals', state: 'Connected', color: '#10b981' },
-                          { name: isEnterpriseMode ? 'Snyk SCA' : 'DepGuard SCA', category: 'Dependencies', bu: 'Joint', state: 'Active', color: '#f43f5e' }
-                        ].map((integ, idx) => (
-                          <div key={idx} style={{ padding: '1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, borderLeft: `4px solid ${integ.color}` }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0f172a' }}>{integ.name}</span>
-                              <span style={{ fontSize: '0.58rem', fontWeight: 800, color: '#10b981', background: '#dcfce7', padding: '1px 5px', borderRadius: 4 }}>
-                                {integ.state}
-                              </span>
+                          { key: 'cspm', name: isEnterpriseMode ? 'Wiz CSPM' : 'SkyArmor CSPM', category: 'Cloud Security', bu: 'Joint', color: '#0ea5e9' },
+                          { key: 'cnapp', name: isEnterpriseMode ? 'Prisma Cloud' : 'PrismShield CNAPP', category: 'Compliance', bu: 'Acme Financial', color: '#c084fc' },
+                          { key: 'sast', name: isEnterpriseMode ? 'Checkmarx AST' : 'CodeVerify AST', category: 'Application SAST', bu: 'Unified Rentals', color: '#10b981' },
+                          { key: 'sca', name: isEnterpriseMode ? 'Snyk SCA' : 'DepGuard SCA', category: 'Dependencies', bu: 'Joint', color: '#f43f5e' }
+                        ].map((integ) => {
+                          const isActive = activeIntegrations[integ.key as keyof typeof activeIntegrations];
+                          return (
+                            <div 
+                              key={integ.key} 
+                              style={{ 
+                                padding: '1rem', 
+                                background: '#f8fafc', 
+                                border: '1px solid #e2e8f0', 
+                                borderRadius: 12, 
+                                borderLeft: `4px solid ${integ.color}`,
+                                opacity: isActive ? 1 : 0.5,
+                                transition: 'opacity 0.2s ease',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                minHeight: '120px'
+                              }}
+                            >
+                              <div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0f172a' }}>{integ.name}</span>
+                                  <span style={{ fontSize: '0.58rem', fontWeight: 800, color: isActive ? '#10b981' : '#dc2626', background: isActive ? '#dcfce7' : '#fee2e2', padding: '1px 5px', borderRadius: 4 }}>
+                                    {isActive ? 'Active' : 'Offline'}
+                                  </span>
+                                </div>
+                                <div style={{ fontSize: '0.62rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{integ.category}</div>
+                                <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: 4, fontWeight: 600 }}>Scope: <span style={{ color: '#0f172a', fontWeight: 700 }}>{integ.bu}</span></div>
+                              </div>
+                              
+                              {/* Toggle switch */}
+                              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.6rem', color: '#475569', fontWeight: 800, cursor: 'pointer' }}>
+                                  <input
+                                    type="checkbox"
+                                    checked={isActive}
+                                    onChange={() => setActiveIntegrations(prev => ({ ...prev, [integ.key]: !isActive }))}
+                                    style={{ accentColor: integ.color, cursor: 'pointer' }}
+                                  />
+                                  <span>{isActive ? 'DISCONNECT' : 'CONNECT'}</span>
+                                </label>
+                              </div>
                             </div>
-                            <div style={{ fontSize: '0.62rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{integ.category}</div>
-                            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: 4, fontWeight: 600 }}>Coverage Scope: <span style={{ color: '#0f172a', fontWeight: 700 }}>{integ.bu}</span></div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -671,6 +922,151 @@ export default function CISOPage() {
         </>
       )}
 
+      {/* ── CISO BOARD BRIEFING COMPILER OVERLAY MODAL ── */}
+      {showReportModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(8px)', zIndex: 9999,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem'
+        }}>
+          <div style={{
+            background: '#ffffff', borderRadius: 20, border: '1px solid #cbd5e1',
+            width: '100%', maxWidth: '800px', height: '90vh', display: 'flex', flexDirection: 'column',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            overflow: 'hidden'
+          }}>
+            {/* Modal Header */}
+            <div style={{
+              padding: '1.25rem 1.5rem', background: 'linear-gradient(135deg, #0f172a, #1e293b)',
+              color: '#ffffff', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+            }}>
+              <div>
+                <div style={{ fontSize: '0.62rem', fontWeight: 800, color: '#34d399', letterSpacing: '0.05em' }}>CISO BOARD BRIEFING PORTAL</div>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 900, margin: '2px 0 0' }}>📄 Executive Cyber Risk Briefing</h3>
+              </div>
+              <button
+                onClick={() => setShowReportModal(false)}
+                style={{
+                  background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 8, color: '#94a3b8',
+                  padding: '0.4rem 0.8rem', fontSize: '0.78rem', fontWeight: 800, cursor: 'pointer', transition: 'all 0.15s'
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                onMouseLeave={e => e.currentTarget.style.color = '#94a3b8'}
+              >
+                Close Portal ×
+              </button>
+            </div>
+
+            {/* Compilation Console logs */}
+            {isCompilingReport ? (
+              <div style={{ flex: 1, background: '#090d16', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: '#c084fc', fontFamily: 'monospace' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>⚙️</div>
+                <div style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '0.5rem' }}>Compiling Executive Report: {Math.round(reportProgress)}%</div>
+                
+                {/* Console Log stream box */}
+                <div style={{
+                  width: '100%', maxWidth: '600px', height: '200px', background: '#020617', border: '1px solid #1e293b',
+                  borderRadius: 12, padding: '1rem', display: 'flex', flexDirection: 'column', gap: 6,
+                  overflowY: 'auto', textAlign: 'left', fontSize: '0.72rem', color: '#34d399'
+                }}>
+                  {reportLogs.map((log, idx) => (
+                    <div key={idx} style={{ opacity: idx === reportLogs.length - 1 ? 1 : 0.5 }}>{log}</div>
+                  ))}
+                  <div style={{ width: 1, height: 1 }} />
+                </div>
+              </div>
+            ) : (
+              /* Compiled Report details */
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto', padding: '2rem', gap: '1.5rem', background: '#f8fafc' }}>
+                {/* Summary Card */}
+                <div className="card" style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16, padding: '1.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.75rem', marginBottom: '1rem' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#0f172a' }}>Briefing Summary Statistics</span>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#10b981', background: '#dcfce7', padding: '2px 6px', borderRadius: 6 }}>VERIFIED SECURE</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+                    <div>
+                      <div style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Consolidated Posture Score</div>
+                      <div style={{ fontSize: '2rem', fontWeight: 900, color: avgCompliance >= 80 ? '#10b981' : '#dc2626' }}>{avgCompliance}/100</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Aggregate Open Risks</div>
+                      <div style={{ fontSize: '2rem', fontWeight: 900, color: totalCriticals > 10 ? '#dc2626' : '#ea580c' }}>{totalCriticals} Critical</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>SLA Conformance Rate</div>
+                      <div style={{ fontSize: '2rem', fontWeight: 900, color: patchingScore >= 80 ? '#10b981' : '#7c3aed' }}>{patchingScore}%</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* BU Breakdown Table */}
+                <div className="card" style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16, padding: '1.5rem' }}>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 900, color: '#0f172a', marginBottom: '1rem' }}>Business Unit Ledger Matrix</div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.76rem' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid #f1f5f9', textAlign: 'left' }}>
+                        <th style={{ padding: '8px 0', color: '#64748b' }}>SUBSIDIARY NAME</th>
+                        <th style={{ padding: '8px 0', color: '#64748b' }}>COMPLIANCE</th>
+                        <th style={{ padding: '8px 0', color: '#64748b' }}>CRITICALS</th>
+                        <th style={{ padding: '8px 0', color: '#64748b' }}>ASSETS SCOPE</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activeTenants.map(tenant => (
+                        <tr key={tenant.key} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                          <td style={{ padding: '12px 0', fontWeight: 800, color: '#0f172a' }}>{tenant.name}</td>
+                          <td style={{ padding: '12px 0', color: tenant.compliance >= 80 ? '#10b981' : '#ea580c', fontWeight: 800 }}>{tenant.compliance}%</td>
+                          <td style={{ padding: '12px 0', color: '#dc2626', fontWeight: 800 }}>{tenant.criticals} Risks</td>
+                          <td style={{ padding: '12px 0', color: '#475569', fontWeight: 700 }}>{tenant.assets} assets</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Audit Action Directive */}
+                <div className="card" style={{ background: 'linear-gradient(135deg, #f8fafc, #f1f5f9)', border: '1px solid #cbd5e1', borderRadius: 16, padding: '1.25rem' }}>
+                  <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: 6 }}>CISO Remediation Action Directives</div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', lineHeight: 1.4, margin: 0 }}>
+                    1. **EDR deployment target**: Increase Unified Rentals agent coverage from 89% to 95% within 14 calendar days. <br />
+                    2. **Vulnerability Mitigation SLA**: Ensure all Acme Financial Critical CVSS 9.8 vulnerabilities are hot-patched within 48 hours to avert active campaign vectors. <br />
+                    3. **Identity Remediation**: Complete the IAM migration of Entra ID directories to prevent unauthenticated API access.
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Modal Footer */}
+            <div style={{
+              padding: '1rem 1.5rem', background: '#f1f5f9', borderTop: '1px solid #e2e8f0',
+              display: 'flex', justifyContent: 'flex-end', gap: '8px'
+            }}>
+              <button
+                onClick={() => window.print()}
+                disabled={isCompilingReport}
+                style={{
+                  padding: '0.5rem 1.25rem', fontSize: '0.78rem', fontWeight: 800,
+                  borderRadius: 8, cursor: isCompilingReport ? 'default' : 'pointer', border: '1px solid #cbd5e1',
+                  background: isCompilingReport ? '#cbd5e1' : '#ffffff', color: isCompilingReport ? '#94a3b8' : '#475569'
+                }}
+              >
+                🖨️ Print Board Report
+              </button>
+              <button
+                onClick={() => setShowReportModal(false)}
+                style={{
+                  padding: '0.5rem 1.25rem', fontSize: '0.78rem', fontWeight: 800,
+                  borderRadius: 8, cursor: 'pointer', border: 'none',
+                  background: 'linear-gradient(135deg, #7c3aed, #6d28d9)', color: '#fff'
+                }}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
