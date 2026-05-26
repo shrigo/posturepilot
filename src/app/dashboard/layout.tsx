@@ -7,44 +7,44 @@ import { ClientProvider, useClient } from '@/context/ClientContext';
 
 const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
   '/dashboard': {
-    title: '🛫 Flight Deck',
-    subtitle: 'Aggregated multi-cloud telemetry, active airspace threat maps & fleet-wide risk posture',
+    title: 'Command Center',
+    subtitle: 'All dashboards · Acme Financial Corp',
   },
   '/dashboard/posture': {
     title: '🛡️ Cyber Posture',
-    subtitle: 'Overall security integrity rating, fuselage vulnerability sweeps & structural drift scores',
+    subtitle: 'Overall risk score, threat level & threat intelligence feed',
   },
   '/dashboard/cloud': {
     title: '☁️ Cloud Altitude',
-    subtitle: 'Multi-tenant cloud exposure auditing, IAM role maps & storage bucket leak sweeps',
+    subtitle: 'Misconfigurations, IAM risk & storage exposure across cloud assets',
   },
   '/dashboard/network': {
-    title: '🌐 Network Airspace',
-    subtitle: 'Boundary firewall rules, open gateway port mapping & real-time ingress alert logs',
+    title: '🌐 Network Security',
+    subtitle: 'Firewall events, IDS alerts, blocked IPs & VPN sessions',
   },
   '/dashboard/infosec': {
     title: '📋 Compliance Checkpoint',
-    subtitle: 'Framework control tracking (SOC2, ISO27001, HIPAA) & compliance checklists',
+    subtitle: 'Policy violations, access control audits & data classification',
   },
   '/dashboard/kpi': {
-    title: '📊 Telemetry & Altimeters',
-    subtitle: 'Security SLA remediation tracking, patch altitude gates & mean-time-to-resolve (MTTR) speedways',
+    title: '📊 Security KPIs',
+    subtitle: 'MTTA, MTTR, Patch SLA compliance & team performance',
   },
   '/dashboard/appsec': {
-    title: '🔐 Carry-On Security',
-    subtitle: 'Software supply chain vetting, container registry safety & application API boundary checks',
+    title: '🔐 App Security',
+    subtitle: 'OWASP findings, SAST/DAST results & dependency vulnerabilities',
   },
   '/dashboard/traffic': {
-    title: '📡 Traffic ATC',
-    subtitle: 'Real-time inbound packet inspections, packet routing paths & active DDoS airspace blocks',
+    title: '📡 Traffic Monitor',
+    subtitle: 'Network traffic analysis, anomaly detection & bandwidth usage',
   },
   '/dashboard/server': {
-    title: '🖥️ Server Terminal',
-    subtitle: 'Hardware health diagnostics, CPU/Memory telemetry & host OS kernel patching states',
+    title: '🖥️ Server Health',
+    subtitle: 'Patch status, EDR coverage & endpoint health monitoring',
   },
   '/dashboard/ai-risk': {
-    title: '🤖 Shadow Copilot',
-    subtitle: 'Shadow AI model discovery, LLM training prompt leakage sweeps & unapproved model guardrails',
+    title: '🤖 AI Risk',
+    subtitle: 'Shadow AI detection, model vulnerabilities & data exposure risks',
   },
   '/dashboard/ciso': {
     title: '👑 CISO Executive Cockpit',
@@ -52,23 +52,23 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
   },
   '/dashboard/findings': {
     title: '🔍 Baggage Claim',
-    subtitle: 'Consolidated vulnerability arrivals desk & actionable CVE repair checklists',
+    subtitle: 'All parsed CVEs & vulnerabilities from uploaded scans',
   },
   '/dashboard/upload': {
     title: '📤 Scan Check-In',
-    subtitle: 'Ingesting Qualys, Tenable, and Nessus reports to populate your active flight telemetry',
+    subtitle: 'Import findings from Qualys, Tenable, Nessus or CSV — results go live instantly',
   },
   '/dashboard/settings': {
     title: '⚙️ Self-Service Kiosk',
-    subtitle: 'Enterprise SSO configurations, API key distribution & external ticketing gates',
+    subtitle: 'Tenant configuration, API keys & integrations',
   },
   '/dashboard/secure': {
     title: '📡 Risk Radar',
-    subtitle: 'Vulnerability Triage & Prioritized Exposure Engine — scanning for weaponized exploit storms',
+    subtitle: 'Vulnerability Triage & Prioritized Exposure Engine',
   },
   '/dashboard/identity': {
-    title: '🔑 Passport Control',
-    subtitle: 'Your Gatekeeper — SSO directory auditing, privilege drift scanning & Zero-Trust MFA checkpoints',
+    title: '🔑 Identity Shield',
+    subtitle: 'Your Gatekeeper — SSO directory auditing, privilege drift scanning & Zero-Trust MFA',
   },
 };
 

@@ -202,7 +202,7 @@ export default function IdentityPage() {
           <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
           <div>
             <div style={{ fontWeight: 800, color: '#6d28d9', fontSize: '0.9rem' }}>
-              Passport Control — Your Gatekeeper ({activeMeta.directoryType})
+              Identity Shield — Your Gatekeeper ({activeMeta.directoryType})
             </div>
             <div style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 600 }}>
               {activeMeta.ssoIndicator}

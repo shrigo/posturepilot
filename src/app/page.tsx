@@ -316,18 +316,18 @@ export default function Page() {
             <div className="monitor-inner" style={{display:"grid",gridTemplateColumns:"180px 1fr",minHeight:560}}>
               <div className="monitor-sidebar" style={{background:"#f8fafc",padding:"0.875rem 0",borderRight:"1px solid #e2e8f0"}}>
                 {[
-                  {icon:"🛫",label:"Flight Deck",active:false},
+                  {icon:"🏠",label:"Overview",active:false},
                   {icon:"👑",label:"CISO Cockpit",active:false,badge:"BU-Joint"},
                   {icon:"🛡️",label:"Cyber Posture",active:true,badge:"3"},
                   {icon:"☁️",label:"Cloud Altitude",active:false},
-                  {icon:"🌐",label:"Network Airspace",active:false,badge:"34"},
+                  {icon:"🌐",label:"Network Security",active:false,badge:"34"},
                   {icon:"📋",label:"Compliance Checkpoint",active:false},
-                  {icon:"📊",label:"Telemetry & Altimeters",active:false},
-                  {icon:"🔐",label:"Carry-On Security",active:false,badge:"14"},
-                  {icon:"📡",label:"Traffic ATC",active:false},
-                  {icon:"🖥️",label:"Server Terminal",active:false,badge:"3"},
-                  {icon:"🤖",label:"Shadow Copilot",active:false,badge:"NEW"},
-                  {icon:"🔑",label:"Passport Control",active:false,badge:"NEW"},
+                  {icon:"📊",label:"Security KPIs",active:false},
+                  {icon:"🔐",label:"App Security",active:false,badge:"14"},
+                  {icon:"📡",label:"Traffic Monitor",active:false},
+                  {icon:"🖥️",label:"Server Health",active:false,badge:"3"},
+                  {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
+                  {icon:"🔑",label:"Identity Shield",active:false,badge:"NEW"},
                   {icon:"📡",label:"Risk Radar",active:false,badge:"NEW"},
                 ].map(item=>(
                   <div key={item.label} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.45rem 0.875rem",
