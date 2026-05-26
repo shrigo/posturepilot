@@ -340,7 +340,7 @@ export default function OverviewPage() {
         {/* ========================================================================= */}
         <div style={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          marginBottom: '1.25rem', padding: '0.5rem 1rem', background: '#fff',
+          marginBottom: '1rem', padding: '0.5rem 1rem', background: '#fff',
           border: '1px solid #e2e8f0', borderRadius: 14, boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
         }}>
           <div style={{ display: 'flex', gap: '6px' }}>
@@ -374,7 +374,7 @@ export default function OverviewPage() {
           background: isUnderAttack ? '#fef2f2' : '#ffffff', 
           borderRadius: 14, 
           padding: '0.625rem 1.5rem', 
-          marginBottom: '1.25rem', 
+          marginBottom: '1rem', 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'space-between', 
@@ -470,7 +470,7 @@ export default function OverviewPage() {
         {/* EXECUTIVE COCKPIT VIEW MODE */}
         {/* ========================================================================= */}
         {activeViewMode === 'executive' && (
-          <div className="grid-3 animate-in" style={{ marginBottom: '1.25rem' }}>
+          <div className="grid-3 animate-in" style={{ marginBottom: '1rem' }}>
             
             {/* 1. HALF-DONUT POSTURE SCORE GAUGE */}
             <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '300px', background: '#fff', border: isUnderAttack ? '1px solid #fca5a5' : '1px solid #e2e8f0', borderRadius: 16, padding: '1.25rem', position: 'relative' }}>
@@ -633,7 +633,7 @@ export default function OverviewPage() {
         {/* TACTICAL SOC TERMINAL VIEW MODE */}
         {/* ========================================================================= */}
         {activeViewMode === 'tactical' && (
-          <div className="grid-2-1 animate-in" style={{ marginBottom: '1.25rem' }}>
+          <div className="grid-2-1 animate-in" style={{ marginBottom: '1rem' }}>
             {/* Left: Simulation progress and dynamic controls */}
             <div className="card" style={{ height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
               <div>
@@ -721,7 +721,7 @@ export default function OverviewPage() {
         {/* COMPLIANCE & DIRECTORY VIEW MODE */}
         {/* ========================================================================= */}
         {activeViewMode === 'compliance' && (
-          <div className="grid-2 animate-in" style={{ marginBottom: '1.25rem' }}>
+          <div className="grid-2 animate-in" style={{ marginBottom: '1rem' }}>
             
             {/* GRC compliance checks */}
             <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: '1.25rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
@@ -811,11 +811,11 @@ export default function OverviewPage() {
         {/* ========================================================================= */}
         {/* RESPONSIVE SECURITY CONTROL MODULE GRID */}
         {/* ========================================================================= */}
-        <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#475569', marginBottom: '0.75rem', marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#475569', marginBottom: '1rem', marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: 6 }}>
           ⚡ Security Control Modules & Sub-Telemetry <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: '#eef2ff', color: '#4f46e5' }}>10 active layers</span>
         </h3>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
           {modules.map(m => (
             <div 
               key={m.href} 
