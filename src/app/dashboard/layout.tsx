@@ -35,7 +35,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'OWASP findings, SAST/DAST results & dependency vulnerabilities',
   },
   '/dashboard/traffic': {
-    title: '📡 Traffic Monitor',
+    title: '📡 ATC Monitor',
     subtitle: 'Network traffic analysis, anomaly detection & bandwidth usage',
   },
   '/dashboard/server': {

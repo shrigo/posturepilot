@@ -324,7 +324,7 @@ export default function Page() {
                   {icon:"📋",label:"Compliance Checkpoint",active:false},
                   {icon:"📊",label:"Security KPIs",active:false},
                   {icon:"🔐",label:"App Security",active:false,badge:"14"},
-                  {icon:"📡",label:"Traffic Monitor",active:false},
+                  {icon:"📡",label:"ATC Monitor",active:false},
                   {icon:"🖥️",label:"Server Health",active:false,badge:"3"},
                   {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
                   {icon:"🔑",label:"Identity Shield",active:false,badge:"NEW"},
