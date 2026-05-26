@@ -62,6 +62,10 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     title: '⚙️ Settings',
     subtitle: 'Tenant configuration, API keys & integrations',
   },
+  '/dashboard/secure': {
+    title: '🔒 Secure Triage',
+    subtitle: 'Triple-Filter Triage — Severity gates, exploit checks & asset prioritization',
+  },
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
