@@ -11,7 +11,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'All Dashboards · Acme Financial Corp',
   },
   '/dashboard/posture': {
-    title: '🛡️ Cyber Posture',
+    title: '🛡️ Posture Clearance',
     subtitle: 'Overall risk score, threat level & threat intelligence feed',
   },
   '/dashboard/cloud': {

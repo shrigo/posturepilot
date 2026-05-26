@@ -318,7 +318,7 @@ export default function Page() {
                 {[
                   {icon:"🏢",label:"Main Terminal",active:false},
                   {icon:"👑",label:"CISO Cockpit",active:false,badge:"BU-Joint"},
-                  {icon:"🛡️",label:"Cyber Posture",active:true,badge:"3"},
+                  {icon:"🛡️",label:"Posture Clearance",active:true,badge:"3"},
                   {icon:"☁️",label:"Cloud Altitude",active:false},
                   {icon:"🌐",label:"Network Security",active:false,badge:"34"},
                   {icon:"📋",label:"Compliance Checkpoint",active:false},
