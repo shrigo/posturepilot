@@ -324,7 +324,7 @@ export default function Page() {
                   {icon:"📋",label:"Compliance Checkpoint",active:false},
                   {icon:"📊",label:"Flight Telemetry (KPIs)",active:false},
                   {icon:"🔐",label:"App Security Check",active:false,badge:"14"},
-                  {icon:"🗼",label:"Traffic Control",active:false},
+                  {icon:"🎛️",label:"Traffic Control",active:false},
                   {icon:"🖥️",label:"Fleet Health",active:false,badge:"3"},
                   {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
                   {icon:"🔑",label:"Identity PreCheck",active:false,badge:"NEW"},

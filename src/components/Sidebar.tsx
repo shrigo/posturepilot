@@ -12,7 +12,7 @@ const navItems = [
   { href: '/dashboard/infosec',  icon: '📋', label: 'Compliance Checkpoint' },
   { href: '/dashboard/kpi',      icon: '📊', label: 'Flight Telemetry (KPIs)' },
   { href: '/dashboard/appsec',   icon: '🔐', label: 'App Security Check', badge: '14' },
-  { href: '/dashboard/traffic',  icon: '🗼', label: 'Traffic Control' },
+  { href: '/dashboard/traffic',  icon: '🎛️', label: 'Traffic Control' },
   { href: '/dashboard/server',   icon: '🖥️', label: 'Fleet Health',       badge: '3' },
   { href: '/dashboard/ai-risk',  icon: '🤖', label: 'AI Risk',           badge: 'NEW' },
   { href: '/dashboard/identity', icon: '🔑', label: 'Identity PreCheck',  badge: 'NEW' },
