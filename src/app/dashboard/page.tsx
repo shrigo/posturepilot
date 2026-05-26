@@ -27,14 +27,17 @@ import {
 
 export default function OverviewPage() {
   const router = useRouter();
-  const { currentClient } = useClient();
+  const { 
+    currentClient, 
+    isUnderAttack, 
+    setIsUnderAttack, 
+    isMitigating, 
+    setIsMitigating,
+    slaThresholds
+  } = useClient();
 
   // Navigation Viewport Mode Switcher
   const [activeViewMode, setActiveViewMode] = useState<'executive' | 'tactical' | 'compliance'>('executive');
-  
-  // Threat Attack Simulation States
-  const [isUnderAttack, setIsUnderAttack] = useState(false);
-  const [isMitigating, setIsMitigating] = useState(false);
   const [simulatedScore, setSimulatedScore] = useState(currentClient.score);
   const [simProgress, setSimProgress] = useState(0);
   const [simLogs, setSimLogs] = useState<string[]>([]);
@@ -164,21 +167,26 @@ export default function OverviewPage() {
     }, 2000);
   };
 
-  // Interactive statistics mapped dynamically to simulation states
-  const activePostScore = simulatedScore;
+  // Calculate dynamic SLA threshold penalty (tighter SLAs penalize score until fixed)
+  const slaBreachPenalty = Math.max(0, (7 - slaThresholds.critical) * 2) + Math.max(0, (30 - slaThresholds.high) * 0.5);
+
+  // Interactive statistics mapped dynamically to simulation states & SLA thresholds
+  const activePostScore = isUnderAttack 
+    ? 42 
+    : Math.max(30, Math.min(100, simulatedScore - Math.round(slaBreachPenalty)));
   const activeGrade = activePostScore > 85 ? 'A' : activePostScore > 70 ? 'C+' : 'D-';
   
   const mttrSpeed = isUnderAttack 
     ? (isMitigating ? '12.4 hrs (Mitigating)' : '48.5 hrs (Delayed)')
-    : (activePostScore > 90 ? '1.2 hrs' : (currentClient.key === 'UR' ? '3.0 hrs' : '6.5 hrs'));
+    : (activePostScore > 90 ? '1.2 hrs' : (currentClient.key === 'UR' ? `${(3.0 * (slaThresholds.critical / 7)).toFixed(1)} hrs` : `${(6.5 * (slaThresholds.critical / 7)).toFixed(1)} hrs`));
 
   const exposureIndex = isUnderAttack
     ? '47 critical CVEs'
-    : (activePostScore > 90 ? '0 open CVE' : (currentClient.key === 'UR' ? '4 open CVEs' : '14 open CVEs'));
+    : (activePostScore > 90 ? '0 open CVE' : (currentClient.key === 'UR' ? `${4 + Math.round(slaBreachPenalty / 2)} open CVEs` : `${14 + Math.round(slaBreachPenalty / 2)} open CVEs`));
 
   const complianceLevel = isUnderAttack
     ? '51% compliance'
-    : (activePostScore > 90 ? '98%' : (currentClient.key === 'UR' ? '89%' : '71%'));
+    : (activePostScore > 90 ? '98%' : (currentClient.key === 'UR' ? `${Math.max(40, 89 - Math.round(slaBreachPenalty))}%` : `${Math.max(30, 71 - Math.round(slaBreachPenalty))}%`));
 
   const humanRiskVal = isUnderAttack
     ? '🔥 Critical Risk'

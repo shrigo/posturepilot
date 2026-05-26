@@ -69,7 +69,15 @@ const clientPostureMeta = {
 };
 
 export default function PosturePage() {
-  const { currentClient, isEnterpriseMode } = useClient();
+  const { 
+    currentClient, 
+    isEnterpriseMode, 
+    isUnderAttack, 
+    setIsUnderAttack, 
+    isMitigating, 
+    setIsMitigating,
+    slaThresholds
+  } = useClient();
 
   const [live, setLive]           = useState<LiveSummary | null>(null);
   const [liveErr, setLiveErr]     = useState(false);
@@ -82,10 +90,6 @@ export default function PosturePage() {
   const [terminalLogs, setTerminalLogs] = useState<string[]>([]);
   const [isPatching, setIsPatching] = useState(false);
   const [activePatchCve, setActivePatchCve] = useState<string | null>(null);
-
-  // Threat Simulation Sandbox States
-  const [isUnderAttack, setIsUnderAttack] = useState(false);
-  const [isMitigating, setIsMitigating] = useState(false);
 
   // Fetch real uploaded scan logs summary if available
   useEffect(() => {
@@ -128,12 +132,15 @@ export default function PosturePage() {
   // Resolve active client mock data structure
   const activeMeta = clientPostureMeta[currentClient.key as 'ACME' | 'UR'] || clientPostureMeta.ACME;
 
-  // Real-time recalculated scores based on mitigations and attacks
+  // Real-time recalculated scores based on mitigations, attacks, and SLA thresholds
   const mitigatedCount = Object.keys(mitigatedCves).length;
   
-  let postureScore = Math.min(100, activeMeta.baseScore + (mitigatedCount * 3));
-  let openCriticals = Math.max(0, activeMeta.baseCriticals - mitigatedCount);
-  let controlCoverage = Math.min(100, activeMeta.controlCoverage + (mitigatedCount * 2));
+  // Calculate dynamic SLA threshold penalty (tighter SLAs penalize score until fixed)
+  const slaBreachPenalty = Math.max(0, (7 - slaThresholds.critical) * 2) + Math.max(0, (30 - slaThresholds.high) * 0.5);
+  
+  let postureScore = Math.max(30, Math.min(100, activeMeta.baseScore + (mitigatedCount * 3) - Math.round(slaBreachPenalty)));
+  let openCriticals = Math.max(0, activeMeta.baseCriticals - mitigatedCount + Math.round(slaBreachPenalty / 2));
+  let controlCoverage = Math.max(20, Math.min(100, activeMeta.controlCoverage + (mitigatedCount * 2) - Math.round(slaBreachPenalty * 0.8)));
   let threatLevel = openCriticals > 10 ? 'Elevated' : openCriticals > 5 ? 'Elevated Alert' : openCriticals > 0 ? 'Medium Risk' : 'Secure & Patched';
   
   if (isUnderAttack) {

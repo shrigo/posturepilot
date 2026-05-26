@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { useClient } from '@/context/ClientContext';
+import Link from 'next/link';
 
 const SEV_COLOR: Record<string, { bg: string; text: string; border: string }> = {
   Critical: { bg: '#fef2f2', text: '#dc2626', border: '#fecaca' },
@@ -22,7 +24,48 @@ interface ApiResponse {
   severityCounts: Record<string, number>; toolCounts: Record<string, number>;
 }
 
+const INJECTED_FINDINGS: Finding[] = [
+  {
+    id: 'injected-cve-001',
+    cveId: 'CVE-2026-3400',
+    title: '🚨 EXPLOIT WAVE: Palo Alto PAN-OS RCE DDoS Ingress Flow',
+    severity: 'Critical',
+    cvssScore: 10.0,
+    sourceTool: 'PaloAlto PAN-OS Threat Feed',
+    host: 'edge-ingress-fw01',
+    status: 'open',
+    firstSeen: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(), // 8 days ago (breached!)
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: 'injected-cve-002',
+    cveId: 'CVE-2026-9800',
+    title: '🚨 EXPLOIT WAVE: OpenSSH core-db-01 Remote Root Buffer Overflow',
+    severity: 'Critical',
+    cvssScore: 10.0,
+    sourceTool: 'EDR Host Scanner',
+    host: 'core-db-01.internal',
+    status: 'open',
+    firstSeen: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), // 10 days ago (breached!)
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: 'injected-cve-003',
+    cveId: 'CVE-2026-1124',
+    title: '🚨 EXPLOIT WAVE: Public Exposed AWS S3 Data Leakage Container',
+    severity: 'Critical',
+    cvssScore: 10.0,
+    sourceTool: 'Prisma Cloud Scanner',
+    host: 's3://acme-prod-customer-vault-backup',
+    status: 'open',
+    firstSeen: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(), // 12 days ago (breached!)
+    lastSeen: new Date().toISOString(),
+  }
+];
+
 export default function FindingsPage() {
+  const { isUnderAttack, slaThresholds } = useClient();
+
   const [data, setData]             = useState<ApiResponse | null>(null);
   const [loading, setLoading]       = useState(true);
   const [search, setSearch]         = useState('');
@@ -72,13 +115,61 @@ export default function FindingsPage() {
     setSearch(''); setSeverity(''); setTool(''); setStatus(''); setSlaBreached(false); setPage(1);
   };
 
+  const isSlaBreached = useCallback((f: Finding) => {
+    if (f.status === 'closed' || f.status === 'suppressed') return false;
+    if (f.status === 'sla_breach') return true;
+    
+    // Compute based on customized thresholds
+    const sev = f.severity.toLowerCase();
+    const thresholdDays = 
+      sev === 'critical' ? slaThresholds.critical :
+      sev === 'high' ? slaThresholds.high :
+      sev === 'medium' ? slaThresholds.med :
+      90; // default for low/info
+      
+    const firstSeenDate = new Date(f.firstSeen);
+    const diffTime = Math.abs(Date.now() - firstSeenDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays > thresholdDays;
+  }, [slaThresholds]);
+
+  let displayedFindings = data?.findings ? [...data.findings] : [];
+
+  // Local SLA recalculations & filters
+  if (data?.findings) {
+    if (slaBreached) {
+      displayedFindings = displayedFindings.filter(f => isSlaBreached(f));
+    }
+  }
+
+  // Prepend simulated attack exploits if active
+  if (isUnderAttack && data?.findings) {
+    const matchedInjected = INJECTED_FINDINGS.filter(f => {
+      if (search && !f.title.toLowerCase().includes(search.toLowerCase()) && !f.cveId?.toLowerCase().includes(search.toLowerCase()) && !f.host?.toLowerCase().includes(search.toLowerCase())) {
+        return false;
+      }
+      if (severity && f.severity !== severity) {
+        return false;
+      }
+      if (tool && f.sourceTool !== tool) {
+        return false;
+      }
+      if (status && f.status !== status) {
+        return false;
+      }
+      return true;
+    });
+    displayedFindings = [...matchedInjected, ...displayedFindings];
+  }
+
   const exportCSV = () => {
-    if (!data?.findings.length) return;
+    if (!displayedFindings.length) return;
     const headers = ['CVE ID', 'Title', 'Severity', 'CVSS', 'Tool', 'Asset', 'Status', 'SLA Breached', 'First Seen'];
-    const rows = data.findings.map(f => [
+    const rows = displayedFindings.map(f => [
       f.cveId || 'N/A', `"${f.title.replace(/"/g, "'")}"`, f.severity,
       f.cvssScore ?? '', f.sourceTool, f.host || 'Unknown',
-      f.status, f.status === "sla_breach" ? 'Yes' : 'No',
+      f.status, isSlaBreached(f) ? 'Yes' : 'No',
       new Date(f.firstSeen).toLocaleDateString(),
     ]);
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
@@ -99,6 +190,43 @@ export default function FindingsPage() {
   return (
     <>
       <div className="page-content animate-in">
+
+        {isUnderAttack && (
+          <div style={{
+            background: 'linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%)',
+            border: '2px solid #ef4444',
+            borderRadius: '12px',
+            padding: '1rem',
+            marginBottom: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            boxShadow: '0 4px 12px rgba(239, 68, 68, 0.08)',
+            animation: 'pulse-dot 2s infinite'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span style={{ fontSize: '1.75rem' }}>🚨</span>
+              <div>
+                <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: '#9f1239' }}>Active Exploit Campaign Detected</h4>
+                <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.78rem', color: '#be123c', fontWeight: 600 }}>
+                  3 Critical CVE vectors have breached security boundaries! Go to the <strong>Posture</strong> page or use the <strong>Upload Scan</strong> patcher to hot-patch active endpoints.
+                </p>
+              </div>
+            </div>
+            <Link href="/dashboard" style={{
+              background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+              color: '#fff',
+              fontSize: '0.75rem',
+              fontWeight: 800,
+              textDecoration: 'none',
+              padding: '0.5rem 1.125rem',
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)'
+            }}>
+              View Posture Sandbox →
+            </Link>
+          </div>
+        )}
 
         {/* Summary pills */}
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
@@ -189,7 +317,7 @@ export default function FindingsPage() {
             <div style={{ padding: '4rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
               Loading findings…
             </div>
-          ) : !data?.findings.length ? (
+          ) : !displayedFindings.length ? (
             <div style={{ padding: '4rem', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>📭</div>
               <div style={{ fontWeight: 700, color: '#0f172a', marginBottom: '0.5rem' }}>
@@ -235,19 +363,24 @@ export default function FindingsPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.findings.map((f, i) => {
+                    {displayedFindings.map((f, i) => {
                       const sc = SEV_COLOR[f.severity] || SEV_COLOR.Info;
+                      const breached = isSlaBreached(f);
+                      const isExploitCampaign = f.id.startsWith('injected-');
                       return (
                         <tr key={f.id}
-                          style={{ borderBottom: '1px solid #f1f5f9', background: i % 2 === 0 ? '#fff' : '#fafafa',
-                            transition: 'background 0.1s' }}
-                          onMouseEnter={e => (e.currentTarget.style.background = '#f0f4ff')}
-                          onMouseLeave={e => (e.currentTarget.style.background = i % 2 === 0 ? '#fff' : '#fafafa')}>
-                          <td style={{ padding: '0.65rem 0.875rem', fontWeight: 700, color: '#1e2d6e', whiteSpace: 'nowrap' }}>
+                          style={{ 
+                            borderBottom: '1px solid #f1f5f9', 
+                            background: isExploitCampaign ? '#fef2f2' : (i % 2 === 0 ? '#fff' : '#fafafa'),
+                            transition: 'background 0.1s' 
+                          }}
+                          onMouseEnter={e => (e.currentTarget.style.background = isExploitCampaign ? '#ffe4e6' : '#f0f4ff')}
+                          onMouseLeave={e => (e.currentTarget.style.background = isExploitCampaign ? '#fef2f2' : (i % 2 === 0 ? '#fff' : '#fafafa'))}>
+                          <td style={{ padding: '0.65rem 0.875rem', fontWeight: 700, color: isExploitCampaign ? '#e11d48' : '#1e2d6e', whiteSpace: 'nowrap' }}>
                             {f.cveId || <span style={{ color: '#94a3b8' }}>—</span>}
                           </td>
                           <td style={{ padding: '0.65rem 0.875rem', color: '#334155', maxWidth: 280 }}>
-                            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={f.title}>
+                            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: isExploitCampaign ? 700 : 400 }} title={f.title}>
                               {f.title}
                             </div>
                           </td>
@@ -262,7 +395,7 @@ export default function FindingsPage() {
                             {f.cvssScore?.toFixed(1) ?? '—'}
                           </td>
                           <td style={{ padding: '0.65rem 0.875rem', color: '#475569', whiteSpace: 'nowrap' }}>
-                            <span style={{ padding: '2px 7px', borderRadius: 6, background: '#f1f5f9', fontSize: '0.7rem', fontWeight: 600 }}>
+                            <span style={{ padding: '2px 7px', borderRadius: 6, background: isExploitCampaign ? '#ffe4e6' : '#f1f5f9', fontSize: '0.7rem', fontWeight: 600, color: isExploitCampaign ? '#be123c' : undefined }}>
                               {f.sourceTool}
                             </span>
                           </td>
@@ -271,13 +404,13 @@ export default function FindingsPage() {
                           </td>
                           <td style={{ padding: '0.65rem 0.875rem' }}>
                             <span style={{ padding: '2px 8px', borderRadius: 20, fontSize: '0.7rem', fontWeight: 700,
-                              background: f.status === 'open' ? '#fef2f2' : f.status === 'closed' ? '#f0fdf4' : '#f8fafc',
-                              color: f.status === 'open' ? '#dc2626' : f.status === 'closed' ? '#16a34a' : '#64748b' }}>
-                              {f.status}
+                              background: isExploitCampaign ? '#ffe4e6' : (f.status === 'open' ? '#fef2f2' : f.status === 'closed' ? '#f0fdf4' : '#f8fafc'),
+                              color: isExploitCampaign ? '#be123c' : (f.status === 'open' ? '#dc2626' : f.status === 'closed' ? '#16a34a' : '#64748b') }}>
+                              {isExploitCampaign ? 'active exploit' : f.status}
                             </span>
                           </td>
                           <td style={{ padding: '0.65rem 0.875rem', textAlign: 'center' }}>
-                            {f.status === "sla_breach"
+                            {breached
                               ? <span title="SLA Breached" style={{ color: '#dc2626', fontWeight: 800, fontSize: '1rem' }}>🔴</span>
                               : <span title="On Track"     style={{ color: '#16a34a', fontWeight: 800, fontSize: '1rem' }}>✅</span>}
                           </td>

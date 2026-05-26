@@ -48,6 +48,12 @@ interface ClientContextType {
   setClient: (key: ClientKey) => void;
   isEnterpriseMode: boolean;
   setIsEnterpriseMode: (val: boolean) => void;
+  isUnderAttack: boolean;
+  setIsUnderAttack: (val: boolean) => void;
+  isMitigating: boolean;
+  setIsMitigating: (val: boolean) => void;
+  slaThresholds: { critical: number; high: number; med: number };
+  setSlaThresholds: (val: { critical: number; high: number; med: number }) => void;
 }
 
 const ClientContext = createContext<ClientContextType | undefined>(undefined);
@@ -55,6 +61,13 @@ const ClientContext = createContext<ClientContextType | undefined>(undefined);
 export function ClientProvider({ children }: { children: React.ReactNode }) {
   const [currentKey, setCurrentKey] = useState<ClientKey>('ACME');
   const [isEnterpriseMode, setIsEnterpriseMode] = useState<boolean>(false);
+  const [isUnderAttack, setIsUnderAttack] = useState<boolean>(false);
+  const [isMitigating, setIsMitigating] = useState<boolean>(false);
+  const [slaThresholds, setSlaThresholds] = useState<{ critical: number; high: number; med: number }>({
+    critical: 7,
+    high: 30,
+    med: 90
+  });
 
   useEffect(() => {
     const saved = localStorage.getItem('posturepilot_client') as ClientKey;
@@ -64,6 +77,16 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
     const savedMode = localStorage.getItem('posturepilot_enterprise_mode');
     if (savedMode === 'true') {
       setIsEnterpriseMode(true);
+    }
+    const savedAttack = localStorage.getItem('posturepilot_under_attack');
+    if (savedAttack === 'true') {
+      setIsUnderAttack(true);
+    }
+    const savedSla = localStorage.getItem('posturepilot_sla_thresholds');
+    if (savedSla) {
+      try {
+        setSlaThresholds(JSON.parse(savedSla));
+      } catch {}
     }
   }, []);
 
@@ -79,12 +102,28 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('posturepilot_enterprise_mode', val ? 'true' : 'false');
   };
 
+  const setGlobalUnderAttack = (val: boolean) => {
+    setIsUnderAttack(val);
+    localStorage.setItem('posturepilot_under_attack', val ? 'true' : 'false');
+  };
+
+  const setGlobalSlaThresholds = (val: { critical: number; high: number; med: number }) => {
+    setSlaThresholds(val);
+    localStorage.setItem('posturepilot_sla_thresholds', JSON.stringify(val));
+  };
+
   return (
     <ClientContext.Provider value={{ 
       currentClient: clients[currentKey], 
       setClient, 
       isEnterpriseMode, 
-      setIsEnterpriseMode: toggleEnterpriseMode 
+      setIsEnterpriseMode: toggleEnterpriseMode,
+      isUnderAttack,
+      setIsUnderAttack: setGlobalUnderAttack,
+      isMitigating,
+      setIsMitigating,
+      slaThresholds,
+      setSlaThresholds: setGlobalSlaThresholds
     }}>
       {children}
     </ClientContext.Provider>

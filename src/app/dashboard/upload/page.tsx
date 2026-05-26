@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
 import Link from 'next/link';
+import { useClient } from '@/context/ClientContext';
 
 interface UploadResult {
   success: boolean;
@@ -22,9 +23,12 @@ const TOOL_LABELS: Record<string, { label: string; icon: string; color: string }
   openvas:  { label: 'OpenVAS',       icon: '🟢', color: '#16a34a' },
   tenable:  { label: 'Tenable.io',    icon: '🟠', color: '#ea580c' },
   csv:      { label: 'Generic CSV',   icon: '📊', color: '#8b5cf6' },
+  soc_patcher: { label: 'SOC Patcher Wizard', icon: '🛡️', color: '#7c3aed' },
 };
 
 export default function UploadPage() {
+  const { isUnderAttack, setIsUnderAttack, isMitigating, setIsMitigating } = useClient();
+
   const [dragOver, setDragOver]     = useState(false);
   const [loading, setLoading]       = useState(false);
   const [progress, setProgress]     = useState('');
@@ -49,6 +53,43 @@ export default function UploadPage() {
     setError(null);
     setResult(null);
     setProgress('Uploading file…');
+
+    if (isUnderAttack) {
+      setIsMitigating(true);
+      setProgress('Initializing SOC Hot-Patch Sandbox...');
+      
+      const stages = [
+        '🚀 Spawning containerized SOC hot-patch container...',
+        '📡 Intercepting Palo Alto border ingress routing logs...',
+        '🔒 Generating AWS S3 bucket IAM restrictions & KMS AES-256...',
+        '🛑 Sending EDR SIGKILL to miner daemon (PID 3840) on core-db-01...',
+        '🛠️ Null-routing attack waves via Wiz & SkyArmor APIs...',
+        '⏳ Finalizing GRC governance ledger sync...',
+        '🟢 All active threat vectors mitigated! Posture restored.'
+      ];
+      
+      let stepIndex = 0;
+      const interval = setInterval(() => {
+        if (stepIndex < stages.length) {
+          const pct = Math.round(((stepIndex + 1) / stages.length) * 100);
+          setProgress(`[${pct}%] ${stages[stepIndex]}`);
+          stepIndex++;
+        } else {
+          clearInterval(interval);
+          setLoading(false);
+          setIsUnderAttack(false);
+          setIsMitigating(false);
+          setResult({
+            success: true,
+            jobId: 'soc-patch-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
+            tool: 'soc_patcher',
+            total: 3,
+            bySeverity: { 'Critical': 0, 'High': 0, 'Medium': 0, 'Low': 0, 'Info': 0 }
+          });
+        }
+      }, 600);
+      return;
+    }
 
     try {
       const form = new FormData();
@@ -111,26 +152,42 @@ export default function UploadPage() {
             onDragOver={e => { e.preventDefault(); setDragOver(true); }}
             onDragLeave={() => setDragOver(false)}
             onDrop={onDrop}
-            style={{ opacity: loading ? 0.75 : 1 }}
+            style={{ 
+              opacity: loading ? 0.75 : 1,
+              border: isUnderAttack ? '2px dashed #ef4444' : undefined,
+              background: isUnderAttack ? 'linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%)' : undefined,
+              boxShadow: isUnderAttack ? '0 8px 24px rgba(239, 68, 68, 0.08)' : undefined
+            }}
           >
             <div style={{ fontSize:'3rem', marginBottom:'1rem' }}>
-              {loading ? '⚙️' : dragOver ? '📂' : '📁'}
+              {loading ? '⚙️' : isUnderAttack ? '🛡️' : dragOver ? '📂' : '📁'}
             </div>
-            <div style={{ fontSize:'1.05rem', fontWeight:700, color:'#0f172a', marginBottom:'0.375rem' }}>
-              {loading ? progress : 'Drop your scan file here'}
+            <div style={{ fontSize:'1.05rem', fontWeight: 800, color: isUnderAttack ? '#9f1239' : '#0f172a', marginBottom:'0.375rem' }}>
+              {loading ? progress : isUnderAttack ? '🚨 SOC Mitigate Hot-Patching Center Active' : 'Drop your scan file here'}
             </div>
-            <div style={{ fontSize:'0.8rem', color:'#94a3b8', marginBottom:'1rem' }}>
-              Supports: Qualys XML · Nessus .nessus · Tenable CSV · OpenVAS XML · Any CSV
+            <div style={{ fontSize:'0.8rem', color: isUnderAttack ? '#be123c' : '#94a3b8', marginBottom:'1rem', fontWeight: isUnderAttack ? 600 : 400 }}>
+              {isUnderAttack 
+                ? 'Drop any security patch, logs, or scan file here to authorize automated playbook mitigation' 
+                : 'Supports: Qualys XML · Nessus .nessus · Tenable CSV · OpenVAS XML · Any CSV'}
             </div>
             {!loading && (
-              <div style={{ display:'inline-block', padding:'0.625rem 1.5rem', background:'linear-gradient(135deg,#4f46e5,#7c3aed)', borderRadius:8, color:'#fff', fontWeight:700, fontSize:'0.85rem' }}>
-                Or click to browse files
+              <div style={{ 
+                display:'inline-block', 
+                padding:'0.625rem 1.5rem', 
+                background: isUnderAttack ? 'linear-gradient(135deg, #ef4444, #be123c)' : 'linear-gradient(135deg,#4f46e5,#7c3aed)', 
+                borderRadius:8, 
+                color:'#fff', 
+                fontWeight:800, 
+                fontSize:'0.85rem',
+                boxShadow: isUnderAttack ? '0 4px 12px rgba(239, 68, 68, 0.2)' : undefined
+              }}>
+                {isUnderAttack ? '⚡ Upload SOC Remediation Patch' : 'Or click to browse files'}
               </div>
             )}
             {loading && (
               <div style={{ display:'flex', gap:'0.3rem', justifyContent:'center' }}>
                 {[0,1,2].map(i => (
-                  <div key={i} style={{ width:8, height:8, borderRadius:'50%', background:'#4f46e5', animation:`pulse-dot 1s ${i*0.2}s infinite` }} />
+                  <div key={i} style={{ width:8, height:8, borderRadius:'50%', background: isUnderAttack ? '#ef4444' : '#4f46e5', animation:`pulse-dot 1s ${i*0.2}s infinite` }} />
                 ))}
               </div>
             )}
