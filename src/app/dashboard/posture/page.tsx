@@ -83,6 +83,10 @@ export default function PosturePage() {
   const [isPatching, setIsPatching] = useState(false);
   const [activePatchCve, setActivePatchCve] = useState<string | null>(null);
 
+  // Threat Simulation Sandbox States
+  const [isUnderAttack, setIsUnderAttack] = useState(false);
+  const [isMitigating, setIsMitigating] = useState(false);
+
   // Fetch real uploaded scan logs summary if available
   useEffect(() => {
     fetch('/api/findings/summary')
@@ -97,10 +101,12 @@ export default function PosturePage() {
     setTerminalLogs([
       `[SYSTEM] Cyber Posture threat feed loaded for organization: ${currentClient.name}`,
       `[SYSTEM] Real-time CVE audit synchronizations successfully calibrated.`,
-      `[INFO] Choose an active KEV exploit below to run a hot-patch remediation sweep.`
+      `[INFO] Choose an active KEV exploit below or use the Threat Sandbox in the header...`
     ]);
     setActivePatchCve(null);
     setIsPatching(false);
+    setIsUnderAttack(false);
+    setIsMitigating(false);
   }, [currentClient.key]);
 
   const downloadPDF = async () => {
@@ -122,14 +128,21 @@ export default function PosturePage() {
   // Resolve active client mock data structure
   const activeMeta = clientPostureMeta[currentClient.key as 'ACME' | 'UR'] || clientPostureMeta.ACME;
 
-  // Real-time recalculated scores based on mitigations
+  // Real-time recalculated scores based on mitigations and attacks
   const mitigatedCount = Object.keys(mitigatedCves).length;
   
-  const postureScore = Math.min(100, activeMeta.baseScore + (mitigatedCount * 3));
-  const openCriticals = Math.max(0, activeMeta.baseCriticals - mitigatedCount);
-  const controlCoverage = Math.min(100, activeMeta.controlCoverage + (mitigatedCount * 2));
-  const threatLevel = openCriticals > 10 ? 'Elevated' : openCriticals > 5 ? 'Elevated Alert' : openCriticals > 0 ? 'Medium Risk' : 'Secure & Patched';
+  let postureScore = Math.min(100, activeMeta.baseScore + (mitigatedCount * 3));
+  let openCriticals = Math.max(0, activeMeta.baseCriticals - mitigatedCount);
+  let controlCoverage = Math.min(100, activeMeta.controlCoverage + (mitigatedCount * 2));
+  let threatLevel = openCriticals > 10 ? 'Elevated' : openCriticals > 5 ? 'Elevated Alert' : openCriticals > 0 ? 'Medium Risk' : 'Secure & Patched';
   
+  if (isUnderAttack) {
+    postureScore = 42;
+    openCriticals = 47;
+    controlCoverage = 35;
+    threatLevel = 'Critical Breach';
+  }
+
   // Dynamic monthly line-chart trend reflecting hot-patches
   const dynamicMonthlyTrend = activeMeta.monthlyTrend.map((t, idx) => {
     if (idx === activeMeta.monthlyTrend.length - 1) {
@@ -168,6 +181,62 @@ export default function PosturePage() {
     });
   };
 
+  // Threat Simulation Sandbox Handlers
+  const handleTriggerAttack = () => {
+    setIsUnderAttack(true);
+    setIsMitigating(false);
+    setMitigatedCves({});
+    setTerminalLogs(prev => [
+      ...prev,
+      `[SIMULATION-START] Injecting multi-vectored threat exploits to active posture...`,
+      `[DDOS] Flooding Palo Alto ingress gateway with 45 Gbps UDP packet storm! 🔴 Critical`,
+      `[EXPLOIT] Exploiting OpenSSH CVSS 9.8 RCE root shell on prod host core-db-01! 🔴 Critical`,
+      `[CLOUD] Public storage exposed on AWS buckets! 🔴 Critical`,
+      `[ALERT] Cyber posture index degraded to 42 (🔴 Critical Risk)`
+    ]);
+  };
+
+  const handleTriggerMitigation = () => {
+    setIsMitigating(true);
+    setTerminalLogs(prev => [
+      ...prev,
+      `[SOC-PLAYBOOK] Remediating active exploits. Initiating corporate threat playbooks...`,
+      `[EDR] Connecting to EDR agent. Restricting SSH boundaries...`
+    ]);
+
+    setTimeout(() => {
+      setTerminalLogs(prev => [
+        ...prev,
+        `[FIREWALL] Pushing BGP Route-Map block to border routers. Null-routing attacker subnets...`,
+        `[EDR] Sending SIGKILL to miner daemon (PID 3840) on core-db-01...`
+      ]);
+    }, 400);
+
+    setTimeout(() => {
+      setTerminalLogs(prev => [
+        ...prev,
+        `[CLOUD] Restricting public read ACLs on exposed AWS S3 buckets. Applying AES-256 KMS...`,
+        `[AI-SHIELD] Enforcing proxy filters. Shadow AI connections terminated...`
+      ]);
+    }, 800);
+
+    setTimeout(() => {
+      setTerminalLogs(prev => [
+        ...prev,
+        `[PLAYBOOK-COMPLETE] All active vectors mitigated successfully! Posture score restored to optimal. 🟢 Safe`
+      ]);
+      setIsMitigating(false);
+      setIsUnderAttack(false);
+      
+      // mark all default CVEs as mitigated
+      const allCves: Record<string, boolean> = {};
+      activeMeta.threatIntelFeed.forEach(t => {
+        allCves[t.cve] = true;
+      });
+      setMitigatedCves(allCves);
+    }, 1200);
+  };
+
   // Run Campaign Readiness Audit Sandbox
   const handleAuditCampaign = (campaignName: string, targetSector: string) => {
     if (isPatching) return;
@@ -197,7 +266,6 @@ export default function PosturePage() {
     });
   };
 
-  // Reset remediations to allow infinite interactive presentation flows
   const handleResetVulnerabilities = () => {
     setMitigatedCves({});
     setTerminalLogs([
@@ -207,6 +275,8 @@ export default function PosturePage() {
     ]);
     setActivePatchCve(null);
     setIsPatching(false);
+    setIsUnderAttack(false);
+    setIsMitigating(false);
   };
 
   const hasLive = !!live;
@@ -215,23 +285,48 @@ export default function PosturePage() {
     <div className="page-content animate-in" style={{ paddingBottom: '2.5rem' }}>
 
       {/* Sticky Live Data / Simulation Controller Banner */}
-      <div className="sticky-alert-banner">
+      <div className="sticky-alert-banner" style={{ background: isUnderAttack ? '#fef2f2' : undefined, border: isUnderAttack ? '1px solid #fecaca' : undefined }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
+          <span className="hud-pulse" style={{ background: isUnderAttack ? '#ef4444' : '#7c3aed', boxShadow: isUnderAttack ? '0 0 8px #ef4444' : '0 0 8px #7c3aed', width: 10, height: 10 }} />
           <div>
-            <div style={{ fontWeight: 800, color: '#6d28d9', fontSize: '0.9rem' }}>
-              {hasLive ? `Live Scan Data Active — ${live!.total.toLocaleString()} findings` : `Active Threat Simulation — ${currentClient.name}`}
+            <div style={{ fontWeight: 800, color: isUnderAttack ? '#b91c1c' : '#6d28d9', fontSize: '0.9rem' }}>
+              {isUnderAttack ? `🚨 Interactive Breach Threat Wave Sandbox Active — ${currentClient.name}` : (hasLive ? `Live Scan Data Active — ${live!.total.toLocaleString()} findings` : `Active Threat Simulation — ${currentClient.name}`)}
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 600 }}>
-              {hasLive ? `Source Scanner Tools: ${Object.keys(live!.byTool).join(', ')} · Avg CVSS: ${live!.avgCvss}` : `Interactive hot-patch simulator synced to CISO aggregate postures.`}
+            <div style={{ fontSize: '0.75rem', color: isUnderAttack ? '#ef4444' : '#7c3aed', fontWeight: 600 }}>
+              {isUnderAttack ? `Active Exploit Wave: Recalculating perimeter and host workloads...` : (hasLive ? `Source Scanner Tools: ${Object.keys(live!.byTool).join(', ')} · Avg CVSS: ${live!.avgCvss}` : `Interactive hot-patch simulator synced to CISO aggregate postures.`)}
             </div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+          {/* Interactive Threat Attack Simulation Sandbox Buttons In Sticky Header */}
+          <button
+            onClick={handleTriggerAttack}
+            disabled={isUnderAttack || isMitigating}
+            style={{
+              fontSize: '0.78rem', fontWeight: 800, color: '#fff', 
+              background: (isUnderAttack || isMitigating) ? '#cbd5e1' : 'linear-gradient(135deg, #ef4444, #dc2626)',
+              border: 'none', padding: '0.5rem 1rem', borderRadius: 8, cursor: (isUnderAttack || isMitigating) ? 'default' : 'pointer',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.05)', transition: 'all 0.15s'
+            }}
+          >
+            💣 Exploit Attack Wave
+          </button>
+          <button
+            onClick={handleTriggerMitigation}
+            disabled={!isUnderAttack || isMitigating}
+            style={{
+              fontSize: '0.78rem', fontWeight: 800, color: '#fff', 
+              background: (!isUnderAttack || isMitigating) ? '#cbd5e1' : 'linear-gradient(135deg, #10b981, #059669)',
+              border: 'none', padding: '0.5rem 1rem', borderRadius: 8, cursor: (!isUnderAttack || isMitigating) ? 'default' : 'pointer',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.05)', transition: 'all 0.15s'
+            }}
+          >
+            ⚡ Run SOC Playbook
+          </button>
           <button 
             onClick={handleResetVulnerabilities} 
             style={{ 
-              fontSize: '0.78rem', fontWeight: 800, color: '#7c3aed', background: 'rgba(255, 255, 255, 0.4)', 
+              fontSize: '0.78rem', fontWeight: 800, color: '#7c3aed', background: 'rgba(255, 255, 255, 0.7)', 
               border: '1px solid #c084fc', padding: '0.5rem 1rem', borderRadius: 8, cursor: 'pointer',
               boxShadow: '0 2px 4px rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: '4px',
               transition: 'all 0.15s'
@@ -256,15 +351,15 @@ export default function PosturePage() {
           { label: 'SLA Compliance',   value: `${live!.slaCompliance}%`,       accent: '#059669', delta: 'Based on scan dates', deltaColor: '#94a3b8' },
           { label: 'Open Criticals',   value: live!.critical.toLocaleString(), accent: '#dc2626', delta: `+ ${live!.high} High`, deltaColor: '#94a3b8' },
         ] : [
-          { label: 'Posture Score',    value: `${postureScore}/100`,           accent: '#3b82f6', delta: mitigatedCount > 0 ? `🟢 Climbed +${mitigatedCount * 3} pts!` : activeMeta.deltaText, deltaColor: mitigatedCount > 0 ? '#10b981' : '#ef4444' },
+          { label: 'Posture Score',    value: `${postureScore}/100`,           accent: '#3b82f6', delta: isUnderAttack ? '🔴 CRITICAL BREACH RISK' : (mitigatedCount > 0 ? `🟢 Climbed +${mitigatedCount * 3} pts!` : activeMeta.deltaText), deltaColor: isUnderAttack ? '#dc2626' : (mitigatedCount > 0 ? '#10b981' : '#ef4444') },
           { label: 'Threat Level',     value: threatLevel,                     accent: '#ea580c', delta: activeMeta.threatDelta, deltaColor: '#ea580c' },
-          { label: 'Control Coverage', value: `${controlCoverage}%`,           accent: '#059669', delta: mitigatedCount > 0 ? `🟢 Gained +${mitigatedCount * 2}%!` : '↑2% this month', deltaColor: '#10b981' },
-          { label: 'Open Criticals',   value: String(openCriticals),           accent: '#dc2626', delta: mitigatedCount > 0 ? `🟢 Resolved ${mitigatedCount} criticals` : '↑4 since last scan', deltaColor: mitigatedCount > 0 ? '#10b981' : '#dc2626' },
+          { label: 'Control Coverage', value: `${controlCoverage}%`,           accent: '#059669', delta: isUnderAttack ? '🔴 Active exploits bypassing controls' : (mitigatedCount > 0 ? `🟢 Gained +${mitigatedCount * 2}%!` : '↑2% this month'), deltaColor: isUnderAttack ? '#dc2626' : '#10b981' },
+          { label: 'Open Criticals',   value: String(openCriticals),           accent: '#dc2626', delta: isUnderAttack ? '🔴 47 network injection threats' : (mitigatedCount > 0 ? `🟢 Resolved ${mitigatedCount} criticals` : '↑4 since last scan'), deltaColor: isUnderAttack ? '#dc2626' : (mitigatedCount > 0 ? '#10b981' : '#dc2626') },
         ]) as { label: string; value: string; accent: string; delta: string; deltaColor: string }[]).map(s => (
           <div key={s.label} className="stat-card">
             <div className="stat-card-accent" style={{ background: s.accent }} />
             <div className="stat-label">{s.label}</div>
-            <div className="stat-value" style={{ fontSize: '1.75rem' }}>{s.value}</div>
+            <div className="stat-value" style={{ fontSize: '1.75rem', color: isUnderAttack && (s.label.includes('Score') || s.label.includes('Criticals') || s.label.includes('Level')) ? '#dc2626' : undefined }}>{s.value}</div>
             <div className="stat-delta" style={{ color: s.deltaColor || '#94a3b8', fontWeight: 800 }}>{s.delta}</div>
           </div>
         ))}
@@ -307,12 +402,12 @@ export default function PosturePage() {
               Historical client posture curve. Checking off exploit hot-patches dynamically boosts active month rating.
             </p>
             <ResponsiveContainer width="100%" height={220}>
-              <LineChart key={currentClient.key} data={dynamicMonthlyTrend}>
+              <LineChart key={`${currentClient.key}-${postureScore}`} data={dynamicMonthlyTrend}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#94a3b8' }} />
-                <YAxis domain={[50, 100]} tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                <YAxis domain={[30, 100]} tick={{ fontSize: 11, fill: '#94a3b8' }} />
                 <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e2e8f0' }} />
-                <Line type="monotone" dataKey="score" stroke="#3b82f6" strokeWidth={2.5} dot={{ fill: '#3b82f6', r: 4 }} activeDot={{ r: 6 }} />
+                <Line type="monotone" dataKey="score" stroke={isUnderAttack ? '#ef4444' : '#3b82f6'} strokeWidth={2.5} dot={{ fill: isUnderAttack ? '#ef4444' : '#3b82f6', r: 4 }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -334,7 +429,7 @@ export default function PosturePage() {
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                     <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0f172a' }}>{c.name}</div>
-                    <span className={`badge badge-${c.severity}`}>{c.severity}</span>
+                    <span className={`badge badge-${isUnderAttack ? 'critical' : c.severity}`}>{isUnderAttack ? 'critical' : c.severity}</span>
                   </div>
                   <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Target: {c.target}</div>
                   <div style={{ fontSize: '0.65rem', color: '#94a3b8', marginTop: 1 }}>TTPs: {c.ttps}</div>
@@ -342,10 +437,10 @@ export default function PosturePage() {
                 {!hasLive && (
                   <button 
                     onClick={() => handleAuditCampaign(c.name, c.target)}
-                    disabled={isPatching}
+                    disabled={isPatching || isMitigating}
                     style={{ 
                       fontSize: '0.64rem', fontWeight: 800, padding: '3px 8px', borderRadius: 6, border: 'none', 
-                      background: '#475569', color: '#fff', cursor: isPatching ? 'not-allowed' : 'pointer', marginTop: 6,
+                      background: '#475569', color: '#fff', cursor: (isPatching || isMitigating) ? 'not-allowed' : 'pointer', marginTop: 6,
                       alignSelf: 'flex-start', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', transition: 'all 0.15s'
                     }}
                   >
@@ -389,8 +484,8 @@ export default function PosturePage() {
               {activeMeta.threatIntelFeed.map(t => {
                 const isCveMitigated = !!mitigatedCves[t.cve];
                 return (
-                  <tr key={t.id} style={{ background: isCveMitigated ? '#f0fdf4' : 'transparent', transition: 'all 0.2s' }}>
-                    <td><span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: isCveMitigated ? '#10b981' : '#3b82f6', fontWeight: 600 }}>{t.cve}</span></td>
+                  <tr key={t.id} style={{ background: isCveMitigated ? '#f0fdf4' : (isUnderAttack ? '#fef2f2' : 'transparent'), transition: 'all 0.2s' }}>
+                    <td><span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: isCveMitigated ? '#10b981' : (isUnderAttack ? '#ef4444' : '#3b82f6'), fontWeight: 600 }}>{t.cve}</span></td>
                     <td style={{ fontWeight: 700, color: '#0f172a' }}>{t.title}</td>
                     <td><span style={{ fontWeight: 700, color: t.cvss >= 9 ? '#dc2626' : t.cvss >= 7 ? '#ea580c' : '#d97706' }}>{t.cvss}</span></td>
                     <td><span style={{ fontWeight: 700, color: t.epss >= 0.7 ? '#dc2626' : '#d97706' }}>{(t.epss * 100).toFixed(0)}%</span></td>
@@ -399,6 +494,10 @@ export default function PosturePage() {
                         <span style={{ color: '#10b981', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4 }}>
                           🟢 Mitigated & Patched
                         </span>
+                      ) : isUnderAttack ? (
+                        <span style={{ color: '#dc2626', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4, animation: 'pulse-dot 1s infinite' }}>
+                          🔴 Active Exploit Wave
+                        </span>
                       ) : hasLive ? (
                         <span style={{ fontSize: '0.7rem', fontWeight: 700, color: statusColor[t.status], background: `${statusColor[t.status]}15`, padding: '2px 8px', borderRadius: 20 }}>
                           {t.status}
@@ -406,10 +505,10 @@ export default function PosturePage() {
                       ) : (
                         <button
                           onClick={() => handleRemediateCve(t.cve, t.title)}
-                          disabled={isPatching}
+                          disabled={isPatching || isMitigating}
                           style={{ 
                             fontSize: '0.68rem', fontWeight: 800, background: '#7c3aed', color: '#fff', 
-                            border: 'none', padding: '3px 8px', borderRadius: 6, cursor: isPatching ? 'not-allowed' : 'pointer',
+                            border: 'none', padding: '3px 8px', borderRadius: 6, cursor: (isPatching || isMitigating) ? 'not-allowed' : 'pointer',
                             boxShadow: '0 2px 6px rgba(124,58,237,0.1)', transition: 'all 0.15s'
                           }}
                         >
@@ -417,7 +516,7 @@ export default function PosturePage() {
                         </button>
                       )}
                     </td>
-                    <td><span className={`badge badge-${isCveMitigated ? 'low' : t.severity}`}>{isCveMitigated ? 'low' : t.severity}</span></td>
+                    <td><span className={`badge badge-${isCveMitigated ? 'low' : (isUnderAttack ? 'critical' : t.severity)}`}>{isCveMitigated ? 'low' : (isUnderAttack ? 'Critical' : t.severity)}</span></td>
                     <td style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{t.published}</td>
                   </tr>
                 );
@@ -431,7 +530,7 @@ export default function PosturePage() {
       <div className="card" style={{ background: '#0f172a', border: '1px solid #334155', borderRadius: 16, padding: '1.25rem 1.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.50rem' }}>
-            <span style={{ width: 10, height: 10, borderRadius: '50%', background: isPatching ? '#ef4444' : '#10b981', display: 'inline-block' }} />
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: (isPatching || isMitigating) ? '#ef4444' : '#10b981', display: 'inline-block' }} />
             <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Vulnerability Hot-Patch & Threat Intel Console
             </span>
@@ -454,7 +553,7 @@ export default function PosturePage() {
         }}>
           {terminalLogs.map((log, idx) => (
             <div key={idx} style={{
-              color: log.startsWith('[ERR') ? '#f87171' : log.startsWith('[WARN') ? '#fbbf24' : log.startsWith('[HOT-PATCH') ? '#c084fc' : log.startsWith('[SUCCESS') ? '#34d399' : log.startsWith('[CAMPAIGN') ? '#38bdf8' : '#38bdf8',
+              color: log.startsWith('[ERR') || log.includes('🔴') ? '#f87171' : log.startsWith('[WARN') ? '#fbbf24' : log.startsWith('[HOT-PATCH') ? '#c084fc' : log.startsWith('[SUCCESS') || log.includes('Safe') ? '#34d399' : log.startsWith('[CAMPAIGN') || log.startsWith('[SIM') ? '#38bdf8' : '#38bdf8',
               marginBottom: 4
             }}>
               {log}
