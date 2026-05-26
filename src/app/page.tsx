@@ -323,7 +323,7 @@ export default function Page() {
                   {icon:"🌐",label:"Network Runway",active:false,badge:"34"},
                   {icon:"📋",label:"Compliance Checkpoint",active:false},
                   {icon:"📊",label:"Flight Telemetry (KPIs)",active:false},
-                  {icon:"🔐",label:"App Security",active:false,badge:"14"},
+                  {icon:"🔐",label:"AppSec Check",active:false,badge:"14"},
                   {icon:"🗼",label:"ATC Monitor",active:false},
                   {icon:"🖥️",label:"Server Health",active:false,badge:"3"},
                   {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
