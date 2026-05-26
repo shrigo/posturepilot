@@ -8,7 +8,7 @@ const navItems = [
   { href: '/dashboard',          icon: '🏢', label: 'Main Terminal' },
   { href: '/dashboard/posture',  icon: '🛡️', label: 'Posture Clearance', badge: '3' },
   { href: '/dashboard/cloud',    icon: '☁️', label: 'Cloud Altitude' },
-  { href: '/dashboard/network',  icon: '🌐', label: 'Network Security',  badge: '34' },
+  { href: '/dashboard/network',  icon: '🌐', label: 'Network Runway',    badge: '34' },
   { href: '/dashboard/infosec',  icon: '📋', label: 'Compliance Checkpoint' },
   { href: '/dashboard/kpi',      icon: '📊', label: 'Security KPIs' },
   { href: '/dashboard/appsec',   icon: '🔐', label: 'App Security',      badge: '14' },

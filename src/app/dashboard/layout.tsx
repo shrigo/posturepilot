@@ -19,7 +19,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'Misconfigurations, IAM risk & storage exposure across cloud assets',
   },
   '/dashboard/network': {
-    title: '🌐 Network Security',
+    title: '🌐 Network Runway',
     subtitle: 'Firewall events, IDS alerts, blocked IPs & VPN sessions',
   },
   '/dashboard/infosec': {

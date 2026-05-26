@@ -320,7 +320,7 @@ export default function Page() {
                   {icon:"👑",label:"CISO Cockpit",active:false,badge:"BU-Joint"},
                   {icon:"🛡️",label:"Posture Clearance",active:true,badge:"3"},
                   {icon:"☁️",label:"Cloud Altitude",active:false},
-                  {icon:"🌐",label:"Network Security",active:false,badge:"34"},
+                  {icon:"🌐",label:"Network Runway",active:false,badge:"34"},
                   {icon:"📋",label:"Compliance Checkpoint",active:false},
                   {icon:"📊",label:"Security KPIs",active:false},
                   {icon:"🔐",label:"App Security",active:false,badge:"14"},
