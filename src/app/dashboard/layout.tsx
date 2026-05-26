@@ -39,7 +39,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'Network traffic analysis, anomaly detection & bandwidth usage',
   },
   '/dashboard/server': {
-    title: '🖥️ Server Health',
+    title: '🖥️ Fleet Avionics',
     subtitle: 'Patch status, EDR coverage & endpoint health monitoring',
   },
   '/dashboard/ai-risk': {

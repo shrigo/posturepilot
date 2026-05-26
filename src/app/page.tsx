@@ -325,7 +325,7 @@ export default function Page() {
                   {icon:"📊",label:"Flight Telemetry (KPIs)",active:false},
                   {icon:"🔐",label:"AppSec Check",active:false,badge:"14"},
                   {icon:"🗼",label:"ATC Monitor",active:false},
-                  {icon:"🖥️",label:"Server Health",active:false,badge:"3"},
+                  {icon:"🖥️",label:"Fleet Avionics",active:false,badge:"3"},
                   {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
                   {icon:"🔑",label:"Identity Shield",active:false,badge:"NEW"},
                   {icon:"📡",label:"Risk Radar",active:false,badge:"NEW"},

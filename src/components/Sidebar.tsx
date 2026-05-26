@@ -13,7 +13,7 @@ const navItems = [
   { href: '/dashboard/kpi',      icon: '📊', label: 'Flight Telemetry (KPIs)' },
   { href: '/dashboard/appsec',   icon: '🔐', label: 'AppSec Check',      badge: '14' },
   { href: '/dashboard/traffic',  icon: '🗼', label: 'ATC Monitor' },
-  { href: '/dashboard/server',   icon: '🖥️', label: 'Server Health',     badge: '3' },
+  { href: '/dashboard/server',   icon: '🖥️', label: 'Fleet Avionics',    badge: '3' },
   { href: '/dashboard/ai-risk',  icon: '🤖', label: 'AI Risk',           badge: 'NEW' },
   { href: '/dashboard/identity', icon: '🔑', label: 'Identity Shield',    badge: 'NEW' },
   { href: '/dashboard/secure',   icon: '📡', label: 'Risk Radar',         badge: 'NEW' },
