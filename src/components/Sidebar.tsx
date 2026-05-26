@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useClient } from '@/context/ClientContext';
 
 const navItems = [
-  { href: '/dashboard',          icon: '🏠', label: 'Overview' },
+  { href: '/dashboard',          icon: '🏢', label: 'Main Terminal' },
   { href: '/dashboard/posture',  icon: '🛡️', label: 'Cyber Posture',     badge: '3' },
   { href: '/dashboard/cloud',    icon: '☁️', label: 'Cloud Altitude' },
   { href: '/dashboard/network',  icon: '🌐', label: 'Network Security',  badge: '34' },

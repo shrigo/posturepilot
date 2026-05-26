@@ -7,8 +7,8 @@ import { ClientProvider, useClient } from '@/context/ClientContext';
 
 const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
   '/dashboard': {
-    title: 'Command Center',
-    subtitle: 'All dashboards · Acme Financial Corp',
+    title: '🏢 Main Terminal',
+    subtitle: 'All Dashboards · Acme Financial Corp',
   },
   '/dashboard/posture': {
     title: '🛡️ Cyber Posture',

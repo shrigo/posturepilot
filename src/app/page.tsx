@@ -316,7 +316,7 @@ export default function Page() {
             <div className="monitor-inner" style={{display:"grid",gridTemplateColumns:"180px 1fr",minHeight:560}}>
               <div className="monitor-sidebar" style={{background:"#f8fafc",padding:"0.875rem 0",borderRight:"1px solid #e2e8f0"}}>
                 {[
-                  {icon:"🏠",label:"Overview",active:false},
+                  {icon:"🏢",label:"Main Terminal",active:false},
                   {icon:"👑",label:"CISO Cockpit",active:false,badge:"BU-Joint"},
                   {icon:"🛡️",label:"Cyber Posture",active:true,badge:"3"},
                   {icon:"☁️",label:"Cloud Altitude",active:false},
