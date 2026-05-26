@@ -497,7 +497,7 @@ export default function OverviewPage() {
                     <Pie
                       data={postureScoreData}
                       cx="50%"
-                      cy="85%"
+                      cy="70%"
                       startAngle={180}
                       endAngle={0}
                       innerRadius={75}
@@ -513,7 +513,7 @@ export default function OverviewPage() {
                 </ResponsiveContainer>
                 
                 {/* Center Stat Overlay */}
-                <div style={{ position: 'absolute', bottom: '12%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
+                <div style={{ position: 'absolute', top: '68%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
                   <div style={{ fontSize: '1.45rem', fontWeight: 900, color: isUnderAttack ? '#dc2626' : '#0f172a', lineHeight: 1 }}>
                     {activePostScore}
                   </div>
