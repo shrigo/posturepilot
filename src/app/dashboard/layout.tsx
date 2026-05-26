@@ -68,7 +68,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
   },
   '/dashboard/identity': {
     title: '🔑 Identity PreCheck',
-    subtitle: 'Your Gatekeeper — SSO directory auditing, privilege drift scanning & Zero-Trust MFA',
+    subtitle: 'SSO directory auditing, privilege drift scanning & Zero-Trust MFA',
   },
 };
 
