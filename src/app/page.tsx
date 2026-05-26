@@ -8,6 +8,7 @@ import { useClient } from "@/context/ClientContext";
 
 const TABS = ["Configure","Monitor","Report","Secure"];
 const BOARDS = [
+  {id:"ciso",icon:"👑",label:"CISO Executive Cockpit",val:"Joint-BU",unit:"Multi-Tenant",c:"#7c3aed",isNew:true},
   {id:"posture",icon:"🛡️",label:"Cyber Posture",val:"74",unit:"Risk Score",c:"#4f46e5"},
   {id:"cloud",icon:"☁️",label:"Cloud Security",val:"12",unit:"Open Issues",c:"#7c3aed"},
   {id:"network",icon:"🌐",label:"Network Security",val:"847",unit:"Events",c:"#0891b2"},
@@ -19,7 +20,7 @@ const BOARDS = [
   {id:"ai-risk",icon:"🤖",label:"AI Risk",val:"3",unit:"Shadow AI",c:"#ea580c",isNew:true},
 ];
 const PLANS = [
-  {name:"Starter",price:"149",c:"#4f46e5",features:["1 user","CSV upload","500 findings","All 9 dashboards"],cta:"Start Free Trial"},
+  {name:"Starter",price:"149",c:"#4f46e5",features:["1 user","CSV upload","500 findings","All 10 dashboards & CISO Cockpit"],cta:"Start Free Trial"},
   {name:"Professional",price:"399",c:"#7c3aed",features:["5 users · 3 sources","Qualys · Tenable · Nessus","10K findings","API access"],cta:"Start Free Trial",pop:true},
   {name:"MSSP",price:"999",c:"#0891b2",features:["Unlimited users","Multi-tenant","White-label","Dedicated support"],cta:"Contact Sales"},
 ];
@@ -177,7 +178,7 @@ export default function Page() {
           {/* LEFT */}
           <div className="hero-left">
             <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
-              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 9 Security Dashboards
+              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 10 Security Dashboards
             </div>
 
             <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#0f172a",marginBottom:"1.25rem"}}>
@@ -195,7 +196,7 @@ export default function Page() {
             </div>
 
             <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
-              {[["9","Dashboards"],["5 min","First Report"],["80%","Less Reporting"]].map(([v,l])=>(
+              {[["10","Dashboards"],["5 min","First Report"],["80%","Less Reporting"]].map(([v,l])=>(
                 <div key={l}>
                   <div style={{fontSize:"2.25rem",fontWeight:900,background:"linear-gradient(135deg,#4f46e5,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{v}</div>
                   <div style={{fontSize:"0.68rem",color:"#64748b",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em"}}>{l}</div>
@@ -289,7 +290,7 @@ export default function Page() {
         <div style={{maxWidth:1100,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
-            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>9 live dashboards. Everything in one place.</h2>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>10 live dashboards & CISO Cockpit. Everything in one place.</h2>
             <p style={{color:"#a5b4fc",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
           </div>
 
@@ -315,6 +316,7 @@ export default function Page() {
               <div className="monitor-sidebar" style={{background:"#f8fafc",padding:"0.875rem 0",borderRight:"1px solid #e2e8f0"}}>
                 {[
                   {icon:"🏠",label:"Overview",active:false},
+                  {icon:"👑",label:"CISO Cockpit",active:false,badge:"BU-Joint"},
                   {icon:"🛡️",label:"Cyber Posture",active:true,badge:"3"},
                   {icon:"☁️",label:"Cloud",active:false},
                   {icon:"🌐",label:"Network",active:false,badge:"34"},
@@ -442,6 +444,10 @@ export default function Page() {
           <div className="report-grid" style={{display:"grid",gridTemplateColumns:"1fr 360px",gap:"1.5rem",marginBottom:"1.25rem"}}>
             <div style={{display:"flex",flexDirection:"column",gap:"0.875rem"}}>
               {[
+                {icon:"👑",title:"CISO Executive Briefing",c:"#7c3aed",audience:"Board · CEO · Investors",time:"~3 sec",
+                  desc:"High-fidelity multi-tenant risk briefs compiled in real-time, featuring consolidated asset SLA ratings, joint posture trends, and corporate remediation directives.",
+                  includes:["Aggregate CISO Posture Trends","Consolidated Asset SLA ratings","Regulatory framework conformances","Subsidiary BU ledger matrix","CISO action directives"],
+                  formats:["PDF","Print-Ready"]},
                 {icon:"📊",title:"Executive Summary",c:"#4f46e5",audience:"CISO · Board · CXO",time:"~8 sec",
                   desc:"High-level posture snapshot for non-technical leadership. Risk trends, SLA compliance, top findings — no jargon.",
                   includes:["Risk Score trend (30/60/90 day)","Critical & High count by BU","SLA compliance rate","Top 5 CVEs with business impact","Remediation velocity chart"],
@@ -714,8 +720,8 @@ export default function Page() {
       {/* DASHBOARDS */}
       <section id="features" style={{padding:"25px 2rem 4rem",maxWidth:1200,margin:"0 auto",scrollMarginTop:"64px"}}>
         <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
-          <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>9 Modules · One Command Center</div>
-          <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em",color:"#0f172a"}}>Everything your team needs to see</h2>
+          <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>10 Modules · One Command Center</div>
+          <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em",color:"#0f172a"}}>Everything your CISO needs to see</h2>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:"1rem"}}>
           {BOARDS.map(d=>(
