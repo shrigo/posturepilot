@@ -67,7 +67,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'Vulnerability Triage & Prioritized Exposure Engine',
   },
   '/dashboard/identity': {
-    title: '🔑 Identity Shield',
+    title: '🔑 Identity PreCheck',
     subtitle: 'Your Gatekeeper — SSO directory auditing, privilege drift scanning & Zero-Trust MFA',
   },
 };

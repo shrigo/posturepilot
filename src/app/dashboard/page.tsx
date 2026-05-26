@@ -230,7 +230,7 @@ export default function OverviewPage() {
     { name: 'Cloud Security', score: isUnderAttack ? 35 : (activePostScore > 90 ? 98 : (currentClient.key === 'UR' ? 92 : cloudData.complianceScore)), fill: '#0891b2', label: 'CIS Benchmark' },
     { name: 'Network Firewall', score: isUnderAttack ? 25 : (activePostScore > 90 ? 100 : (currentClient.key === 'UR' ? 96 : Math.round(networkData.firewallEvents.blockRate))), fill: '#7c3aed', label: 'Packet Blocks' },
     { name: 'Compliance Audits', score: isUnderAttack ? 40 : (activePostScore > 90 ? 97 : (currentClient.key === 'UR' ? 89 : 71)), fill: '#059669', label: 'Framework Controls' },
-    { name: 'Identity Shield', score: isUnderAttack ? 30 : (activePostScore > 90 ? 99 : (currentClient.key === 'UR' ? 87 : 64)), fill: '#a855f7', label: 'Zero Trust (IAM)' },
+    { name: 'Identity PreCheck', score: isUnderAttack ? 30 : (activePostScore > 90 ? 99 : (currentClient.key === 'UR' ? 87 : 64)), fill: '#a855f7', label: 'Zero Trust (IAM)' },
     { name: 'KPI Remediation', score: isUnderAttack ? 20 : (activePostScore > 90 ? 98 : (currentClient.key === 'UR' ? 94 : kpiData.patchSla)), fill: '#d97706', label: 'Ticket Remediation' },
     { name: 'Server Health', score: isUnderAttack ? 15 : (activePostScore > 90 ? 100 : (currentClient.key === 'UR' ? 99 : Math.round((serverData.healthy / serverData.totalServers) * 100))), fill: '#16a34a', label: 'Host Availability' }
   ];
@@ -330,7 +330,7 @@ export default function OverviewPage() {
     { 
       href: '/dashboard/identity', 
       icon: '🔑', 
-      label: 'Identity Shield', 
+      label: 'Identity PreCheck', 
       color: '#a855f7', 
       stat: isUnderAttack ? '30% ZT Score' : `${currentClient.key === 'UR' ? 87 : 64}% ZT Score`, 
       sub: `${currentClient.key === 'UR' ? 'Microsoft Entra ID' : 'Okta SSO Directory'}`, 
@@ -762,7 +762,7 @@ export default function OverviewPage() {
             {/* Zero Trust Directory Indicators */}
             <div className="card" style={{ display: 'flex', flexDirection: 'column', padding: '1.25rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>
-                <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a' }}>🔑 Identity Shield (Zero Trust) Posture</span>
+                <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0f172a' }}>🔑 Identity PreCheck (Zero Trust) Posture</span>
                 <span style={{ fontSize: '0.62rem', fontWeight: 800, background: '#f5f3ff', color: '#7c3aed', padding: '2px 6px', borderRadius: 10 }}>
                   {currentClient.key === 'UR' ? 'Microsoft Entra ID' : 'Okta SSO Directory'}
                 </span>
