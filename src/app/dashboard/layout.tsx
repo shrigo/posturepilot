@@ -63,8 +63,8 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'Tenant configuration, API keys & integrations',
   },
   '/dashboard/secure': {
-    title: '🔒 Secure Triage',
-    subtitle: 'Triple-Filter Triage — Severity gates, exploit checks & asset prioritization',
+    title: '📡 Risk Radar',
+    subtitle: 'Vulnerability Triage & Prioritized Exposure Engine',
   },
 };
 

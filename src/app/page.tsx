@@ -18,7 +18,7 @@ const BOARDS = [
   {id:"traffic",icon:"📡",label:"Traffic Monitor",val:"2.4TB",unit:"Today",c:"#0891b2"},
   {id:"server",icon:"🖥️",label:"Server Health",val:"98%",unit:"Uptime",c:"#7c3aed"},
   {id:"ai-risk",icon:"🤖",label:"AI Risk",val:"3",unit:"Shadow AI",c:"#ea580c",isNew:true},
-  {id:"secure",icon:"🔒",label:"Secure Triage",val:"99.6%",unit:"Noise Cut",c:"#16a34a",isNew:true},
+  {id:"secure",icon:"📡",label:"Risk Radar",val:"99.6%",unit:"Noise Cut",c:"#16a34a",isNew:true},
 ];
 const PLANS = [
   {name:"Starter",price:"149",c:"#4f46e5",features:["1 user","CSV upload","500 findings","All 10 dashboards & CISO Cockpit"],cta:"Start Free Trial"},
@@ -328,7 +328,7 @@ export default function Page() {
                   {icon:"🖥️",label:"Server Health",active:false,badge:"3"},
                   {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
                   {icon:"🔑",label:"Identity & Access",active:false,badge:"NEW"},
-                  {icon:"🔒",label:"Secure Triage",active:false,badge:"NEW"},
+                  {icon:"📡",label:"Risk Radar",active:false,badge:"NEW"},
                 ].map(item=>(
                   <div key={item.label} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.45rem 0.875rem",
                     background:item.active?"#eff6ff":"transparent",

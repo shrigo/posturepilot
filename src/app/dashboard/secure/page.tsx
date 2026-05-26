@@ -113,13 +113,13 @@ export default function SecureTriagePage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-              <span style={{ fontSize: '1.5rem' }}>🔒</span>
+              <span style={{ fontSize: '1.5rem' }}>📡</span>
               <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.02em' }}>
-                Triple-Filter Triage (Secure Cockpit)
+                Risk Radar
               </h2>
             </div>
             <p style={{ margin: 0, fontSize: '0.8rem', color: '#dcfce7', fontWeight: 500 }}>
-              Stop drowning in noise. Focus remediation teams solely on critical, exploitable findings on external-facing production assets.
+              Vulnerability Triage & Prioritized Exposure Engine
             </p>
           </div>
           <button 
