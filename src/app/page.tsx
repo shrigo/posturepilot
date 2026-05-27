@@ -140,43 +140,43 @@ export default function Page() {
               {i<a.length-1 && <span style={{display:"inline-block",width:6,height:18,background:"#f97316",borderRadius:3,margin:"0 0.35rem",flexShrink:0}}/>}
             </span>
           ))}
-          <span style={{display:"inline-block",width:1,height:16,background:"#cbd5e1",margin:"0 1rem 0 0.75rem",flexShrink:0}}/>
-          <a 
-            href="#monitor" 
-            onClick={(e) => {
-              e.preventDefault();
-              setActiveMockupTab("CISO Cockpit");
-              scrollToSection(e, "monitor");
-            }}
-            className="nav-link"
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
+          {/* Standout CISO Cockpit Link */}
+          <Link 
+            href="/dashboard/ciso" 
             style={{
               color:"#7c3aed",
               textDecoration:"none",
-              background:"rgba(124,58,237,0.06)",
-              border:"1px solid rgba(124,58,237,0.18)",
-              padding:"0.3rem 0.75rem",
-              borderRadius:"8px",
+              background:"rgba(124,58,237,0.08)",
+              border:"1px solid rgba(124,58,237,0.25)",
+              padding:"0.45rem 1rem",
+              borderRadius:"10px",
+              fontSize:"0.8rem",
+              fontWeight:800,
+              letterSpacing:"0.02em",
               display:"flex",
               alignItems:"center",
               gap:"0.3rem",
-              boxShadow:"0 2px 8px rgba(124,58,237,0.05)",
-              transition:"all 0.2s"
+              boxShadow:"0 2px 10px rgba(124,58,237,0.08)",
+              marginRight:"0.5rem",
+              transition:"all 0.22s ease-in-out"
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.background = "#7c3aed";
+              e.currentTarget.style.background = "linear-gradient(135deg, #7c3aed, #6d28d9)";
               e.currentTarget.style.color = "#fff";
-              e.currentTarget.style.boxShadow = "0 4px 14px rgba(124,58,237,0.2)";
+              e.currentTarget.style.boxShadow = "0 4px 16px rgba(124,58,237,0.3)";
+              e.currentTarget.style.transform = "translateY(-1px)";
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.background = "rgba(124,58,237,0.06)";
+              e.currentTarget.style.background = "rgba(124,58,237,0.08)";
               e.currentTarget.style.color = "#7c3aed";
-              e.currentTarget.style.boxShadow = "0 2px 8px rgba(124,58,237,0.05)";
+              e.currentTarget.style.boxShadow = "0 2px 10px rgba(124,58,237,0.08)";
+              e.currentTarget.style.transform = "translateY(0)";
             }}
           >
             👑 CISO Cockpit
-          </a>
-        </div>
-        <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
+          </Link>
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
           <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
           <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
