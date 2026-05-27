@@ -8,7 +8,6 @@ import { useClient } from "@/context/ClientContext";
 
 const TABS = ["Configure","Monitor","Report","Secure"];
 const BOARDS = [
-  {id:"ciso",icon:"👨‍✈️",label:"CISO Executive Cockpit",val:"Joint-BU",unit:"Multi-Tenant",c:"#7c3aed",isNew:true},
   {id:"posture",icon:"🛡️",label:"Cyber Posture",val:"74",unit:"Risk Score",c:"#4f46e5"},
   {id:"cloud",icon:"☁️",label:"Cloud Security",val:"12",unit:"Open Issues",c:"#7c3aed"},
   {id:"network",icon:"🌐",label:"Network Security",val:"847",unit:"Events",c:"#0891b2"},
@@ -1093,46 +1092,20 @@ export default function Page() {
           <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em",color:"#0f172a"}}>Everything your CISO needs to see</h2>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:"1rem"}}>
-          {BOARDS.map(d=>{
-            const isCiso = d.id === "ciso";
-            return isCiso ? (
-              <a 
-                key={d.id} 
-                href="#monitor" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveMockupTab("CISO Cockpit");
-                  scrollToSection(e, "monitor");
-                }}
-                className="hcard" 
-                style={{display:"block",textDecoration:"none",background:"#fff",border:"1px solid #e0e7ff",borderRadius:14,padding:"1.25rem 1.5rem",boxShadow:"0 2px 8px rgba(0,0,0,0.04)",position:"relative",cursor:"pointer"}}
-              >
-                {d.isNew&&<div style={{position:"absolute",top:10,right:10,background:"linear-gradient(135deg,#ea580c,#7c3aed)",color:"#fff",fontSize:"0.55rem",fontWeight:800,padding:"2px 8px",borderRadius:8}}>NEW</div>}
-                <div style={{width:42,height:42,borderRadius:10,background:d.c+"15",border:"1px solid "+d.c+"30",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.25rem",marginBottom:"0.875rem"}}>{d.icon}</div>
-                <div style={{fontWeight:700,fontSize:"0.9rem",color:"#0f172a",marginBottom:"0.5rem"}}>{d.label}</div>
-                <div style={{display:"flex",alignItems:"baseline",gap:"0.375rem"}}>
-                  <span style={{fontSize:"1.5rem",fontWeight:900,color:d.c,fontFamily:"monospace",letterSpacing:"-0.03em"}}>{d.val}</span>
-                  <span style={{fontSize:"0.75rem",color:"#94a3b8",fontWeight:600}}>{d.unit}</span>
-                </div>
-                <div style={{marginTop:"0.625rem",height:4,background:"#f1f5f9",borderRadius:4}}>
-                  <div style={{height:"100%",width:"70%",background:"linear-gradient(90deg,"+d.c+","+d.c+"88)",borderRadius:4}}/>
-                </div>
-              </a>
-            ) : (
-              <Link key={d.id} href={"/dashboard/"+d.id} className="hcard" style={{display:"block",textDecoration:"none",background:"#fff",border:"1px solid #e0e7ff",borderRadius:14,padding:"1.25rem 1.5rem",boxShadow:"0 2px 8px rgba(0,0,0,0.04)",position:"relative"}}>
-                {d.isNew&&<div style={{position:"absolute",top:10,right:10,background:"linear-gradient(135deg,#ea580c,#7c3aed)",color:"#fff",fontSize:"0.55rem",fontWeight:800,padding:"2px 8px",borderRadius:8}}>NEW</div>}
-                <div style={{width:42,height:42,borderRadius:10,background:d.c+"15",border:"1px solid "+d.c+"30",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.25rem",marginBottom:"0.875rem"}}>{d.icon}</div>
-                <div style={{fontWeight:700,fontSize:"0.9rem",color:"#0f172a",marginBottom:"0.5rem"}}>{d.label}</div>
-                <div style={{display:"flex",alignItems:"baseline",gap:"0.375rem"}}>
-                  <span style={{fontSize:"1.5rem",fontWeight:900,color:d.c,fontFamily:"monospace",letterSpacing:"-0.03em"}}>{d.val}</span>
-                  <span style={{fontSize:"0.72rem",color:"#94a3b8",fontWeight:600}}>{d.unit}</span>
-                </div>
-                <div style={{marginTop:"0.625rem",height:4,background:"#f1f5f9",borderRadius:4}}>
-                  <div style={{height:"100%",width:"70%",background:"linear-gradient(90deg,"+d.c+","+d.c+"88)",borderRadius:4}}/>
-                </div>
-              </Link>
-            )
-          })}
+          {BOARDS.map(d=>(
+            <Link key={d.id} href={"/dashboard/"+d.id} className="hcard" style={{display:"block",textDecoration:"none",background:"#fff",border:"1px solid #e0e7ff",borderRadius:14,padding:"1.25rem 1.5rem",boxShadow:"0 2px 8px rgba(0,0,0,0.04)",position:"relative"}}>
+              {d.isNew&&<div style={{position:"absolute",top:10,right:10,background:"linear-gradient(135deg,#ea580c,#7c3aed)",color:"#fff",fontSize:"0.55rem",fontWeight:800,padding:"2px 8px",borderRadius:8}}>NEW</div>}
+              <div style={{width:42,height:42,borderRadius:10,background:d.c+"15",border:"1px solid "+d.c+"30",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.25rem",marginBottom:"0.875rem"}}>{d.icon}</div>
+              <div style={{fontWeight:700,fontSize:"0.9rem",color:"#0f172a",marginBottom:"0.5rem"}}>{d.label}</div>
+              <div style={{display:"flex",alignItems:"baseline",gap:"0.375rem"}}>
+                <span style={{fontSize:"1.5rem",fontWeight:900,color:d.c,fontFamily:"monospace",letterSpacing:"-0.03em"}}>{d.val}</span>
+                <span style={{fontSize:"0.72rem",color:"#94a3b8",fontWeight:600}}>{d.unit}</span>
+              </div>
+              <div style={{marginTop:"0.625rem",height:4,background:"#f1f5f9",borderRadius:4}}>
+                <div style={{height:"100%",width:"70%",background:"linear-gradient(90deg,"+d.c+","+d.c+"88)",borderRadius:4}}/>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
