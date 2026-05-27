@@ -337,7 +337,7 @@ export default function ShieldViz(){
                 {isActive&&<circle cx={cx} cy={cy} r="10"
                   fill="none" stroke={color} strokeWidth="1.2" opacity="0.35"
                   style={{animation:'pp-outerPulse 1.2s ease-out infinite'}}/>}
-                <text x={tx} y={cy+4} fontSize="9" fill={color}
+                <text x={tx} y={cy+3} fontSize="6.8" fill={color}
                   fontWeight={isActive?'900':'700'}
                   opacity={isActive?1:0.6}
                   letterSpacing="0.01em"
