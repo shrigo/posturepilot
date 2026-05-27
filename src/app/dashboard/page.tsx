@@ -336,6 +336,26 @@ export default function OverviewPage() {
       sub: `${currentClient.key === 'UR' ? 'Microsoft Entra ID' : 'Okta SSO Directory'}`, 
       bg: 'linear-gradient(135deg,#fcf8ff,#f3e8ff)',
       progress: isUnderAttack ? 30 : (currentClient.key === 'UR' ? 87 : 64)
+    },
+    { 
+      href: '/dashboard/dispatch', 
+      icon: '📨', 
+      label: 'Dispatch & SOAR', 
+      color: '#0f766e', 
+      stat: isUnderAttack ? '9 tickets breached' : '4 open tickets', 
+      sub: isUnderAttack ? 'SLA breach — escalating' : 'Jira · ServiceNow sync', 
+      bg: 'linear-gradient(135deg,#f0fdfa,#ccfbf1)',
+      progress: isUnderAttack ? 22 : 76
+    },
+    { 
+      href: '/dashboard/secure', 
+      icon: '🎯', 
+      label: 'Vuln Triage', 
+      color: '#be123c', 
+      stat: isUnderAttack ? '47 actionable CVEs' : '8 actionable CVEs', 
+      sub: isUnderAttack ? 'CVSS 9.8 · KEV active' : 'CVSS ≥7.0 · EPSS filtered', 
+      bg: 'linear-gradient(135deg,#fff1f2,#fecdd3)',
+      progress: isUnderAttack ? 12 : 82
     }
   ];
 
@@ -820,7 +840,7 @@ export default function OverviewPage() {
         {/* RESPONSIVE SECURITY CONTROL MODULE GRID */}
         {/* ========================================================================= */}
         <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#475569', marginBottom: '1rem', marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: 6 }}>
-          ⚡ Security Control Modules & Sub-Telemetry <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: '#eef2ff', color: '#4f46e5' }}>10 active layers</span>
+          ⚡ Security Control Modules & Sub-Telemetry <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: '#eef2ff', color: '#4f46e5' }}>12 active layers</span>
         </h3>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
