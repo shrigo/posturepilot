@@ -8,7 +8,7 @@ import { useClient } from "@/context/ClientContext";
 
 const TABS = ["Configure","Monitor","Report","Secure"];
 const BOARDS = [
-  {id:"ciso",icon:"👑",label:"CISO Executive Cockpit",val:"Joint-BU",unit:"Multi-Tenant",c:"#7c3aed",isNew:true},
+  {id:"ciso",icon:"👨‍✈️",label:"CISO Executive Cockpit",val:"Joint-BU",unit:"Multi-Tenant",c:"#7c3aed",isNew:true},
   {id:"posture",icon:"🛡️",label:"Cyber Posture",val:"74",unit:"Risk Score",c:"#4f46e5"},
   {id:"cloud",icon:"☁️",label:"Cloud Security",val:"12",unit:"Open Issues",c:"#7c3aed"},
   {id:"network",icon:"🌐",label:"Network Security",val:"847",unit:"Events",c:"#0891b2"},
@@ -175,7 +175,7 @@ export default function Page() {
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            👑 CISO Cockpit
+            👨‍✈️ CISO Cockpit
           </Link>
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
           <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
@@ -257,10 +257,9 @@ export default function Page() {
           {/* RIGHT — GIF + animated SVG overlay on 6 panel positions */}
           <div 
             className="shield-wrap" 
-            title="Interactive Security Shield — Click to inspect real-time telemetry"
+            title="Interactive Security Shield — Click to explore security modules"
             onClick={(e) => {
-              setActiveMockupTab("Posture Clearance");
-              const element = document.getElementById("monitor");
+              const element = document.getElementById("features");
               if (element) {
                 const navElement = document.querySelector("nav");
                 const navHeight = navElement ? navElement.offsetHeight : 64;
@@ -399,7 +398,7 @@ export default function Page() {
               <div className="monitor-sidebar" style={{background:"rgba(15,23,42,0.45)",padding:"1rem 0.5rem",borderRight:"1px solid rgba(255,255,255,0.08)"}}>
                 {[
                   {icon:"🏢",label:"Main Terminal"},
-                  {icon:"👑",label:"CISO Cockpit",badge:"BU-Joint"},
+                  {icon:"👨‍✈️",label:"CISO Cockpit",badge:"BU-Joint"},
                   {icon:"🛡️",label:"Posture Clearance",badge:"3"},
                   {icon:"☁️",label:"Cloud Altitude"},
                   {icon:"📋",label:"Compliance Checkpoint"},
@@ -508,7 +507,7 @@ export default function Page() {
                 {activeMockupTab === "CISO Cockpit" && (
                   <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
                     <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
-                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>👑 CISO Executive Cockpit</div>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>👨‍✈️ CISO Executive Cockpit</div>
                       <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.2rem"}}>Subsidiary ledger matrix tracking real-time tenant risk scores and directives.</div>
                     </div>
 
@@ -808,7 +807,7 @@ export default function Page() {
           <div className="report-grid" style={{display:"grid",gridTemplateColumns:"1fr 360px",gap:"1.5rem",marginBottom:"1.25rem"}}>
             <div style={{display:"flex",flexDirection:"column",gap:"0.875rem"}}>
               {[
-                {icon:"👑",title:"CISO Executive Briefing",c:"#7c3aed",audience:"Board · CEO · Investors",time:"~3 sec",
+                {icon:"👨‍✈️",title:"CISO Executive Briefing",c:"#7c3aed",audience:"Board · CEO · Investors",time:"~3 sec",
                   desc:"High-fidelity multi-tenant risk briefs compiled in real-time, featuring consolidated asset SLA ratings, joint posture trends, and corporate remediation directives.",
                   includes:["Aggregate CISO Posture Trends","Consolidated Asset SLA ratings","Regulatory framework conformances","Subsidiary BU ledger matrix","CISO action directives"],
                   formats:["PDF","Print-Ready"]},

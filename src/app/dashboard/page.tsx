@@ -373,7 +373,7 @@ export default function OverviewPage() {
         }}>
           <div style={{ display: 'flex', gap: '6px' }}>
             {([
-              { key: 'executive', label: '👑 Executive Cockpit', desc: 'KPI score dials, category bars, and framework lists' },
+              { key: 'executive', label: '👨‍✈️ Executive Cockpit', desc: 'KPI score dials, category bars, and framework lists' },
               { key: 'tactical', label: '🎛️ Tactical SOC Terminal', desc: 'Live operations event stream and security console' },
               { key: 'compliance', label: '📋 Compliance & Directory', desc: 'Framework controls, Zero Trust indicators, and IAM' }
             ] as const).map(v => (

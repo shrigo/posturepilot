@@ -47,7 +47,7 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     subtitle: 'Shadow AI detection, model vulnerabilities & data exposure risks',
   },
   '/dashboard/ciso': {
-    title: '👑 CISO Executive Cockpit',
+    title: '👨‍✈️ CISO Executive Cockpit',
     subtitle: 'Combined multi-tenant executive reporting and customizable security telemetry cockpit',
   },
   '/dashboard/findings': {

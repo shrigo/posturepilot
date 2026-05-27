@@ -283,7 +283,7 @@ export default function CISOPage() {
             background: authRole === 'CISO' ? (isGroupUnderAttack ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)') : authRole === 'Auditor' ? '#e2e8f0' : '#fee2e2',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem'
           }}>
-            {authRole === 'CISO' ? (isGroupUnderAttack ? '🚨' : '👑') : authRole === 'Auditor' ? '💼' : '🔒'}
+            {authRole === 'CISO' ? (isGroupUnderAttack ? '🚨' : '👨‍✈️') : authRole === 'Auditor' ? '💼' : '🔒'}
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -416,7 +416,7 @@ export default function CISOPage() {
               onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-1px)'}
               onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
             >
-              👑 Authenticate as CISO
+              👨‍✈️ Authenticate as CISO
             </button>
             <button 
               onClick={() => handleAuthChange('Auditor')} 

@@ -60,7 +60,7 @@ export default function Sidebar() {
       <div className="sidebar-section-label">Data</div>
       <nav className="sidebar-nav" style={{ paddingTop: 0 }}>
         <Link href="/dashboard/ciso" className={`nav-item${pathname === '/dashboard/ciso' ? ' active' : ''}`}>
-          <span className="nav-icon">👑</span>
+          <span className="nav-icon">👨‍✈️</span>
           <span className="nav-label">CISO Cockpit</span>
         </Link>
         <Link href="/dashboard/findings" className={`nav-item${pathname === '/dashboard/findings' ? ' active' : ''}`}>
