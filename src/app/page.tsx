@@ -140,6 +140,41 @@ export default function Page() {
               {i<a.length-1 && <span style={{display:"inline-block",width:6,height:18,background:"#f97316",borderRadius:3,margin:"0 0.35rem",flexShrink:0}}/>}
             </span>
           ))}
+          <span style={{display:"inline-block",width:1,height:16,background:"#cbd5e1",margin:"0 1rem 0 0.75rem",flexShrink:0}}/>
+          <a 
+            href="#monitor" 
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveMockupTab("CISO Cockpit");
+              scrollToSection(e, "monitor");
+            }}
+            className="nav-link"
+            style={{
+              color:"#7c3aed",
+              textDecoration:"none",
+              background:"rgba(124,58,237,0.06)",
+              border:"1px solid rgba(124,58,237,0.18)",
+              padding:"0.3rem 0.75rem",
+              borderRadius:"8px",
+              display:"flex",
+              alignItems:"center",
+              gap:"0.3rem",
+              boxShadow:"0 2px 8px rgba(124,58,237,0.05)",
+              transition:"all 0.2s"
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = "#7c3aed";
+              e.currentTarget.style.color = "#fff";
+              e.currentTarget.style.boxShadow = "0 4px 14px rgba(124,58,237,0.2)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = "rgba(124,58,237,0.06)";
+              e.currentTarget.style.color = "#7c3aed";
+              e.currentTarget.style.boxShadow = "0 2px 8px rgba(124,58,237,0.05)";
+            }}
+          >
+            👑 CISO Cockpit
+          </a>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
@@ -220,7 +255,35 @@ export default function Page() {
           </div>
 
           {/* RIGHT — GIF + animated SVG overlay on 6 panel positions */}
-          <div className="shield-wrap" style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div 
+            className="shield-wrap" 
+            title="Interactive Security Shield — Click to inspect real-time telemetry"
+            onClick={(e) => {
+              setActiveMockupTab("Posture Clearance");
+              const element = document.getElementById("monitor");
+              if (element) {
+                const navElement = document.querySelector("nav");
+                const navHeight = navElement ? navElement.offsetHeight : 64;
+                window.scrollTo({
+                  top: element.getBoundingClientRect().top + window.scrollY - navHeight + 1,
+                  behavior: "smooth"
+                });
+              }
+            }}
+            style={{
+              display:"flex",
+              alignItems:"center",
+              justifyContent:"center",
+              cursor:"pointer",
+              transition:"transform 0.3s ease"
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = "scale(1.02) translateY(-2px)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = "scale(1) translateY(0)";
+            }}
+          >
             <ShieldViz/>
           </div>
         </div>
