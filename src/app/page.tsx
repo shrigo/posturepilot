@@ -224,18 +224,18 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 🔵 Blue — Trusted By row */}
+      {/* 🔵 Blue — Where it started: scanning roots */}
       <div className="mobile-banner" style={{background:"linear-gradient(90deg,#1e40af,#2563eb,#1e40af)",padding:"1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2rem",flexWrap:"wrap"}}>
         <span style={{fontSize:"0.68rem",color:"#bfdbfe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
-        {["Qualys VMDR","CrowdStrike","SentinelOne","Okta","Splunk","Tenable.io","ServiceNow","Rapid7","Snyk","Wiz"].map(c=>(
+        {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","Rapid7","CrowdStrike","Microsoft Defender","Wiz","Snyk","Lacework"].map(c=>(
           <span key={c} style={{fontSize:"0.85rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
 
-      {/* 🟣 Purple — Works Across row */}
+      {/* 🟣 Purple — Where it expanded: full security stack */}
       <div className="mobile-banner" style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed,#6d28d9)",padding:"1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2rem",flexWrap:"wrap"}}>
         <span style={{fontSize:"0.68rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Works Across</span>
-        {["Nessus Pro","OpenVAS","AWS Security Hub","Microsoft Azure","Google Cloud","Prisma Cloud","Orca Security","Lacework","Palo Alto Networks","Microsoft Defender"].map(c=>(
+        {["SentinelOne","Okta","Splunk","ServiceNow","AWS Security Hub","Microsoft Azure","Google Cloud","Prisma Cloud","Orca Security","Palo Alto Networks"].map(c=>(
           <span key={c} style={{fontSize:"0.85rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
