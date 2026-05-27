@@ -224,11 +224,19 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Single combined trusted-by banner */}
-      <div className="mobile-banner" style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed,#6d28d9)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
-        <span style={{fontSize:"0.72rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
-        {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","CrowdStrike","AWS Security Hub","Wiz","Microsoft Azure","Google Cloud","Prisma Cloud","Orca Security","Lacework","Snyk","Rapid7","SentinelOne","Okta","Splunk","ServiceNow"].map(c=>(
-          <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
+      {/* 🔵 Blue — Trusted By row */}
+      <div className="mobile-banner" style={{background:"linear-gradient(90deg,#1e40af,#2563eb,#1e40af)",padding:"1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2rem",flexWrap:"wrap"}}>
+        <span style={{fontSize:"0.68rem",color:"#bfdbfe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
+        {["Qualys VMDR","CrowdStrike","SentinelOne","Okta","Splunk","Tenable.io","ServiceNow","Rapid7","Snyk","Wiz"].map(c=>(
+          <span key={c} style={{fontSize:"0.85rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
+        ))}
+      </div>
+
+      {/* 🟣 Purple — Works Across row */}
+      <div className="mobile-banner" style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed,#6d28d9)",padding:"1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2rem",flexWrap:"wrap"}}>
+        <span style={{fontSize:"0.68rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Works Across</span>
+        {["Nessus Pro","OpenVAS","AWS Security Hub","Microsoft Azure","Google Cloud","Prisma Cloud","Orca Security","Lacework","Palo Alto Networks","Microsoft Defender"].map(c=>(
+          <span key={c} style={{fontSize:"0.85rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
 
