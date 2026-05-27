@@ -19,6 +19,8 @@ const BOARDS = [
   {id:"server",icon:"🖥️",label:"Server Health",val:"98%",unit:"Uptime",c:"#7c3aed"},
   {id:"ai-risk",icon:"🤖",label:"AI Risk",val:"3",unit:"Shadow AI",c:"#ea580c",isNew:true},
   {id:"secure",icon:"📡",label:"Risk Radar",val:"99.6%",unit:"Noise Cut",c:"#16a34a",isNew:true},
+  {id:"identity",icon:"🔑",label:"Identity PreCheck",val:"98%",unit:"MFA Active",c:"#a855f7",isNew:true},
+  {id:"dispatch",icon:"📨",label:"Dispatch Center",val:"4",unit:"Open SOAR",c:"#0f766e",isNew:true},
 ];
 const PLANS = [
   {name:"Starter",price:"149",c:"#4f46e5",features:["1 user","CSV upload","500 findings","All 12 dashboards & CISO Cockpit"],cta:"Start Free Trial"},
@@ -144,11 +146,9 @@ export default function Page() {
         <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
           {/* Standout CISO Cockpit Link */}
           <a 
-            href="#monitor" 
+            href="#features" 
             onClick={(e) => {
-              e.preventDefault();
-              setActiveMockupTab("CISO Cockpit");
-              scrollToSection(e, "monitor");
+              scrollToSection(e, "features");
             }}
             style={{
               color:"#7c3aed",
@@ -262,7 +262,7 @@ export default function Page() {
           {/* RIGHT — GIF + animated SVG overlay on 6 panel positions */}
           <div 
             className="shield-wrap" 
-            title="Interactive Security Shield — Click to explore 10 Modules Command Center"
+            title="Interactive Security Shield — Click to explore 12 Modules Command Center"
             onClick={(e) => {
               const element = document.getElementById("features");
               if (element) {
@@ -372,35 +372,33 @@ export default function Page() {
             <p style={{color:"#a5b4fc",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
           </div>
 
-          {/* SOC Dashboard Mockup */}
+          {/* SOC Dashboard Mockup (Premium Light Theme Dashboard) */}
           <div style={{
-            background:"rgba(15,23,42,0.7)",
-            backdropFilter:"blur(24px)",
-            WebkitBackdropFilter:"blur(24px)",
-            border:"1px solid rgba(255,255,255,0.08)",
+            background:"#ffffff",
+            border:"1px solid #e2e8f0",
             borderRadius:20,
             overflow:"hidden",
-            boxShadow:"0 30px 70px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)",
-            color:"#fff"
+            boxShadow:"0 20px 50px rgba(15,23,42,0.08), inset 0 1px 0 rgba(255,255,255,0.8)",
+            color:"#0f172a"
           }}>
 
             {/* Topbar */}
-            <div style={{background:"rgba(30,41,59,0.5)",padding:"0.75rem 1.5rem",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+            <div style={{background:"#f8fafc",padding:"0.75rem 1.5rem",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid #e2e8f0"}}>
               <div style={{display:"flex",alignItems:"center",gap:"0.6rem"}}>
-                <div style={{width:10,height:10,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 8px #ef4444"}}/>
-                <div style={{width:10,height:10,borderRadius:"50%",background:"#eab308",boxShadow:"0 0 8px #eab308"}}/>
-                <div style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",boxShadow:"0 0 8px #22c55e"}}/>
-                <span style={{fontSize:"0.75rem",color:"#94a3b8",fontWeight:700,marginLeft:"0.5rem",letterSpacing:"0.04em"}}>PosturePilot Command Console</span>
+                <div style={{width:10,height:10,borderRadius:"50%",background:"#ef4444"}}/>
+                <div style={{width:10,height:10,borderRadius:"50%",background:"#eab308"}}/>
+                <div style={{width:10,height:10,borderRadius:"50%",background:"#22c55e"}}/>
+                <span style={{fontSize:"0.75rem",color:"#64748b",fontWeight:700,marginLeft:"0.5rem",letterSpacing:"0.04em"}}>PosturePilot Command Console</span>
               </div>
               <div style={{display:"flex",gap:"0.5rem",alignItems:"center"}}>
-                <span style={{width:6,height:6,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 8px #22c55e"}}/>
-                <span style={{fontSize:"0.65rem",color:"#22c55e",fontWeight:900,letterSpacing:"0.05em"}}>SYS ACTIVE</span>
-                <span style={{fontSize:"0.65rem",color:"#94a3b8",marginLeft:"0.5rem"}}>Sync: just now</span>
+                <span style={{width:6,height:6,borderRadius:"50%",background:"#16a34a",display:"inline-block",boxShadow:"0 0 8px rgba(22,163,74,0.4)"}}/>
+                <span style={{fontSize:"0.65rem",color:"#16a34a",fontWeight:900,letterSpacing:"0.05em"}}>SYS ACTIVE</span>
+                <span style={{fontSize:"0.65rem",color:"#64748b",marginLeft:"0.5rem"}}>Sync: just now</span>
               </div>
             </div>
 
             <div className="monitor-inner" style={{display:"grid",gridTemplateColumns:"200px 1fr",minHeight:580}}>
-              <div className="monitor-sidebar" style={{background:"rgba(15,23,42,0.45)",padding:"1rem 0.5rem",borderRight:"1px solid rgba(255,255,255,0.08)"}}>
+              <div className="monitor-sidebar" style={{background:"#f1f5f9",padding:"1rem 0.5rem",borderRight:"1px solid #e2e8f0"}}>
                 {[
                   {icon:"🏢",label:"Main Terminal"},
                   {icon:"👨‍✈️",label:"CISO Cockpit",badge:"BU-Joint"},
@@ -412,42 +410,42 @@ export default function Page() {
                   <div key={item.label} onClick={() => setActiveMockupTab(item.label)}
                     style={{
                       display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.5rem 0.875rem",
-                      background:item.label === activeMockupTab ? "rgba(124,58,237,0.18)" : "transparent",
+                      background:item.label === activeMockupTab ? "rgba(124,58,237,0.08)" : "transparent",
                       borderLeft:item.label === activeMockupTab ? "3px solid #7c3aed" : "3px solid transparent",
-                      color:item.label === activeMockupTab ? "#fff" : "#94a3b8",
+                      color:item.label === activeMockupTab ? "#7c3aed" : "#64748b",
                       marginBottom:4,cursor:"pointer",borderRadius:6,
                       transition:"all 0.15s ease",
                       fontWeight:item.label === activeMockupTab ? 700 : 500
                     }}
-                    onMouseEnter={e => { if (item.label !== activeMockupTab) { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; } }}
-                    onMouseLeave={e => { if (item.label !== activeMockupTab) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#94a3b8"; } }}>
+                    onMouseEnter={e => { if (item.label !== activeMockupTab) { e.currentTarget.style.background = "rgba(0,0,0,0.03)"; e.currentTarget.style.color = "#0f172a"; } }}
+                    onMouseLeave={e => { if (item.label !== activeMockupTab) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#64748b"; } }}>
                     <span style={{fontSize:"0.8rem"}}>{item.icon}</span>
                     <span style={{fontSize:"0.72rem",flex:1}}>{item.label}</span>
                     {item.badge && <span style={{fontSize:"0.55rem",fontWeight:800,padding:"1px 6px",borderRadius:99,
-                      background:item.badge==="NEW"?"#7c3aed":item.badge==="SOAR"?"#10b981":"rgba(239,68,68,0.15)",
-                      color:item.badge==="NEW"?"#fff":item.badge==="SOAR"?"#34d399":"#ef4444",
-                      border: item.badge!=="NEW"&&item.badge!=="SOAR"? "1px solid rgba(239,68,68,0.25)":"none"
+                      background:item.badge==="NEW"?"#7c3aed":item.badge==="SOAR"?"#16a34a":"rgba(220,38,38,0.1)",
+                      color:item.badge==="NEW"?"#fff":item.badge==="SOAR"?"#16a34a":"#dc2626",
+                      border: item.badge!=="NEW"&&item.badge!=="SOAR"? "1px solid rgba(220,38,38,0.2)":"none"
                     }}>{item.badge}</span>}
                   </div>
                 ))}
               </div>
 
               {/* Main content */}
-              <div style={{padding:"1.25rem",display:"flex",flexDirection:"column",gap:"1.1rem",overflow:"hidden",background:"rgba(15,23,42,0.25)"}}>
+              <div style={{padding:"1.25rem",display:"flex",flexDirection:"column",gap:"1.1rem",overflow:"hidden",background:"#f8fafc"}}>
 
                 {activeMockupTab === "Main Terminal" && (
                   <>
                     {/* KPI row */}
                     <div className="monitor-kpi" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.875rem"}}>
                       {[
-                        {label:"Risk Score",val:"74",unit:"/100",c:"#818cf8",trend:"↑2",tColor:"#f43f5e"},
-                        {label:"Open Criticals",val:"23",unit:"CVEs",c:"#f43f5e",trend:"↓5",tColor:"#10b981"},
-                        {label:"SLA Compliance",val:"91%",unit:"on-track",c:"#10b981",trend:"↑3%",tColor:"#10b981"},
-                        {label:"Avg CVSS",val:"7.4",unit:"score",c:"#fb923c",trend:"stable",tColor:"#94a3b8"},
+                        {label:"Risk Score",val:"74",unit:"/100",c:"#7c3aed",trend:"↑2",tColor:"#dc2626"},
+                        {label:"Open Criticals",val:"23",unit:"CVEs",c:"#dc2626",trend:"↓5",tColor:"#16a34a"},
+                        {label:"SLA Compliance",val:"91%",unit:"on-track",c:"#16a34a",trend:"↑3%",tColor:"#16a34a"},
+                        {label:"Avg CVSS",val:"7.4",unit:"score",c:"#ea580c",trend:"stable",tColor:"#64748b"},
                       ].map(s=>(
-                        <div key={s.label} style={{background:"rgba(30,41,59,0.4)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:12,padding:"0.875rem",borderTop:`3px solid ${s.c}`,boxShadow:"inset 0 1px 0 rgba(255,255,255,0.05)"}}>
-                          <div style={{fontSize:"0.58rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:"0.3rem"}}>{s.label}</div>
-                          <div style={{fontSize:"1.75rem",fontWeight:900,color:"#fff",lineHeight:1}}>{s.val}<span style={{fontSize:"0.65rem",fontWeight:500,color:"#94a3b8",marginLeft:4}}>{s.unit}</span></div>
+                        <div key={s.label} style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"0.875rem",borderTop:`3px solid ${s.c}`,boxShadow:"0 1px 3px rgba(0,0,0,0.02)"}}>
+                          <div style={{fontSize:"0.58rem",color:"#64748b",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:"0.3rem"}}>{s.label}</div>
+                          <div style={{fontSize:"1.75rem",fontWeight:900,color:"#0f172a",lineHeight:1}}>{s.val}<span style={{fontSize:"0.65rem",fontWeight:500,color:"#64748b",marginLeft:4}}>{s.unit}</span></div>
                           <div style={{fontSize:"0.62rem",color:s.tColor,marginTop:"0.4rem",fontWeight:600}}>{s.trend} this week</div>
                         </div>
                       ))}
@@ -456,35 +454,35 @@ export default function Page() {
                     {/* Middle row */}
                     <div className="monitor-mid" style={{display:"grid",gridTemplateColumns:"1fr 1.1fr",gap:"0.875rem"}}>
                       {/* Findings breakdown */}
-                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem"}}>
-                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#fff",marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"0.4rem"}}>📊 Findings by Severity</div>
-                        {[["Critical",14,"#ef4444",312],["High",67,"#f97316",312],["Medium",148,"#eab308",312],["Low",83,"#22c55e",312],["Info",22,"#3b82f6",312]].map(([s,n,c,max])=>(
+                      <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"0.4rem"}}>📊 Findings by Severity</div>
+                        {[["Critical",14,"#dc2626",312],["High",67,"#ea580c",312],["Medium",148,"#d97706",312],["Low",83,"#16a34a",312],["Info",22,"#2563eb",312]].map(([s,n,c,max])=>(
                           <div key={String(s)} style={{marginBottom:"0.55rem"}}>
                             <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.65rem",marginBottom:3}}>
-                              <span style={{color:"#94a3b8",fontWeight:600}}>{s}</span>
+                              <span style={{color:"#64748b",fontWeight:600}}>{s}</span>
                               <span style={{color:String(c),fontWeight:800}}>{n}</span>
                             </div>
-                            <div style={{height:6,background:"rgba(255,255,255,0.08)",borderRadius:99,overflow:"hidden"}}>
-                              <div style={{height:"100%",width:`${Math.round(Number(n)/Number(max)*100)}%`,background:String(c),borderRadius:99,boxShadow:`0 0 8px ${c}`}}/>
+                            <div style={{height:6,background:"#f1f5f9",borderRadius:99,overflow:"hidden"}}>
+                              <div style={{height:"100%",width:`${Math.round(Number(n)/Number(max)*100)}%`,background:String(c),borderRadius:99}}/>
                             </div>
                           </div>
                         ))}
                       </div>
 
                       {/* Active Threat Stream */}
-                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem"}}>
-                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#fff",marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"0.4rem"}}>🚨 Real-Time Security Alarms</div>
+                      <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"0.4rem"}}>🚨 Real-Time Security Alarms</div>
                         <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>
                           {[
-                            {sev:"CRIT",cve:"CVE-2024-3400",host:"edge-ingress-fw01",c:"#ef4444",bg:"rgba(239,68,68,0.08)"},
-                            {sev:"HIGH",cve:"CVE-2024-21762",host:"financial-db-02",c:"#f97316",bg:"rgba(249,115,22,0.08)"},
-                            {sev:"HIGH",cve:"CVE-2023-44487",host:"public-lb-01",c:"#f97316",bg:"rgba(249,115,22,0.08)"},
-                            {sev:"MED",cve:"CVE-2024-1086",host:"corp-auth-app-03",c:"#eab308",bg:"rgba(234,179,8,0.08)"},
+                            {sev:"CRIT",cve:"CVE-2024-3400",host:"edge-ingress-fw01",c:"#dc2626",bg:"#fef2f2",border:"#fecaca"},
+                            {sev:"HIGH",cve:"CVE-2024-21762",host:"financial-db-02",c:"#ea580c",bg:"#fff7ed",border:"#ffedd5"},
+                            {sev:"HIGH",cve:"CVE-2023-44487",host:"public-lb-01",c:"#ea580c",bg:"#fff7ed",border:"#ffedd5"},
+                            {sev:"MED",cve:"CVE-2024-1086",host:"corp-auth-app-03",c:"#d97706",bg:"#fefbeb",border:"#fef3c7"},
                           ].map((a,i)=>(
-                            <div key={i} style={{display:"flex",alignItems:"center",gap:"0.6rem",padding:"0.45rem 0.6rem",borderRadius:8,background:a.bg,border:"1px solid rgba(255,255,255,0.02)"}}>
-                              <span style={{fontSize:"0.58rem",fontWeight:900,padding:"2px 6px",borderRadius:4,background:a.c,color:"#fff",minWidth:34,textAlign:"center",boxShadow:`0 0 6px ${a.c}`}}>{a.sev}</span>
-                              <span style={{fontSize:"0.68rem",color:"#fff",fontFamily:"monospace",flex:1,fontWeight:600}}>{a.cve}</span>
-                              <span style={{fontSize:"0.65rem",color:"#94a3b8",fontFamily:"monospace"}}>{a.host}</span>
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:"0.6rem",padding:"0.45rem 0.6rem",borderRadius:8,background:a.bg,border:`1px solid ${a.border}`}}>
+                              <span style={{fontSize:"0.58rem",fontWeight:900,padding:"2px 6px",borderRadius:4,background:a.c,color:"#fff",minWidth:34,textAlign:"center"}}>{a.sev}</span>
+                              <span style={{fontSize:"0.68rem",color:"#0f172a",fontFamily:"monospace",flex:1,fontWeight:600}}>{a.cve}</span>
+                              <span style={{fontSize:"0.65rem",color:"#64748b",fontFamily:"monospace"}}>{a.host}</span>
                             </div>
                           ))}
                         </div>
@@ -494,15 +492,15 @@ export default function Page() {
                     {/* Bottom row */}
                     <div className="monitor-bot" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"0.875rem"}}>
                       {[
-                        {icon:"☁️",label:"Cloud Security",val:"47 findings",sub:"3 exposed S3 buckets",c:"#60a5fa"},
-                        {icon:"🌐",label:"Network Runway",val:"34 open ports",sub:"2 SLA breach metrics",c:"#f87171"},
-                        {icon:"🔐",label:"App Security Check",val:"14 active vulns",sub:"OWASP Top 10 vectors",c:"#a78bfa"},
+                        {icon:"☁️",label:"Cloud Security",val:"47 findings",sub:"3 exposed S3 buckets",c:"#2563eb"},
+                        {icon:"🌐",label:"Network Runway",val:"34 open ports",sub:"2 SLA breach metrics",c:"#dc2626"},
+                        {icon:"🔐",label:"App Security Check",val:"14 active vulns",sub:"OWASP Top 10 vectors",c:"#7c3aed"},
                       ].map(d=>(
-                        <div key={d.label} style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"0.875rem",borderLeft:`4px solid ${d.c}`,boxShadow:"inset 0 1px 0 rgba(255,255,255,0.05)"}}>
+                        <div key={d.label} style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"0.875rem",borderLeft:`4px solid ${d.c}`,boxShadow:"0 1px 3px rgba(0,0,0,0.02)"}}>
                           <div style={{fontSize:"1rem",marginBottom:"0.3rem"}}>{d.icon}</div>
-                          <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",marginBottom:"0.2rem"}}>{d.label}</div>
+                          <div style={{fontSize:"0.68rem",fontWeight:800,color:"#0f172a",marginBottom:"0.2rem"}}>{d.label}</div>
                           <div style={{fontSize:"0.9rem",fontWeight:900,color:d.c}}>{d.val}</div>
-                          <div style={{fontSize:"0.6rem",color:"#94a3b8",marginTop:4}}>{d.sub}</div>
+                          <div style={{fontSize:"0.6rem",color:"#64748b",marginTop:4}}>{d.sub}</div>
                         </div>
                       ))}
                     </div>
@@ -511,15 +509,15 @@ export default function Page() {
 
                 {activeMockupTab === "CISO Cockpit" && (
                   <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
-                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
-                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>👨‍✈️ CISO Executive Cockpit</div>
-                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.2rem"}}>Subsidiary ledger matrix tracking real-time tenant risk scores and directives.</div>
+                    <div style={{borderBottom:"1px solid #e2e8f0",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#0f172a",display:"flex",alignItems:"center",gap:"0.4rem"}}>👨‍✈️ CISO Executive Cockpit</div>
+                      <div style={{fontSize:"0.75rem",color:"#64748b",marginTop:"0.2rem"}}>Subsidiary ledger matrix tracking real-time tenant risk scores and directives.</div>
                     </div>
 
-                    <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,overflow:"hidden"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,overflow:"hidden"}}>
                       <table style={{width:"100%",borderCollapse:"collapse",textAlign:"left",fontSize:"0.72rem"}}>
                         <thead>
-                          <tr style={{background:"rgba(30,41,59,0.6)",borderBottom:"1px solid rgba(255,255,255,0.08)",color:"#94a3b8",fontWeight:700}}>
+                          <tr style={{background:"#f8fafc",borderBottom:"1px solid #e2e8f0",color:"#64748b",fontWeight:700}}>
                             <th style={{padding:"0.75rem 1rem"}}>Business Unit</th>
                             <th style={{padding:"0.75rem 1rem"}}>Cyber Posture</th>
                             <th style={{padding:"0.75rem 1rem"}}>Overdue SLA</th>
@@ -529,17 +527,17 @@ export default function Page() {
                         </thead>
                         <tbody>
                           {[
-                            {bu:"Acme Financial Services",score:82,overdue:3,layers:12,threat:"🟢 COMPLIANT",tColor:"#10b981",bg:"rgba(16,185,129,0.03)"},
-                            {bu:"Acme Global Retail Corp",score:54,overdue:14,layers:8,threat:"🔴 CRITICAL RISK",tColor:"#ef4444",bg:"rgba(239,68,68,0.03)"},
-                            {bu:"Acme Logistics & Fleet",score:71,overdue:6,layers:11,threat:"🟡 ELEVATED WARNING",tColor:"#eab308",bg:"rgba(234,179,8,0.03)"},
-                            {bu:"Acme Corporate HQ (LDG)",score:89,overdue:0,layers:12,threat:"🟢 COMPLIANT",tColor:"#10b981",bg:"rgba(16,185,129,0.03)"},
+                            {bu:"Acme Financial Services",score:82,overdue:3,layers:12,threat:"🟢 COMPLIANT",tColor:"#16a34a",bg:"rgba(22,163,74,0.02)"},
+                            {bu:"Acme Global Retail Corp",score:54,overdue:14,layers:8,threat:"🔴 CRITICAL RISK",tColor:"#dc2626",bg:"rgba(220,38,38,0.02)"},
+                            {bu:"Acme Logistics & Fleet",score:71,overdue:6,layers:11,threat:"🟡 ELEVATED WARNING",tColor:"#ea580c",bg:"rgba(234,88,12,0.02)"},
+                            {bu:"Acme Corporate HQ (LDG)",score:89,overdue:0,layers:12,threat:"🟢 COMPLIANT",tColor:"#16a34a",bg:"rgba(22,163,74,0.02)"},
                           ].map((row,i)=>(
-                            <tr key={i} style={{borderBottom:"1px solid rgba(255,255,255,0.05)",background:row.bg}}>
+                            <tr key={i} style={{borderBottom:"1px solid #e2e8f0",background:row.bg,color:"#0f172a"}}>
                               <td style={{padding:"0.75rem 1rem",fontWeight:700}}>{row.bu}</td>
                               <td style={{padding:"0.75rem 1rem"}}>
-                                <span style={{fontWeight:800,color:row.score>80?"#10b981":row.score>60?"#eab308":"#ef4444"}}>{row.score}/100</span>
+                                <span style={{fontWeight:800,color:row.score>80?"#16a34a":row.score>60?"#ea580c":"#dc2626"}}>{row.score}/100</span>
                               </td>
-                              <td style={{padding:"0.75rem 1rem",color:row.overdue>0?"#ef4444":"#94a3b8",fontWeight:row.overdue>0?800:500}}>{row.overdue} open items</td>
+                              <td style={{padding:"0.75rem 1rem",color:row.overdue>0?"#dc2626":"#64748b",fontWeight:row.overdue>0?800:500}}>{row.overdue} open items</td>
                               <td style={{padding:"0.75rem 1rem",fontWeight:600}}>{row.layers} active integrations</td>
                               <td style={{padding:"0.75rem 1rem",fontWeight:800,color:row.tColor}}>{row.threat}</td>
                             </tr>
@@ -550,15 +548,15 @@ export default function Page() {
 
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem"}}>
                       {[
-                        {title:"Remediation Directive C-102",desc:"Patch critical edge firewall CVE-2024-3400.",bu:"Global Retail BU",c:"#ef4444"},
+                        {title:"Remediation Directive C-102",desc:"Patch critical edge firewall CVE-2024-3400.",bu:"Global Retail BU",c:"#dc2626"},
                         {title:"Policy Enforcement Directive P-401",desc:"Disable unauthorized ChatGPT proxy instances.",bu:"Corporate HQ",c:"#7c3aed"}
                       ].map((item,i)=>(
-                        <div key={i} style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"0.875rem",borderLeft:`4px solid ${item.c}`}}>
+                        <div key={i} style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"0.875rem",borderLeft:`4px solid ${item.c}`}}>
                           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.25rem"}}>
-                            <span style={{fontSize:"0.68rem",fontWeight:800,color:"#fff"}}>{item.title}</span>
-                            <span style={{fontSize:"0.55rem",background:"rgba(255,255,255,0.08)",padding:"2px 6px",borderRadius:4,color:"#94a3b8"}}>{item.bu}</span>
+                            <span style={{fontSize:"0.68rem",fontWeight:800,color:"#0f172a"}}>{item.title}</span>
+                            <span style={{fontSize:"0.55rem",background:"#f1f5f9",padding:"2px 6px",borderRadius:4,color:"#64748b"}}>{item.bu}</span>
                           </div>
-                          <p style={{fontSize:"0.65rem",color:"#94a3b8",lineHeight:1.4}}>{item.desc}</p>
+                          <p style={{fontSize:"0.65rem",color:"#64748b",lineHeight:1.4}}>{item.desc}</p>
                         </div>
                       ))}
                     </div>
@@ -567,62 +565,62 @@ export default function Page() {
 
                 {activeMockupTab === "Posture Clearance" && (
                   <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
-                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
-                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>🛡️ Cyber Posture Clearance</div>
-                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.25rem"}}>Clearance rated over the past 90 days. Joint posture trends are compiled in real-time.</div>
+                    <div style={{borderBottom:"1px solid #e2e8f0",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#0f172a",display:"flex",alignItems:"center",gap:"0.4rem"}}>🛡️ Cyber Posture Clearance</div>
+                      <div style={{fontSize:"0.75rem",color:"#64748b",marginTop:"0.25rem"}}>Clearance rated over the past 90 days. Joint posture trends are compiled in real-time.</div>
                     </div>
 
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1.3fr",gap:"0.875rem"}}>
                       {/* Left: Giant Dial */}
-                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1.25rem",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
+                      <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1.25rem",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
                         <div style={{position:"relative",width:130,height:130,display:"flex",alignItems:"center",justifyContent:"center"}}>
                           {/* Radial indicator SVG */}
                           <svg viewBox="0 0 100 100" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",transform:"rotate(-90deg)"}}>
-                            <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8"/>
-                            <circle cx="50" cy="50" r="40" fill="none" stroke="#7c3aed" strokeWidth="8" strokeDasharray="185 251" strokeLinecap="round" style={{filter:"drop-shadow(0 0 6px #7c3aed)"}}/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#f1f5f9" strokeWidth="8"/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#7c3aed" strokeWidth="8" strokeDasharray="185 251" strokeLinecap="round" style={{filter:"drop-shadow(0 2px 4px rgba(124,58,237,0.2))"}}/>
                           </svg>
                           <div>
-                            <div style={{fontSize:"2rem",fontWeight:900,color:"#fff",lineHeight:1}}>74%</div>
-                            <div style={{fontSize:"0.55rem",color:"#10b981",fontWeight:800,marginTop:2,letterSpacing:"0.05em"}}>APPROVED</div>
+                            <div style={{fontSize:"2rem",fontWeight:900,color:"#0f172a",lineHeight:1}}>74%</div>
+                            <div style={{fontSize:"0.55rem",color:"#16a34a",fontWeight:800,marginTop:2,letterSpacing:"0.05em"}}>APPROVED</div>
                           </div>
                         </div>
-                        <div style={{fontSize:"0.75rem",fontWeight:700,color:"#fff",marginTop:"1rem"}}>Joint Posture Index Score</div>
-                        <div style={{fontSize:"0.58rem",color:"#94a3b8",marginTop:"0.25rem"}}>Acme Corp Business Ledger Gatekeeper</div>
+                        <div style={{fontSize:"0.75rem",fontWeight:700,color:"#0f172a",marginTop:"1rem"}}>Joint Posture Index Score</div>
+                        <div style={{fontSize:"0.58rem",color:"#64748b",marginTop:"0.25rem"}}>Acme Corp Business Ledger Gatekeeper</div>
                       </div>
 
                       {/* Right: Gorgeous Trend Line */}
-                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",marginBottom:"0.5rem"}}>📈 Historical Posture Trend — 90 Days</div>
+                      <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>📈 Historical Posture Trend — 90 Days</div>
                         
                         <div style={{height:100,width:"100%",position:"relative",marginTop:"0.5rem"}}>
                           {/* Glowing linechart using SVGs */}
                           <svg viewBox="0 0 200 100" style={{width:"100%",height:"100%",overflow:"visible"}}>
                             <defs>
-                              <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.25"/>
+                              <linearGradient id="chartGlowLight" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.15"/>
                                 <stop offset="100%" stopColor="#7c3aed" stopOpacity="0"/>
                               </linearGradient>
                             </defs>
                             {/* Grid lines */}
-                            <line x1="0" y1="20" x2="200" y2="20" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-                            <line x1="0" y1="50" x2="200" y2="50" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-                            <line x1="0" y1="80" x2="200" y2="80" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+                            <line x1="0" y1="20" x2="200" y2="20" stroke="#f1f5f9" strokeWidth="1"/>
+                            <line x1="0" y1="50" x2="200" y2="50" stroke="#f1f5f9" strokeWidth="1"/>
+                            <line x1="0" y1="80" x2="200" y2="80" stroke="#f1f5f9" strokeWidth="1"/>
                             
                             {/* Area fill */}
-                            <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34 L 200,100 L 0,100 Z" fill="url(#chartGlow)"/>
+                            <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34 L 200,100 L 0,100 Z" fill="url(#chartGlowLight)"/>
                             {/* Stroke line */}
-                            <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" style={{filter:"drop-shadow(0 0 5px #7c3aed)"}}/>
+                            <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" style={{filter:"drop-shadow(0 2px 4px rgba(124,58,237,0.15))"}}/>
                             
                             {/* Highlight dot */}
-                            <circle cx="200" cy="34" r="4.5" fill="#fff" stroke="#7c3aed" strokeWidth="2" style={{filter:"drop-shadow(0 0 6px #7c3aed)"}}/>
+                            <circle cx="200" cy="34" r="4.5" fill="#fff" stroke="#7c3aed" strokeWidth="2" style={{filter:"drop-shadow(0 2px 4px rgba(124,58,237,0.2))"}}/>
                           </svg>
                         </div>
 
-                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",color:"#94a3b8",marginTop:"0.5rem"}}>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",color:"#64748b",marginTop:"0.5rem"}}>
                           <span>Feb 2026 (82%)</span>
                           <span>Mar 2026</span>
                           <span>Apr 2026</span>
-                          <span style={{fontWeight:800,color:"#34d399"}}>May 2026 (74% Clear)</span>
+                          <span style={{fontWeight:800,color:"#16a34a"}}>May 2026 (74% Clear)</span>
                         </div>
                       </div>
                     </div>
@@ -631,47 +629,47 @@ export default function Page() {
 
                 {activeMockupTab === "Cloud Altitude" && (
                   <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
-                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
-                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>☁️ Multicloud Asset Altitude Tracker</div>
-                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.25rem"}}>Unified cloud security posture (CSPM) mapping active VM assets, clusters, and database endpoints.</div>
+                    <div style={{borderBottom:"1px solid #e2e8f0",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#0f172a",display:"flex",alignItems:"center",gap:"0.4rem"}}>☁️ Multicloud Asset Altitude Tracker</div>
+                      <div style={{fontSize:"0.75rem",color:"#64748b",marginTop:"0.25rem"}}>Unified cloud security posture (CSPM) mapping active VM assets, clusters, and database endpoints.</div>
                     </div>
 
                     <div style={{display:"grid",gridTemplateColumns:"1fr 1.3fr",gap:"0.875rem"}}>
                       {/* Exposed Buckets Hot-patch Panel */}
-                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
                         <div>
-                          <div style={{fontSize:"0.68rem",fontWeight:800,color:"#f43f5e",marginBottom:"0.5rem"}}>⚠️ 3 EXPOSED STORAGE OBJECTS FOUND</div>
+                          <div style={{fontSize:"0.68rem",fontWeight:800,color:"#dc2626",marginBottom:"0.5rem"}}>⚠️ 3 EXPOSED STORAGE OBJECTS FOUND</div>
                           <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
                             {["acme-financial-audit-logs","hr-employee-passports","retail-pos-backups"].map((bucket)=>(
-                              <div key={bucket} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(244,63,94,0.05)",border:"1px solid rgba(244,63,94,0.1)",padding:"0.35rem 0.5rem",borderRadius:6}}>
-                                <span style={{fontSize:"0.65rem",fontFamily:"monospace",color:"#fff"}}>{bucket}</span>
-                                <span style={{fontSize:"0.55rem",fontWeight:800,color:"#f43f5e"}}>PUBLIC READ</span>
+                              <div key={bucket} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"#fef2f2",border:"1px solid #fecaca",padding:"0.35rem 0.5rem",borderRadius:6}}>
+                                <span style={{fontSize:"0.65rem",fontFamily:"monospace",color:"#0f172a"}}>{bucket}</span>
+                                <span style={{fontSize:"0.55rem",fontWeight:800,color:"#dc2626"}}>PUBLIC READ</span>
                               </div>
                             ))}
                           </div>
                         </div>
-                        <button style={{marginTop:"1rem",background:"linear-gradient(135deg,#f43f5e,#e11d48)",color:"#fff",border:"none",borderRadius:8,padding:"0.5rem",fontWeight:800,fontSize:"0.72rem",cursor:"pointer",boxShadow:"0 4px 12px rgba(244,63,94,0.3)"}}>⚡ Lock Bucket Access Now</button>
+                        <button style={{marginTop:"1rem",background:"linear-gradient(135deg,#dc2626,#b91c1c)",color:"#fff",border:"none",borderRadius:8,padding:"0.5rem",fontWeight:800,fontSize:"0.72rem",cursor:"pointer",boxShadow:"0 4px 12px rgba(220,38,38,0.2)"}}>⚡ Lock Bucket Access Now</button>
                       </div>
 
                       {/* Active Integrations Inventory */}
-                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem"}}>
-                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",marginBottom:"0.75rem"}}>☁️ Ingested Multicloud Environments</div>
+                      <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
+                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem"}}>☁️ Ingested Multicloud Environments</div>
                         <div style={{display:"flex",flexDirection:"column",gap:"0.6rem"}}>
                           {[
                             {cloud:"AWS Amazon Web Services",assets:"104 active VMs, 4 RDS instances",pct:96,c:"#ff9900",img:"/logos/aws.svg"},
                             {cloud:"Microsoft Azure Cloud",assets:"67 active VMs, 2 SQL containers",pct:99,c:"#0078d4",img:"/logos/azure.png"},
                             {cloud:"Google Cloud Platform (GCP)",assets:"24 Container nodes, 1 registry",pct:88,c:"#34a853",img:"/logos/google.png"},
                           ].map((item,i)=>(
-                            <div key={i} style={{display:"flex",alignItems:"center",gap:"0.75rem",background:"rgba(255,255,255,0.02)",padding:"0.5rem",borderRadius:8,border:"1px solid rgba(255,255,255,0.03)"}}>
-                              <div style={{width:24,height:24,borderRadius:4,background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",padding:2}}>
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:"0.75rem",background:"#f8fafc",padding:"0.5rem",borderRadius:8,border:"1px solid #e2e8f0"}}>
+                              <div style={{width:24,height:24,borderRadius:4,background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",padding:2,border:"1px solid #e2e8f0"}}>
                                 <img src={item.img} alt="" style={{width:"100%",height:"100%",objectFit:"contain"}} onError={e=>{(e.currentTarget).style.display="none";}}/>
                               </div>
                               <div style={{flex:1}}>
-                                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.68rem",fontWeight:700}}>
+                                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.68rem",fontWeight:700,color:"#0f172a"}}>
                                   <span>{item.cloud}</span>
-                                  <span style={{color:item.pct>95?"#34d399":"#fbbf24"}}>{item.pct}% Secure</span>
+                                  <span style={{color:item.pct>95?"#16a34a":"#d97706"}}>{item.pct}% Secure</span>
                                 </div>
-                                <div style={{fontSize:"0.58rem",color:"#94a3b8",marginTop:2}}>{item.assets}</div>
+                                <div style={{fontSize:"0.58rem",color:"#64748b",marginTop:2}}>{item.assets}</div>
                               </div>
                             </div>
                           ))}
@@ -683,9 +681,9 @@ export default function Page() {
 
                 {activeMockupTab === "Compliance Checkpoint" && (
                   <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
-                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
-                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>📋 Regulatory Compliance & Auditing Registry</div>
-                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.25rem"}}>Maps active scan vulnerabilities and system misconfigurations to GRC controls automatically.</div>
+                    <div style={{borderBottom:"1px solid #e2e8f0",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#0f172a",display:"flex",alignItems:"center",gap:"0.4rem"}}>📋 Regulatory Compliance & Auditing Registry</div>
+                      <div style={{fontSize:"0.75rem",color:"#64748b",marginTop:"0.25rem"}}>Maps active scan vulnerabilities and system misconfigurations to GRC controls automatically.</div>
                     </div>
 
                     <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"0.875rem"}}>
@@ -697,20 +695,20 @@ export default function Page() {
                         {title:"NIST CSF v2.0",cov:"92%",c:"#059669",
                           checks:[{l:"Vulnerability Triage",v:true},{l:"Incident Plan Pass",v:true},{l:"Fleet Patch Rate",v:true},{l:"Shadow AI Blocks",v:true}]},
                       ].map((fw,i)=>(
-                        <div key={i} style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem",borderTop:`3px solid ${fw.c}`,boxShadow:"inset 0 1px 0 rgba(255,255,255,0.05)"}}>
+                        <div key={i} style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",borderTop:`3px solid ${fw.c}`,boxShadow:"0 1px 3px rgba(0,0,0,0.02)"}}>
                           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.5rem"}}>
-                            <span style={{fontSize:"0.8rem",fontWeight:800,color:"#fff"}}>{fw.title}</span>
+                            <span style={{fontSize:"0.8rem",fontWeight:800,color:"#0f172a"}}>{fw.title}</span>
                             <span style={{fontSize:"0.62rem",fontWeight:800,color:fw.c}}>{fw.cov} Coverage</span>
                           </div>
                           {/* Compliance Bar */}
-                          <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:99,overflow:"hidden",marginBottom:"0.75rem"}}>
-                            <div style={{height:"100%",width:fw.cov,background:fw.c,borderRadius:99,boxShadow:`0 0 6px ${fw.c}`}}/>
+                          <div style={{height:4,background:"#f1f5f9",borderRadius:99,overflow:"hidden",marginBottom:"0.75rem"}}>
+                            <div style={{height:"100%",width:fw.cov,background:fw.c,borderRadius:99}}/>
                           </div>
                           {/* Checklist */}
                           <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
                             {fw.checks.map((ch,idx)=>(
-                              <div key={idx} style={{display:"flex",alignItems:"center",gap:"0.4rem",fontSize:"0.62rem",color:ch.v?"#e2e8f0":"#94a3b8"}}>
-                                <span style={{fontWeight:800,color:ch.v?"#10b981":"#f43f5e"}}>{ch.v?"✓":"✗"}</span>
+                              <div key={idx} style={{display:"flex",alignItems:"center",gap:"0.4rem",fontSize:"0.62rem",color:ch.v?"#0f172a":"#64748b"}}>
+                                <span style={{fontWeight:800,color:ch.v?"#16a34a":"#dc2626"}}>{ch.v?"✓":"✗"}</span>
                                 <span>{ch.l}</span>
                               </div>
                             ))}
@@ -723,44 +721,44 @@ export default function Page() {
 
                 {activeMockupTab === "Dispatch Center" && (
                   <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
-                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
-                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>🚨 Automated SOAR Dispatch Center</div>
-                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.25rem"}}>Real-time automated incident tickets mapping assignees, endpoints, and active SLA altimeters.</div>
+                    <div style={{borderBottom:"1px solid #e2e8f0",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#0f172a",display:"flex",alignItems:"center",gap:"0.4rem"}}>🚨 Automated SOAR Dispatch Center</div>
+                      <div style={{fontSize:"0.75rem",color:"#64748b",marginTop:"0.25rem"}}>Real-time automated incident tickets mapping assignees, endpoints, and active SLA altimeters.</div>
                     </div>
 
                     <div style={{display:"grid",gridTemplateColumns:"1.2fr 1fr",gap:"0.875rem"}}>
                       {/* Active Tickets Ledger */}
-                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem"}}>
-                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",marginBottom:"0.6rem"}}>🎟️ Active Ticket Queue</div>
+                      <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
+                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#0f172a",marginBottom:"0.6rem"}}>🎟️ Active Ticket Queue</div>
                         <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>
                           {[
-                            {id:"PP-104",title:"Critical CVE-2024-3400 Inbound",owner:"Sarah Connor",sla:"3.2 hrs",c:"#ef4444"},
-                            {id:"PP-102",title:"High CVE-2024-21762 SQL Bypass",owner:"Devon Vance",sla:"2.4 days",c:"#f97316"},
-                            {id:"PP-098",title:"High Outbound Port Sweep Sweep",owner:"Marcus Brody",sla:"4.8 days",c:"#f97316"}
+                            {id:"PP-104",title:"Critical CVE-2024-3400 Inbound",owner:"Sarah Connor",sla:"3.2 hrs",c:"#dc2626"},
+                            {id:"PP-102",title:"High CVE-2024-21762 SQL Bypass",owner:"Devon Vance",sla:"2.4 days",c:"#ea580c"},
+                            {id:"PP-098",title:"High Outbound Port Sweep Sweep",owner:"Marcus Brody",sla:"4.8 days",c:"#ea580c"}
                           ].map((t)=>(
-                            <div key={t.id} style={{background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.03)",borderRadius:8,padding:"0.5rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                            <div key={t.id} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,padding:"0.5rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                               <div>
-                                <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.3rem"}}>
+                                <div style={{fontSize:"0.68rem",fontWeight:800,color:"#0f172a",display:"flex",alignItems:"center",gap:"0.3rem"}}>
                                   <span style={{color:t.c}}>{t.id}</span> | <span>{t.title}</span>
                                 </div>
-                                <div style={{fontSize:"0.58rem",color:"#94a3b8",marginTop:2}}>Lead Assignee: {t.owner}</div>
+                                <div style={{fontSize:"0.58rem",color:"#64748b",marginTop:2}}>Lead Assignee: {t.owner}</div>
                               </div>
                               <div style={{textAlign:"right"}}>
                                 <div style={{fontSize:"0.65rem",fontWeight:800,color:t.c}}>⚡ {t.sla}</div>
-                                <div style={{fontSize:"0.55rem",color:"#94a3b8",marginTop:2}}>SLA REMAINING</div>
+                                <div style={{fontSize:"0.55rem",color:"#64748b",marginTop:2}}>SLA REMAINING</div>
                               </div>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      {/* Scrolling Console log mockup */}
-                      <div style={{background:"rgba(15,23,42,0.9)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,padding:"1rem",fontFamily:"monospace",display:"flex",flexDirection:"column",justifyContent:"space-between",height:170}}>
+                      {/* Scrolling Console log mockup (STAYS DARK FOR CONTRAST) */}
+                      <div style={{background:"#0f172a",border:"1px solid #1e293b",borderRadius:12,padding:"1rem",fontFamily:"monospace",display:"flex",flexDirection:"column",justifyContent:"space-between",height:170}}>
                         <div style={{fontSize:"0.58rem",color:"#818cf8",textTransform:"uppercase",letterSpacing:"0.08em",borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.3rem",marginBottom:"0.5rem"}}>📟 Live Orchestration Engine Logs</div>
                         <div style={{fontSize:"0.58rem",color:"#22c55e",lineHeight:1.45,display:"flex",flexDirection:"column",gap:"0.25rem",overflow:"hidden",flex:1}}>
                           <div>[12:04:10] Ingesting Qualys VMDR scan telemetry...</div>
                           <div>[12:04:12] Found 3 exposed bucket objects in AWS S3.</div>
-                          <div style={{color:"#eab308"}}>[12:04:15 WARNING] Overdue SLA detected on asset \"db-02\".</div>
+                          <div style={{color:"#eab308"}}>[12:04:15 WARNING] Overdue SLA detected on asset "db-02".</div>
                           <div>[12:04:18] Auto-dispatched incident PP-104 to Sarah Connor.</div>
                           <div>[12:04:21] Slack alerts webhook pipeline routed successfully.</div>
                         </div>
@@ -773,8 +771,8 @@ export default function Page() {
                 {activeMockupTab !== "Main Terminal" && activeMockupTab !== "CISO Cockpit" && activeMockupTab !== "Posture Clearance" && activeMockupTab !== "Cloud Altitude" && activeMockupTab !== "Compliance Checkpoint" && activeMockupTab !== "Dispatch Center" && (
                   <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"4rem 2rem",gap:"1rem"}}>
                     <div style={{fontSize:"2.5rem"}}>📡</div>
-                    <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff"}}>{activeMockupTab} View</div>
-                    <div style={{fontSize:"0.75rem",color:"#94a3b8",maxWidth:340,lineHeight:1.6}}>Integrating real-time security telemetry from this layer... Click "View Demo" or explore other command sidebar tabs.</div>
+                    <div style={{fontSize:"1.1rem",fontWeight:800,color:"#0f172a"}}>{activeMockupTab} View</div>
+                    <div style={{fontSize:"0.75rem",color:"#64748b",maxWidth:340,lineHeight:1.6}}>Integrating real-time security telemetry from this layer... Click "View Demo" or explore other command sidebar tabs.</div>
                   </div>
                 )}
 
@@ -782,16 +780,16 @@ export default function Page() {
             </div>
 
             {/* Status bar */}
-            <div style={{background:"rgba(30,41,59,0.5)",padding:"0.625rem 1.25rem",borderTop:"1px solid rgba(255,255,255,0.08)",display:"flex",gap:"1.5rem",alignItems:"center"}}>
+            <div style={{background:"#f8fafc",padding:"0.625rem 1.25rem",borderTop:"1px solid #e2e8f0",display:"flex",gap:"1.5rem",alignItems:"center"}}>
               {[
-                {label:"3 Scanners Active",c:"#10b981"},
-                {label:"12 Assets Monitored",c:"#60a5fa"},
-                {label:"2 SLA Breaches",c:"#f43f5e"},
-                {label:"Last Scan: 4 min ago",c:"#94a3b8"},
+                {label:"3 Scanners Active",c:"#16a34a"},
+                {label:"12 Assets Monitored",c:"#2563eb"},
+                {label:"2 SLA Breaches",c:"#dc2626"},
+                {label:"Last Scan: 4 min ago",c:"#64748b"},
               ].map(s=>(
                 <span key={s.label} style={{fontSize:"0.62rem",color:s.c,fontWeight:600}}>{s.label}</span>
               ))}
-              <span style={{marginLeft:"auto",fontSize:"0.62rem",color:"#94a3b8"}}>PosturePilot v2.0 · posturepilot.io</span>
+              <span style={{marginLeft:"auto",fontSize:"0.62rem",color:"#64748b"}}>PosturePilot v2.0 · posturepilot.io</span>
             </div>
           </div>
 
@@ -1091,7 +1089,7 @@ export default function Page() {
       {/* DASHBOARDS */}
       <section id="features" style={{padding:"25px 2rem 4rem",maxWidth:1200,margin:"0 auto",scrollMarginTop:"64px"}}>
         <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
-          <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>10 Modules · One Command Center</div>
+          <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>12 Modules · One Command Center</div>
           <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em",color:"#0f172a"}}>Everything your CISO needs to see</h2>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:"1rem"}}>
