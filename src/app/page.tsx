@@ -143,8 +143,13 @@ export default function Page() {
         </div>
         <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
           {/* Standout CISO Cockpit Link */}
-          <Link 
-            href="/dashboard/ciso" 
+          <a 
+            href="#monitor" 
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveMockupTab("CISO Cockpit");
+              scrollToSection(e, "monitor");
+            }}
             style={{
               color:"#7c3aed",
               textDecoration:"none",
@@ -176,7 +181,7 @@ export default function Page() {
             }}
           >
             👨‍✈️ CISO Cockpit
-          </Link>
+          </a>
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
           <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
           <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
@@ -257,9 +262,10 @@ export default function Page() {
           {/* RIGHT — GIF + animated SVG overlay on 6 panel positions */}
           <div 
             className="shield-wrap" 
-            title="Interactive Security Shield — Click to explore security modules"
+            title="Interactive Security Shield — Click to inspect CISO Executive Cockpit"
             onClick={(e) => {
-              const element = document.getElementById("features");
+              setActiveMockupTab("CISO Cockpit");
+              const element = document.getElementById("monitor");
               if (element) {
                 const navElement = document.querySelector("nav");
                 const navHeight = navElement ? navElement.offsetHeight : 64;
