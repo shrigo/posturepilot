@@ -70,6 +70,10 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     title: '🔑 Identity PreCheck',
     subtitle: 'SSO directory auditing, privilege drift scanning & Zero-Trust MFA',
   },
+  '/dashboard/dispatch': {
+    title: '🚨 Dispatch Center',
+    subtitle: 'SOAR automated routing, Jira & ServiceNow ticketing integrations & active owner gates',
+  },
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

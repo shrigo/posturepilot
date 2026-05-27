@@ -63,8 +63,118 @@ export default function SecureTriagePage() {
     return true;
   });
 
+  // SOAR Ticketing Synchronizers
+  const syncJiraToSoar = (cve: string, title: string, asset: string, severity: 'Critical' | 'High' | 'Medium' | 'Low', cvss: number) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const savedRules = localStorage.getItem('posturepilot_routing_rules');
+      const rules = savedRules ? JSON.parse(savedRules) : [
+        { category: 'Cloud Altitude (AWS/Azure/GCP)', leadName: 'Sarah Connor', leadRole: 'Cloud Security Lead', avatar: 'SC', autoJira: true, autoSnow: false },
+        { category: 'Network Runway (Perimeters/FW/VPN)', leadName: 'Devon Vance', leadRole: 'Network Ops Specialist', avatar: 'DV', autoJira: true, autoSnow: true },
+        { category: 'App Security Check (OWASP/SAST/DAST)', leadName: 'Marcus Brody', leadRole: 'Application Architect', avatar: 'MB', autoJira: false, autoSnow: true },
+        { category: 'Identity PreCheck (SSO/IAM/MFA)', leadName: 'Elena Rostova', leadRole: 'IAM & Zero-Trust Director', avatar: 'ER', autoJira: true, autoSnow: false },
+      ];
+
+      // Determine Lead Assignee based on vulnerability asset target
+      let lead = rules[2]; // Default: Marcus Brody (AppSec)
+      const targetAsset = asset.toLowerCase();
+      if (targetAsset.includes('db') || targetAsset.includes('vault') || targetAsset.includes('s3')) {
+        lead = rules[0]; // Sarah Connor (Cloud)
+      } else if (targetAsset.includes('fw') || targetAsset.includes('vpn') || targetAsset.includes('gateway') || targetAsset.includes('loadbalancer')) {
+        lead = rules[1]; // Devon Vance (Network)
+      } else if (targetAsset.includes('auth') || targetAsset.includes('directory')) {
+        lead = rules[3]; // Elena Rostova (Identity)
+      }
+
+      const savedTickets = localStorage.getItem('posturepilot_soar_tickets');
+      let tickets = savedTickets ? JSON.parse(savedTickets) : [];
+
+      const savedLogs = localStorage.getItem('posturepilot_soar_logs');
+      let logs = savedLogs ? JSON.parse(savedLogs) : [];
+
+      const timestamp = new Date().toLocaleTimeString();
+      const ticketId = `JIRA-SEC-${Math.floor(Math.random() * 8000 + 2000)}`;
+
+      // Create new ticket object
+      const newTicket = {
+        id: ticketId,
+        cveId: cve,
+        title: title,
+        asset: asset,
+        assignee: lead.leadName,
+        avatar: lead.avatar,
+        severity: severity,
+        status: 'Dispatched',
+        system: 'Jira',
+        createdAt: Date.now(),
+        slaLimitMs: severity === 'Critical' ? 24 * 60 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000,
+      };
+
+      tickets.unshift(newTicket);
+      logs.push(`[${timestamp} SOAR-OVERRIDE] Manual override dispatch triggered by operator on Risk Radar.`);
+      logs.push(`[${timestamp} SOAR-ROUTER] Routing mapped asset "${asset}" to Lead: ${lead.leadName}.`);
+      logs.push(`[${timestamp} SOAR-JIRA] Dispatched ticket ${ticketId} with live ticking SLA Altimeter.`);
+
+      localStorage.setItem('posturepilot_soar_tickets', JSON.stringify(tickets));
+      localStorage.setItem('posturepilot_soar_logs', JSON.stringify(logs));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const syncHotPatchToSoar = (cve: string, asset: string) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const savedTickets = localStorage.getItem('posturepilot_soar_tickets');
+      let tickets = savedTickets ? JSON.parse(savedTickets) : [];
+
+      const savedLogs = localStorage.getItem('posturepilot_soar_logs');
+      let logs = savedLogs ? JSON.parse(savedLogs) : [];
+
+      const timestamp = new Date().toLocaleTimeString();
+      logs.push(`[${timestamp} SOAR-MITIGATE] Manual EDR hot-patch patch action initialized for ${cve} on ${asset}.`);
+      
+      let matchedCount = 0;
+      tickets = tickets.map((t: any) => {
+        if (t.cveId === cve) {
+          matchedCount++;
+          return { ...t, status: 'Resolved' };
+        }
+        return t;
+      });
+
+      if (matchedCount > 0) {
+        logs.push(`[${timestamp} SOAR-RESOLVE] Auto-resolved ${matchedCount} associated tickets in live ledger.`);
+      } else {
+        logs.push(`[${timestamp} SOAR-MITIGATE] Hot-patched successfully! Active ticket ledger on gate remains clear.`);
+      }
+
+      localStorage.setItem('posturepilot_soar_tickets', JSON.stringify(tickets));
+      localStorage.setItem('posturepilot_soar_logs', JSON.stringify(logs));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const syncSnoozeToSoar = (cve: string) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const savedLogs = localStorage.getItem('posturepilot_soar_logs');
+      let logs = savedLogs ? JSON.parse(savedLogs) : [];
+      const timestamp = new Date().toLocaleTimeString();
+      logs.push(`[${timestamp} SOAR-SNOOZE] Vulnerability ${cve} marked as suppressed (snoozed) by operator.`);
+      localStorage.setItem('posturepilot_soar_logs', JSON.stringify(logs));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   // Action Handlers
   const handleJiraDispatch = (id: string, cve: string) => {
+    const f = findings.find(x => x.id === id);
+    if (f) {
+      syncJiraToSoar(f.cve, f.title, f.asset, f.severity, f.cvss);
+    }
     setFindings(prev => prev.map(f => f.id === id ? { ...f, status: 'Dispatched' } : f));
     setActionLog(prev => [`[JIRA] Created ticket SEC-JIRA-${Math.floor(Math.random() * 9000 + 1000)} for ${cve}. Assigned to SecOps team.`, ...prev.slice(0, 10)]);
   };
@@ -74,6 +184,7 @@ export default function SecureTriagePage() {
     setActionLog(prev => [`[SOC-PATCH] Spawning remediation micro-container for ${cve} on ${asset}...`, ...prev]);
 
     setTimeout(() => {
+      syncHotPatchToSoar(cve, asset);
       setActionLog(prev => [
         `[EDR-SECURE] Enforcing SSH and perimeter port blocks on ${asset}.`,
         `[SUCCESS] Vulnerability hot-patched successfully for ${cve}!`,
@@ -85,6 +196,7 @@ export default function SecureTriagePage() {
   };
 
   const handleSnooze = (id: string, cve: string) => {
+    syncSnoozeToSoar(cve);
     setFindings(prev => prev.map(f => f.id === id ? { ...f, status: 'Suppressed' } : f));
     setActionLog(prev => [`[SUPPRESSED] CVE ${cve} marked as suppressed for 90 days (Accepted business risk).`, ...prev.slice(0, 10)]);
   };

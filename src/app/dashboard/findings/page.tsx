@@ -76,6 +76,84 @@ export default function FindingsPage() {
   const [page, setPage]             = useState(1);
   const [sort, setSort]             = useState('firstSeen');
   const [order, setOrder]           = useState<'asc'|'desc'>('desc');
+  const [dispatchedIds, setDispatchedIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('posturepilot_soar_tickets');
+        if (saved) {
+          const tickets = JSON.parse(saved);
+          const cves = new Set<string>(tickets.map((t: any) => t.cveId));
+          setDispatchedIds(cves);
+        }
+      } catch {}
+    }
+  }, [data]);
+
+  const handleAutoDispatch = (f: Finding) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const savedRules = localStorage.getItem('posturepilot_routing_rules');
+      const rules = savedRules ? JSON.parse(savedRules) : [
+        { category: 'Cloud Altitude (AWS/Azure/GCP)', leadName: 'Sarah Connor', leadRole: 'Cloud Security Lead', avatar: 'SC', autoJira: true, autoSnow: false },
+        { category: 'Network Runway (Perimeters/FW/VPN)', leadName: 'Devon Vance', leadRole: 'Network Ops Specialist', avatar: 'DV', autoJira: true, autoSnow: true },
+        { category: 'App Security Check (OWASP/SAST/DAST)', leadName: 'Marcus Brody', leadRole: 'Application Architect', avatar: 'MB', autoJira: false, autoSnow: true },
+        { category: 'Identity PreCheck (SSO/IAM/MFA)', leadName: 'Elena Rostova', leadRole: 'IAM & Zero-Trust Director', avatar: 'ER', autoJira: true, autoSnow: false },
+      ];
+
+      let lead = rules[2]; // fallback Marcus
+      const host = (f.host || '').toLowerCase();
+      const sTool = (f.sourceTool || '').toLowerCase();
+      if (host.includes('db') || host.includes('vault') || host.includes('s3') || sTool.includes('prisma')) {
+        lead = rules[0];
+      } else if (host.includes('fw') || host.includes('vpn') || host.includes('gateway') || sTool.includes('palo')) {
+        lead = rules[1];
+      } else if (host.includes('auth') || host.includes('directory') || sTool.includes('identity')) {
+        lead = rules[3];
+      }
+
+      const savedTickets = localStorage.getItem('posturepilot_soar_tickets');
+      let tickets = savedTickets ? JSON.parse(savedTickets) : [];
+
+      const savedLogs = localStorage.getItem('posturepilot_soar_logs');
+      let logs = savedLogs ? JSON.parse(savedLogs) : [];
+
+      const timestamp = new Date().toLocaleTimeString();
+      const ticketId = `JIRA-SEC-${Math.floor(Math.random() * 8000 + 2000)}`;
+      const targetCve = f.cveId || `CVE-2026-${Math.floor(Math.random() * 8000 + 2000)}`;
+
+      const newTicket = {
+        id: ticketId,
+        cveId: targetCve,
+        title: f.title,
+        asset: f.host || 'Unknown Asset',
+        assignee: lead.leadName,
+        avatar: lead.avatar,
+        severity: f.severity as any,
+        status: 'Dispatched',
+        system: lead.autoJira ? 'Jira' : 'ServiceNow',
+        createdAt: Date.now(),
+        slaLimitMs: f.severity === 'Critical' ? 24 * 60 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000,
+      };
+
+      tickets.unshift(newTicket);
+      logs.push(`[${timestamp} SOAR-OVERRIDE] 1-Click Auto-Dispatch triggered from Customs Check: ${newTicket.cveId}`);
+      logs.push(`[${timestamp} SOAR-ROUTER] Routing matched: assigned to ${lead.leadName} (${lead.leadRole})`);
+      logs.push(`[${timestamp} SOAR-${newTicket.system.toUpperCase()}] Created ticket ${ticketId}.`);
+
+      localStorage.setItem('posturepilot_soar_tickets', JSON.stringify(tickets));
+      localStorage.setItem('posturepilot_soar_logs', JSON.stringify(logs));
+
+      setDispatchedIds(prev => {
+        const next = new Set(prev);
+        next.add(targetCve);
+        return next;
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -341,15 +419,15 @@ export default function FindingsPage() {
                   <thead>
                     <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
                       {[
-                        { label: 'CVE ID',    field: 'cveId',      w: 120 },
-                        { label: 'Title',     field: 'title',      w: 280 },
-                        { label: 'Severity',  field: 'severity',   w: 90 },
-                        { label: 'CVSS',      field: 'cvssScore',  w: 70 },
-                        { label: 'Tool',      field: 'sourceTool', w: 110 },
-                        { label: 'Asset',     field: 'assetName',  w: 120 },
-                        { label: 'Status',    field: 'status',     w: 90 },
-                        { label: 'SLA',       field: 'slaBreached',w: 70 },
-                        { label: 'First Seen',field: 'firstSeen',  w: 100 },
+                        { label: 'CVE ID',    field: 'cveId',      w: 110 },
+                        { label: 'Title',     field: 'title',      w: 240 },
+                        { label: 'Severity',  field: 'severity',   w: 80 },
+                        { label: 'CVSS',      field: 'cvssScore',  w: 60 },
+                        { label: 'Tool',      field: 'sourceTool', w: 100 },
+                        { label: 'Asset',     field: 'assetName',  w: 110 },
+                        { label: 'Status',    field: 'status',     w: 85 },
+                        { label: 'SLA',       field: 'slaBreached',w: 65 },
+                        { label: 'First Seen',field: 'firstSeen',  w: 90 },
                       ].map(col => (
                         <th key={col.field}
                           onClick={() => toggleSort(col.field)}
@@ -360,6 +438,9 @@ export default function FindingsPage() {
                           {col.label}{sortIcon(col.field)}
                         </th>
                       ))}
+                      <th style={{ padding: '0.7rem 0.875rem', textAlign: 'left', fontWeight: 700, width: 120, color: '#475569' }}>
+                        SOAR Ticket Gate
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -379,7 +460,7 @@ export default function FindingsPage() {
                           <td style={{ padding: '0.65rem 0.875rem', fontWeight: 700, color: isExploitCampaign ? '#e11d48' : '#1e2d6e', whiteSpace: 'nowrap' }}>
                             {f.cveId || <span style={{ color: '#94a3b8' }}>—</span>}
                           </td>
-                          <td style={{ padding: '0.65rem 0.875rem', color: '#334155', maxWidth: 280 }}>
+                          <td style={{ padding: '0.65rem 0.875rem', color: '#334155', maxWidth: 240 }}>
                             <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: isExploitCampaign ? 700 : 400 }} title={f.title}>
                               {f.title}
                             </div>
@@ -416,6 +497,31 @@ export default function FindingsPage() {
                           </td>
                           <td style={{ padding: '0.65rem 0.875rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>
                             {new Date(f.firstSeen).toLocaleDateString()}
+                          </td>
+                          <td style={{ padding: '0.65rem 0.875rem' }}>
+                            {dispatchedIds.has(f.cveId || '') ? (
+                              <span style={{ color: '#16a34a', fontWeight: 800, fontSize: '0.68rem', display: 'flex', alignItems: 'center', gap: 2 }}>
+                                ✓ DISPATCHED
+                              </span>
+                            ) : (
+                              <button
+                                onClick={() => handleAutoDispatch(f)}
+                                style={{
+                                  fontSize: '0.65rem',
+                                  fontWeight: 800,
+                                  background: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
+                                  color: '#fff',
+                                  border: 'none',
+                                  padding: '3px 7px',
+                                  borderRadius: 4,
+                                  cursor: 'pointer',
+                                  boxShadow: '0 2px 4px rgba(124, 58, 237, 0.15)',
+                                  transition: 'all 0.15s ease'
+                                }}
+                              >
+                                ⚡ Dispatch
+                              </button>
+                            )}
                           </td>
                         </tr>
                       );

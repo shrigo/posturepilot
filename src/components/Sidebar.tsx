@@ -17,6 +17,7 @@ const navItems = [
   { href: '/dashboard/ai-risk',  icon: '🤖', label: 'AI Risk',           badge: 'NEW' },
   { href: '/dashboard/identity', icon: '🔑', label: 'Identity PreCheck',  badge: 'NEW' },
   { href: '/dashboard/secure',   icon: '📡', label: 'Risk Radar',         badge: 'NEW' },
+  { href: '/dashboard/dispatch', icon: '🚨', label: 'Dispatch Center',    badge: 'SOAR' },
 ];
 
 export default function Sidebar() {

@@ -329,6 +329,7 @@ export default function Page() {
                   {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
                   {icon:"🔑",label:"Identity PreCheck",active:false,badge:"NEW"},
                   {icon:"📡",label:"Risk Radar",active:false,badge:"NEW"},
+                  {icon:"🚨",label:"Dispatch Center",active:false,badge:"SOAR"},
                 ].map(item=>(
                   <div key={item.label} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.45rem 0.875rem",
                     background:item.active?"#eff6ff":"transparent",

@@ -48,6 +48,99 @@ export default function UploadPage() {
     } catch { /* silent */ }
   };
 
+  const triggerSoarAutomatedTicketing = (tool: string, total: number, bySeverity: Record<string, number>) => {
+    if (typeof window === 'undefined') return;
+    try {
+      const savedRules = localStorage.getItem('posturepilot_routing_rules');
+      const rules = savedRules ? JSON.parse(savedRules) : [
+        { category: 'Cloud Altitude (AWS/Azure/GCP)', leadName: 'Sarah Connor', leadRole: 'Cloud Security Lead', avatar: 'SC', autoJira: true, autoSnow: false },
+        { category: 'Network Runway (Perimeters/FW/VPN)', leadName: 'Devon Vance', leadRole: 'Network Ops Specialist', avatar: 'DV', autoJira: true, autoSnow: true },
+        { category: 'App Security Check (OWASP/SAST/DAST)', leadName: 'Marcus Brody', leadRole: 'Application Architect', avatar: 'MB', autoJira: false, autoSnow: true },
+        { category: 'Identity PreCheck (SSO/IAM/MFA)', leadName: 'Elena Rostova', leadRole: 'IAM & Zero-Trust Director', avatar: 'ER', autoJira: true, autoSnow: false },
+      ];
+      
+      const savedTickets = localStorage.getItem('posturepilot_soar_tickets');
+      let tickets = savedTickets ? JSON.parse(savedTickets) : [];
+      
+      const savedLogs = localStorage.getItem('posturepilot_soar_logs');
+      let logs = savedLogs ? JSON.parse(savedLogs) : [];
+
+      const timestamp = new Date().toLocaleTimeString();
+
+      if (tool === 'soc_patcher') {
+        logs.push(`[${timestamp} SOAR-MITIGATE] SOC Hot-Patch Simulator initialized.`);
+        logs.push(`[${timestamp} SOAR-MITIGATE] Spawning remediation containers...`);
+        logs.push(`[${timestamp} SOAR-MITIGATE] Auto-patched all active critical threat vectors on edge-ingress-fw01, core-db-01.internal, and customer-vault-backup.`);
+        // Resolve matching tickets in ledger if they exist
+        tickets = tickets.map((t: any) => {
+          if (t.cveId === 'CVE-2026-3400' || t.cveId === 'CVE-2026-9800' || t.cveId === 'CVE-2026-1124') {
+            logs.push(`[${timestamp} SOAR-RESOLVE] Auto-resolved active ticket ${t.id} (${t.cveId}) via EDR Hot-Patch confirmation!`);
+            return { ...t, status: 'Resolved' };
+          }
+          return t;
+        });
+      } else {
+        logs.push(`[${timestamp} SOAR-INGEST] Automated scan file ingestion: ${tool.toUpperCase()} (${total} findings imported).`);
+        
+        const criticalCount = bySeverity['Critical'] || 0;
+        const highCount = bySeverity['High'] || 0;
+
+        if (criticalCount > 0 || highCount > 0) {
+          logs.push(`[${timestamp} SOAR-PARSER] Running priority filters. Isolated ${criticalCount} Critical & ${highCount} High vulnerabilities.`);
+          
+          if (criticalCount > 0) {
+            const rule = rules[1]; // Network Runway Lead Devon Vance
+            const ticketId = `JIRA-SEC-${Math.floor(Math.random() * 8000 + 2000)}`;
+            const newTicket = {
+              id: ticketId,
+              cveId: `CVE-2026-${Math.floor(Math.random() * 8000 + 2000)}`,
+              title: `Critical CVE injection in boundary edge interface via ${tool.toUpperCase()}`,
+              asset: 'boundary-edge-router',
+              assignee: rule.leadName,
+              avatar: rule.avatar,
+              severity: 'Critical',
+              status: 'Open',
+              system: rule.autoJira ? 'Jira' : 'ServiceNow',
+              createdAt: Date.now(),
+              slaLimitMs: 24 * 60 * 60 * 1000,
+            };
+            tickets.unshift(newTicket);
+            logs.push(`[${timestamp} SOAR-ROUTER] Routing Policy match: "Network Runway". Assignee ${rule.leadName}.`);
+            logs.push(`[${timestamp} SOAR-${newTicket.system.toUpperCase()}] Created ticket ${ticketId} with 24h SLA Altimeter.`);
+          }
+          
+          if (highCount > 0) {
+            const rule = rules[0]; // Cloud Altitude Lead Sarah Connor
+            const ticketId = `SNOW-INC-${Math.floor(Math.random() * 8000 + 2000)}`;
+            const newTicket = {
+              id: ticketId,
+              cveId: `CVE-2026-${Math.floor(Math.random() * 8000 + 2000)}`,
+              title: `High risk container image misconfiguration in prod pool`,
+              asset: 'k8s-pod-deployment',
+              assignee: rule.leadName,
+              avatar: rule.avatar,
+              severity: 'High',
+              status: 'Open',
+              system: rule.autoJira ? 'Jira' : 'ServiceNow',
+              createdAt: Date.now(),
+              slaLimitMs: 7 * 24 * 60 * 60 * 1000,
+            };
+            tickets.unshift(newTicket);
+            logs.push(`[${timestamp} SOAR-ROUTER] Routing Policy match: "Cloud Altitude". Assignee ${rule.leadName}.`);
+            logs.push(`[${timestamp} SOAR-${newTicket.system.toUpperCase()}] Created ticket ${ticketId} with 7d SLA Altimeter.`);
+          }
+        } else {
+          logs.push(`[${timestamp} SOAR-PARSER] All ingested items classified below triage threshold. No auto-tickets logged.`);
+        }
+      }
+
+      localStorage.setItem('posturepilot_soar_tickets', JSON.stringify(tickets));
+      localStorage.setItem('posturepilot_soar_logs', JSON.stringify(logs));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const handleFile = async (file: File) => {
     setLoading(true);
     setError(null);
@@ -79,13 +172,15 @@ export default function UploadPage() {
           setLoading(false);
           setIsUnderAttack(false);
           setIsMitigating(false);
-          setResult({
+          const patchResult = {
             success: true,
             jobId: 'soc-patch-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
             tool: 'soc_patcher',
             total: 3,
             bySeverity: { 'Critical': 0, 'High': 0, 'Medium': 0, 'Low': 0, 'Info': 0 }
-          });
+          };
+          setResult(patchResult);
+          triggerSoarAutomatedTicketing('soc_patcher', 3, { 'Critical': 0, 'High': 0, 'Medium': 0, 'Low': 0, 'Info': 0 });
         }
       }, 600);
       return;
@@ -103,6 +198,7 @@ export default function UploadPage() {
         setError(data.error || 'Upload failed');
       } else {
         setResult(data);
+        triggerSoarAutomatedTicketing(data.tool, data.total, data.bySeverity || {});
         setHistoryLoaded(false); // refresh history
         loadHistory();
       }
