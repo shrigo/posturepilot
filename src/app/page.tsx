@@ -161,6 +161,14 @@ export default function Page() {
       </div>
 
 
+      {/* Top Banner (Existing Color: Dark Navy Blue) */}
+      <div className="trusted-banner mobile-banner" style={{background:"linear-gradient(90deg,#1e2d6e,#1e3a8a,#1e2d6e)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+        <span style={{fontSize:"0.72rem",color:"#fff",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
+        {["Qualys VMDR","CrowdStrike","Wiz","Okta","Splunk","Tenable.io","ServiceNow","Rapid7","Snyk"].map(c=>(
+          <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#e2e8f0",whiteSpace:"nowrap",letterSpacing:"0.01em"}}>{c}</span>
+        ))}
+      </div>
+
       {/* HERO — white bg so logo sits naturally */}
       <section className="hero-section" style={{background:"linear-gradient(135deg,#f5f3ff 0%,#eff6ff 50%,#f0fdf4 100%)",minHeight:"82vh",display:"flex",alignItems:"flex-start",padding:"4rem 3rem 5px",position:"relative",overflow:"hidden"}}>
         {/* Subtle radial glow */}
@@ -217,18 +225,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 🔵 Blue — Trusted By row with mixed top names */}
-      <div className="mobile-banner" style={{background:"linear-gradient(90deg,#1e40af,#2563eb,#1e40af)",padding:"1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2rem",flexWrap:"wrap"}}>
-        <span style={{fontSize:"0.68rem",color:"#bfdbfe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
-        {["Qualys VMDR","CrowdStrike","Wiz","Okta","Splunk","Tenable.io","ServiceNow","Rapid7","Snyk","Microsoft Azure"].map(c=>(
-          <span key={c} style={{fontSize:"0.85rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
-        ))}
-      </div>
-
       {/* 🟣 Purple — Works Across row with mixed top names */}
       <div className="mobile-banner" style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed,#6d28d9)",padding:"1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2rem",flexWrap:"wrap"}}>
         <span style={{fontSize:"0.68rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Works Across</span>
-        {["Nessus Pro","OpenVAS","AWS Security Hub","SentinelOne","Google Cloud","Prisma Cloud","Orca Security","Lacework","Palo Alto Networks","Microsoft Defender"].map(c=>(
+        {["Nessus Pro","OpenVAS","AWS Security Hub","SentinelOne","Google Cloud","Prisma Cloud","Orca Security","Lacework","Palo Alto Networks","Microsoft Defender","Microsoft Azure"].map(c=>(
           <span key={c} style={{fontSize:"0.85rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
