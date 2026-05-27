@@ -264,7 +264,7 @@ export default function Page() {
               {name:"Snyk",           c:"#4C5BA5", initials:"Sn",  logoUrl:"/logos/snyk.svg",                                    logoSize:120, methods:["API"],           cat:"AppSec"},
               {name:"Rapid7",         c:"#E6242A", initials:"R7",  logoUrl:"/logos/rapid7.png",                                   logoSize:108, methods:["Upload","API"],   cat:"Scanner"},
               {name:"Okta",           c:"#007DC1", initials:"Ok",  logoUrl:"/logos/okta.svg",                                     logoSize:108, methods:["Webhook","API"], cat:"Identity"},
-              {name:"Prisma Cloud",   c:"#00C0E8", initials:"PC",  logoUrl:"/logos/prisma.svg",                                   logoSize:108, methods:["Webhook"],        cat:"Cloud"},
+              {name:"Prisma Cloud",   c:"#00C0E8", initials:"PC",  logoUrl:"/logos/prisma.png",                                   logoSize:108, methods:["Webhook"],        cat:"Cloud"},
               {name:"OpenVAS",        c:"#2d2d2d", initials:"OV",  logoUrl:"/logos/openvas.png",                                  logoSize:100, methods:["Upload","API"],   cat:"Scanner"},
             ].map(tool=>(
               <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:18,padding:"2rem 2rem 2.5rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
