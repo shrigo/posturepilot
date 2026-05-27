@@ -1086,7 +1086,7 @@ export default function Page() {
       </section>
 
       {/* DASHBOARDS */}
-      <section id="features" style={{padding:"25px 2rem 4rem",maxWidth:1200,margin:"0 auto",scrollMarginTop:"64px"}}>
+      <section id="features" style={{padding:"25px 2rem 14rem",maxWidth:1200,margin:"0 auto",scrollMarginTop:"64px"}}>
         <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
           <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>12 Modules · One Command Center</div>
           <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em",color:"#0f172a"}}>Everything your CISO needs to see</h2>
