@@ -1,7 +1,7 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type ClientKey = 'ACME' | 'UR';
+export type ClientKey = 'WELLS' | 'TOYOTA' | 'UR' | 'CISCO' | 'DISNEY';
 
 export interface Client {
   key: ClientKey;
@@ -17,29 +17,65 @@ export interface Client {
 }
 
 export const clients: Record<ClientKey, Client> = {
-  ACME: {
-    key: 'ACME',
-    name: 'Acme Financial Corp',
-    avatar: 'AC',
-    scanDate: 'May 13, 6:42 PM',
-    score: 74,
+  WELLS: {
+    key: 'WELLS',
+    name: 'Wells Fargo',
+    avatar: 'WF',
+    scanDate: 'May 27, 1:15 PM',
+    score: 76,
     grade: 'C+',
-    criticals: '14',
-    threats: '3',
-    backlog: '234',
-    assets: '1,247',
+    criticals: '12',
+    threats: '2',
+    backlog: '184',
+    assets: '14,240',
+  },
+  TOYOTA: {
+    key: 'TOYOTA',
+    name: 'Toyota',
+    avatar: 'TY',
+    scanDate: 'May 26, 4:42 PM',
+    score: 85,
+    grade: 'B',
+    criticals: '6',
+    threats: '1',
+    backlog: '78',
+    assets: '9,450',
   },
   UR: {
     key: 'UR',
-    name: 'Unified Rentals',
+    name: 'United Rentals',
     avatar: 'UR',
     scanDate: 'May 24, 2:15 PM',
-    score: 88,
-    grade: 'B+',
-    criticals: '4',
-    threats: '1',
-    backlog: '92',
-    assets: '3,842',
+    score: 91,
+    grade: 'A-',
+    criticals: '3',
+    threats: '0',
+    backlog: '45',
+    assets: '5,120',
+  },
+  CISCO: {
+    key: 'CISCO',
+    name: 'CISCO',
+    avatar: 'CS',
+    scanDate: 'May 27, 9:30 AM',
+    score: 96,
+    grade: 'A',
+    criticals: '1',
+    threats: '0',
+    backlog: '12',
+    assets: '28,400',
+  },
+  DISNEY: {
+    key: 'DISNEY',
+    name: 'Disney',
+    avatar: 'WD',
+    scanDate: 'May 25, 11:05 AM',
+    score: 81,
+    grade: 'B-',
+    criticals: '8',
+    threats: '3',
+    backlog: '115',
+    assets: '12,650',
   }
 };
 
@@ -59,7 +95,7 @@ interface ClientContextType {
 const ClientContext = createContext<ClientContextType | undefined>(undefined);
 
 export function ClientProvider({ children }: { children: React.ReactNode }) {
-  const [currentKey, setCurrentKey] = useState<ClientKey>('ACME');
+  const [currentKey, setCurrentKey] = useState<ClientKey>('WELLS');
   const [isEnterpriseMode, setIsEnterpriseMode] = useState<boolean>(false);
   const [isUnderAttack, setIsUnderAttack] = useState<boolean>(false);
   const [isMitigating, setIsMitigating] = useState<boolean>(false);

@@ -5,9 +5,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import Link from 'next/link';
 
 // Client-Specific Network Gateways and Base Indices
-// Client-Specific Network Gateways and Base Indices
 const clientNetworkMeta = {
-  ACME: {
+  WELLS: {
     AWS: {
       gateway: 'AWS Transit Gateway (Palo Alto NGFW Core VM)',
       resellerGateway: 'AWS Virtual Private Gateway (NetShield Enterprise)',
@@ -69,6 +68,57 @@ const clientNetworkMeta = {
       ]
     }
   },
+  TOYOTA: {
+    AWS: {
+      gateway: 'AWS Transit Gateway (OT Factory Palo Alto Core)',
+      resellerGateway: 'AWS IoT Core VPN Tunnel Gateway',
+      directoryType: 'Toyota Active Directory Cloud Connector',
+      baseAlerts: 15,
+      basePorts: 5,
+      vpnSessions: 112,
+      failures24h: 4,
+      firewallEvents: { total: 42000, blocked: 38200, rate: 90 },
+      openPortsList: [
+        { id: 'PT-502', port: '502', service: 'Modbus (ICS Plant Assembly PLC)', risk: 'Critical', desc: 'Exposed unauthenticated PLC controller. Risk of robotic line stop.', closed: false },
+        { id: 'PT-22', port: '22', service: 'SSH (OT Gateway Node)', risk: 'High', desc: 'Terminal interface open to plant routing tables.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '103.22.44.11', location: 'Tokyo Proxy', alert: 'Lazarus: Industrial PLC Modbus Scan attempt', protocol: 'TCP/Modbus', severity: 'high', status: 'Inbound Attack' }
+      ]
+    },
+    Azure: {
+      gateway: 'Azure ExpressRoute Factory Hub',
+      resellerGateway: 'SkyShield Gatekeeper WAN Gateway',
+      directoryType: 'Entra ID Cloud Connector',
+      baseAlerts: 18,
+      basePorts: 6,
+      vpnSessions: 94,
+      failures24h: 5,
+      firewallEvents: { total: 29000, blocked: 26100, rate: 90 },
+      openPortsList: [
+        { id: 'PT-502', port: '502', service: 'Modbus (PLC Ingress)', risk: 'Critical', desc: 'Active PLC interface exposed to Azure subnet.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '103.22.44.11', location: 'Tokyo Proxy', alert: 'ICS Modbus Scan attempt', protocol: 'TCP/Modbus', severity: 'high', status: 'Inbound Attack' }
+      ]
+    },
+    GCP: {
+      gateway: 'GCP Edge Assembly Gateway',
+      resellerGateway: 'GCP Cloud VPN Connector',
+      directoryType: 'Toyota Workspace Identity SSO',
+      baseAlerts: 10,
+      basePorts: 4,
+      vpnSessions: 82,
+      failures24h: 3,
+      firewallEvents: { total: 18000, blocked: 16500, rate: 91 },
+      openPortsList: [
+        { id: 'PT-502', port: '502', service: 'Modbus (PLC)', risk: 'Critical', desc: 'Active Modbus port sweep detected.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '103.22.44.11', location: 'Tokyo Proxy', alert: 'GCP Cloud Armor: Modbus Scan', protocol: 'TCP/Modbus', severity: 'high', status: 'Inbound Attack' }
+      ]
+    }
+  },
   UR: {
     AWS: {
       gateway: 'AWS Transit Gateway (Palo Alto NGFW Core VM)',
@@ -119,6 +169,107 @@ const clientNetworkMeta = {
       ],
       threatsList: [
         { id: 'TH-04', source: '198.51.100.12', location: 'Unknown Proxy', alert: 'GCP Cloud Armor: Lazarus Malware Beacon from GKE Workload', protocol: 'HTTPS/Beacon', severity: 'critical', status: 'Anomaly Ingress' }
+      ]
+    }
+  },
+  CISCO: {
+    AWS: {
+      gateway: 'AWS Duo WAN Gateway',
+      resellerGateway: 'AWS Duo Access Proxy',
+      directoryType: 'Cisco Duo Directory Sync',
+      baseAlerts: 2,
+      basePorts: 3,
+      vpnSessions: 1840,
+      failures24h: 1,
+      firewallEvents: { total: 182000, blocked: 181500, rate: 99 },
+      openPortsList: [
+        { id: 'PT-22', port: '22', service: 'SSH (AWS Systems Manager Target)', risk: 'Critical', desc: 'SSH administrative target port active.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '45.143.201.89', location: 'Netherlands IP', alert: 'AWS GuardDuty: Source Code telemetry leak search', protocol: 'TCP/SYN', severity: 'high', status: 'Beacon Spike' }
+      ]
+    },
+    Azure: {
+      gateway: 'Cisco SD-WAN Azure WAN Hub',
+      resellerGateway: 'Cisco ASA Virtual Firewall',
+      directoryType: 'Microsoft Entra ID Connector',
+      baseAlerts: 1,
+      basePorts: 2,
+      vpnSessions: 1450,
+      failures24h: 0,
+      firewallEvents: { total: 124000, blocked: 123800, rate: 99 },
+      openPortsList: [
+        { id: 'PT-22', port: '22', service: 'SSH', risk: 'Critical', desc: 'SSH port administrative endpoint.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '45.143.201.89', location: 'Netherlands IP', alert: 'Source Code telemetry leak search', protocol: 'TCP/SYN', severity: 'high', status: 'Beacon Spike' }
+      ]
+    },
+    GCP: {
+      gateway: 'Cisco Secure Agile GCP Gateway',
+      resellerGateway: 'Cisco Virtual Firewall GCP Node',
+      directoryType: 'Duo Federated Google Workspace SSO',
+      baseAlerts: 1,
+      basePorts: 2,
+      vpnSessions: 980,
+      failures24h: 0,
+      firewallEvents: { total: 84000, blocked: 83900, rate: 99 },
+      openPortsList: [
+        { id: 'PT-22', port: '22', service: 'SSH', risk: 'Critical', desc: 'Compute VM SSH exposed publicly.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '45.143.201.89', location: 'Netherlands IP', alert: 'GCP Cloud Armor: Developer Code sweep anomaly', protocol: 'TCP/SYN', severity: 'high', status: 'Beacon Spike' }
+      ]
+    }
+  },
+  DISNEY: {
+    AWS: {
+      gateway: 'AWS Transit Gateway (Disney CDN Palo Alto)',
+      resellerGateway: 'AWS CDN NetShield Stream Gateway',
+      directoryType: 'AWS IAM Identity Center Active Link',
+      baseAlerts: 18,
+      basePorts: 6,
+      vpnSessions: 245,
+      failures24h: 7,
+      firewallEvents: { total: 48000, blocked: 42100, rate: 87 },
+      openPortsList: [
+        { id: 'PT-8080', port: '8080', service: 'HTTP (CDN Render Farm Proxy)', risk: 'Critical', desc: 'Unencrypted rendering queue proxy exposed publicly. Vulnerable to CAD rig file sweeps.', closed: false },
+        { id: 'PT-22', port: '22', service: 'SSH (AWS Systems Manager Target)', risk: 'High', desc: 'SSH port active on public CDN load balancer.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '185.220.101.44', location: 'Tor Egress Node', alert: 'AWS GuardDuty: Brute-force SSH sweep on CDN balancer', protocol: 'TCP/SSH', severity: 'critical', status: 'Inbound Attack' }
+      ]
+    },
+    Azure: {
+      gateway: 'Azure Virtual WAN Streaming Hub',
+      resellerGateway: 'SkyShield Gatekeeper Azure CDN Gateway',
+      directoryType: 'Microsoft Entra ID Cloud Connector',
+      baseAlerts: 20,
+      basePorts: 7,
+      vpnSessions: 184,
+      failures24h: 8,
+      firewallEvents: { total: 31000, blocked: 26800, rate: 86 },
+      openPortsList: [
+        { id: 'PT-8080', port: '8080', service: 'HTTP (Render Farm Proxy)', risk: 'Critical', desc: 'Unencrypted rendering queue exposed to worldwide subnet sweeps.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '185.220.101.44', location: 'Tor Egress Node', alert: 'Brute-force SSH sweep on CDN balancer', protocol: 'TCP/SSH', severity: 'critical', status: 'Inbound Attack' }
+      ]
+    },
+    GCP: {
+      gateway: 'Google Cloud Media Connectivity Center',
+      resellerGateway: 'GCP Cloud VPN Connector',
+      directoryType: 'Disney Okta Active Directory SSO',
+      baseAlerts: 14,
+      basePorts: 5,
+      vpnSessions: 128,
+      failures24h: 5,
+      firewallEvents: { total: 19000, blocked: 16800, rate: 88 },
+      openPortsList: [
+        { id: 'PT-8080', port: '8080', service: 'HTTP (GCP Render Farm)', risk: 'Critical', desc: 'Exposed media proxy node. Secure using GCP IAP.', closed: false }
+      ],
+      threatsList: [
+        { id: 'TH-01', source: '185.220.101.44', location: 'Tor Egress Node', alert: 'GCP Cloud Armor: Brute-force SSH sweep on CDN balancer', protocol: 'TCP/SSH', severity: 'critical', status: 'Inbound Attack' }
       ]
     }
   }
@@ -194,7 +345,7 @@ export default function NetworkPage() {
   }, [currentClient.key, isEnterpriseMode, cloudProvider]);
 
   // Resolve active metadata based on active Client and Cloud Provider
-  const activeMetaClient = clientNetworkMeta[currentClient.key as 'ACME' | 'UR'] || clientNetworkMeta.ACME;
+  const activeMetaClient = clientNetworkMeta[currentClient.key as 'WELLS' | 'TOYOTA' | 'UR' | 'CISCO' | 'DISNEY'] || clientNetworkMeta.WELLS;
   const activeMeta = activeMetaClient[cloudProvider];
 
   // Real-time dynamic recalculations
@@ -840,16 +991,30 @@ export default function NetworkPage() {
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { id: 'VPN-01', user: 'contractor-sec@acme.internal', ip: '198.51.100.44', location: 'London, UK', status: 'Active SSL Tunnel' },
-                  { id: 'VPN-02', user: 'ops-deploy@acme.internal', ip: '203.0.113.88', location: 'New York, US', status: 'Active IPsec' },
-                  { id: 'VPN-03', user: 'vendor-audit@acme.internal', ip: '192.0.2.14', location: 'Frankfurt, DE', status: 'Active SSL Tunnel' }
-                ]
-                .filter(() => currentClient.key === 'ACME')
-                .concat(currentClient.key === 'UR' ? [
-                  { id: 'VPN-04', user: 'fleet-ops@unifiedrentals.com', ip: '198.51.100.12', location: 'Chicago, US', status: 'Active IPsec' },
-                  { id: 'VPN-05', user: 'rental-portal@unifiedrentals.com', ip: '203.0.113.5', location: 'Dallas, US', status: 'Active SSL Tunnel' }
-                ] : [])
+                {(({
+                  WELLS: [
+                    { id: 'VPN-01', user: 'contractor-sec@wellsfargo.com', ip: '198.51.100.44', location: 'London, UK', status: 'Active SSL Tunnel' },
+                    { id: 'VPN-02', user: 'ops-deploy@wellsfargo.com', ip: '203.0.113.88', location: 'New York, US', status: 'Active IPsec' },
+                    { id: 'VPN-03', user: 'vendor-audit@wellsfargo.com', ip: '192.0.2.14', location: 'Frankfurt, DE', status: 'Active SSL Tunnel' }
+                  ],
+                  TOYOTA: [
+                    { id: 'VPN-01', user: 'engineer-ics@toyota-motor.com', ip: '103.22.44.11', location: 'Tokyo, JP', status: 'Active IPsec' },
+                    { id: 'VPN-02', user: 'plant-sync@toyota-motor.com', ip: '203.0.113.12', location: 'Toyota City, JP', status: 'Active SSL Tunnel' }
+                  ],
+                  UR: [
+                    { id: 'VPN-04', user: 'fleet-ops@unitedrentals.com', ip: '198.51.100.12', location: 'Chicago, US', status: 'Active IPsec' },
+                    { id: 'VPN-05', user: 'rental-portal@unitedrentals.com', ip: '203.0.113.5', location: 'Dallas, US', status: 'Active SSL Tunnel' }
+                  ],
+                  CISCO: [
+                    { id: 'VPN-01', user: 'devops-core@cisco.com', ip: '173.37.14.88', location: 'San Jose, US', status: 'Active IPsec' },
+                    { id: 'VPN-02', user: 'security-ops@cisco.com', ip: '203.0.113.99', location: 'Austin, US', status: 'Active SSL Tunnel' },
+                    { id: 'VPN-03', user: 'tac-auditor@cisco.com', ip: '192.0.2.55', location: 'Bangalore, IN', status: 'Active Duo VPN' }
+                  ],
+                  DISNEY: [
+                    { id: 'VPN-01', user: 'editor-media@disney.com', ip: '184.24.115.10', location: 'Burbank, US', status: 'Active SSL Tunnel' },
+                    { id: 'VPN-02', user: 'render-ops@disney.com', ip: '203.0.113.22', location: 'Orlando, US', status: 'Active IPsec' }
+                  ]
+                })[currentClient.key] || [])
                 .map(session => {
                   const isTerminated = !!terminatedTunnels[session.id];
                   return (
@@ -906,16 +1071,29 @@ export default function NetworkPage() {
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { id: 'IP-01', ip: '185.220.101.44', location: 'Tor Egress Node', count: '142,500 packets', type: 'Tor Outbound Attack' },
-                  { id: 'IP-02', ip: '45.143.201.89', location: 'Netherlands IP', count: '89,200 packets', type: 'Malware Sweep' },
-                  { id: 'IP-03', ip: '103.250.48.12', location: 'Beijing VPN', count: '34,100 packets', type: 'C2 Probe' }
-                ]
-                .filter(() => currentClient.key === 'ACME')
-                .concat(currentClient.key === 'UR' ? [
-                  { id: 'IP-04', ip: '198.51.100.12', location: 'Unknown Proxy', count: '12,400 packets', type: 'Brute Force Host' },
-                  { id: 'IP-05', ip: '203.0.113.89', location: 'Eastern Europe Host', count: '9,800 packets', type: 'Port Sweep Host' }
-                ] : [])
+                {(({
+                  WELLS: [
+                    { id: 'IP-01', ip: '185.220.101.44', location: 'Tor Egress Node', count: '142,500 packets', type: 'Tor Outbound Attack' },
+                    { id: 'IP-02', ip: '45.143.201.89', location: 'Netherlands IP', count: '89,200 packets', type: 'Malware Sweep' },
+                    { id: 'IP-03', ip: '103.250.48.12', location: 'Beijing VPN', count: '34,100 packets', type: 'C2 Probe' }
+                  ],
+                  TOYOTA: [
+                    { id: 'IP-01', ip: '103.22.44.11', location: 'Tokyo Proxy', count: '94,500 packets', type: 'Industrial PLC Scan' },
+                    { id: 'IP-02', ip: '45.143.201.89', location: 'Netherlands IP', count: '31,200 packets', type: 'Modbus Sweeper' }
+                  ],
+                  UR: [
+                    { id: 'IP-04', ip: '198.51.100.12', location: 'Unknown Proxy', count: '12,400 packets', type: 'Brute Force Host' },
+                    { id: 'IP-05', ip: '203.0.113.89', location: 'Eastern Europe Host', count: '9,800 packets', type: 'Port Sweep Host' }
+                  ],
+                  CISCO: [
+                    { id: 'IP-01', ip: '45.143.201.89', location: 'Netherlands IP', count: '284,000 packets', type: 'Compiler API Bombard' },
+                    { id: 'IP-02', ip: '185.220.101.44', location: 'Tor Egress Node', count: '115,200 packets', type: 'Tac Authentication Scan' }
+                  ],
+                  DISNEY: [
+                    { id: 'IP-01', ip: '185.220.101.44', location: 'Tor Egress Node', count: '126,500 packets', type: 'Media CDN DDoS attempts' },
+                    { id: 'IP-02', ip: '45.143.201.89', location: 'Netherlands IP', count: '48,200 packets', type: 'Render Proxy sweeps' }
+                  ]
+                })[currentClient.key] || [])
                 .map(source => {
                   const isTraced = !!tracedRoutes[source.id];
                   return (

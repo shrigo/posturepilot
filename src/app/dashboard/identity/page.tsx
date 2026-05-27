@@ -4,54 +4,124 @@ import { useClient } from '@/context/ClientContext';
 
 // Standard identity directory connections
 const clientIdentityMeta = {
-  ACME: {
-    baseScore: 64,
+  WELLS: {
+    baseScore: 68,
     riskLevel: 'Medium-High',
-    totalUsers: 312,
-    privilegedAdmins: 28,
-    orphanedKeys: 11,
-    driftPermissions: 34,
-    mfaCoverage: 85.6,
-    directoryType: 'Okta SSO Directory',
-    ssoIndicator: '🌐 Active SSO Integration: Okta Corp API Connected',
+    totalUsers: 24800,
+    privilegedAdmins: 184,
+    orphanedKeys: 24,
+    driftPermissions: 42,
+    mfaCoverage: 91.2,
+    directoryType: 'Microsoft Entra ID Premium',
+    ssoIndicator: '🌐 Active SSO Integration: Entra ID WF-Secure API Connected',
     indicators: [
-      { name: 'Active User Permissions', count: '1,247 Scopes' },
-      { name: 'MFA Coverage Rate', count: '85.6%' },
-      { name: 'API Key Staleness (>90d)', count: '17 Keys' }
+      { name: 'Active User Permissions', count: '14,240 Scopes' },
+      { name: 'MFA Coverage Rate', count: '91.2%' },
+      { name: 'API Key Staleness (>90d)', count: '48 Keys' }
     ],
     anomalies: [
-      { id: 'AN-01', user: 'shrigoguru@acmefinance.com', alert: 'Impossible Travel Alert', desc: 'Session logins from New York, US and Berlin, Germany within 15 minutes.', severity: 'critical' },
-      { id: 'AN-02', user: 'admin-temp@acmefinance.com', alert: 'Privileged Account Inactivity', desc: 'Active administrator session without active browser events > 4 hours.', severity: 'high' },
-      { id: 'AN-03', user: 'api-service-sync@acme.internal', alert: 'API Token Drift Detection', desc: 'Access token generated with excessive wildcards and unencrypted egress rules.', severity: 'medium' }
+      { id: 'AN-01', user: 'security-audit@wellsfargo.com', alert: 'SWIFT Vault Impossible Travel', desc: 'Session logins from New York, US and Berlin, Germany within 15 minutes targeting SWIFT databases.', severity: 'critical' },
+      { id: 'AN-02', user: 'temp-admin@wellsfargo.com', alert: 'Privileged Transaction Inactivity', desc: 'Active administrator banking session without active browser events > 2 hours.', severity: 'high' },
+      { id: 'AN-03', user: 'api-service-sync@wells.internal', alert: 'SSO Token Drift Detection', desc: 'Access token generated with excessive wildcards and unencrypted egress rules.', severity: 'medium' }
     ],
     roles: [
-      { id: 'RL-01', name: 'Billing Admin Group', usersCount: 8, permissionLevel: 'Root Administrator', driftStatus: 'Excessive Wildcards' },
-      { id: 'RL-02', name: 'Contractor SSO Access', usersCount: 14, permissionLevel: 'Developer Access', driftStatus: 'MFA Bypass Active' },
-      { id: 'RL-03', name: 'Database Sync Profile', usersCount: 2, permissionLevel: 'DB Owner Root', driftStatus: 'Stale Credentials (>90d)' }
+      { id: 'RL-01', name: 'SWIFT Admin Group', usersCount: 12, permissionLevel: 'Root Administrator', driftStatus: 'Excessive Wildcards' },
+      { id: 'RL-02', name: 'Contractor SSO Access', usersCount: 45, permissionLevel: 'Developer Access', driftStatus: 'MFA Bypass Active' },
+      { id: 'RL-03', name: 'Database Sync Profile', usersCount: 6, permissionLevel: 'DB Owner Root', driftStatus: 'Stale Credentials (>90d)' }
+    ]
+  },
+  TOYOTA: {
+    baseScore: 82,
+    riskLevel: 'Medium',
+    totalUsers: 9450,
+    privilegedAdmins: 78,
+    orphanedKeys: 8,
+    driftPermissions: 19,
+    mfaCoverage: 95.8,
+    directoryType: 'Okta SSO (Toyota ID Link)',
+    ssoIndicator: '🌐 Active SSO Integration: Toyota Okta Portal Linked',
+    indicators: [
+      { name: 'Active User Permissions', count: '9,450 Scopes' },
+      { name: 'MFA Coverage Rate', count: '95.8%' },
+      { name: 'API Key Staleness (>90d)', count: '14 Keys' }
+    ],
+    anomalies: [
+      { id: 'AN-01', user: 'ics-engineer@toyota-motor.com', alert: 'PLC Modbus Anomaly Ingress', desc: 'Robotic assembly line Modbus controller scanned by an unauthenticated developer SSO token.', severity: 'critical' },
+      { id: 'AN-02', user: 'supplier-portal@toyota-motor.com', alert: 'SSO Token Infiltration sweep', desc: 'Supplier credential active on internal QA repositories from a Tor egress proxy.', severity: 'high' }
+    ],
+    roles: [
+      { id: 'RL-01', name: 'ICS Plant Engineer Group', usersCount: 18, permissionLevel: 'Factory Owner Root', driftStatus: 'Excessive IAM Permissions' },
+      { id: 'RL-02', name: 'Vendor Portal Support', usersCount: 32, permissionLevel: 'Partner SSO Access', driftStatus: 'MFA Bypass Active' }
     ]
   },
   UR: {
-    baseScore: 87,
+    baseScore: 91,
     riskLevel: 'Optimal',
-    totalUsers: 478,
-    privilegedAdmins: 12,
+    totalUsers: 5120,
+    privilegedAdmins: 45,
     orphanedKeys: 2,
     driftPermissions: 7,
     mfaCoverage: 98.2,
     directoryType: 'Microsoft Entra ID',
-    ssoIndicator: '🌐 Active SSO Integration: Azure Active Directory Connected',
+    ssoIndicator: '🌐 Active SSO Integration: United Rentals Entra ID Connected',
     indicators: [
-      { name: 'Active User Permissions', count: '3,842 Scopes' },
+      { name: 'Active User Permissions', count: '5,120 Scopes' },
       { name: 'MFA Coverage Rate', count: '98.2%' },
       { name: 'API Key Staleness (>90d)', count: '2 Keys' }
     ],
     anomalies: [
-      { id: 'AN-04', user: 'fleet-ops-admin@unifiedrentals.com', alert: 'Orphaned SSH Key Authentication', desc: 'Successful login utilizing an orphaned, stale SSH key without active ticket logs.', severity: 'critical' },
+      { id: 'AN-04', user: 'fleet-ops-admin@unitedrentals.com', alert: 'Orphaned SSH Key Authentication', desc: 'Successful login utilizing an orphaned, stale SSH key without active ticket logs.', severity: 'critical' },
       { id: 'AN-05', user: 'rental-portal-sync@ur.internal', alert: 'API Key Anomaly', desc: 'Unusual outbound request volume initiated within 2 minutes.', severity: 'high' }
     ],
     roles: [
       { id: 'RL-04', name: 'Global Fleet Sync Profile', usersCount: 3, permissionLevel: 'Root Owner', driftStatus: 'Stale SSH Key Used' },
       { id: 'RL-05', name: 'Customer Portal Support', usersCount: 18, permissionLevel: 'Support Agent Access', driftStatus: 'Excessive IAM Permissions' }
+    ]
+  },
+  CISCO: {
+    baseScore: 96,
+    riskLevel: 'Optimal',
+    totalUsers: 28400,
+    privilegedAdmins: 12,
+    orphanedKeys: 1,
+    driftPermissions: 3,
+    mfaCoverage: 99.7,
+    directoryType: 'Duo Federated SSO Portal',
+    ssoIndicator: '🌐 Active SSO Integration: Duo Enterprise Identity Synced',
+    indicators: [
+      { name: 'Active User Permissions', count: '28,400 Scopes' },
+      { name: 'MFA Coverage Rate', count: '99.7%' },
+      { name: 'API Key Staleness (>90d)', count: '0 Keys' }
+    ],
+    anomalies: [
+      { id: 'AN-01', user: 'devops-lead@cisco.com', alert: 'Leaked GitHub Builder Secret', desc: 'SSO session linked to compiler script pipeline showing leaked token calls from a foreign subnet.', severity: 'critical' }
+    ],
+    roles: [
+      { id: 'RL-01', name: 'Duo Root Security Architects', usersCount: 5, permissionLevel: 'Global Tenant Admin', driftStatus: 'Privilege Drift Scanned' }
+    ]
+  },
+  DISNEY: {
+    baseScore: 81,
+    riskLevel: 'Medium',
+    totalUsers: 12650,
+    privilegedAdmins: 115,
+    orphanedKeys: 12,
+    driftPermissions: 28,
+    mfaCoverage: 94.6,
+    directoryType: 'Disney Okta Active Directory',
+    ssoIndicator: '🌐 Active SSO Integration: Disney Okta Directory Sync Active',
+    indicators: [
+      { name: 'Active User Permissions', count: '12,650 Scopes' },
+      { name: 'MFA Coverage Rate', count: '94.6%' },
+      { name: 'API Key Staleness (>90d)', count: '18 Keys' }
+    ],
+    anomalies: [
+      { id: 'AN-01', user: 'cdn-editor@disney.com', alert: 'Media CDN Render Farm Anomaly', desc: 'SSO login targeting unreleased render servers showing impossible travel session shifts.', severity: 'critical' },
+      { id: 'AN-02', user: 'writer-temp@disney.com', alert: 'Stale Writer SSO Session Active', desc: 'Privileged writer session open for over 6 hours without browser focus events.', severity: 'high' }
+    ],
+    roles: [
+      { id: 'RL-01', name: 'CDN Render Farm Admin Group', usersCount: 14, permissionLevel: 'Grid Administrator', driftStatus: 'Excessive IAM Permissions' },
+      { id: 'RL-02', name: 'Creative Portal Access', usersCount: 85, permissionLevel: 'Developer Access', driftStatus: 'Stale Credentials (>90d)' }
     ]
   }
 };
@@ -84,7 +154,7 @@ export default function IdentityPage() {
   }, [currentClient.key]);
 
   // Resolve active metadata
-  const activeMeta = clientIdentityMeta[currentClient.key as 'ACME' | 'UR'] || clientIdentityMeta.ACME;
+  const activeMeta = clientIdentityMeta[currentClient.key as 'WELLS' | 'TOYOTA' | 'UR' | 'CISCO' | 'DISNEY'] || clientIdentityMeta.WELLS;
 
   // Real-time dynamic recalculations
   const mitigatedCount = Object.keys(mitigatedAnomalies).length;

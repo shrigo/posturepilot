@@ -16,7 +16,7 @@ export default function CISOPage() {
   const { isEnterpriseMode } = useClient();
 
   // CISO Executive View Settings (Higher Management Customizations)
-  const [selectedTenants, setSelectedTenants] = useState<string[]>(['ACME', 'UR']);
+  const [selectedTenants, setSelectedTenants] = useState<string[]>(['WELLS', 'TOYOTA', 'UR', 'CISCO', 'DISNEY']);
   const [viewWidgets, setViewWidgets] = useState<Record<string, boolean>>({
     summary: true,
     posture: true,
@@ -56,28 +56,58 @@ export default function CISOPage() {
   // Dynamic Tenant Metadata based on Integration toggles and Attack Wave
   const tenantsMetadata = [
     { 
-      key: 'ACME', 
-      name: 'Acme Financial Corp', 
-      avatar: 'AC', 
-      assets: activeIntegrations.cnapp ? 1247 : 820, 
+      key: 'WELLS', 
+      name: 'Wells Fargo', 
+      avatar: 'WF', 
+      assets: activeIntegrations.cnapp ? 14240 : 9800, 
       compliance: isGroupUnderAttack 
         ? 34 
-        : Math.max(20, 71 - (!activeIntegrations.cnapp ? 22 : 0) - (!activeIntegrations.sast ? 15 : 0)), 
-      criticals: isGroupUnderAttack ? 48 : (14 + (!activeIntegrations.cnapp ? 12 : 0)), 
-      backlog: isGroupUnderAttack ? 382 : 234, 
-      badgeColor: '#3b82f6' 
+        : Math.max(20, 76 - (!activeIntegrations.cnapp ? 20 : 0) - (!activeIntegrations.sast ? 15 : 0)), 
+      criticals: isGroupUnderAttack ? 48 : (12 + (!activeIntegrations.cnapp ? 10 : 0)), 
+      backlog: isGroupUnderAttack ? 382 : 184, 
+      badgeColor: '#dc2626' 
+    },
+    {
+      key: 'TOYOTA',
+      name: 'Toyota',
+      avatar: 'TY',
+      assets: activeIntegrations.cnapp ? 9450 : 6200,
+      compliance: isGroupUnderAttack ? 42 : Math.max(20, 85 - (!activeIntegrations.cnapp ? 15 : 0) - (!activeIntegrations.sast ? 10 : 0)),
+      criticals: isGroupUnderAttack ? 36 : (6 + (!activeIntegrations.cnapp ? 8 : 0)),
+      backlog: isGroupUnderAttack ? 210 : 78,
+      badgeColor: '#ea580c'
     },
     { 
       key: 'UR', 
-      name: 'Unified Rentals', 
+      name: 'United Rentals', 
       avatar: 'UR', 
-      assets: activeIntegrations.cspm ? 3842 : 2210, 
+      assets: activeIntegrations.cspm ? 5120 : 3100, 
       compliance: isGroupUnderAttack 
         ? 44 
-        : Math.max(25, 89 - (!activeIntegrations.cspm ? 25 : 0) - (!activeIntegrations.sca ? 10 : 0)), 
-      criticals: isGroupUnderAttack ? 32 : (4 + (!activeIntegrations.cspm ? 18 : 0)), 
-      backlog: isGroupUnderAttack ? 218 : 92, 
+        : Math.max(25, 91 - (!activeIntegrations.cspm ? 25 : 0) - (!activeIntegrations.sca ? 10 : 0)), 
+      criticals: isGroupUnderAttack ? 32 : (3 + (!activeIntegrations.cspm ? 18 : 0)), 
+      backlog: isGroupUnderAttack ? 218 : 45, 
       badgeColor: '#10b981' 
+    },
+    {
+      key: 'CISCO',
+      name: 'CISCO',
+      avatar: 'CS',
+      assets: activeIntegrations.cspm ? 28400 : 19000,
+      compliance: isGroupUnderAttack ? 58 : Math.max(30, 96 - (!activeIntegrations.cspm ? 10 : 0) - (!activeIntegrations.sca ? 5 : 0)),
+      criticals: isGroupUnderAttack ? 22 : (1 + (!activeIntegrations.cspm ? 6 : 0)),
+      backlog: isGroupUnderAttack ? 84 : 12,
+      badgeColor: '#06b6d4'
+    },
+    {
+      key: 'DISNEY',
+      name: 'Disney',
+      avatar: 'WD',
+      assets: activeIntegrations.cspm ? 12650 : 8500,
+      compliance: isGroupUnderAttack ? 38 : Math.max(20, 81 - (!activeIntegrations.cspm ? 18 : 0) - (!activeIntegrations.sca ? 12 : 0)),
+      criticals: isGroupUnderAttack ? 41 : (8 + (!activeIntegrations.cspm ? 14 : 0)),
+      backlog: isGroupUnderAttack ? 280 : 115,
+      badgeColor: '#a855f7'
     }
   ];
 
@@ -96,38 +126,35 @@ export default function CISOPage() {
   const slaStatus = avgCompliance >= 85 ? 'CONFORMANCE' : avgCompliance >= 75 ? 'DEVIATION' : 'CRITICAL BREACH';
 
   // Dynamic Patching & MTTR values based on selected tenants (Aggregate site-wide)
+  const activeTenantsComplianceSum = activeTenants.reduce((sum, t) => sum + t.compliance, 0);
+  const integrationMultiplier = Object.values(activeIntegrations).filter(Boolean).length / 4;
+  
   const patchingScore = isGroupUnderAttack
     ? 28
-    : (selectedTenants.length === 2 
-        ? Math.round(78 * (Object.values(activeIntegrations).filter(Boolean).length / 4))
-        : selectedTenants.includes('ACME') 
-          ? Math.round(68 * ((activeIntegrations.cnapp ? 1 : 0.5) + (activeIntegrations.sast ? 1 : 0.5)) / 2)
-          : selectedTenants.includes('UR') 
-            ? Math.round(87 * ((activeIntegrations.cspm ? 1 : 0.5) + (activeIntegrations.sca ? 1 : 0.5)) / 2)
-            : 0);
+    : (activeTenants.length > 0 
+        ? Math.round((activeTenantsComplianceSum / activeTenants.length) * (0.8 + 0.2 * integrationMultiplier))
+        : 0);
 
-  const patchingGrade = patchingScore >= 85 ? 'A-' : patchingScore >= 75 ? 'B+' : patchingScore >= 65 ? 'B-' : 'N/A';
-  const patchingGradeColor = patchingScore >= 85 ? '#10b981' : patchingScore >= 75 ? '#7c3aed' : patchingScore >= 65 ? '#ea580c' : '#94a3b8';
+  const patchingGrade = patchingScore >= 90 ? 'A' : patchingScore >= 80 ? 'B+' : patchingScore >= 70 ? 'B-' : patchingScore >= 60 ? 'C+' : 'D';
+  const patchingGradeColor = patchingScore >= 90 ? '#10b981' : patchingScore >= 80 ? '#7c3aed' : patchingScore >= 70 ? '#ea580c' : '#dc2626';
 
   const mttrCritical = isGroupUnderAttack
     ? 24.8
-    : (selectedTenants.length === 2 
-        ? 4.8 
-        : selectedTenants.includes('ACME') 
-          ? 6.5 
-          : selectedTenants.includes('UR') 
-            ? 3.0 
-            : 0);
+    : (activeTenants.length > 0 
+        ? parseFloat((activeTenants.reduce((sum, t) => {
+            const base = t.key === 'WELLS' ? 6.5 : t.key === 'TOYOTA' ? 4.5 : t.key === 'UR' ? 3.0 : t.key === 'CISCO' ? 1.5 : 5.0;
+            return sum + base * (2 - integrationMultiplier);
+          }, 0) / activeTenants.length).toFixed(1))
+        : 0);
 
   const mttrHigh = isGroupUnderAttack
     ? 45.3
-    : (selectedTenants.length === 2 
-        ? 14.3 
-        : selectedTenants.includes('ACME') 
-          ? 20.5 
-          : selectedTenants.includes('UR') 
-            ? 8.0 
-            : 0);
+    : (activeTenants.length > 0 
+        ? parseFloat((activeTenants.reduce((sum, t) => {
+            const base = t.key === 'WELLS' ? 20.5 : t.key === 'TOYOTA' ? 15.0 : t.key === 'UR' ? 8.0 : t.key === 'CISCO' ? 4.2 : 14.5;
+            return sum + base * (2 - integrationMultiplier);
+          }, 0) / activeTenants.length).toFixed(1))
+        : 0);
 
   // Toggle tenant in combined view
   const toggleTenant = (key: string) => {
@@ -252,19 +279,55 @@ export default function CISOPage() {
 
   // Combined charts data
   const combinedTrendData = [
-    { week: 'Week 1', ACME: 64, UR: 82, Combined: 73 },
-    { week: 'Week 2', ACME: 68, UR: 84, Combined: 76 },
-    { week: 'Week 3', ACME: 72, UR: 85, Combined: 78.5 },
-    { week: 'Week 4', ACME: 70, UR: 89, Combined: 79.5 },
-    { week: 'Week 5', ACME: tenantsMetadata[0].compliance, UR: tenantsMetadata[1].compliance, Combined: avgCompliance },
+    { week: 'Week 1', WELLS: 64, TOYOTA: 79, UR: 84, CISCO: 90, DISNEY: 76, Combined: 78.6 },
+    { week: 'Week 2', WELLS: 68, TOYOTA: 81, UR: 86, CISCO: 92, DISNEY: 78, Combined: 81.0 },
+    { week: 'Week 3', WELLS: 72, TOYOTA: 83, UR: 88, CISCO: 94, DISNEY: 79, Combined: 83.2 },
+    { week: 'Week 4', WELLS: 70, TOYOTA: 86, UR: 91, CISCO: 96, DISNEY: 82, Combined: 85.0 },
+    { 
+      week: 'Week 5', 
+      WELLS: tenantsMetadata[0].compliance, 
+      TOYOTA: tenantsMetadata[1].compliance, 
+      UR: tenantsMetadata[2].compliance, 
+      CISCO: tenantsMetadata[3].compliance, 
+      DISNEY: tenantsMetadata[4].compliance, 
+      Combined: avgCompliance 
+    },
   ];
 
   // Business Unit Framework Breakdown Data
   const frameworkComplianceData = [
-    { name: 'NIST CSF', ACME: activeIntegrations.cnapp ? 82 : 45, UR: activeIntegrations.cspm ? 94 : 58 },
-    { name: 'SOC 2', ACME: activeIntegrations.sast ? 78 : 50, UR: activeIntegrations.sca ? 89 : 62 },
-    { name: 'ISO 27001', ACME: activeIntegrations.cnapp && activeIntegrations.sast ? 71 : 35, UR: activeIntegrations.cspm && activeIntegrations.sca ? 88 : 48 },
-    { name: 'HIPAA', ACME: activeIntegrations.sast ? 64 : 40, UR: activeIntegrations.cspm ? 85 : 50 }
+    { 
+      name: 'NIST CSF', 
+      WELLS: activeIntegrations.cnapp ? 76 : 45, 
+      TOYOTA: activeIntegrations.cnapp ? 85 : 55, 
+      UR: activeIntegrations.cspm ? 91 : 60, 
+      CISCO: activeIntegrations.cspm ? 96 : 70, 
+      DISNEY: activeIntegrations.cspm ? 81 : 50 
+    },
+    { 
+      name: 'SOC 2', 
+      WELLS: activeIntegrations.sast ? 72 : 48, 
+      TOYOTA: activeIntegrations.sast ? 82 : 52, 
+      UR: activeIntegrations.sca ? 89 : 65, 
+      CISCO: activeIntegrations.sca ? 95 : 75, 
+      DISNEY: activeIntegrations.sca ? 78 : 55 
+    },
+    { 
+      name: 'ISO 27001', 
+      WELLS: activeIntegrations.cnapp && activeIntegrations.sast ? 68 : 35, 
+      TOYOTA: activeIntegrations.cnapp && activeIntegrations.sast ? 78 : 42, 
+      UR: activeIntegrations.cspm && activeIntegrations.sca ? 88 : 50, 
+      CISCO: activeIntegrations.cspm && activeIntegrations.sca ? 94 : 68, 
+      DISNEY: activeIntegrations.cspm && activeIntegrations.sca ? 76 : 44 
+    },
+    { 
+      name: 'HIPAA', 
+      WELLS: activeIntegrations.sast ? 75 : 40, 
+      TOYOTA: activeIntegrations.sast ? 60 : 35, 
+      UR: activeIntegrations.cspm ? 82 : 50, 
+      CISCO: activeIntegrations.cspm ? 90 : 65, 
+      DISNEY: activeIntegrations.cspm ? 85 : 52 
+    }
   ];
 
   return (
@@ -652,8 +715,11 @@ export default function CISOPage() {
                               <XAxis dataKey="week" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                               <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[20, 100]} />
                               <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
-                              {selectedTenants.includes('ACME') && <Area type="monotone" dataKey="ACME" name="Acme Financial" stroke="#3b82f6" strokeWidth={2} fill="none" />}
-                              {selectedTenants.includes('UR') && <Area type="monotone" dataKey="UR" name="Unified Rentals" stroke="#10b981" strokeWidth={2} fill="none" />}
+                              {selectedTenants.includes('WELLS') && <Area type="monotone" dataKey="WELLS" name="Wells Fargo" stroke="#dc2626" strokeWidth={2} fill="none" />}
+                              {selectedTenants.includes('TOYOTA') && <Area type="monotone" dataKey="TOYOTA" name="Toyota" stroke="#ea580c" strokeWidth={2} fill="none" />}
+                              {selectedTenants.includes('UR') && <Area type="monotone" dataKey="UR" name="United Rentals" stroke="#10b981" strokeWidth={2} fill="none" />}
+                              {selectedTenants.includes('CISCO') && <Area type="monotone" dataKey="CISCO" name="CISCO" stroke="#06b6d4" strokeWidth={2} fill="none" />}
+                              {selectedTenants.includes('DISNEY') && <Area type="monotone" dataKey="DISNEY" name="Disney" stroke="#a855f7" strokeWidth={2} fill="none" />}
                               {selectedTenants.length > 1 && <Area type="monotone" dataKey="Combined" name="CISO Combined Average" stroke={isGroupUnderAttack ? '#ef4444' : '#7c3aed'} strokeWidth={3} fill="url(#colorCombined)" />}
                             </AreaChart>
                           </ResponsiveContainer>
@@ -684,8 +750,11 @@ export default function CISOPage() {
                               <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                               <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[0, 100]} />
                               <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
-                              {selectedTenants.includes('ACME') && <Bar dataKey="ACME" name="Acme Financial" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={8} />}
-                              {selectedTenants.includes('UR') && <Bar dataKey="UR" name="Unified Rentals" fill="#10b981" radius={[4, 4, 0, 0]} barSize={8} />}
+                              {selectedTenants.includes('WELLS') && <Bar dataKey="WELLS" name="Wells Fargo" fill="#dc2626" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('TOYOTA') && <Bar dataKey="TOYOTA" name="Toyota" fill="#ea580c" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('UR') && <Bar dataKey="UR" name="United Rentals" fill="#10b981" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('CISCO') && <Bar dataKey="CISCO" name="CISCO" fill="#06b6d4" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('DISNEY') && <Bar dataKey="DISNEY" name="Disney" fill="#a855f7" radius={[4, 4, 0, 0]} barSize={6} />}
                             </BarChart>
                           </ResponsiveContainer>
                         )}
@@ -731,12 +800,13 @@ export default function CISOPage() {
                                 </tr>
                               )}
                               {[
-                                { name: 'payment-processor', bu: 'Acme Financial', vector: 'Weak JWT Decoding Scheme', severity: 'Critical', status: 'In Review' },
-                                { name: 'telemetry-cache', bu: 'Unified Rentals', vector: 'Public Ingress Bucket Rules', severity: 'High', status: 'Mitigated' },
-                                { name: 'auth-middleware', bu: 'Acme Financial', vector: 'SQL Injection Signature Pattern', severity: 'Critical', status: 'SLA Breach' },
-                                { name: 'inventory-db', bu: 'Unified Rentals', vector: 'Unencrypted backup database', severity: 'Medium', status: 'Secured' },
+                                { name: 'swift-payment-router', bu: 'Wells Fargo', key: 'WELLS', vector: 'Weak JWT Decoding Scheme', severity: 'Critical', status: 'In Review' },
+                                { name: 'factory-can-bus', bu: 'Toyota', key: 'TOYOTA', vector: 'OT Modbus Public Ingress', severity: 'High', status: 'In Review' },
+                                { name: 'telemetry-cache', bu: 'United Rentals', key: 'UR', vector: 'Public Ingress Bucket Rules', severity: 'High', status: 'Mitigated' },
+                                { name: 'compiler-pipeline', bu: 'CISCO', key: 'CISCO', vector: 'Leaked GitHub Builder Secret', severity: 'Critical', status: 'Secured' },
+                                { name: 'streaming-cdn', bu: 'Disney', key: 'DISNEY', vector: 'Exposed media rig cache', severity: 'Medium', status: 'Secured' },
                               ]
-                              .filter(t => selectedTenants.includes(t.bu === 'Acme Financial' ? 'ACME' : 'UR'))
+                              .filter(t => selectedTenants.includes(t.key))
                               .map((threat, idx) => (
                                 <tr key={idx}>
                                   <td style={{ fontWeight: 700, color: '#0f172a' }}>
@@ -836,8 +906,20 @@ export default function CISOPage() {
                           <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '0.65rem' }}>🎯 SLA Compliance Distribution</div>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.50rem' }}>
                             {[
-                              { label: 'Remediation Conformances', value: selectedTenants.length === 2 ? '1,016 CVEs' : selectedTenants.includes('ACME') ? '418 CVEs' : '598 CVEs', pct: '88%', desc: 'Resolved within SLA deadlines', color: '#10b981' },
-                              { label: 'Outstanding SLA Deviations', value: selectedTenants.length === 2 ? '326 CVEs' : selectedTenants.includes('ACME') ? '234 CVEs' : '92 CVEs', pct: '12%', desc: 'Pending or past deadline', color: '#dc2626' }
+                              { 
+                                label: 'Remediation Conformances', 
+                                value: `${activeTenants.reduce((sum, t) => sum + (t.key === 'WELLS' ? 418 : t.key === 'TOYOTA' ? 280 : t.key === 'UR' ? 598 : t.key === 'CISCO' ? 840 : 490), 0).toLocaleString()} CVEs`, 
+                                pct: `${avgCompliance}%`, 
+                                desc: 'Resolved within SLA deadlines', 
+                                color: '#10b981' 
+                              },
+                              { 
+                                label: 'Outstanding SLA Deviations', 
+                                value: `${totalBacklog.toLocaleString()} CVEs`, 
+                                pct: `${Math.max(0, 100 - avgCompliance)}%`, 
+                                desc: 'Pending or past deadline', 
+                                color: '#dc2626' 
+                              }
                             ].map((sla, idx) => (
                               <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                 <span style={{ fontSize: '1.25rem' }}>{idx === 0 ? '🟢' : '🔴'}</span>

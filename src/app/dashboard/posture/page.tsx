@@ -22,48 +22,110 @@ interface LiveSummary {
 
 // Client-Specific Cyber Posture Metadata Mappings
 const clientPostureMeta = {
-  ACME: {
-    baseScore: 74,
-    threatLevel: 'Elevated',
-    controlCoverage: 82,
-    baseCriticals: 14,
+  WELLS: {
+    baseScore: 76,
+    threatLevel: 'Elevated Alert',
+    controlCoverage: 80,
+    baseCriticals: 12,
     deltaText: '↓3 vs last month',
-    threatDelta: 'Elevated since May 9',
+    threatDelta: 'SWIFT API Alert since May 26',
     monthlyTrend: [
       { month: 'Dec', score: 68 },
       { month: 'Jan', score: 71 },
-      { month: 'Feb', score: 77 },
-      { month: 'Mar', score: 80 },
-      { month: 'Apr', score: 77 },
-      { month: 'May', score: 74 },
+      { month: 'Feb', score: 78 },
+      { month: 'Mar', score: 82 },
+      { month: 'Apr', score: 79 },
+      { month: 'May', score: 76 },
     ],
     threatIntelFeed: [
-      { id: 'TI-001', cve: 'CVE-2025-21762', title: 'Fortinet SSL-VPN Auth Bypass', cvss: 9.8, epss: 0.91, status: 'KEV Listed', severity: 'critical', published: '2026-05-10' },
-      { id: 'TI-002', cve: 'CVE-2025-0282',  title: 'Ivanti Connect Secure Stack Overflow', cvss: 9.0, epss: 0.88, status: 'KEV Listed', severity: 'critical', published: '2026-05-09' },
-      { id: 'TI-003', cve: 'CVE-2025-3400',  title: 'Palo Alto PAN-OS Command Injection', cvss: 8.2, epss: 0.62, status: 'Active Exploit', severity: 'high', published: '2026-05-08' },
-      { id: 'TI-004', cve: 'CVE-2025-1234',  title: 'Apache Tomcat RCE via HTTP/2', cvss: 7.5, epss: 0.34, status: 'PoC Available', severity: 'high', published: '2026-05-06' },
-      { id: 'TI-005', cve: 'CVE-2025-8891',  title: 'OpenSSH Race Condition (regreSSHion)', cvss: 7.0, epss: 0.18, status: 'Patch Available', severity: 'medium', published: '2026-05-04' },
+      { id: 'TI-001', cve: 'CVE-2025-21762', title: 'Fortinet SSL-VPN SWIFT Gateway Bypass', cvss: 9.8, epss: 0.91, status: 'KEV Listed', severity: 'critical', published: '2026-05-10' },
+      { id: 'TI-002', cve: 'CVE-2025-0282',  title: 'Ivanti Banking Portal Stack Overflow', cvss: 9.0, epss: 0.88, status: 'KEV Listed', severity: 'critical', published: '2026-05-09' },
+      { id: 'TI-003', cve: 'CVE-2025-3400',  title: 'Palo Alto Financial Core Command Injection', cvss: 8.2, epss: 0.62, status: 'Active Exploit', severity: 'high', published: '2026-05-08' },
+      { id: 'TI-004', cve: 'CVE-2025-1234',  title: 'Apache Tomcat RCE in Trading App', cvss: 7.5, epss: 0.34, status: 'PoC Available', severity: 'high', published: '2026-05-06' },
+      { id: 'TI-005', cve: 'CVE-2025-8891',  title: 'OpenSSH Banking Server Race Condition', cvss: 7.0, epss: 0.18, status: 'Patch Available', severity: 'medium', published: '2026-05-04' },
+    ]
+  },
+  TOYOTA: {
+    baseScore: 85,
+    threatLevel: 'Medium Risk',
+    controlCoverage: 88,
+    baseCriticals: 6,
+    deltaText: '↑2 vs last month',
+    threatDelta: 'ICS Network Scanned on May 24',
+    monthlyTrend: [
+      { month: 'Dec', score: 79 },
+      { month: 'Jan', score: 81 },
+      { month: 'Feb', score: 83 },
+      { month: 'Mar', score: 86 },
+      { month: 'Apr', score: 84 },
+      { month: 'May', score: 85 },
+    ],
+    threatIntelFeed: [
+      { id: 'TI-001', cve: 'CVE-2025-21762', title: 'Fortinet SSL-VPN Factory Gateway Bypass', cvss: 9.8, epss: 0.91, status: 'KEV Listed', severity: 'critical', published: '2026-05-10' },
+      { id: 'TI-003', cve: 'CVE-2025-3400',  title: 'Palo Alto OT Network Command Injection', cvss: 8.2, epss: 0.62, status: 'Active Exploit', severity: 'high', published: '2026-05-08' },
+      { id: 'TI-005', cve: 'CVE-2025-8891',  title: 'OpenSSH Assembly Host Race Condition', cvss: 7.0, epss: 0.18, status: 'Patch Available', severity: 'medium', published: '2026-05-04' },
     ]
   },
   UR: {
-    baseScore: 88,
+    baseScore: 91,
     threatLevel: 'Optimal',
     controlCoverage: 94,
-    baseCriticals: 4,
+    baseCriticals: 3,
     deltaText: '↑4 vs last month',
-    threatDelta: 'Secured on May 18',
+    threatDelta: 'Fleet Secured on May 22',
     monthlyTrend: [
-      { month: 'Dec', score: 80 },
-      { month: 'Jan', score: 82 },
-      { month: 'Feb', score: 85 },
-      { month: 'Mar', score: 89 },
-      { month: 'Apr', score: 87 },
-      { month: 'May', score: 88 },
+      { month: 'Dec', score: 84 },
+      { month: 'Jan', score: 86 },
+      { month: 'Feb', score: 88 },
+      { month: 'Mar', score: 91 },
+      { month: 'Apr', score: 90 },
+      { month: 'May', score: 91 },
     ],
     threatIntelFeed: [
-      { id: 'TI-001', cve: 'CVE-2025-21762', title: 'Fortinet SSL-VPN Auth Bypass', cvss: 9.8, epss: 0.91, status: 'KEV Listed', severity: 'critical', published: '2026-05-10' },
-      { id: 'TI-003', cve: 'CVE-2025-3400',  title: 'Palo Alto PAN-OS Command Injection', cvss: 8.2, epss: 0.62, status: 'Active Exploit', severity: 'high', published: '2026-05-08' },
-      { id: 'TI-005', cve: 'CVE-2025-8891',  title: 'OpenSSH Race Condition (regreSSHion)', cvss: 7.0, epss: 0.18, status: 'Patch Available', severity: 'medium', published: '2026-05-04' },
+      { id: 'TI-001', cve: 'CVE-2025-21762', title: 'Fortinet SSL-VPN Telemetry Portal Bypass', cvss: 9.8, epss: 0.91, status: 'KEV Listed', severity: 'critical', published: '2026-05-10' },
+      { id: 'TI-003', cve: 'CVE-2025-3400',  title: 'Palo Alto Logistics Command Injection', cvss: 8.2, epss: 0.62, status: 'Active Exploit', severity: 'high', published: '2026-05-08' },
+      { id: 'TI-005', cve: 'CVE-2025-8891',  title: 'OpenSSH GPS Receiver Race Condition', cvss: 7.0, epss: 0.18, status: 'Patch Available', severity: 'medium', published: '2026-05-04' },
+    ]
+  },
+  CISCO: {
+    baseScore: 96,
+    threatLevel: 'Optimal',
+    controlCoverage: 97,
+    baseCriticals: 1,
+    deltaText: '↑5 vs last month',
+    threatDelta: 'Duo Access Verified',
+    monthlyTrend: [
+      { month: 'Dec', score: 90 },
+      { month: 'Jan', score: 92 },
+      { month: 'Feb', score: 94 },
+      { month: 'Mar', score: 96 },
+      { month: 'Apr', score: 95 },
+      { month: 'May', score: 96 },
+    ],
+    threatIntelFeed: [
+      { id: 'TI-001', cve: 'CVE-2025-21762', title: 'Fortinet SSL-VPN Duo Auth Bypass', cvss: 9.8, epss: 0.91, status: 'KEV Listed', severity: 'critical', published: '2026-05-10' },
+      { id: 'TI-005', cve: 'CVE-2025-8891',  title: 'OpenSSH Code Pipeline Race Condition', cvss: 7.0, epss: 0.18, status: 'Patch Available', severity: 'medium', published: '2026-05-04' },
+    ]
+  },
+  DISNEY: {
+    baseScore: 81,
+    threatLevel: 'Medium Risk',
+    controlCoverage: 84,
+    baseCriticals: 8,
+    deltaText: '↑1 vs last month',
+    threatDelta: 'CDN Security Scan completed',
+    monthlyTrend: [
+      { month: 'Dec', score: 76 },
+      { month: 'Jan', score: 78 },
+      { month: 'Feb', score: 79 },
+      { month: 'Mar', score: 82 },
+      { month: 'Apr', score: 80 },
+      { month: 'May', score: 81 },
+    ],
+    threatIntelFeed: [
+      { id: 'TI-001', cve: 'CVE-2025-21762', title: 'Fortinet SSL-VPN CDN Stream Bypass', cvss: 9.8, epss: 0.91, status: 'KEV Listed', severity: 'critical', published: '2026-05-10' },
+      { id: 'TI-002', cve: 'CVE-2025-0282',  title: 'Ivanti Script Server Stack Overflow', cvss: 9.0, epss: 0.88, status: 'KEV Listed', severity: 'critical', published: '2026-05-09' },
+      { id: 'TI-003', cve: 'CVE-2025-3400',  title: 'Palo Alto Render Farm Command Injection', cvss: 8.2, epss: 0.62, status: 'Active Exploit', severity: 'high', published: '2026-05-08' },
     ]
   }
 };
@@ -130,7 +192,7 @@ export default function PosturePage() {
   };
 
   // Resolve active client mock data structure
-  const activeMeta = clientPostureMeta[currentClient.key as 'ACME' | 'UR'] || clientPostureMeta.ACME;
+  const activeMeta = clientPostureMeta[currentClient.key as 'WELLS' | 'TOYOTA' | 'UR' | 'CISCO' | 'DISNEY'] || clientPostureMeta.WELLS;
 
   // Real-time recalculated scores based on mitigations, attacks, and SLA thresholds
   const mitigatedCount = Object.keys(mitigatedCves).length;
@@ -428,8 +490,26 @@ export default function PosturePage() {
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {[
-              { name: 'FIN7 (Ransomware)', target: currentClient.key === 'ACME' ? 'Financial processing' : 'Fleet Rentals telemetry', severity: 'critical', ttps: 'T1059, T1486' },
-              { name: 'Lazarus APT',       target: currentClient.key === 'ACME' ? 'Banking databases' : 'Supply chains',   severity: 'high',     ttps: 'T1190, T1566' },
+              { 
+                name: 'FIN7 (Ransomware)', 
+                target: currentClient.key === 'WELLS' ? 'Financial processing SWIFT gateway' :
+                        currentClient.key === 'TOYOTA' ? 'Automobile supplier networks' :
+                        currentClient.key === 'CISCO' ? 'Cloud developer code compilers' :
+                        currentClient.key === 'DISNEY' ? 'Streaming distribution CDN networks' :
+                        'Fleet logistics telemetry databases', 
+                severity: 'critical', 
+                ttps: 'T1059, T1486' 
+              },
+              { 
+                name: 'Lazarus APT',       
+                target: currentClient.key === 'WELLS' ? 'Investment banking transaction vaults' :
+                        currentClient.key === 'TOYOTA' ? 'Assembly factory OT control portals' :
+                        currentClient.key === 'CISCO' ? 'Identity federated Active Directory' :
+                        currentClient.key === 'DISNEY' ? 'Unreleased media rendering farms' :
+                        'Heavy machinery rental servers',   
+                severity: 'high',     
+                ttps: 'T1190, T1566' 
+              },
               { name: 'DarkGate Loader',   target: 'Corporate phish nets', severity: 'high',     ttps: 'T1566.001'    },
             ].map(c => (
               <div key={c.name} style={{ padding: '0.65rem 0.75rem', background: '#f8fafc', borderRadius: 10, border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
