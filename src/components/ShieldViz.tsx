@@ -311,33 +311,36 @@ export default function ShieldViz(){
           style={{transformOrigin:'168px 142px',transform:'rotate(-90deg)',
             transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)',
             stroke: postureVal > 80 ? '#16a34a' : postureVal > 60 ? '#fbbf24' : '#ef4444'}}/>
-        <text x="168" y="137" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900"
+        <text x="168" y="142" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900"
           fill={postureVal > 80 ? '#16a34a' : postureVal > 60 ? '#fbbf24' : '#ef4444'}
           style={{fontFamily:'Inter,sans-serif'}}>{postureVal}%</text>
-        <text x="148" y="192" textAnchor="middle" dominantBaseline="middle" fontSize="6.2"
-          fill={postureVal > 80 ? '#15803d' : '#4f46e5'} fontWeight="900" letterSpacing="0.03em">POSTURE CLEARANCE</text>
+        <text x="173" y="225" textAnchor="middle" dominantBaseline="middle" fontSize="6.8"
+          fill={postureVal > 80 ? '#15803d' : '#4f46e5'} fontWeight="900" letterSpacing="0.01em"
+          transform="rotate(-6, 173, 225)"
+          style={{fontFamily:'Inter,sans-serif'}}>POSTURE CLEARANCE</text>
 
         {/* TL bullets — tilted 10° up, 1-min cycle animation */}
-        <g transform="rotate(-3, 150, 199)">
+        <g transform="rotate(-5, 150, 199)">
           {[
-            {cy:185, color:'#ef4444', label:'Critical'},
-            {cy:199, color:'#f97316', label:'High'},
-            {cy:213, color:'#eab308', label:'Medium'},
-          ].map(({cy,color,label},i)=>{
+            {cy:180, cx:149, tx:158, color:'#ef4444', label:'CRITICAL'},
+            {cy:194, cx:148, tx:157, color:'#f97316', label:'HIGH'},
+            {cy:208, cx:147, tx:156, color:'#eab308', label:'MEDIUM'},
+          ].map(({cy,cx,tx,color,label},i)=>{
             const isActive = activeBullet===i;
             return(
               <g key={i} style={{transition:'all 0.8s ease'}}>
-                <circle cx="150" cy={cy} r={isActive?6:4}
+                <circle cx={cx} cy={cy} r={isActive?6:4}
                   fill={color} opacity={isActive?1:0.5}
                   filter={isActive?'url(#gw)':undefined}
                   style={{transition:'r 0.8s ease, opacity 0.8s ease'}}/>
                 {/* Outer pulse ring on active */}
-                {isActive&&<circle cx="150" cy={cy} r="10"
+                {isActive&&<circle cx={cx} cy={cy} r="10"
                   fill="none" stroke={color} strokeWidth="1.2" opacity="0.35"
                   style={{animation:'pp-outerPulse 1.2s ease-out infinite'}}/>}
-                <text x="159" y={cy+4} fontSize="9" fill={color}
+                <text x={tx} y={cy+4} fontSize="9" fill={color}
                   fontWeight={isActive?'900':'700'}
                   opacity={isActive?1:0.6}
+                  letterSpacing="0.01em"
                   style={{fontFamily:'Inter,sans-serif',transition:'all 0.8s ease'}}>
                   {label}
                 </text>
@@ -362,13 +365,13 @@ export default function ShieldViz(){
         <circle cx="348" cy="159" r={pulse?13:7} fill="none" stroke="#ef4444"
           strokeWidth="1" opacity={pulse?0:0.5}
           style={{transition:'r 0.7s ease,opacity 0.7s ease'}}/>
-        <text x="310" y="222" textAnchor="middle" fontSize="6.5" fill="#4f46e5" fontWeight="900" letterSpacing="0.05em"
+        <text x="310" y="222" textAnchor="middle" fontSize="6.8" fill="#4f46e5" fontWeight="900" letterSpacing="0.05em"
           style={{fontFamily:'Inter,sans-serif'}}>CLOUD ALTITUDE</text>
 
         {/* ── TR: 3 tick marks — 5° tilt down ── */}
-        <g transform="rotate(3, 421, 197)">
+        <g transform="translate(0, -9) rotate(5, 421, 197)">
           {['CIS Audit','SOC2 Gate','GRC Pass'].map((label,i)=>{
-            const y = 183+i*14;
+            const y = 185+i*14;
             const active = trStep>i;
             return(
               <g key={i}>
@@ -389,11 +392,11 @@ export default function ShieldViz(){
               </g>
             );
           })}
-          <text x="413" y="230" fontSize="6.5" fill="#059669" fontWeight="900" letterSpacing="0.05em"
+          <text x="413" y="233" fontSize="6.8" fill="#059669" fontWeight="900" letterSpacing="0.05em"
             style={{fontFamily:'Inter,sans-serif'}}>COMPLIANCE</text>
         </g>
         {/* Master tick — draws in, fades out (no reverse) */}
-        <g transform="translate(448,144) scale(0.9) translate(-448,-144)">
+        <g transform="translate(0, 0) translate(448,144) scale(0.8) translate(-448,-144)">
           <path d="M439,144 l6,6 l13,-13"
             fill="none"
             stroke="#059669"
@@ -423,9 +426,8 @@ export default function ShieldViz(){
           })}
         </g>
         {/* BL bullet — tilted 8° up */}
-        <g transform="rotate(-8, 144, 329)">
-          <circle cx="144" cy="329" r="3" fill="#6d28d9" opacity="0.9"/>
-          <text x="150" y="333" fontSize="7" fill="#6d28d9" fontWeight="900" letterSpacing="0.04em"
+        <g transform="rotate(-10, 144, 332)">
+          <text x="135" y="336" fontSize="6.8" fill="#6d28d9" fontWeight="900" letterSpacing="0.04em"
             style={{fontFamily:'Inter,sans-serif'}}>NETWORK RUNWAY</text>
         </g>
 
@@ -456,11 +458,11 @@ export default function ShieldViz(){
         <text ref={pctTextRef} fontSize="8" fontWeight="800" textAnchor="start"
           style={{fontFamily:'Inter,sans-serif',opacity:0}}/>
         {/* BC bullets — indigo=Risk, red=Patch Rate */}
-        <circle cx="225" cy="308" r="3" fill="#4f46e5" opacity="0.9"/>
-        <text x="231" y="311" fontSize="7" fill="#4f46e5" fontWeight="900" letterSpacing="0.04em"
-          style={{fontFamily:'Inter,sans-serif'}}>RISK RADAR</text>
-        <circle cx="332" cy="308" r="3" fill="#ef4444" opacity="0.9"/>
-        <text x="338" y="311" fontSize="7" fill="#ef4444" fontWeight="900" letterSpacing="0.04em"
+        <text x="220" y="324" fontSize="6.8" fill="#4f46e5" fontWeight="900" letterSpacing="0.01em"
+          transform="rotate(-3, 220, 324)"
+          style={{fontFamily:'Inter,sans-serif'}}>VULNERABILITIES</text>
+        <text x="344" y="321" fontSize="6.8" fill="#ef4444" fontWeight="900" letterSpacing="0.04em"
+          transform="rotate(2, 344, 321)"
           style={{fontFamily:'Inter,sans-serif'}}>PATCH RATE</text>
 
         {/* ── BR: Ring cx=445, cy=280, r=22 ── */}
@@ -475,12 +477,11 @@ export default function ShieldViz(){
             fill={brSla>=90?'#16a34a':'#7c3aed'}
             style={{fontFamily:'Inter,sans-serif',transition:'all 0.8s ease'}}>{brSla}%</text>
           <text x="445" y="286" textAnchor="middle" dominantBaseline="middle" fontSize="5"
-            fill={brSla>=90?'#15803d':'#4f46e5'} fontWeight="900" letterSpacing="0.02em">DISPATCH</text>
+            fill={brSla>=90?'#15803d':'#4f46e5'} fontWeight="900" letterSpacing="0.02em">SOAR</text>
         </g>
         {/* BR bullet — matches ring color */}
-        <g transform="rotate(7, 413, 313)">
-          <circle cx="413" cy="313" r="3" fill={brSla>=90?'#16a34a':'#7c3aed'} opacity="0.9"/>
-          <text x="419" y="317" fontSize="7" fill={brSla>=90?'#16a34a':'#7c3aed'} fontWeight="900" letterSpacing="0.04em"
+        <g transform="rotate(7, 413, 321)">
+          <text x="413" y="325" fontSize="6.8" fill={brSla>=90?'#16a34a':'#7c3aed'} fontWeight="900" letterSpacing="0.04em"
             style={{fontFamily:'Inter,sans-serif',transition:'fill 0.8s ease'}}>DISPATCH SLA</text>
         </g>
 

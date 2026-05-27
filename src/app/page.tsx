@@ -21,7 +21,7 @@ const BOARDS = [
   {id:"secure",icon:"📡",label:"Risk Radar",val:"99.6%",unit:"Noise Cut",c:"#16a34a",isNew:true},
 ];
 const PLANS = [
-  {name:"Starter",price:"149",c:"#4f46e5",features:["1 user","CSV upload","500 findings","All 10 dashboards & CISO Cockpit"],cta:"Start Free Trial"},
+  {name:"Starter",price:"149",c:"#4f46e5",features:["1 user","CSV upload","500 findings","All 12 dashboards & CISO Cockpit"],cta:"Start Free Trial"},
   {name:"Professional",price:"399",c:"#7c3aed",features:["5 users · 3 sources","Qualys · Tenable · Nessus","10K findings","API access"],cta:"Start Free Trial",pop:true},
   {name:"MSSP",price:"999",c:"#0891b2",features:["Unlimited users","Multi-tenant","White-label","Dedicated support"],cta:"Contact Sales"},
 ];
@@ -179,7 +179,7 @@ export default function Page() {
           {/* LEFT */}
           <div className="hero-left">
             <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
-              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 10 Security Dashboards
+              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 12 Security Dashboards
             </div>
 
             <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#0f172a",marginBottom:"1.25rem"}}>
@@ -188,7 +188,7 @@ export default function Page() {
             </h1>
 
             <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:440}}>
-              Upload Qualys · Tenable · Nessus scans. Get a board-ready security posture dashboard in 5 minutes — with Triple-Filter Triage built in.
+              Consolidate your security stack. Instantly transform multi-scanner, cloud, and endpoint telemetry into 12 live, board-ready dashboards and the CISO Executive Cockpit.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
@@ -197,7 +197,7 @@ export default function Page() {
             </div>
 
             <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
-              {[["10","Dashboards"],["5 min","First Report"],["80%","Less Reporting"]].map(([v,l])=>(
+              {[["12","Dashboards"],["5 min","First Report"],["80%","Less Reporting"]].map(([v,l])=>(
                 <div key={l}>
                   <div style={{fontSize:"2.25rem",fontWeight:900,background:"linear-gradient(135deg,#4f46e5,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{v}</div>
                   <div style={{fontSize:"0.68rem",color:"#64748b",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.08em"}}>{l}</div>
@@ -206,9 +206,11 @@ export default function Page() {
             </div>
 
             <div style={{borderTop:"1px solid #e0e7ff",paddingTop:"1.25rem"}}>
-              <p style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:"0.75rem"}}>Ingests from your existing scanners</p>
+              <p style={{fontSize:"0.65rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:"0.75rem"}}>
+                Ingests from scanners, cloud, identity & endpoints
+              </p>
               <div style={{display:"flex",gap:"0.75rem",flexWrap:"wrap"}}>
-                {["Qualys","Tenable","Nessus","OpenVAS","AWS Security Hub"].map(s=>(
+                {["Qualys","Tenable","CrowdStrike",isEnterpriseMode?"Wiz":"SkyArmor","AWS Security Hub","Okta","SentinelOne","ServiceNow"].map(s=>(
                   <span key={s} style={{fontSize:"0.75rem",fontWeight:700,color:"#4f46e5",background:"#ede9fe",padding:"0.25rem 0.75rem",borderRadius:20,border:"1px solid #c4b5fd"}}>{s}</span>
                 ))}
               </div>
@@ -222,35 +224,48 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Securing Teams At banner */}
+      {/* Integrates with banner */}
       <div className="mobile-banner" style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed,#6d28d9)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
-        <span style={{fontSize:"0.72rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Securing Teams At</span>
-        {["Goldman Sachs","JPMorgan","Deloitte","KPMG","Accenture","Raytheon","Lockheed Martin","CrowdStrike"].map(c=>(
+        <span style={{fontSize:"0.72rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Integrates With</span>
+        {["Qualys","Tenable","CrowdStrike","SentinelOne","Okta","AWS Security Hub","Microsoft Defender","ServiceNow","Splunk","Wiz"].map(c=>(
           <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
 
+      {/* Trusted by banner */}
+      <div className="mobile-banner" style={{background:"#f8fafc",borderTop:"1px solid #e0e7ff",borderBottom:"1px solid #e0e7ff",padding:"0.9rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
+        <span style={{fontSize:"0.68rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Works Across</span>
+        {["Wiz","AWS","Microsoft Azure","Google Cloud","Prisma Cloud","Orca Security","Lacework","Snyk","Tenable.io","Rapid7"].map(c=>(
+          <span key={c} style={{fontSize:"0.82rem",fontWeight:700,color:"#475569",whiteSpace:"nowrap"}}>{c}</span>
+        ))}
+      </div>
 
       {/* ── CONFIGURE ── */}
       <section id="configure" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
         <div style={{maxWidth:1200,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#1e2d6e",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔧 Configure</div>
-            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Works with your existing scanner stack</h2>
-            <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>No rip-and-replace. Connect in minutes via upload, API, or webhook.</p>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#0f172a",letterSpacing:"-0.03em"}}>Your entire security stack. One command center.</h2>
+            <p style={{color:"#64748b",marginTop:"0.5rem",fontSize:"0.9rem"}}>Scanners · Cloud · EDR · Identity · SOAR — connect in minutes via upload, API, or webhook. No rip-and-replace.</p>
           </div>
           <div className="config-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1.25rem",width:"100%"}}>
             {[
-              {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",  logoSize:108, methods:["Upload","API"]},
-              {name:"Tenable.io",     c:"#1e2a38", initials:"Te",  logoUrl:"/logos/tenable.png",                                  logoSize:108, methods:["Upload","API"]},
-              {name:"Nessus Pro",     c:"#3eae2e", initials:"Ne",  logoUrl:"/logos/nessus.png",                                   logoSize:108, methods:["Upload"]},
-              {name:"OpenVAS",        c:"#2d2d2d", initials:"OV",  logoUrl:"/logos/openvas.png",                                  logoSize:100, methods:["Upload","API"]},
-              {name:"CrowdStrike",    c:"#E00400", initials:"CS",  logoUrl:"/logos/crowdstrike.png",                              logoSize:108, methods:["Webhook","API"]},
-              {name:"AWS Sec Hub",    c:"#FF9900", initials:"AWS", logoUrl:"/logos/aws.svg",                                      logoSize:100, methods:["Webhook"]},
-              {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.png",                               logoSize:130, methods:["Webhook","API"]},
-              {name:"Rapid7",         c:"#E6242A", initials:"R7",  logoUrl:"/logos/rapid7.png",                                   logoSize:108, methods:["Upload","API"]},
-              {name: isEnterpriseMode ? "Wiz" : "SkyArmor",       c:"#2F6FED", initials: isEnterpriseMode ? "Wiz" : "SA",  logoUrl: isEnterpriseMode ? "/logos/wiz.png" : "/logos/skyarmor.png",  logoSize:108, methods:["Upload","API"]},
-              {name: isEnterpriseMode ? "Prisma Cloud" : "PrismShield",    c:"#00C0E8", initials: isEnterpriseMode ? "PC" : "PS",  logoUrl: isEnterpriseMode ? "/logos/prisma.png" : "/logos/prismshield.png", logoSize:108, methods:["Webhook"]},
+              {name:"Qualys VMDR",    c:"#dc2626", initials:"Q",   logoUrl:"https://ik.imagekit.io/qualys/image/logo/qualys.svg",  logoSize:108, methods:["Upload","API"],   cat:"Scanner"},
+              {name:"Tenable.io",     c:"#1e2a38", initials:"Te",  logoUrl:"/logos/tenable.png",                                  logoSize:108, methods:["Upload","API"],   cat:"Scanner"},
+              {name:"Nessus Pro",     c:"#3eae2e", initials:"Ne",  logoUrl:"/logos/nessus.png",                                   logoSize:108, methods:["Upload"],        cat:"Scanner"},
+              {name:"Rapid7",         c:"#E6242A", initials:"R7",  logoUrl:"/logos/rapid7.png",                                   logoSize:108, methods:["Upload","API"],   cat:"Scanner"},
+              {name:"CrowdStrike",    c:"#E00400", initials:"CS",  logoUrl:"/logos/crowdstrike.png",                              logoSize:108, methods:["Webhook","API"], cat:"EDR"},
+              {name:"SentinelOne",    c:"#6B2BD6", initials:"S1",  logoUrl:"/logos/sentinelone.png",                              logoSize:108, methods:["Webhook","API"], cat:"EDR"},
+              {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.png",                               logoSize:130, methods:["Webhook","API"], cat:"EDR"},
+              {name:"Okta",           c:"#007DC1", initials:"Ok",  logoUrl:"/logos/okta.svg",                                     logoSize:108, methods:["Webhook","API"], cat:"Identity"},
+              {name:"AWS Sec Hub",    c:"#FF9900", initials:"AWS", logoUrl:"/logos/aws.svg",                                      logoSize:100, methods:["Webhook","API"], cat:"Cloud"},
+              {name:"Microsoft Azure",c:"#0089D6", initials:"Az",  logoUrl:"/logos/azure.png",                                    logoSize:108, methods:["Webhook","API"], cat:"Cloud"},
+              {name: isEnterpriseMode ? "Wiz" : "SkyArmor",       c:"#2F6FED", initials: isEnterpriseMode ? "Wiz" : "SA",  logoUrl: isEnterpriseMode ? "/logos/wiz.png" : "/logos/skyarmor.png",  logoSize:108, methods:["Upload","API"],   cat:"Cloud"},
+              {name: isEnterpriseMode ? "Prisma Cloud" : "PrismShield",    c:"#00C0E8", initials: isEnterpriseMode ? "PC" : "PS",  logoUrl: isEnterpriseMode ? "/logos/prisma.png" : "/logos/prismshield.png", logoSize:108, methods:["Webhook"],        cat:"Cloud"},
+              {name:"Splunk",         c:"#000000", initials:"Sp",  logoUrl:"/logos/splunk.svg",                                   logoSize:130, methods:["Webhook","API"], cat:"SIEM/SOAR"},
+              {name:"ServiceNow",     c:"#62D84E", initials:"SN",  logoUrl:"/logos/servicenow.png",                               logoSize:108, methods:["Webhook","API"], cat:"SOAR"},
+              {name:"OpenVAS",        c:"#2d2d2d", initials:"OV",  logoUrl:"/logos/openvas.png",                                  logoSize:100, methods:["Upload","API"],   cat:"Scanner"},
+              {name:"Snyk",           c:"#4C5BA5", initials:"Sn",  logoUrl:"/logos/snyk.svg",                                    logoSize:120, methods:["API"],           cat:"AppSec"},
             ].map(tool=>(
               <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:18,padding:"2rem 2rem 2.5rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
                 onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-4px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 12px 32px ${tool.c}25`;}}
@@ -274,8 +289,9 @@ export default function Page() {
                     {tool.initials}
                   </div>
                 </div>
-                <div style={{fontWeight:800,fontSize:"1.15rem",color:"#0f172a",marginBottom:"0.875rem",letterSpacing:"-0.02em"}}>{tool.name}</div>
-                <div style={{display:"flex",gap:"0.375rem",flexWrap:"wrap"}}>
+                <div style={{fontWeight:800,fontSize:"1.15rem",color:"#0f172a",marginBottom:"0.5rem",letterSpacing:"-0.02em"}}>{tool.name}</div>
+                <div style={{fontSize:"0.6rem",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",color:tool.c,marginBottom:"0.75rem",opacity:0.85}}>{tool.cat}</div>
+                <div style={{display:"flex",gap:"0.375rem",flexWrap:"wrap",justifyContent:"center"}}>
                   {tool.methods.map(m=>(
                     <span key={m} style={{fontSize:"0.62rem",fontWeight:700,padding:"2px 7px",borderRadius:20,background:m==="Webhook"?"#fef3c7":m==="API"?"#ede9fe":"#f0fdf4",color:m==="Webhook"?"#b45309":m==="API"?"#6d28d9":"#15803d",border:`1px solid ${m==="Webhook"?"#fcd34d":m==="API"?"#c4b5fd":"#86efac"}`}}>{m}</span>
                   ))}
@@ -291,7 +307,7 @@ export default function Page() {
         <div style={{maxWidth:1100,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
-            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>10 live dashboards & CISO Cockpit. Everything in one place.</h2>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>12 live dashboards & CISO Cockpit. Everything in one place.</h2>
             <p style={{color:"#a5b4fc",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
           </div>
 
