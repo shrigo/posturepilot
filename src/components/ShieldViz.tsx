@@ -393,7 +393,7 @@ export default function ShieldViz(){
             );
           })}
           <text x="413" y="233" fontSize="6.8" fill="#059669" fontWeight="900" letterSpacing="0.05em"
-            style={{fontFamily:'Inter,sans-serif'}}>COMPLIANCE</text>
+            style={{fontFamily:'Inter,sans-serif'}}>COMPLIANCE CPT</text>
         </g>
         {/* Master tick — draws in, fades out (no reverse) */}
         <g transform="translate(0, 0) translate(448,144) scale(0.8) translate(-448,-144)">
