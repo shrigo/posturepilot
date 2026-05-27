@@ -314,10 +314,8 @@ export default function ShieldViz(){
         <text x="168" y="137" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900"
           fill={postureVal > 80 ? '#16a34a' : postureVal > 60 ? '#fbbf24' : '#ef4444'}
           style={{fontFamily:'Inter,sans-serif'}}>{postureVal}%</text>
-        <text x="168" y="146" textAnchor="middle" dominantBaseline="middle" fontSize="5"
-          fill={postureVal > 80 ? '#15803d' : '#4f46e5'} fontWeight="900" letterSpacing="0.02em">POSTURE</text>
-        <text x="168" y="152" textAnchor="middle" dominantBaseline="middle" fontSize="5"
-          fill={postureVal > 80 ? '#15803d' : '#4f46e5'} fontWeight="900" letterSpacing="0.02em">CLEARANCE</text>
+        <text x="148" y="192" textAnchor="middle" dominantBaseline="middle" fontSize="6.2"
+          fill={postureVal > 80 ? '#15803d' : '#4f46e5'} fontWeight="900" letterSpacing="0.03em">POSTURE CLEARANCE</text>
 
         {/* TL bullets — tilted 10° up, 1-min cycle animation */}
         <g transform="rotate(-3, 150, 199)">
