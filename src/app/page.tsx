@@ -31,6 +31,7 @@ export default function Page() {
   const [tab,setTab]=useState("Monitor");
   const [menuOpen,setMenuOpen]=useState(false);
   const [showTop,setShowTop]=useState(false);
+  const [activeMockupTab, setActiveMockupTab] = useState("Main Terminal");
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -305,135 +306,421 @@ export default function Page() {
           </div>
 
           {/* SOC Dashboard Mockup */}
-          <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:18,overflow:"hidden",boxShadow:"0 24px 64px rgba(0,0,0,0.3)"}}>
+          <div style={{
+            background:"rgba(15,23,42,0.7)",
+            backdropFilter:"blur(24px)",
+            WebkitBackdropFilter:"blur(24px)",
+            border:"1px solid rgba(255,255,255,0.08)",
+            borderRadius:20,
+            overflow:"hidden",
+            boxShadow:"0 30px 70px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)",
+            color:"#fff"
+          }}>
 
             {/* Topbar */}
-            <div style={{background:"#f1f5f9",padding:"0.625rem 1.25rem",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid #e2e8f0"}}>
-              <div style={{display:"flex",alignItems:"center",gap:"0.5rem"}}>
-                <div style={{width:8,height:8,borderRadius:"50%",background:"#f87171"}}/>
-                <div style={{width:8,height:8,borderRadius:"50%",background:"#fbbf24"}}/>
-                <div style={{width:8,height:8,borderRadius:"50%",background:"#34d399"}}/>
-                <span style={{fontSize:"0.72rem",color:"#475569",fontWeight:600,marginLeft:"0.5rem"}}>PosturePilot Security Command Center</span>
+            <div style={{background:"rgba(30,41,59,0.5)",padding:"0.75rem 1.5rem",display:"flex",alignItems:"center",justifyContent:"space-between",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+              <div style={{display:"flex",alignItems:"center",gap:"0.6rem"}}>
+                <div style={{width:10,height:10,borderRadius:"50%",background:"#ef4444",boxShadow:"0 0 8px #ef4444"}}/>
+                <div style={{width:10,height:10,borderRadius:"50%",background:"#eab308",boxShadow:"0 0 8px #eab308"}}/>
+                <div style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",boxShadow:"0 0 8px #22c55e"}}/>
+                <span style={{fontSize:"0.75rem",color:"#94a3b8",fontWeight:700,marginLeft:"0.5rem",letterSpacing:"0.04em"}}>PosturePilot Command Console</span>
               </div>
               <div style={{display:"flex",gap:"0.5rem",alignItems:"center"}}>
-                <span style={{width:6,height:6,borderRadius:"50%",background:"#34d399",display:"inline-block",boxShadow:"0 0 8px #34d399"}}/>
-                <span style={{fontSize:"0.65rem",color:"#34d399",fontWeight:700}}>LIVE</span>
-                <span style={{fontSize:"0.65rem",color:"#475569",marginLeft:"0.5rem"}}>Last updated: just now</span>
+                <span style={{width:6,height:6,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 8px #22c55e"}}/>
+                <span style={{fontSize:"0.65rem",color:"#22c55e",fontWeight:900,letterSpacing:"0.05em"}}>SYS ACTIVE</span>
+                <span style={{fontSize:"0.65rem",color:"#94a3b8",marginLeft:"0.5rem"}}>Sync: just now</span>
               </div>
             </div>
 
-            <div className="monitor-inner" style={{display:"grid",gridTemplateColumns:"180px 1fr",minHeight:560}}>
-              <div className="monitor-sidebar" style={{background:"#f8fafc",padding:"0.875rem 0",borderRight:"1px solid #e2e8f0"}}>
+            <div className="monitor-inner" style={{display:"grid",gridTemplateColumns:"200px 1fr",minHeight:580}}>
+              <div className="monitor-sidebar" style={{background:"rgba(15,23,42,0.45)",padding:"1rem 0.5rem",borderRight:"1px solid rgba(255,255,255,0.08)"}}>
                 {[
-                  {icon:"🏢",label:"Main Terminal",active:false},
-                  {icon:"👑",label:"CISO Cockpit",active:false,badge:"BU-Joint"},
-                  {icon:"🛡️",label:"Posture Clearance",active:true,badge:"3"},
-                  {icon:"☁️",label:"Cloud Altitude",active:false},
-                  {icon:"🌐",label:"Network Runway",active:false,badge:"34"},
-                  {icon:"📋",label:"Compliance Checkpoint",active:false},
-                  {icon:"📊",label:"Flight Telemetry (KPIs)",active:false},
-                  {icon:"🔐",label:"App Security Check",active:false,badge:"14"},
-                  {icon:"🎛️",label:"Traffic Control",active:false},
-                  {icon:"🖥️",label:"Fleet Health",active:false,badge:"3"},
-                  {icon:"🤖",label:"AI Risk",active:false,badge:"NEW"},
-                  {icon:"🔑",label:"Identity PreCheck",active:false,badge:"NEW"},
-                  {icon:"📡",label:"Risk Radar",active:false,badge:"NEW"},
-                  {icon:"🚨",label:"Dispatch Center",active:false,badge:"SOAR"},
+                  {icon:"🏢",label:"Main Terminal"},
+                  {icon:"👑",label:"CISO Cockpit",badge:"BU-Joint"},
+                  {icon:"🛡️",label:"Posture Clearance",badge:"3"},
+                  {icon:"☁️",label:"Cloud Altitude"},
+                  {icon:"📋",label:"Compliance Checkpoint"},
+                  {icon:"🚨",label:"Dispatch Center",badge:"SOAR"},
                 ].map(item=>(
-                  <div key={item.label} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.45rem 0.875rem",
-                    background:item.active?"#eff6ff":"transparent",
-                    borderLeft:item.active?"2px solid #b91c1c":"2px solid transparent",marginBottom:2,cursor:"default"}}>
-                    <span style={{fontSize:"0.75rem"}}>{item.icon}</span>
-                    <span style={{fontSize:"0.68rem",color:item.active?"#b91c1c":"#64748b",fontWeight:item.active?700:400,flex:1}}>{item.label}</span>
-                    {item.badge && <span style={{fontSize:"0.55rem",fontWeight:800,padding:"1px 5px",borderRadius:99,
-                      background:item.badge==="NEW"?"#7c3aed":"#fee2e2",
-                      color:item.badge==="NEW"?"#fff":"#dc2626"}}>{item.badge}</span>}
+                  <div key={item.label} onClick={() => setActiveMockupTab(item.label)}
+                    style={{
+                      display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.5rem 0.875rem",
+                      background:item.label === activeMockupTab ? "rgba(124,58,237,0.18)" : "transparent",
+                      borderLeft:item.label === activeMockupTab ? "3px solid #7c3aed" : "3px solid transparent",
+                      color:item.label === activeMockupTab ? "#fff" : "#94a3b8",
+                      marginBottom:4,cursor:"pointer",borderRadius:6,
+                      transition:"all 0.15s ease",
+                      fontWeight:item.label === activeMockupTab ? 700 : 500
+                    }}
+                    onMouseEnter={e => { if (item.label !== activeMockupTab) { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; } }}
+                    onMouseLeave={e => { if (item.label !== activeMockupTab) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#94a3b8"; } }}>
+                    <span style={{fontSize:"0.8rem"}}>{item.icon}</span>
+                    <span style={{fontSize:"0.72rem",flex:1}}>{item.label}</span>
+                    {item.badge && <span style={{fontSize:"0.55rem",fontWeight:800,padding:"1px 6px",borderRadius:99,
+                      background:item.badge==="NEW"?"#7c3aed":item.badge==="SOAR"?"#10b981":"rgba(239,68,68,0.15)",
+                      color:item.badge==="NEW"?"#fff":item.badge==="SOAR"?"#34d399":"#ef4444",
+                      border: item.badge!=="NEW"&&item.badge!=="SOAR"? "1px solid rgba(239,68,68,0.25)":"none"
+                    }}>{item.badge}</span>}
                   </div>
                 ))}
               </div>
 
               {/* Main content */}
-              <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"0.875rem",overflow:"hidden"}}>
+              <div style={{padding:"1.25rem",display:"flex",flexDirection:"column",gap:"1.1rem",overflow:"hidden",background:"rgba(15,23,42,0.25)"}}>
 
-                {/* KPI row */}
-                <div className="monitor-kpi" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.625rem"}}>
-                  {[
-                    {label:"Risk Score",val:"74",unit:"/100",c:"#818cf8",trend:"↑2"},
-                    {label:"Open Criticals",val:"23",unit:"CVEs",c:"#f87171",trend:"↓5"},
-                    {label:"SLA Compliance",val:"91%",unit:"on-track",c:"#34d399",trend:"↑3%"},
-                    {label:"Avg CVSS",val:"7.4",unit:"score",c:"#fb923c",trend:"stable"},
-                  ].map(s=>(
-                    <div key={s.label} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.75rem",borderTop:`3px solid ${s.c}`}}>
-                      <div style={{fontSize:"0.58rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",marginBottom:"0.2rem"}}>{s.label}</div>
-                      <div style={{fontSize:"1.5rem",fontWeight:900,color:s.c,lineHeight:1}}>{s.val}<span style={{fontSize:"0.62rem",fontWeight:400,color:"#94a3b8",marginLeft:3}}>{s.unit}</span></div>
-                      <div style={{fontSize:"0.58rem",color:"#94a3b8",marginTop:"0.25rem"}}>{s.trend} this week</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Middle row: severity bars + live alerts */}
-                <div className="monitor-mid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.625rem"}}>
-                  {/* Severity breakdown */}
-                  <div style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.875rem"}}>
-                    <div style={{fontSize:"0.65rem",fontWeight:700,color:"#475569",marginBottom:"0.625rem"}}>📊 Findings by Severity</div>
-                    {[["Critical",14,"#dc2626",312],["High",67,"#ea580c",312],["Medium",148,"#d97706",312],["Low",83,"#16a34a",312],["Info",22,"#3b82f6",312]].map(([s,n,c,max])=>(
-                      <div key={String(s)} style={{marginBottom:"0.45rem"}}>
-                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.65rem",marginBottom:2}}>
-                          <span style={{color:"#475569"}}>{s}</span>
-                          <span style={{color:String(c),fontWeight:700}}>{n}</span>
+                {activeMockupTab === "Main Terminal" && (
+                  <>
+                    {/* KPI row */}
+                    <div className="monitor-kpi" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"0.875rem"}}>
+                      {[
+                        {label:"Risk Score",val:"74",unit:"/100",c:"#818cf8",trend:"↑2",tColor:"#f43f5e"},
+                        {label:"Open Criticals",val:"23",unit:"CVEs",c:"#f43f5e",trend:"↓5",tColor:"#10b981"},
+                        {label:"SLA Compliance",val:"91%",unit:"on-track",c:"#10b981",trend:"↑3%",tColor:"#10b981"},
+                        {label:"Avg CVSS",val:"7.4",unit:"score",c:"#fb923c",trend:"stable",tColor:"#94a3b8"},
+                      ].map(s=>(
+                        <div key={s.label} style={{background:"rgba(30,41,59,0.4)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:12,padding:"0.875rem",borderTop:`3px solid ${s.c}`,boxShadow:"inset 0 1px 0 rgba(255,255,255,0.05)"}}>
+                          <div style={{fontSize:"0.58rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:"0.3rem"}}>{s.label}</div>
+                          <div style={{fontSize:"1.75rem",fontWeight:900,color:"#fff",lineHeight:1}}>{s.val}<span style={{fontSize:"0.65rem",fontWeight:500,color:"#94a3b8",marginLeft:4}}>{s.unit}</span></div>
+                          <div style={{fontSize:"0.62rem",color:s.tColor,marginTop:"0.4rem",fontWeight:600}}>{s.trend} this week</div>
                         </div>
-                        <div style={{height:5,background:"#e2e8f0",borderRadius:99}}>
-                          <div style={{height:"100%",width:`${Math.round(Number(n)/Number(max)*100)}%`,background:String(c),borderRadius:99}}/>
+                      ))}
+                    </div>
+
+                    {/* Middle row */}
+                    <div className="monitor-mid" style={{display:"grid",gridTemplateColumns:"1fr 1.1fr",gap:"0.875rem"}}>
+                      {/* Findings breakdown */}
+                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem"}}>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#fff",marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"0.4rem"}}>📊 Findings by Severity</div>
+                        {[["Critical",14,"#ef4444",312],["High",67,"#f97316",312],["Medium",148,"#eab308",312],["Low",83,"#22c55e",312],["Info",22,"#3b82f6",312]].map(([s,n,c,max])=>(
+                          <div key={String(s)} style={{marginBottom:"0.55rem"}}>
+                            <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.65rem",marginBottom:3}}>
+                              <span style={{color:"#94a3b8",fontWeight:600}}>{s}</span>
+                              <span style={{color:String(c),fontWeight:800}}>{n}</span>
+                            </div>
+                            <div style={{height:6,background:"rgba(255,255,255,0.08)",borderRadius:99,overflow:"hidden"}}>
+                              <div style={{height:"100%",width:`${Math.round(Number(n)/Number(max)*100)}%`,background:String(c),borderRadius:99,boxShadow:`0 0 8px ${c}`}}/>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Active Threat Stream */}
+                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem"}}>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#fff",marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"0.4rem"}}>🚨 Real-Time Security Alarms</div>
+                        <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>
+                          {[
+                            {sev:"CRIT",cve:"CVE-2024-3400",host:"edge-ingress-fw01",c:"#ef4444",bg:"rgba(239,68,68,0.08)"},
+                            {sev:"HIGH",cve:"CVE-2024-21762",host:"financial-db-02",c:"#f97316",bg:"rgba(249,115,22,0.08)"},
+                            {sev:"HIGH",cve:"CVE-2023-44487",host:"public-lb-01",c:"#f97316",bg:"rgba(249,115,22,0.08)"},
+                            {sev:"MED",cve:"CVE-2024-1086",host:"corp-auth-app-03",c:"#eab308",bg:"rgba(234,179,8,0.08)"},
+                          ].map((a,i)=>(
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:"0.6rem",padding:"0.45rem 0.6rem",borderRadius:8,background:a.bg,border:"1px solid rgba(255,255,255,0.02)"}}>
+                              <span style={{fontSize:"0.58rem",fontWeight:900,padding:"2px 6px",borderRadius:4,background:a.c,color:"#fff",minWidth:34,textAlign:"center",boxShadow:`0 0 6px ${a.c}`}}>{a.sev}</span>
+                              <span style={{fontSize:"0.68rem",color:"#fff",fontFamily:"monospace",flex:1,fontWeight:600}}>{a.cve}</span>
+                              <span style={{fontSize:"0.65rem",color:"#94a3b8",fontFamily:"monospace"}}>{a.host}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
-                  </div>
-
-                  {/* Live alerts */}
-                  <div style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.875rem"}}>
-                    <div style={{fontSize:"0.65rem",fontWeight:700,color:"#475569",marginBottom:"0.625rem"}}>🚨 Active Alerts</div>
-                    {[
-                      {sev:"CRIT",cve:"CVE-2024-3400",host:"web-01",c:"#dc2626",bg:"#fef2f2"},
-                      {sev:"HIGH",cve:"CVE-2024-21762",host:"db-02",c:"#ea580c",bg:"#fff7ed"},
-                      {sev:"HIGH",cve:"CVE-2023-44487",host:"lb-01",c:"#ea580c",bg:"#fff7ed"},
-                      {sev:"MED",cve:"CVE-2024-1086",host:"app-03",c:"#d97706",bg:"#fffbeb"},
-                    ].map((a,i)=>(
-                      <div key={i} style={{display:"flex",alignItems:"center",gap:"0.5rem",padding:"0.35rem 0.5rem",borderRadius:6,marginBottom:4,background:a.bg}}>
-                        <span style={{fontSize:"0.55rem",fontWeight:800,padding:"1px 5px",borderRadius:4,background:a.c,color:"#fff",minWidth:28,textAlign:"center"}}>{a.sev}</span>
-                        <span style={{fontSize:"0.65rem",color:"#1e293b",fontFamily:"monospace",flex:1}}>{a.cve}</span>
-                        <span style={{fontSize:"0.6rem",color:"#64748b"}}>{a.host}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Bottom row: dashboard tiles + tools */}
-                <div className="monitor-bot" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"0.625rem"}}>
-                  {/* Dashboard mini tiles */}
-                  {[
-                    {icon:"☁️",label:"Cloud Security",val:"47 findings",sub:"3 misconfigs",c:"#60a5fa"},
-                    {icon:"🌐",label:"Network",val:"34 open ports",sub:"2 SLA breach",c:"#f87171"},
-                    {icon:"🔐",label:"App Security",val:"14 vulns",sub:"OWASP Top 10",c:"#a78bfa"},
-                  ].map(d=>(
-                    <div key={d.label} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:10,padding:"0.75rem",borderLeft:`3px solid ${d.c}`}}>
-                      <div style={{fontSize:"0.78rem",marginBottom:"0.25rem"}}>{d.icon}</div>
-                      <div style={{fontSize:"0.65rem",fontWeight:700,color:"#0f172a",marginBottom:"0.2rem"}}>{d.label}</div>
-                      <div style={{fontSize:"0.78rem",fontWeight:900,color:d.c}}>{d.val}</div>
-                      <div style={{fontSize:"0.6rem",color:"#94a3b8",marginTop:2}}>{d.sub}</div>
                     </div>
-                  ))}
-                </div>
+
+                    {/* Bottom row */}
+                    <div className="monitor-bot" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"0.875rem"}}>
+                      {[
+                        {icon:"☁️",label:"Cloud Security",val:"47 findings",sub:"3 exposed S3 buckets",c:"#60a5fa"},
+                        {icon:"🌐",label:"Network Runway",val:"34 open ports",sub:"2 SLA breach metrics",c:"#f87171"},
+                        {icon:"🔐",label:"App Security Check",val:"14 active vulns",sub:"OWASP Top 10 vectors",c:"#a78bfa"},
+                      ].map(d=>(
+                        <div key={d.label} style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"0.875rem",borderLeft:`4px solid ${d.c}`,boxShadow:"inset 0 1px 0 rgba(255,255,255,0.05)"}}>
+                          <div style={{fontSize:"1rem",marginBottom:"0.3rem"}}>{d.icon}</div>
+                          <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",marginBottom:"0.2rem"}}>{d.label}</div>
+                          <div style={{fontSize:"0.9rem",fontWeight:900,color:d.c}}>{d.val}</div>
+                          <div style={{fontSize:"0.6rem",color:"#94a3b8",marginTop:4}}>{d.sub}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {activeMockupTab === "CISO Cockpit" && (
+                  <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>👑 CISO Executive Cockpit</div>
+                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.2rem"}}>Subsidiary ledger matrix tracking real-time tenant risk scores and directives.</div>
+                    </div>
+
+                    <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,overflow:"hidden"}}>
+                      <table style={{width:"100%",borderCollapse:"collapse",textAlign:"left",fontSize:"0.72rem"}}>
+                        <thead>
+                          <tr style={{background:"rgba(30,41,59,0.6)",borderBottom:"1px solid rgba(255,255,255,0.08)",color:"#94a3b8",fontWeight:700}}>
+                            <th style={{padding:"0.75rem 1rem"}}>Business Unit</th>
+                            <th style={{padding:"0.75rem 1rem"}}>Cyber Posture</th>
+                            <th style={{padding:"0.75rem 1rem"}}>Overdue SLA</th>
+                            <th style={{padding:"0.75rem 1rem"}}>Active Layer Count</th>
+                            <th style={{padding:"0.75rem 1rem"}}>Threat Level</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[
+                            {bu:"Acme Financial Services",score:82,overdue:3,layers:12,threat:"🟢 COMPLIANT",tColor:"#10b981",bg:"rgba(16,185,129,0.03)"},
+                            {bu:"Acme Global Retail Corp",score:54,overdue:14,layers:8,threat:"🔴 CRITICAL RISK",tColor:"#ef4444",bg:"rgba(239,68,68,0.03)"},
+                            {bu:"Acme Logistics & Fleet",score:71,overdue:6,layers:11,threat:"🟡 ELEVATED WARNING",tColor:"#eab308",bg:"rgba(234,179,8,0.03)"},
+                            {bu:"Acme Corporate HQ (LDG)",score:89,overdue:0,layers:12,threat:"🟢 COMPLIANT",tColor:"#10b981",bg:"rgba(16,185,129,0.03)"},
+                          ].map((row,i)=>(
+                            <tr key={i} style={{borderBottom:"1px solid rgba(255,255,255,0.05)",background:row.bg}}>
+                              <td style={{padding:"0.75rem 1rem",fontWeight:700}}>{row.bu}</td>
+                              <td style={{padding:"0.75rem 1rem"}}>
+                                <span style={{fontWeight:800,color:row.score>80?"#10b981":row.score>60?"#eab308":"#ef4444"}}>{row.score}/100</span>
+                              </td>
+                              <td style={{padding:"0.75rem 1rem",color:row.overdue>0?"#ef4444":"#94a3b8",fontWeight:row.overdue>0?800:500}}>{row.overdue} open items</td>
+                              <td style={{padding:"0.75rem 1rem",fontWeight:600}}>{row.layers} active integrations</td>
+                              <td style={{padding:"0.75rem 1rem",fontWeight:800,color:row.tColor}}>{row.threat}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem"}}>
+                      {[
+                        {title:"Remediation Directive C-102",desc:"Patch critical edge firewall CVE-2024-3400.",bu:"Global Retail BU",c:"#ef4444"},
+                        {title:"Policy Enforcement Directive P-401",desc:"Disable unauthorized ChatGPT proxy instances.",bu:"Corporate HQ",c:"#7c3aed"}
+                      ].map((item,i)=>(
+                        <div key={i} style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"0.875rem",borderLeft:`4px solid ${item.c}`}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.25rem"}}>
+                            <span style={{fontSize:"0.68rem",fontWeight:800,color:"#fff"}}>{item.title}</span>
+                            <span style={{fontSize:"0.55rem",background:"rgba(255,255,255,0.08)",padding:"2px 6px",borderRadius:4,color:"#94a3b8"}}>{item.bu}</span>
+                          </div>
+                          <p style={{fontSize:"0.65rem",color:"#94a3b8",lineHeight:1.4}}>{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeMockupTab === "Posture Clearance" && (
+                  <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>🛡️ Cyber Posture Clearance</div>
+                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.25rem"}}>Clearance rated over the past 90 days. Joint posture trends are compiled in real-time.</div>
+                    </div>
+
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1.3fr",gap:"0.875rem"}}>
+                      {/* Left: Giant Dial */}
+                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1.25rem",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
+                        <div style={{position:"relative",width:130,height:130,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                          {/* Radial indicator SVG */}
+                          <svg viewBox="0 0 100 100" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",transform:"rotate(-90deg)"}}>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8"/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#7c3aed" strokeWidth="8" strokeDasharray="185 251" strokeLinecap="round" style={{filter:"drop-shadow(0 0 6px #7c3aed)"}}/>
+                          </svg>
+                          <div>
+                            <div style={{fontSize:"2rem",fontWeight:900,color:"#fff",lineHeight:1}}>74%</div>
+                            <div style={{fontSize:"0.55rem",color:"#10b981",fontWeight:800,marginTop:2,letterSpacing:"0.05em"}}>APPROVED</div>
+                          </div>
+                        </div>
+                        <div style={{fontSize:"0.75rem",fontWeight:700,color:"#fff",marginTop:"1rem"}}>Joint Posture Index Score</div>
+                        <div style={{fontSize:"0.58rem",color:"#94a3b8",marginTop:"0.25rem"}}>Acme Corp Business Ledger Gatekeeper</div>
+                      </div>
+
+                      {/* Right: Gorgeous Trend Line */}
+                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",marginBottom:"0.5rem"}}>📈 Historical Posture Trend — 90 Days</div>
+                        
+                        <div style={{height:100,width:"100%",position:"relative",marginTop:"0.5rem"}}>
+                          {/* Glowing linechart using SVGs */}
+                          <svg viewBox="0 0 200 100" style={{width:"100%",height:"100%",overflow:"visible"}}>
+                            <defs>
+                              <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.25"/>
+                                <stop offset="100%" stopColor="#7c3aed" stopOpacity="0"/>
+                              </linearGradient>
+                            </defs>
+                            {/* Grid lines */}
+                            <line x1="0" y1="20" x2="200" y2="20" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+                            <line x1="0" y1="50" x2="200" y2="50" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+                            <line x1="0" y1="80" x2="200" y2="80" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+                            
+                            {/* Area fill */}
+                            <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34 L 200,100 L 0,100 Z" fill="url(#chartGlow)"/>
+                            {/* Stroke line */}
+                            <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" style={{filter:"drop-shadow(0 0 5px #7c3aed)"}}/>
+                            
+                            {/* Highlight dot */}
+                            <circle cx="200" cy="34" r="4.5" fill="#fff" stroke="#7c3aed" strokeWidth="2" style={{filter:"drop-shadow(0 0 6px #7c3aed)"}}/>
+                          </svg>
+                        </div>
+
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",color:"#94a3b8",marginTop:"0.5rem"}}>
+                          <span>Feb 2026 (82%)</span>
+                          <span>Mar 2026</span>
+                          <span>Apr 2026</span>
+                          <span style={{fontWeight:800,color:"#34d399"}}>May 2026 (74% Clear)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeMockupTab === "Cloud Altitude" && (
+                  <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>☁️ Multicloud Asset Altitude Tracker</div>
+                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.25rem"}}>Unified cloud security posture (CSPM) mapping active VM assets, clusters, and database endpoints.</div>
+                    </div>
+
+                    <div style={{display:"grid",gridTemplateColumns:"1fr 1.3fr",gap:"0.875rem"}}>
+                      {/* Exposed Buckets Hot-patch Panel */}
+                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                        <div>
+                          <div style={{fontSize:"0.68rem",fontWeight:800,color:"#f43f5e",marginBottom:"0.5rem"}}>⚠️ 3 EXPOSED STORAGE OBJECTS FOUND</div>
+                          <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
+                            {["acme-financial-audit-logs","hr-employee-passports","retail-pos-backups"].map((bucket)=>(
+                              <div key={bucket} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"rgba(244,63,94,0.05)",border:"1px solid rgba(244,63,94,0.1)",padding:"0.35rem 0.5rem",borderRadius:6}}>
+                                <span style={{fontSize:"0.65rem",fontFamily:"monospace",color:"#fff"}}>{bucket}</span>
+                                <span style={{fontSize:"0.55rem",fontWeight:800,color:"#f43f5e"}}>PUBLIC READ</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <button style={{marginTop:"1rem",background:"linear-gradient(135deg,#f43f5e,#e11d48)",color:"#fff",border:"none",borderRadius:8,padding:"0.5rem",fontWeight:800,fontSize:"0.72rem",cursor:"pointer",boxShadow:"0 4px 12px rgba(244,63,94,0.3)"}}>⚡ Lock Bucket Access Now</button>
+                      </div>
+
+                      {/* Active Integrations Inventory */}
+                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem"}}>
+                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",marginBottom:"0.75rem"}}>☁️ Ingested Multicloud Environments</div>
+                        <div style={{display:"flex",flexDirection:"column",gap:"0.6rem"}}>
+                          {[
+                            {cloud:"AWS Amazon Web Services",assets:"104 active VMs, 4 RDS instances",pct:96,c:"#ff9900",img:"/logos/aws.svg"},
+                            {cloud:"Microsoft Azure Cloud",assets:"67 active VMs, 2 SQL containers",pct:99,c:"#0078d4",img:"/logos/azure.png"},
+                            {cloud:"Google Cloud Platform (GCP)",assets:"24 Container nodes, 1 registry",pct:88,c:"#34a853",img:"/logos/google.png"},
+                          ].map((item,i)=>(
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:"0.75rem",background:"rgba(255,255,255,0.02)",padding:"0.5rem",borderRadius:8,border:"1px solid rgba(255,255,255,0.03)"}}>
+                              <div style={{width:24,height:24,borderRadius:4,background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",padding:2}}>
+                                <img src={item.img} alt="" style={{width:"100%",height:"100%",objectFit:"contain"}} onError={e=>{(e.currentTarget).style.display="none";}}/>
+                              </div>
+                              <div style={{flex:1}}>
+                                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.68rem",fontWeight:700}}>
+                                  <span>{item.cloud}</span>
+                                  <span style={{color:item.pct>95?"#34d399":"#fbbf24"}}>{item.pct}% Secure</span>
+                                </div>
+                                <div style={{fontSize:"0.58rem",color:"#94a3b8",marginTop:2}}>{item.assets}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeMockupTab === "Compliance Checkpoint" && (
+                  <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>📋 Regulatory Compliance & Auditing Registry</div>
+                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.25rem"}}>Maps active scan vulnerabilities and system misconfigurations to GRC controls automatically.</div>
+                    </div>
+
+                    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"0.875rem"}}>
+                      {[
+                        {title:"SOC2 Type II",cov:"87%",c:"#7c3aed",
+                          checks:[{l:"IAM Access Rules",v:true},{l:"MFA Enforced",v:true},{l:"Database Backup Key",v:true},{l:"Exploit SLA Window",v:false}]},
+                        {title:"ISO 27001",cov:"79%",c:"#4f46e5",
+                          checks:[{l:"Risk Registry Pass",v:true},{l:"Business Continuity",v:true},{l:"Audit Log Retention",v:false},{l:"Edge Encryption",v:false}]},
+                        {title:"NIST CSF v2.0",cov:"92%",c:"#059669",
+                          checks:[{l:"Vulnerability Triage",v:true},{l:"Incident Plan Pass",v:true},{l:"Fleet Patch Rate",v:true},{l:"Shadow AI Blocks",v:true}]},
+                      ].map((fw,i)=>(
+                        <div key={i} style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem",borderTop:`3px solid ${fw.c}`,boxShadow:"inset 0 1px 0 rgba(255,255,255,0.05)"}}>
+                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.5rem"}}>
+                            <span style={{fontSize:"0.8rem",fontWeight:800,color:"#fff"}}>{fw.title}</span>
+                            <span style={{fontSize:"0.62rem",fontWeight:800,color:fw.c}}>{fw.cov} Coverage</span>
+                          </div>
+                          {/* Compliance Bar */}
+                          <div style={{height:4,background:"rgba(255,255,255,0.06)",borderRadius:99,overflow:"hidden",marginBottom:"0.75rem"}}>
+                            <div style={{height:"100%",width:fw.cov,background:fw.c,borderRadius:99,boxShadow:`0 0 6px ${fw.c}`}}/>
+                          </div>
+                          {/* Checklist */}
+                          <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
+                            {fw.checks.map((ch,idx)=>(
+                              <div key={idx} style={{display:"flex",alignItems:"center",gap:"0.4rem",fontSize:"0.62rem",color:ch.v?"#e2e8f0":"#94a3b8"}}>
+                                <span style={{fontWeight:800,color:ch.v?"#10b981":"#f43f5e"}}>{ch.v?"✓":"✗"}</span>
+                                <span>{ch.l}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeMockupTab === "Dispatch Center" && (
+                  <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+                    <div style={{borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.75rem"}}>
+                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.4rem"}}>🚨 Automated SOAR Dispatch Center</div>
+                      <div style={{fontSize:"0.75rem",color:"#94a3b8",marginTop:"0.25rem"}}>Real-time automated incident tickets mapping assignees, endpoints, and active SLA altimeters.</div>
+                    </div>
+
+                    <div style={{display:"grid",gridTemplateColumns:"1.2fr 1fr",gap:"0.875rem"}}>
+                      {/* Active Tickets Ledger */}
+                      <div style={{background:"rgba(30,41,59,0.35)",border:"1px solid rgba(255,255,255,0.05)",borderRadius:12,padding:"1rem"}}>
+                        <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",marginBottom:"0.6rem"}}>🎟️ Active Ticket Queue</div>
+                        <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>
+                          {[
+                            {id:"PP-104",title:"Critical CVE-2024-3400 Inbound",owner:"Sarah Connor",sla:"3.2 hrs",c:"#ef4444"},
+                            {id:"PP-102",title:"High CVE-2024-21762 SQL Bypass",owner:"Devon Vance",sla:"2.4 days",c:"#f97316"},
+                            {id:"PP-098",title:"High Outbound Port Sweep Sweep",owner:"Marcus Brody",sla:"4.8 days",c:"#f97316"}
+                          ].map((t)=>(
+                            <div key={t.id} style={{background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.03)",borderRadius:8,padding:"0.5rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                              <div>
+                                <div style={{fontSize:"0.68rem",fontWeight:800,color:"#fff",display:"flex",alignItems:"center",gap:"0.3rem"}}>
+                                  <span style={{color:t.c}}>{t.id}</span> | <span>{t.title}</span>
+                                </div>
+                                <div style={{fontSize:"0.58rem",color:"#94a3b8",marginTop:2}}>Lead Assignee: {t.owner}</div>
+                              </div>
+                              <div style={{textAlign:"right"}}>
+                                <div style={{fontSize:"0.65rem",fontWeight:800,color:t.c}}>⚡ {t.sla}</div>
+                                <div style={{fontSize:"0.55rem",color:"#94a3b8",marginTop:2}}>SLA REMAINING</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Scrolling Console log mockup */}
+                      <div style={{background:"rgba(15,23,42,0.9)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,padding:"1rem",fontFamily:"monospace",display:"flex",flexDirection:"column",justifyContent:"space-between",height:170}}>
+                        <div style={{fontSize:"0.58rem",color:"#818cf8",textTransform:"uppercase",letterSpacing:"0.08em",borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.3rem",marginBottom:"0.5rem"}}>📟 Live Orchestration Engine Logs</div>
+                        <div style={{fontSize:"0.58rem",color:"#22c55e",lineHeight:1.45,display:"flex",flexDirection:"column",gap:"0.25rem",overflow:"hidden",flex:1}}>
+                          <div>[12:04:10] Ingesting Qualys VMDR scan telemetry...</div>
+                          <div>[12:04:12] Found 3 exposed bucket objects in AWS S3.</div>
+                          <div style={{color:"#eab308"}}>[12:04:15 WARNING] Overdue SLA detected on asset \"db-02\".</div>
+                          <div>[12:04:18] Auto-dispatched incident PP-104 to Sarah Connor.</div>
+                          <div>[12:04:21] Slack alerts webhook pipeline routed successfully.</div>
+                        </div>
+                        <div style={{fontSize:"0.58rem",color:"#64748b",borderTop:"1px solid rgba(255,255,255,0.08)",paddingTop:"0.3rem",marginTop:"0.3rem"}}>console: soar_engine.sh --active</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeMockupTab !== "Main Terminal" && activeMockupTab !== "CISO Cockpit" && activeMockupTab !== "Posture Clearance" && activeMockupTab !== "Cloud Altitude" && activeMockupTab !== "Compliance Checkpoint" && activeMockupTab !== "Dispatch Center" && (
+                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"4rem 2rem",gap:"1rem"}}>
+                    <div style={{fontSize:"2.5rem"}}>📡</div>
+                    <div style={{fontSize:"1.1rem",fontWeight:800,color:"#fff"}}>{activeMockupTab} View</div>
+                    <div style={{fontSize:"0.75rem",color:"#94a3b8",maxWidth:340,lineHeight:1.6}}>Integrating real-time security telemetry from this layer... Click "View Demo" or explore other command sidebar tabs.</div>
+                  </div>
+                )}
 
               </div>
             </div>
 
             {/* Status bar */}
-            <div style={{background:"#f1f5f9",padding:"0.5rem 1.25rem",borderTop:"1px solid #e2e8f0",display:"flex",gap:"1.5rem",alignItems:"center"}}>
+            <div style={{background:"rgba(30,41,59,0.5)",padding:"0.625rem 1.25rem",borderTop:"1px solid rgba(255,255,255,0.08)",display:"flex",gap:"1.5rem",alignItems:"center"}}>
               {[
-                {label:"3 Scanners Active",c:"#16a34a"},
-                {label:"12 Assets Monitored",c:"#2563eb"},
-                {label:"2 SLA Breaches",c:"#dc2626"},
-                {label:"Last Scan: 4 min ago",c:"#64748b"},
+                {label:"3 Scanners Active",c:"#10b981"},
+                {label:"12 Assets Monitored",c:"#60a5fa"},
+                {label:"2 SLA Breaches",c:"#f43f5e"},
+                {label:"Last Scan: 4 min ago",c:"#94a3b8"},
               ].map(s=>(
                 <span key={s.label} style={{fontSize:"0.62rem",color:s.c,fontWeight:600}}>{s.label}</span>
               ))}
