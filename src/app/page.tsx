@@ -224,19 +224,11 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Integrates with banner */}
+      {/* Single combined trusted-by banner */}
       <div className="mobile-banner" style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed,#6d28d9)",padding:"1.1rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
-        <span style={{fontSize:"0.72rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Integrates With</span>
-        {["Qualys","Tenable","CrowdStrike","SentinelOne","Okta","AWS Security Hub","Microsoft Defender","ServiceNow","Splunk","Wiz"].map(c=>(
+        <span style={{fontSize:"0.72rem",color:"#ddd6fe",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Trusted by Security Teams Using</span>
+        {["Qualys VMDR","Tenable.io","Nessus Pro","OpenVAS","CrowdStrike","AWS Security Hub","Wiz","Microsoft Azure","Google Cloud","Prisma Cloud","Orca Security","Lacework","Snyk","Rapid7","SentinelOne","Okta","Splunk","ServiceNow"].map(c=>(
           <span key={c} style={{fontSize:"0.88rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
-        ))}
-      </div>
-
-      {/* Trusted by banner */}
-      <div className="mobile-banner" style={{background:"#f8fafc",borderTop:"1px solid #e0e7ff",borderBottom:"1px solid #e0e7ff",padding:"0.9rem 2rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"2.5rem",flexWrap:"wrap"}}>
-        <span style={{fontSize:"0.68rem",color:"#94a3b8",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.14em",whiteSpace:"nowrap"}}>Works Across</span>
-        {["Wiz","AWS","Microsoft Azure","Google Cloud","Prisma Cloud","Orca Security","Lacework","Snyk","Tenable.io","Rapid7"].map(c=>(
-          <span key={c} style={{fontSize:"0.82rem",fontWeight:700,color:"#475569",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
 
