@@ -257,7 +257,7 @@ export default function Page() {
               {name:"Tenable.io",     c:"#1e2a38", initials:"Te",  logoUrl:"/logos/tenable.png",                                  logoSize:108, methods:["Upload","API"],   cat:"Scanner"},
               {name:"SentinelOne",    c:"#6B2BD6", initials:"S1",  logoUrl:"/logos/sentinelone.svg",                              logoSize:108, methods:["Webhook","API"], cat:"EDR"},
               {name:"AWS Sec Hub",    c:"#FF9900", initials:"AWS", logoUrl:"/logos/aws.svg",                                      logoSize:100, methods:["Webhook","API"], cat:"Cloud"},
-              {name:"ServiceNow",     c:"#62D84E", initials:"SN",  logoUrl:"/logos/servicenow.svg",                               logoSize:108, methods:["Webhook","API"], cat:"SOAR"},
+              {name:"ServiceNow",     c:"#62D84E", initials:"SN",  logoUrl:"/logos/servicenow.png",                               logoSize:108, methods:["Webhook","API"], cat:"SOAR"},
               {name:"Nessus Pro",     c:"#3eae2e", initials:"Ne",  logoUrl:"/logos/nessus.png",                                   logoSize:108, methods:["Upload"],        cat:"Scanner"},
               {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.png",                               logoSize:130, methods:["Webhook","API"], cat:"EDR"},
               {name:"Microsoft Azure",c:"#0089D6", initials:"Az",  logoUrl:"/logos/azure.png",                                    logoSize:108, methods:["Webhook","API"], cat:"Cloud"},
