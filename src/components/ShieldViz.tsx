@@ -433,11 +433,11 @@ export default function ShieldViz(){
 
         {/* ── BC: Two lines — Risk (indigo) + Patch Rate (red), RAF driven ── */}
         <g transform="translate(10, -147)">
-          <path ref={line1Ref} d={lp} fill="none" stroke="url(#lg)" strokeWidth="1.9"
+          <path ref={line1Ref} d={lp} fill="none" stroke="url(#lg)" strokeWidth="2"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
             strokeDasharray="140" strokeDashoffset="140"
             style={{opacity:0, willChange:'opacity'}}/>
-          <path ref={line2Ref} d={lp2} fill="none" stroke="#ef4444" strokeWidth="1.9"
+          <path ref={line2Ref} d={lp2} fill="none" stroke="#ef4444" strokeWidth="2"
             strokeLinecap="round" strokeLinejoin="round" filter="url(#gw)"
             strokeDasharray="140" strokeDashoffset="140"
             style={{opacity:0, willChange:'opacity'}}/>
