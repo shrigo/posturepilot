@@ -671,17 +671,17 @@ export default function Page() {
             {/* Right: 6 mini dashboard tiles with bar graphs */}
             <div className="secure-tiles" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem",alignContent:"start"}}>
               {[
-                {title:"Vuln Reduction",icon:"📉",c:"#16a34a",note:"99.6% noise cut",
+                {title:"Runway Reduction Gates",icon:"📉",c:"#16a34a",note:"99.6% noise cut",
                   bars:[{l:"Raw (10K)",v:100,n:"10K"},{l:"After F1",v:25,n:"2.5K"},{l:"After F2",v:8,n:"800"},{l:"Actionable",v:0.5,n:"40"}]},
-                {title:"CVSS Distribution",icon:"📊",c:"#4f46e5",note:"Only CVSS ≥ 7.0",
+                {title:"CVSS Airspeed Ranges",icon:"📊",c:"#4f46e5",note:"Only CVSS ≥ 7.0",
                   bars:[{l:"Critical 9-10",v:23,n:23},{l:"High 7-8.9",v:67,n:67},{l:"Medium",v:45,n:0},{l:"Low/Info",v:20,n:0}]},
-                {title:"EPSS Likelihood",icon:"⚡",c:"#ea580c",note:"Real exploit focus",
+                {title:"EPSS Storm Likelihood",icon:"⚡",c:"#ea580c",note:"Real exploit focus",
                   bars:[{l:"EPSS >50%",v:100,n:31},{l:"EPSS 10-50%",v:60,n:51},{l:"EPSS 1-10%",v:20,n:0},{l:"No PoC",v:5,n:0}]},
-                {title:"Asset Tiers",icon:"🏢",c:"#dc2626",note:"Critical assets first",
+                {title:"Hangar Asset Tiers",icon:"🏢",c:"#dc2626",note:"Critical assets first",
                   bars:[{l:"Tier-1 Prod",v:100,n:18},{l:"Tier-2",v:75,n:24},{l:"Internal",v:20,n:0},{l:"Dev/Test",v:5,n:0}]},
-                {title:"KEV Coverage",icon:"🔐",c:"#7c3aed",note:"8 CISA KEV found",
+                {title:"KEV Turbulence Rates",icon:"🔐",c:"#7c3aed",note:"8 CISA KEV found",
                   bars:[{l:"KEV Match",v:100,n:8},{l:"Weaponized",v:75,n:6},{l:"PoC Exists",v:55,n:12},{l:"No Exploit",v:10,n:0}]},
-                {title:"SLA Breach Risk",icon:"⏰",c:"#d97706",note:"SLA gates active",
+                {title:"SLA Altimeter Deadlines",icon:"⏰",c:"#d97706",note:"SLA gates active",
                   bars:[{l:"Critical 24h",v:100,n:23},{l:"High 7d",v:55,n:39},{l:"Medium 30d",v:15,n:0},{l:"Low 90d",v:5,n:0}]},
               ].map((tile:{title:string,icon:string,c:string,note:string,bars:{l:string,v:number,n:string|number}[]})=>(
                 <div key={tile.title} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,padding:"0.875rem",boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
@@ -690,15 +690,18 @@ export default function Page() {
                     <span style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a"}}>{tile.title}</span>
                   </div>
                   <div style={{display:"flex",flexDirection:"column",gap:"0.3rem",marginBottom:"0.5rem"}}>
-                    {tile.bars.map((b:{l:string,v:number,n:string|number})=>(
-                      <div key={b.l} style={{display:"flex",alignItems:"center",gap:"0.375rem"}}>
-                        <span style={{fontSize:"0.55rem",color:"#94a3b8",width:72,flexShrink:0}}>{b.l}</span>
-                        <div style={{flex:1,height:5,background:"#f1f5f9",borderRadius:99}}>
-                          <div style={{height:"100%",width:`${b.v}%`,background:Number(b.n)>0?tile.c:"#e2e8f0",borderRadius:99,opacity:Number(b.n)>0?1:0.2}}/>
+                    {tile.bars.map((b:{l:string,v:number,n:string|number})=>{
+                      const isValActive = b.n !== 0 && b.n !== '0' && b.n !== '';
+                      return (
+                        <div key={b.l} style={{display:"flex",alignItems:"center",gap:"0.375rem"}}>
+                          <span style={{fontSize:"0.55rem",color:"#94a3b8",width:72,flexShrink:0}}>{b.l}</span>
+                          <div style={{flex:1,height:5,background:"#f1f5f9",borderRadius:99}}>
+                            <div style={{height:"100%",width:`${b.v}%`,background:isValActive?tile.c:"#e2e8f0",borderRadius:99,opacity:isValActive?1:0.2}}/>
+                          </div>
+                          <span style={{fontSize:"0.55rem",fontWeight:700,color:isValActive?tile.c:"#cbd5e1",width:26,textAlign:"right",flexShrink:0}}>{isValActive?b.n:"—"}</span>
                         </div>
-                        <span style={{fontSize:"0.55rem",fontWeight:700,color:Number(b.n)>0?tile.c:"#e2e8f0",width:26,textAlign:"right",flexShrink:0}}>{Number(b.n)>0?b.n:"—"}</span>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                   <div style={{fontSize:"0.58rem",color:tile.c,fontWeight:700,background:`${tile.c}10`,borderRadius:6,padding:"2px 6px",display:"inline-block"}}>{tile.note}</div>
                 </div>

@@ -382,7 +382,7 @@ export default function SecureTriagePage() {
       <div className="grid-3" style={{ marginBottom: '1rem' }}>
         {[
           {
-            title: "Vuln Reduction Funnel", icon: "📉", color: "#16a34a", desc: "Noise reduction efficiency",
+            title: "Runway Reduction Gates", icon: "📉", color: "#16a34a", desc: "Triage noise reduction gates",
             bars: [
               { l: "Raw Ingested", v: 100, n: rawFindings },
               { l: "Severity Gate", v: Math.max(10, Math.round((afterSeverity/rawFindings)*100)), n: afterSeverity },
@@ -391,7 +391,7 @@ export default function SecureTriagePage() {
             ]
           },
           {
-            title: "CVSS Distribution", icon: "📊", color: "#4f46e5", desc: "Filtered CVSS ranges",
+            title: "CVSS Airspeed Ranges", icon: "📊", color: "#4f46e5", desc: "Filtered CVSS airspeed bands",
             bars: [
               { l: "Critical 9-10", v: minCvss >= 9 ? 100 : 25, n: minCvss >= 9 ? Math.round(actionableCount) : Math.round(actionableCount * 0.3) },
               { l: "High 7-8.9", v: minCvss >= 7 ? 80 : 0, n: minCvss >= 7 && minCvss < 9 ? Math.round(actionableCount * 0.7) : 0 },
@@ -400,7 +400,7 @@ export default function SecureTriagePage() {
             ]
           },
           {
-            title: "EPSS Likelihood", icon: "⚡", color: "#ea580c", desc: "Real exploit likelihood focus",
+            title: "EPSS Storm Likelihood", icon: "⚡", color: "#ea580c", desc: "Real weaponized exploit check",
             bars: [
               { l: "EPSS > 50%", v: 100, n: Math.round(actionableCount * 0.4) },
               { l: "EPSS 10-50%", v: minEpss <= 10 ? 70 : 0, n: Math.round(actionableCount * 0.6) },
@@ -409,7 +409,7 @@ export default function SecureTriagePage() {
             ]
           },
           {
-            title: "Asset Criticality Tiers", icon: "🏢", color: "#dc2626", desc: "Critical assets prioritized",
+            title: "Hangar Asset Tiers", icon: "🏢", color: "#dc2626", desc: "Host server tier prioritization",
             bars: [
               { l: "Tier-1 Prod", v: 100, n: Math.round(actionableCount * 0.7) },
               { l: "Tier-2 Core", v: tier1Only ? 0 : 60, n: tier1Only ? 0 : Math.round(actionableCount * 0.3) },
@@ -418,7 +418,7 @@ export default function SecureTriagePage() {
             ]
           },
           {
-            title: "KEV Weaponization Rates", icon: "🔐", color: "#7c3aed", desc: "Active KEV coverage metrics",
+            title: "KEV Turbulence Rates", icon: "🔐", color: "#7c3aed", desc: "CISA KEV active weaponization coverage",
             bars: [
               { l: "KEV Match", v: 100, n: requireKev ? actionableCount : Math.round(actionableCount * 0.4) },
               { l: "Weaponized", v: 75, n: Math.round(actionableCount * 0.3) },
@@ -427,7 +427,7 @@ export default function SecureTriagePage() {
             ]
           },
           {
-            title: "SLA Triage Deadlines", icon: "⏰", color: "#d97706", desc: "SLA remediation gates",
+            title: "SLA Altimeter Deadlines", icon: "⏰", color: "#d97706", desc: "Hard GRC remediation deadlines",
             bars: [
               { l: "Critical 24h", v: 100, n: Math.round(actionableCount * 0.3) },
               { l: "High 7d", v: 60, n: Math.round(actionableCount * 0.7) },
