@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
 import { ClientProvider, useClient } from '@/context/ClientContext';
@@ -85,12 +85,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   const { currentClient } = useClient();
   const pathname = usePathname();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // Scroll to top whenever the route changes (window is the actual scroll host)
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [pathname]);
 
   let bgClass = 'bg-default';
@@ -118,7 +116,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div className="main-content">
         <Topbar title={metadata.title} subtitle={dynamicSubtitle} />
-        <div ref={scrollContainerRef} className="content-scroll-container">
+        <div className="content-scroll-container">
           {children}
         </div>
       </div>
