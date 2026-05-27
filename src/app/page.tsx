@@ -260,7 +260,7 @@ export default function Page() {
               {name:"ServiceNow",     c:"#62D84E", initials:"SN",  logoUrl:"/logos/servicenow.svg",                               logoSize:108, methods:["Webhook","API"], cat:"SOAR"},
               {name:"Nessus Pro",     c:"#3eae2e", initials:"Ne",  logoUrl:"/logos/nessus.png",                                   logoSize:108, methods:["Upload"],        cat:"Scanner"},
               {name:"MS Defender",    c:"#0078D4", initials:"MSD", logoUrl:"/logos/msdefender.png",                               logoSize:130, methods:["Webhook","API"], cat:"EDR"},
-              {name:"Microsoft Azure",c:"#0089D6", initials:"Az",  logoUrl:"/logos/azure.svg",                                    logoSize:108, methods:["Webhook","API"], cat:"Cloud"},
+              {name:"Microsoft Azure",c:"#0089D6", initials:"Az",  logoUrl:"/logos/azure.png",                                    logoSize:108, methods:["Webhook","API"], cat:"Cloud"},
               {name:"Snyk",           c:"#4C5BA5", initials:"Sn",  logoUrl:"/logos/snyk.svg",                                    logoSize:120, methods:["API"],           cat:"AppSec"},
               {name:"Rapid7",         c:"#E6242A", initials:"R7",  logoUrl:"/logos/rapid7.png",                                   logoSize:108, methods:["Upload","API"],   cat:"Scanner"},
               {name:"Okta",           c:"#007DC1", initials:"Ok",  logoUrl:"/logos/okta.svg",                                     logoSize:108, methods:["Webhook","API"], cat:"Identity"},
