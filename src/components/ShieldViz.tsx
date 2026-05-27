@@ -48,7 +48,6 @@ const PATCH_PATTERNS = [
 
 export default function ShieldViz(){
   const [bars,setBars]=useState([0,0,0,0,0]);
-  const [d1,setD1]=useState(0);
   const [d2,setD2]=useState(0);
   const [ys,setYs]=useState(PATTERNS[0]);
   const [ys2,setYs2]=useState(PATCH_PATTERNS[0]);
@@ -103,12 +102,13 @@ export default function ShieldViz(){
   const { currentClient, isUnderAttack } = useClient();
   const activeScore = isUnderAttack ? 42 : currentClient.score;
   const postureVal = useCountUp(activeScore, 1500, 500);
+  const d1 = Math.round(138.23 * postureVal / 100);
   const slaVal  = useCountUp(91,1400,800);
   const [brSla,setBrSla]=useState(91);
 
   useEffect(()=>{
     setMounted(true);
-    setTimeout(()=>{ setBars([38,62,46,76,52]); setD1(Math.round(138.23 * activeScore / 100)); setD2(110); }, 700);
+    setTimeout(()=>{ setBars([38,62,46,76,52]); setD2(110); }, 700);
     const sv = setInterval(()=>setScan(n=>(n+1)%100), 55);
     const dv = setInterval(()=>setDots(Array(12).fill(0).map(()=>Math.random()>0.45)), 1800);
     const pv = setInterval(()=>{ setPulse(true); setTimeout(()=>setPulse(false),700); }, 2800);
@@ -307,9 +307,9 @@ export default function ShieldViz(){
         {/* ── TL: Donut cx=168, cy=142, r=22 (10% smaller) ── */}
         <circle cx="168" cy="142" r="22" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="6"/>
         <circle cx="168" cy="142" r="22" fill="none" stroke="url(#sg)" strokeWidth="6"
-          strokeDasharray={`${Math.round(138.23 * postureVal / 100)} 200`} strokeLinecap="round" filter="url(#gw)"
+          strokeDasharray={`${d1} 200`} strokeLinecap="round" filter="url(#gw)"
           style={{transformOrigin:'168px 142px',transform:'rotate(-90deg)',
-            transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)',
+            transition:'stroke 0.5s ease',
             stroke: postureVal > 80 ? '#16a34a' : postureVal > 60 ? '#fbbf24' : '#ef4444'}}/>
         <text x="168" y="142" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900"
           fill={postureVal > 80 ? '#16a34a' : postureVal > 60 ? '#fbbf24' : '#ef4444'}
@@ -419,7 +419,7 @@ export default function ShieldViz(){
             const baseY = 318 - i*2;
             const BAR_COLORS = ['url(#bg)','#f97316','#eab308','#ef4444','#16a34a'];
             return(
-              <rect key={i} x={143+i*12} y={baseY-h*0.87} width="8" height={h*0.87} rx="2"
+              <rect key={i} x={143+i*12} y={baseY-h*0.87} width="5" height={h*0.87} rx="1"
                 fill={BAR_COLORS[i]} opacity="0.9" filter="url(#gw)"
                 style={{transition:'y 0.65s cubic-bezier(0.4,0,0.2,1),height 0.65s cubic-bezier(0.4,0,0.2,1)'}}/>
             );
