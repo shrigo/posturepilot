@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useClient } from '@/context/ClientContext';
 
 function useCountUp(target:number,dur=1600,delay=0){
   const [v,setV]=useState(0);
@@ -99,13 +100,15 @@ export default function ShieldViz(){
   const val = Math.abs(Math.round((ys[0]-ys[ys.length-1])/ys[0]*100));
   const good = ys[ys.length-1]<ys[0];
 
-  const riskVal = useCountUp(74,1500,500);
+  const { currentClient, isUnderAttack } = useClient();
+  const activeScore = isUnderAttack ? 42 : currentClient.score;
+  const postureVal = useCountUp(activeScore, 1500, 500);
   const slaVal  = useCountUp(91,1400,800);
   const [brSla,setBrSla]=useState(91);
 
   useEffect(()=>{
     setMounted(true);
-    setTimeout(()=>{ setBars([38,62,46,76,52]); setD1(184); setD2(110); }, 700);
+    setTimeout(()=>{ setBars([38,62,46,76,52]); setD1(Math.round(138.23 * activeScore / 100)); setD2(110); }, 700);
     const sv = setInterval(()=>setScan(n=>(n+1)%100), 55);
     const dv = setInterval(()=>setDots(Array(12).fill(0).map(()=>Math.random()>0.45)), 1800);
     const pv = setInterval(()=>{ setPulse(true); setTimeout(()=>setPulse(false),700); }, 2800);
@@ -304,14 +307,15 @@ export default function ShieldViz(){
         {/* ── TL: Donut cx=168, cy=142, r=22 (10% smaller) ── */}
         <circle cx="168" cy="142" r="22" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="6"/>
         <circle cx="168" cy="142" r="22" fill="none" stroke="url(#sg)" strokeWidth="6"
-          strokeDasharray={`${d1} 200`} strokeLinecap="round" filter="url(#gw)"
+          strokeDasharray={`${Math.round(138.23 * postureVal / 100)} 200`} strokeLinecap="round" filter="url(#gw)"
           style={{transformOrigin:'168px 142px',transform:'rotate(-90deg)',
-            transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)'}}/>
-        <text x="170" y="139" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900"
-          fill={riskVal>70?'#f97316':'#4f46e5'}
-          style={{fontFamily:'Inter,sans-serif'}}>{riskVal}%</text>
-        <text x="168" y="149" textAnchor="middle" dominantBaseline="middle" fontSize="9"
-          fill={riskVal>70?'#ea580c':'#6d28d9'} fontWeight="700">RISK</text>
+            transition:'stroke-dasharray 1.6s cubic-bezier(0.4,0,0.2,1)',
+            stroke: postureVal > 80 ? '#16a34a' : postureVal > 60 ? '#fbbf24' : '#ef4444'}}/>
+        <text x="168" y="139" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900"
+          fill={postureVal > 80 ? '#16a34a' : postureVal > 60 ? '#fbbf24' : '#ef4444'}
+          style={{fontFamily:'Inter,sans-serif'}}>{postureVal}%</text>
+        <text x="168" y="149" textAnchor="middle" dominantBaseline="middle" fontSize="7.5"
+          fill={postureVal > 80 ? '#15803d' : '#4f46e5'} fontWeight="900" letterSpacing="0.05em">POSTURE</text>
 
         {/* TL bullets — tilted 10° up, 1-min cycle animation */}
         <g transform="rotate(-3, 150, 199)">
