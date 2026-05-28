@@ -549,7 +549,7 @@ export default function CISOPage() {
                 <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
                   2. Customize & Reorder Telemetry Widgets
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {widgetOrder.map((key, index) => {
                     const meta = widgetMeta[key as keyof typeof widgetMeta];
                     const isChecked = viewWidgets[key];
