@@ -367,7 +367,7 @@ export default function Page() {
         <div style={{maxWidth:1100,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
-            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>12 live dashboards & CISO Cockpit. Everything in one place.</h2>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>12 live dashboards. Everything in one place.</h2>
             <p style={{color:"#a5b4fc",marginTop:"0.5rem",fontSize:"0.9rem"}}>Real-time security posture across cloud, network, apps, and endpoints.</p>
           </div>
 
@@ -400,7 +400,6 @@ export default function Page() {
               <div className="monitor-sidebar" style={{background:"#f1f5f9",padding:"1rem 0.5rem",borderRight:"1px solid #e2e8f0"}}>
                 {[
                   {icon:"🏢",label:"Main Terminal"},
-                  {icon:"👨‍✈️",label:"CISO Cockpit",badge:"BU-Joint"},
                   {icon:"🛡️",label:"Posture Clearance",badge:"3"},
                   {icon:"☁️",label:"Cloud Altitude"},
                   {icon:"📋",label:"Compliance Checkpoint"},
@@ -506,61 +505,7 @@ export default function Page() {
                   </>
                 )}
 
-                {activeMockupTab === "CISO Cockpit" && (
-                  <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
-                    <div style={{borderBottom:"1px solid #e2e8f0",paddingBottom:"0.75rem"}}>
-                      <div style={{fontSize:"1.1rem",fontWeight:800,color:"#0f172a",display:"flex",alignItems:"center",gap:"0.4rem"}}>👨‍✈️ CISO Executive Cockpit</div>
-                      <div style={{fontSize:"0.75rem",color:"#64748b",marginTop:"0.2rem"}}>Subsidiary ledger matrix tracking real-time tenant risk scores and directives.</div>
-                    </div>
 
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,overflow:"hidden"}}>
-                      <table style={{width:"100%",borderCollapse:"collapse",textAlign:"left",fontSize:"0.72rem"}}>
-                        <thead>
-                          <tr style={{background:"#f8fafc",borderBottom:"1px solid #e2e8f0",color:"#64748b",fontWeight:700}}>
-                            <th style={{padding:"0.75rem 1rem"}}>Business Unit</th>
-                            <th style={{padding:"0.75rem 1rem"}}>Cyber Posture</th>
-                            <th style={{padding:"0.75rem 1rem"}}>Overdue SLA</th>
-                            <th style={{padding:"0.75rem 1rem"}}>Active Layer Count</th>
-                            <th style={{padding:"0.75rem 1rem"}}>Threat Level</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {[
-                            {bu:"Acme Financial Services",score:82,overdue:3,layers:12,threat:"🟢 COMPLIANT",tColor:"#16a34a",bg:"rgba(22,163,74,0.02)"},
-                            {bu:"Acme Global Retail Corp",score:54,overdue:14,layers:8,threat:"🔴 CRITICAL RISK",tColor:"#dc2626",bg:"rgba(220,38,38,0.02)"},
-                            {bu:"Acme Logistics & Fleet",score:71,overdue:6,layers:11,threat:"🟡 ELEVATED WARNING",tColor:"#ea580c",bg:"rgba(234,88,12,0.02)"},
-                            {bu:"Acme Corporate HQ (LDG)",score:89,overdue:0,layers:12,threat:"🟢 COMPLIANT",tColor:"#16a34a",bg:"rgba(22,163,74,0.02)"},
-                          ].map((row,i)=>(
-                            <tr key={i} style={{borderBottom:"1px solid #e2e8f0",background:row.bg,color:"#0f172a"}}>
-                              <td style={{padding:"0.75rem 1rem",fontWeight:700}}>{row.bu}</td>
-                              <td style={{padding:"0.75rem 1rem"}}>
-                                <span style={{fontWeight:800,color:row.score>80?"#16a34a":row.score>60?"#ea580c":"#dc2626"}}>{row.score}/100</span>
-                              </td>
-                              <td style={{padding:"0.75rem 1rem",color:row.overdue>0?"#dc2626":"#64748b",fontWeight:row.overdue>0?800:500}}>{row.overdue} open items</td>
-                              <td style={{padding:"0.75rem 1rem",fontWeight:600}}>{row.layers} active integrations</td>
-                              <td style={{padding:"0.75rem 1rem",fontWeight:800,color:row.tColor}}>{row.threat}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem"}}>
-                      {[
-                        {title:"Remediation Directive C-102",desc:"Patch critical edge firewall CVE-2024-3400.",bu:"Global Retail BU",c:"#dc2626"},
-                        {title:"Policy Enforcement Directive P-401",desc:"Disable unauthorized ChatGPT proxy instances.",bu:"Corporate HQ",c:"#7c3aed"}
-                      ].map((item,i)=>(
-                        <div key={i} style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"0.875rem",borderLeft:`4px solid ${item.c}`}}>
-                          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.25rem"}}>
-                            <span style={{fontSize:"0.68rem",fontWeight:800,color:"#0f172a"}}>{item.title}</span>
-                            <span style={{fontSize:"0.55rem",background:"#f1f5f9",padding:"2px 6px",borderRadius:4,color:"#64748b"}}>{item.bu}</span>
-                          </div>
-                          <p style={{fontSize:"0.65rem",color:"#64748b",lineHeight:1.4}}>{item.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 {activeMockupTab === "Posture Clearance" && (
                   <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
