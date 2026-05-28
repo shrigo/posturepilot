@@ -737,22 +737,6 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Informative Marketing Pill */}
-          <div style={{display:"flex",justifyContent:"center",marginTop:"1.25rem"}}>
-            <div style={{
-              display:"inline-flex",alignItems:"center",gap:"0.6rem",
-              padding:"0.6rem 1.5rem",borderRadius:99,
-              background:"rgba(255,255,255,0.08)",
-              backdropFilter:"blur(16px)",
-              border:"1px solid rgba(165,180,252,0.25)",
-              boxShadow:"0 4px 24px rgba(124,58,237,0.15), inset 0 1px 0 rgba(255,255,255,0.06)"
-            }}>
-              <span style={{width:7,height:7,borderRadius:"50%",background:"#a5b4fc",display:"inline-block",boxShadow:"0 0 10px rgba(165,180,252,0.6)",animation:"pulse 2s infinite"}} />
-              <span style={{fontSize:"0.78rem",fontWeight:600,color:"#c7d2fe",letterSpacing:"0.01em"}}>
-                📡 Real-time multi-tenant posture intelligence — built for the CISO chair
-              </span>
-            </div>
-          </div>
 
           <div style={{textAlign:"center",marginTop:"1.25rem"}}>
             <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#1e2d6e",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:800,fontSize:"0.9rem",border:"2px solid rgba(255,255,255,0.4)",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>View Live Dashboard →</Link>
@@ -1070,82 +1054,98 @@ export default function Page() {
           ))}
         </div>
 
-        {/* CISO Cockpit Standalone Card Under the 12 Tiles */}
-        <div style={{
-          maxWidth: 640,
-          margin: "2.5rem auto 0",
-          background: "#fff",
-          border: "1px solid #e0e7ff",
-          borderRadius: 20,
-          padding: "1.75rem",
-          boxShadow: "0 10px 30px rgba(79,70,229,0.06)",
-          position: "relative",
-          textAlign: "left"
-        }}>
-          {/* Standing pill indicator */}
-          <div style={{position:"absolute",top:15,right:15,background:"rgba(124,58,237,0.08)",border:"1px solid rgba(124,58,237,0.2)",padding:"2px 8px",borderRadius:6,fontSize:"0.58rem",fontWeight:800,color:"#7c3aed"}}>
-            🔒 ENTERPRISE PREVIEW
-          </div>
-
-          <div style={{display:"flex",alignItems:"center",gap:"0.75rem",marginBottom:"1rem"}}>
-            <div style={{width:42,height:42,borderRadius:10,background:"rgba(124,58,237,0.08)",border:"1px solid rgba(124,58,237,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.25rem"}}>
-              👨‍✈️
-            </div>
+        {/* CISO Cockpit Aggregate Score HUD Section Under 12 Tiles */}
+        <div style={{marginTop: "3rem", width: "100%"}}>
+          <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e0e7ff", paddingBottom: "0.875rem", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem"}}>
             <div>
-              <h3 style={{fontSize:"0.95rem",fontWeight:800,color:"#0f172a",margin:0}}>CISO Executive Cockpit</h3>
-              <p style={{fontSize:"0.65rem",color:"#64748b",marginTop:2}}>Consolidated multi-tenant compliance ledger and subsidiary ledger index.</p>
+              <div style={{fontSize: "0.68rem", fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.12em"}}>👨‍✈️ CISO Cockpit Feature Preview</div>
+              <h3 style={{fontSize: "1.25rem", fontWeight: 800, color: "#0f172a", marginTop: "0.25rem"}}>Aggregated Multi-Tenant Score HUD</h3>
             </div>
+            <span style={{fontSize: "0.68rem", fontWeight: 800, background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.2)", padding: "4px 10px", borderRadius: 8, color: "#7c3aed"}}>
+              🔒 ENTERPRISE PREVIEW
+            </span>
           </div>
 
-          {/* Sample graphics for the subsidiaries */}
-          <div style={{background:"#f8fafc",borderRadius:12,padding:"1rem",border:"1px solid #f1f5f9",marginBottom:"1.25rem",display:"flex",flexDirection:"column",gap:"0.6rem"}}>
-            <div style={{fontSize:"0.68rem",fontWeight:800,color:"#64748b",textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:"0.2rem"}}>Subsidiary Posture Ledgers</div>
-            {[
-              {name:"Wells Fargo", score:76, color:"#dc2626", pct:"76%"},
-              {name:"Toyota", score:85, color:"#ea580c", pct:"85%"},
-              {name:"United Rentals", score:91, color:"#16a34a", pct:"91%"},
-              {name:"CISCO", score:96, color:"#16a34a", pct:"96%"},
-              {name:"Disney", score:81, color:"#ea580c", pct:"81%"}
-            ].map(t => (
-              <div key={t.name} style={{display:"flex",alignItems:"center",gap:"0.75rem",fontSize:"0.68rem"}}>
-                <span style={{color:"#475569",fontWeight:600,width:85}}>{t.name}</span>
-                <div style={{flex:1,height:5,background:"#e2e8f0",borderRadius:3,overflow:"hidden"}}>
-                  <div style={{height:"100%",width:t.pct,background:t.color,borderRadius:3}}/>
-                </div>
-                <span style={{fontWeight:800,color:"#0f172a",width:40,textAlign:"right"}}>{t.score}/100</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Global conforming index dial & pill wrapper */}
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"1rem",background:"#f8fafc",border:"1px solid #f1f5f9",borderRadius:12,padding:"0.875rem 1rem",marginBottom:"1.25rem"}}>
-            <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
-              <svg viewBox="0 0 100 100" style={{width:32,height:32,transform:"rotate(-90deg)"}}>
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" strokeWidth="10"/>
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#7c3aed" strokeWidth="10" strokeDasharray="216 251" strokeLinecap="round"/>
-              </svg>
+          <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "1rem", marginBottom: "2rem"}}>
+            
+            {/* Card 1: Assets */}
+            <div style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)"}}>
               <div>
-                <div style={{fontSize:"0.65rem",color:"#64748b",fontWeight:600}}>Group Compliance</div>
-                <div style={{fontSize:"0.78rem",fontWeight:800,color:"#0f172a"}}>86% Conformance (B+)</div>
+                <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: "#7c3aed", borderRadius: "16px 0 0 16px"}}/>
+                <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>Combined Assets Count</div>
+                <div style={{fontSize: "2rem", fontWeight: 900, color: "#7c3aed", marginTop: "0.5rem", fontFamily: "monospace"}}>69,860</div>
+              </div>
+              <div style={{display: "flex", flexWrap: "wrap", gap: "4px", fontSize: "0.58rem", fontWeight: 800, color: "#94a3b8", borderTop: "1px solid #f1f5f9", paddingTop: "0.5rem", marginTop: "0.75rem"}}>
+                {["WF: 14.2K", "TY: 9.4K", "UR: 5.1K", "CS: 28.4K", "WD: 12.6K"].map((t, idx) => {
+                  const colors = ["#dc2626", "#ea580c", "#10b981", "#06b6d4", "#a855f7"];
+                  return (
+                    <span key={idx} style={{background: "#f1f5f9", padding: "2px 6px", borderRadius: 4, color: colors[idx]}}>
+                      {t}
+                    </span>
+                  );
+                })}
               </div>
             </div>
-            <div style={{fontSize:"0.65rem",color:"#64748b",textAlign:"right"}}>
-              <div>SLA Breaches: <strong style={{color:"#dc2626"}}>2 Active</strong></div>
-              <div style={{marginTop:2}}>Active Layers: <strong style={{color:"#7c3aed"}}>15 Tunnels</strong></div>
+
+            {/* Card 2: Compliance */}
+            <div style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)"}}>
+              <div>
+                <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: "#10b981", borderRadius: "16px 0 0 16px"}}/>
+                <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>Unified Compliance Score</div>
+                <div style={{fontSize: "2rem", fontWeight: 900, color: "#10b981", marginTop: "0.5rem", fontFamily: "monospace"}}>85.8%</div>
+              </div>
+              <div style={{fontSize: "0.68rem", fontWeight: 700, color: "#10b981", marginTop: "0.75rem", borderTop: "1px solid #f1f5f9", paddingTop: "0.5rem"}}>
+                🟢 Meets target SLA threshold
+              </div>
             </div>
+
+            {/* Card 3: Risks */}
+            <div style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)"}}>
+              <div>
+                <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: "#dc2626", borderRadius: "16px 0 0 16px"}}/>
+                <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>Total Open Critical Risks</div>
+                <div style={{fontSize: "2rem", fontWeight: 900, color: "#dc2626", marginTop: "0.5rem", fontFamily: "monospace"}}>30</div>
+              </div>
+              <div style={{display: "flex", flexWrap: "wrap", gap: "4px", fontSize: "0.58rem", fontWeight: 800, color: "#94a3b8", borderTop: "1px solid #f1f5f9", paddingTop: "0.5rem", marginTop: "0.75rem"}}>
+                {["WF: 12", "TY: 6", "UR: 3", "CS: 1", "WD: 8"].map((t, idx) => {
+                  const colors = ["#dc2626", "#ea580c", "#10b981", "#06b6d4", "#a855f7"];
+                  return (
+                    <span key={idx} style={{background: "#f1f5f9", padding: "2px 6px", borderRadius: 4, color: colors[idx]}}>
+                      {t} Critical
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Card 4: SLA status */}
+            <div style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)"}}>
+              <div>
+                <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: "#ea580c", borderRadius: "16px 0 0 16px"}}/>
+                <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>SLA Conformance Status</div>
+                <div style={{fontSize: "1.35rem", fontWeight: 900, color: "#ea580c", marginTop: "0.75rem", textTransform: "uppercase"}}>CONFORMANCE</div>
+              </div>
+              <div style={{fontSize: "0.68rem", fontWeight: 600, color: "#475569", marginTop: "0.75rem", borderTop: "1px solid #f1f5f9", paddingTop: "0.5rem"}}>
+                434 total issues in queue
+              </div>
+            </div>
+
           </div>
 
           {/* Informative Marketing Pill */}
-          <div style={{display:"flex",justifyContent:"center",borderTop:"1px solid #e0e7ff",paddingTop:"1.25rem",marginTop:"0.5rem"}}>
+          <div style={{display: "flex", justifyContent: "center", borderTop: "1px solid #e0e7ff", paddingTop: "1.25rem"}}>
             <div style={{
-              display:"inline-flex",alignItems:"center",gap:"0.5rem",
-              padding:"0.5rem 1.25rem",borderRadius:99,
-              background:"rgba(124,58,237,0.06)",
-              border:"1px solid rgba(124,58,237,0.2)",
-              boxShadow:"0 2px 10px rgba(124,58,237,0.04)"
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              padding: "0.5rem 1.25rem",
+              borderRadius: 99,
+              background: "rgba(124,58,237,0.06)",
+              border: "1px solid rgba(124,58,237,0.2)",
+              boxShadow: "0 2px 10px rgba(124,58,237,0.04)"
             }}>
-              <span style={{width:6,height:6,borderRadius:"50%",background:"#7c3aed",display:"inline-block",boxShadow:"0 0 8px rgba(124,58,237,0.5)",animation:"pulse 2s infinite"}} />
-              <span style={{fontSize:"0.75rem",fontWeight:700,color:"#7c3aed",letterSpacing:"0.01em"}}>
+              <span style={{width: 6,height: 6,borderRadius: "50%",background: "#7c3aed",display: "inline-block",boxShadow: "0 0 8px rgba(124,58,237,0.5)",animation: "pulse 2s infinite"}} />
+              <span style={{fontSize: "0.75rem",fontWeight: 700,color: "#7c3aed",letterSpacing: "0.01em"}}>
                 📡 Real-time multi-tenant posture intelligence — built for the CISO chair
               </span>
             </div>
