@@ -514,7 +514,7 @@ export default function CISOPage() {
               {/* Tenant selector checkboxes */}
               <div>
                 <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '0.5rem' }}>1. Aggregate Business Units</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.50rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
                   {tenantsMetadata.map(tenant => {
                     const isChecked = selectedTenants.includes(tenant.key);
                     return (
@@ -549,7 +549,7 @@ export default function CISOPage() {
                 <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
                   2. Customize & Reorder Telemetry Widgets
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
                   {widgetOrder.map((key, index) => {
                     const meta = widgetMeta[key as keyof typeof widgetMeta];
                     const isChecked = viewWidgets[key];
