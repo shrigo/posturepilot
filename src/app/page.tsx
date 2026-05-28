@@ -145,9 +145,11 @@ export default function Page() {
         <div style={{display:"flex",alignItems:"center",gap:"0.75rem"}}>
           {/* Standout CISO Cockpit Link */}
           <a 
-            href="#features" 
+            href="#monitor" 
             onClick={(e) => {
-              scrollToSection(e, "features");
+              e.preventDefault();
+              setActiveMockupTab("CISO Cockpit");
+              scrollToSection(e, "monitor");
             }}
             style={{
               color:"#7c3aed",
