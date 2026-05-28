@@ -512,9 +512,9 @@ export default function CISOPage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
               {/* Tenant selector checkboxes */}
-              <div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '0.5rem' }}>1. Aggregate Business Units</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexGrow: 1 }}>
                   {tenantsMetadata.map(tenant => {
                     const isChecked = selectedTenants.includes(tenant.key);
                     return (
@@ -522,7 +522,8 @@ export default function CISOPage() {
                         key={tenant.key} 
                         style={{ 
                           display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.65rem 1rem', background: isChecked ? '#f8fafc' : '#ffffff', 
-                          border: isChecked ? `1.5px solid ${tenant.badgeColor}` : '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.15s' 
+                          border: isChecked ? `1.5px solid ${tenant.badgeColor}` : '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.15s',
+                          flex: 1
                         }}
                       >
                         <input 
@@ -545,11 +546,11 @@ export default function CISOPage() {
               </div>
 
               {/* Widget selector checkboxes & Reordering List */}
-              <div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
                   2. Customize & Reorder Telemetry Widgets
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flexGrow: 1 }}>
                   {widgetOrder.map((key, index) => {
                     const meta = widgetMeta[key as keyof typeof widgetMeta];
                     const isChecked = viewWidgets[key];
@@ -560,7 +561,8 @@ export default function CISOPage() {
                           display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.5rem 0.75rem', 
                           background: isChecked ? meta.bg : '#ffffff', 
                           border: isChecked ? `1.5px solid ${meta.activeBorder}` : `1.5px solid ${meta.border}`, 
-                          borderRadius: 10, transition: 'all 0.15s'
+                          borderRadius: 10, transition: 'all 0.15s',
+                          flex: 1
                         }}
                       >
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', flex: 1, fontSize: '0.76rem', fontWeight: 700, color: '#475569' }}>
