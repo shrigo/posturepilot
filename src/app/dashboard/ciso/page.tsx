@@ -514,7 +514,7 @@ export default function CISOPage() {
               {/* Tenant selector checkboxes */}
               <div>
                 <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '0.5rem' }}>1. Aggregate Business Units</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '9px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {tenantsMetadata.map(tenant => {
                     const isChecked = selectedTenants.includes(tenant.key);
                     return (
