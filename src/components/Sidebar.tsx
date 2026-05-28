@@ -23,10 +23,38 @@ const navItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const { currentClient } = useClient();
+
+  const handleLinkClick = () => {
+    const layout = document.querySelector('.app-layout');
+    if (layout) {
+      layout.classList.remove('sidebar-mobile-open');
+    }
+  };
+
   return (
     <aside className="sidebar">
+      {/* Mobile Close Button */}
+      <button 
+        onClick={handleLinkClick}
+        style={{
+          position: 'absolute',
+          top: '0.75rem',
+          right: '0.75rem',
+          background: 'none',
+          border: 'none',
+          fontSize: '1.2rem',
+          cursor: 'pointer',
+          color: 'var(--text-secondary)',
+          display: 'none',
+          zIndex: 110
+        }}
+        className="mobile-sidebar-close"
+      >
+        ✕
+      </button>
+
       <div className="sidebar-logo">
-        <Link href="/" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <Link href="/" style={{ display: 'flex', justifyContent: 'center', width: '100%' }} onClick={handleLinkClick}>
           <Image
             src="/hlogotag.jpg"
             alt="PosturePilot — Home"
@@ -44,7 +72,7 @@ export default function Sidebar() {
         {navItems.map(item => {
           const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
           return (
-            <Link key={item.href} href={item.href} className={`nav-item${isActive ? ' active' : ''}`}>
+            <Link key={item.href} href={item.href} className={`nav-item${isActive ? ' active' : ''}`} onClick={handleLinkClick}>
               <span className="nav-icon">{item.icon}</span>
               <span className="nav-label">{item.label}</span>
               {item.badge && (
@@ -59,19 +87,19 @@ export default function Sidebar() {
 
       <div className="sidebar-section-label">Data</div>
       <nav className="sidebar-nav" style={{ paddingTop: 0 }}>
-        <Link href="/dashboard/ciso" className={`nav-item${pathname === '/dashboard/ciso' ? ' active' : ''}`}>
+        <Link href="/dashboard/ciso" className={`nav-item${pathname === '/dashboard/ciso' ? ' active' : ''}`} onClick={handleLinkClick}>
           <span className="nav-icon">👨‍✈️</span>
           <span className="nav-label">CISO Cockpit</span>
         </Link>
-        <Link href="/dashboard/findings" className={`nav-item${pathname === '/dashboard/findings' ? ' active' : ''}`}>
+        <Link href="/dashboard/findings" className={`nav-item${pathname === '/dashboard/findings' ? ' active' : ''}`} onClick={handleLinkClick}>
           <span className="nav-icon">🔍</span>
           <span className="nav-label">Customs Check</span>
         </Link>
-        <Link href="/dashboard/upload" className={`nav-item${pathname === '/dashboard/upload' ? ' active' : ''}`}>
+        <Link href="/dashboard/upload" className={`nav-item${pathname === '/dashboard/upload' ? ' active' : ''}`} onClick={handleLinkClick}>
           <span className="nav-icon">📤</span>
           <span className="nav-label">Scan Check-In</span>
         </Link>
-        <Link href="/dashboard/settings" className={`nav-item${pathname === '/dashboard/settings' ? ' active' : ''}`}>
+        <Link href="/dashboard/settings" className={`nav-item${pathname === '/dashboard/settings' ? ' active' : ''}`} onClick={handleLinkClick}>
           <span className="nav-icon">⚙️</span>
           <span className="nav-label">Self-Service Kiosk</span>
         </Link>

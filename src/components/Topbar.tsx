@@ -49,12 +49,40 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
   const hovered = hoveredKey ? clients[hoveredKey] : null;
   const hoveredMeta = hoveredKey ? clientMeta[hoveredKey] : null;
 
+  const toggleMobileSidebar = () => {
+    const layout = document.querySelector('.app-layout');
+    if (layout) {
+      layout.classList.toggle('sidebar-mobile-open');
+    }
+  };
+
   return (
     <div className="topbar-wrapper">
       <header className="topbar" style={{ overflow: 'visible' }}>
-        <div className="topbar-left">
-          <div className="topbar-title">{title}</div>
-          {subtitle && <div className="topbar-subtitle">{subtitle}</div>}
+        <div className="topbar-left" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <button 
+            onClick={toggleMobileSidebar}
+            className="mobile-sidebar-toggle"
+            style={{
+              display: 'none',
+              background: 'none',
+              border: 'none',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              color: 'var(--text-primary)',
+              padding: '0.25rem',
+              marginRight: '0.25rem',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            title="Toggle Menu"
+          >
+            ☰
+          </button>
+          <div>
+            <div className="topbar-title">{title}</div>
+            {subtitle && <div className="topbar-subtitle">{subtitle}</div>}
+          </div>
         </div>
 
         <div className="topbar-right">

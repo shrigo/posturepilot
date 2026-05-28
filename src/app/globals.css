@@ -877,19 +877,102 @@ html, body {
     border: none;
     border-right: 1px solid var(--sidebar-border);
   }
-  .main-content { margin-left: 0; }
-  .topbar-wrapper {
-    padding: 0.75rem 0.75rem 0 0.75rem;
+  
+  .mobile-sidebar-close {
+    display: block !important;
   }
+
+  /* Slide in active mobile sidebar */
+  .app-layout.sidebar-mobile-open .sidebar {
+    transform: translateX(0) !important;
+    box-shadow: 0 0 40px rgba(15, 23, 42, 0.15) !important;
+  }
+
+  /* Background overlay when mobile sidebar is open */
+  .app-layout.sidebar-mobile-open::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 90;
+    animation: fadeIn 0.2s ease both;
+  }
+
+  .main-content { margin-left: 0; }
+  
+  .topbar-wrapper {
+    padding: 0.5rem 0.5rem 0 0.5rem !important;
+  }
+  
   .topbar {
     margin: 0;
+    height: auto !important;
+    min-height: 70px !important;
     border-radius: 12px;
-    padding: 0 1rem;
+    padding: 0.75rem 1rem !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
   }
+
+  .mobile-sidebar-toggle {
+    display: flex !important;
+  }
+
+  /* Hide minor topbar badges on mobile to prevent horizontal overflow */
+  .hud-telemetry,
+  .logout-btn {
+    display: none !important;
+  }
+  
+  /* Hide the last-scan badge on mobile viewports */
+  .topbar-right > div[style*="var(--low-bg)"] {
+    display: none !important;
+  }
+  
+  .topbar-right {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    margin-left: auto !important;
+  }
+
   .page-content {
     padding: 0.75rem;
   }
+  
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+
+  /* Wildcard stacks for all inline-styled grids inside the dashboard scroll area */
+  .content-scroll-container div[style*="display: grid"],
+  .content-scroll-container div[style*="display:grid"] {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Support stacks for elements inside specific grid configurations */
+  .content-scroll-container div[style*="grid-template-columns"],
+  .content-scroll-container div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Override custom page layout grids on the main landing page */
+  .hero-grid,
+  .config-grid,
+  .monitor-inner,
+  .monitor-kpi,
+  .monitor-mid,
+  .monitor-bot,
+  .pricing-grid,
+  .report-grid,
+  .secure-main,
+  .secure-tiles,
+  .report-delivery,
+  .report-stats {
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+    gap: 1.25rem !important;
+  }
 }
 
 /* ─── Sticky Alert Banner ─── */
