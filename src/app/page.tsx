@@ -792,7 +792,24 @@ export default function Page() {
             </div>
           </div>
 
-          <div style={{textAlign:"center",marginTop:"1.5rem"}}>
+          {/* Informative Marketing Pill */}
+          <div style={{display:"flex",justifyContent:"center",marginTop:"1.25rem"}}>
+            <div style={{
+              display:"inline-flex",alignItems:"center",gap:"0.6rem",
+              padding:"0.6rem 1.5rem",borderRadius:99,
+              background:"rgba(255,255,255,0.08)",
+              backdropFilter:"blur(16px)",
+              border:"1px solid rgba(165,180,252,0.25)",
+              boxShadow:"0 4px 24px rgba(124,58,237,0.15), inset 0 1px 0 rgba(255,255,255,0.06)"
+            }}>
+              <span style={{width:7,height:7,borderRadius:"50%",background:"#a5b4fc",display:"inline-block",boxShadow:"0 0 10px rgba(165,180,252,0.6)",animation:"pulse 2s infinite"}} />
+              <span style={{fontSize:"0.78rem",fontWeight:600,color:"#c7d2fe",letterSpacing:"0.01em"}}>
+                📡 Real-time multi-tenant posture intelligence — built for the CISO chair
+              </span>
+            </div>
+          </div>
+
+          <div style={{textAlign:"center",marginTop:"1.25rem"}}>
             <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#1e2d6e",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:800,fontSize:"0.9rem",border:"2px solid rgba(255,255,255,0.4)",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>View Live Dashboard →</Link>
           </div>
         </div>
