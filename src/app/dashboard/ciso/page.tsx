@@ -331,7 +331,51 @@ export default function CISOPage() {
   ];
 
   return (
-    <div className="page-content animate-in" style={{ paddingBottom: '2.5rem' }}>
+    <div className="page-content animate-in" style={{ paddingBottom: '2.5rem', overflowX: 'hidden', maxWidth: '100vw' }}>
+      <style>{`
+        .ciso-config-grid {
+          display: grid !important;
+          grid-template-columns: 1fr 1fr !important;
+          gap: 2rem !important;
+        }
+        .ciso-patching-grid {
+          display: grid !important;
+          grid-template-columns: 260px 1fr 1fr !important;
+          gap: 2rem !important;
+        }
+        .ciso-integrations-grid {
+          display: grid !important;
+          grid-template-columns: repeat(4, 1fr) !important;
+          gap: 1rem !important;
+        }
+        @media (max-width: 1024px) {
+          .ciso-patching-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+          .ciso-patching-grid > div {
+            border-right: none !important;
+            border-left: none !important;
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .ciso-config-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.25rem !important;
+          }
+          .ciso-integrations-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .ciso-integrations-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       
       {/* ── CISO SECURE AUTHORIZATION GATE BAR ── */}
       <div style={{
@@ -510,7 +554,7 @@ export default function CISOPage() {
               </span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+            <div className="ciso-config-grid">
               {/* Tenant selector checkboxes */}
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '0.5rem' }}>1. Aggregate Business Units</div>
@@ -774,7 +818,7 @@ export default function CISOPage() {
                       <p style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.85rem' }}>
                         Targeted, normalized vulnerabilities requiring direct CISO visibility.
                       </p>
-                      <div style={{ flex: 1, overflowY: 'auto' }}>
+                      <div style={{ flex: 1, overflowX: 'auto', overflowY: 'auto' }}>
                         {activeTenants.length === 0 ? (
                           <div style={{ color: '#64748b', fontStyle: 'italic', margin: 'auto', textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             Select a subsidiary in the config panel to query joint threat feeds...
@@ -851,7 +895,7 @@ export default function CISOPage() {
                         </span>
                       </div>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr 1fr', gap: '2rem' }}>
+                      <div className="ciso-patching-grid">
                         {/* Column 1: Patching Success Rate Progress Ring */}
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid #f1f5f9', paddingRight: '1.5rem' }}>
                           <div style={{ position: 'relative', width: 120, height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -947,7 +991,7 @@ export default function CISOPage() {
                     {/* WIDGET 4: REMEDIATION & INTEGRATIONS MAP */}
                     <div className="card" style={{ padding: '1.5rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
                       <div className="card-title" style={{ marginBottom: '1rem' }}>🔌 Combined Scanner Integration Status Mapping</div>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+                      <div className="ciso-integrations-grid">
                         {[
                           { key: 'cspm', name: isEnterpriseMode ? 'Wiz CSPM' : 'SkyArmor CSPM', category: 'Cloud Security', bu: 'Joint', color: '#0ea5e9' },
                           { key: 'cnapp', name: isEnterpriseMode ? 'Prisma Cloud' : 'PrismShield CNAPP', category: 'Compliance', bu: 'Acme Financial', color: '#c084fc' },

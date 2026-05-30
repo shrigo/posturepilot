@@ -78,7 +78,7 @@ export default function Page() {
       <style>{`
         *{box-sizing:border-box;margin:0;padding:0}
         #configure, #monitor, #report, #secure, #features { scroll-margin-top: 64px; }
-        html,body{max-width:100%;}
+        html,body{max-width:100%;overflow-x:hidden;width:100%;position:relative;}
         .hcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,70,229,0.15)!important}
         .hcard{transition:all 0.2s}
         .nav-link{transition:all 0.18s ease;border-radius:8px;padding:0.35rem 0.75rem;}
@@ -91,9 +91,14 @@ export default function Page() {
         .mobile-menu{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e7ff;padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
         .mobile-menu.open{display:flex;}
         .mobile-menu a{font-size:1rem;font-weight:700;padding:0.6rem 0;border-bottom:1px solid #f1f5f9;text-decoration:none;}
+        .nav-ciso-btn { display: inline-flex; }
+        .nav-try-free { white-space: nowrap; }
         @media(max-width:768px){
           .nav-links{display:none!important;}
           .nav-signin{display:none!important;}
+          .nav-ciso-btn{display:none!important;}
+          .logo-container img { max-width: 140px!important; height: auto!important; }
+          .nav-try-free { font-size: 0.72rem!important; padding: 0.4rem 0.8rem!important; }
           .hamburger{display:flex!important;}
           .mobile-banner{display:none!important;}
           .hero-grid{grid-template-columns:1fr!important;text-align:center;}
@@ -127,11 +132,14 @@ export default function Page() {
           .trusted-banner{gap:0.75rem!important;padding:0.875rem 1rem!important;justify-content:center!important;}
           .funnel-result{gap:0.5rem!important;}
         }
+        @media(max-width:400px){
+          .nav-try-free{display:none!important;}
+        }
       `}</style>
 
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"#fff",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
-        <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
+        <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="logo-container" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
           <Image src="/hlogotag.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         </a>
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
@@ -146,6 +154,7 @@ export default function Page() {
           {/* Standout CISO Cockpit Link */}
           <a 
             href="#features" 
+            className="nav-ciso-btn"
             onClick={(e) => {
               scrollToSection(e, "features");
             }}
@@ -182,7 +191,7 @@ export default function Page() {
             👨‍✈️ CISO Cockpit
           </a>
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
-          <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
+          <Link href="/login" className="nav-try-free" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
           <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
             <span style={{transform:menuOpen?"rotate(45deg) translate(5px,5px)":"none"}}/>
             <span style={{opacity:menuOpen?0:1}}/>
@@ -192,6 +201,7 @@ export default function Page() {
       </nav>
       {/* Mobile menu */}
       <div className={`mobile-menu${menuOpen?" open":""}`}>
+        <a href="#features" onClick={(e)=>scrollToSection(e,"features")} style={{color:"#7c3aed", fontWeight:800, borderBottom:"2px solid #e0e7ff", paddingBottom:"0.8rem", marginBottom:"0.25rem"}}>👨‍✈️ CISO Cockpit</a>
         {(["Configure","Monitor","Report","Secure"] as const).map((t,i)=>(
           <a key={t} href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())}
             style={{color:i===0?"#1e2d6e":i===1?"#4f46e5":i===2?"#7c3aed":"#16a34a"}}>{t}</a>
