@@ -168,9 +168,9 @@ export default function AiRiskContent() {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const [modalTab, setModalTab] = useState<'assessment' | 'users'>('assessment');
 
-  // NEW "BEST OF 4" STATES
+  // NEW "BEST OF 5" STATES
   // 1. Cisco Onboarding & Protection Router
-  const [onboardingStep, setOnboardingStep] = useState<'discover' | 'scan' | 'secure' | 'prevent'>('discover');
+  const [onboardingStep, setOnboardingStep] = useState<'discover' | 'scan' | 'secure' | 'prevent' | 'agents'>('discover');
   const [protectionMode, setProtectionMode] = useState<'api' | 'gateway' | 'multicloud'>('api');
   const [appUrl, setAppUrl] = useState('https://api.acme.internal/v1/llama3');
   const [isAppAdded, setIsAppAdded] = useState(false);
@@ -217,6 +217,15 @@ export default function AiRiskContent() {
   ]);
   const [selectedVulnId, setSelectedVulnId] = useState('vuln1');
   const [isPatching, setIsPatching] = useState(false);
+
+  // AI Agent Fleet State
+  const [agentFleet, setAgentFleet] = useState([
+    { id: 'customer-support-crew', name: 'Customer Support Crew', framework: 'CrewAI', purpose: 'Answer support emails & categorize tickets', scope: 'Internal CRM, Zendesk API', status: 'Active', logsCount: 482, violations: 0, severity: 'Low', systemPrompt: 'You are a polite customer support assistant. Answer queries using the CRM database. Never leak database keys.' },
+    { id: 'auto-code-reviewer', name: 'Auto-Code Reviewer', framework: 'LangGraph', purpose: 'Scan GitHub pull requests for secrets', scope: 'GitHub repositories, Slack webhook', status: 'Active', logsCount: 1240, violations: 0, severity: 'Low', systemPrompt: 'Review incoming code pull requests. Validate imports and highlight leaked secrets.' },
+    { id: 'ma-analyst-agent', name: 'M&A Analyst Agent', framework: 'AutoGen', purpose: 'Summarize target acquisition sheets', scope: 'Shared PDF directory, local vector database', status: 'Restricted', logsCount: 24, violations: 1, severity: 'Critical', systemPrompt: 'Analyze PDFs in the local directory. Summarize acquisition parameters and compile projections.' },
+    { id: 'devin-clone-sandbox', name: 'Devin Clone Sandbox', framework: 'LangChain Agent', purpose: 'Developer code gen testing', scope: 'Docker dev VM sandbox, bash terminal', status: 'Vulnerable', logsCount: 89, violations: 2, severity: 'High', systemPrompt: 'Help developer write scripts. Execute script commands directly in the bash sandbox.' }
+  ]);
+  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
 
   const openToolModal = (toolName: string, tab: 'assessment' | 'users' = 'assessment') => {
     setSelectedTool(toolName);
@@ -341,8 +350,9 @@ export default function AiRiskContent() {
   const patchedDeduction = vulnerabilities.reduce((acc, v) => acc + (v.patched ? v.impact : 0), 0);
   const sliderDeduction = maskingSensitivity === 'Strict' ? 10 : maskingSensitivity === 'Medium' ? 5 : 0;
   const scanPenalty = scanResult && scanResult.score > 70 && !firewallRules.find(r => r.id === 'injection')?.active ? 8 : 0;
+  const agentPenalty = agentFleet.filter(a => a.status !== 'Active').length * 8;
 
-  const currentRiskScore = Math.max(10, baseRiskScore - rulesDeduction - patchedDeduction - sliderDeduction + scanPenalty);
+  const currentRiskScore = Math.max(10, baseRiskScore - rulesDeduction - patchedDeduction - sliderDeduction + scanPenalty + agentPenalty);
   const riskLevel = currentRiskScore > 65 ? 'Critical' : currentRiskScore > 45 ? 'High' : currentRiskScore > 25 ? 'Medium' : 'Low';
   const riskColor = currentRiskScore > 65 ? '#dc2626' : currentRiskScore > 45 ? '#ea580c' : currentRiskScore > 25 ? '#d97706' : '#16a34a';
 
@@ -398,24 +408,49 @@ export default function AiRiskContent() {
             </span>
           </div>
 
-          {/* 4 Onboarding Banner Tabs */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1.25rem' }}>
+          {/* 5 Onboarding Banner Tabs */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.75rem', marginBottom: '1.25rem' }}>
             {[
               { id: 'discover', title: 'Discover AI Assets', desc: 'Scan environment via Multicloud', icon: '🔍', completed: isAppAdded || cloudConnected },
               { id: 'scan', title: 'Scan AI Assets', desc: 'Run algorithmic red-teaming', icon: '🎯', completed: !!scanResult },
               { id: 'secure', title: 'Secure Prompts & Gateway', desc: 'Configure inline threat firewall', icon: '🛡️', completed: firewallRules.filter(r => r.active).length >= 4 },
-              { id: 'prevent', title: 'Prevent Unauthorized Use', desc: 'Audit shadow AI registry logs', icon: '🚫', completed: shadowAiTools.filter(t => t.policyStatus === 'Blocked').length > 0 }
+              { id: 'prevent', title: 'Prevent Unauthorized Use', desc: 'Audit shadow AI registry logs', icon: '🚫', completed: shadowAiTools.filter(t => t.policyStatus === 'Blocked').length > 0 },
+              { id: 'agents', title: 'Monitor AI Agents', desc: 'Audit running agent crews & runtimes', icon: '🤖', completed: agentFleet.every(a => a.status === 'Active') }
             ].map(step => (
               <div
                 key={step.id}
                 onClick={() => setOnboardingStep(step.id as any)}
                 style={{
-                  background: onboardingStep === step.id ? 'linear-gradient(135deg, #f5f3ff, #ede9fe)' : '#fff',
-                  border: onboardingStep === step.id ? '2px solid #7c3aed' : '1px solid #e2e8f0',
+                  background: onboardingStep === step.id 
+                    ? (step.id === 'agents' ? 'linear-gradient(135deg, #fff0f6, #fbcfe8)' : 'linear-gradient(135deg, #f5f3ff, #ede9fe)') 
+                    : (step.id === 'agents' ? '#fff0f6' : '#fff'),
+                  border: onboardingStep === step.id 
+                    ? (step.id === 'agents' ? '2px solid #db2777' : '2px solid #7c3aed') 
+                    : (step.id === 'agents' ? '1.5px dashed #f9a8d4' : '1px solid #e2e8f0'),
                   borderRadius: 12, padding: '0.85rem 1rem', cursor: 'pointer', position: 'relative',
-                  transition: 'all 0.2s', boxShadow: onboardingStep === step.id ? '0 4px 12px rgba(124, 58, 237, 0.12)' : 'none'
+                  transition: 'all 0.2s', 
+                  boxShadow: onboardingStep === step.id 
+                    ? (step.id === 'agents' ? '0 4px 12px rgba(219, 39, 119, 0.15)' : '0 4px 12px rgba(124, 58, 237, 0.12)') 
+                    : (step.id === 'agents' ? '0 2px 8px rgba(219, 39, 119, 0.05)' : 'none')
                 }}
               >
+                {step.id === 'agents' && (
+                  <span style={{ 
+                    position: 'absolute', 
+                    top: '-7px', 
+                    right: '8px', 
+                    background: 'linear-gradient(135deg, #db2777, #ec4899)', 
+                    color: '#fff', 
+                    fontSize: '0.52rem', 
+                    fontWeight: 800, 
+                    padding: '2px 6px', 
+                    borderRadius: 10,
+                    boxShadow: '0 2px 6px rgba(219, 39, 119, 0.3)',
+                    animation: 'tabPulse 2s infinite ease-in-out'
+                  }}>
+                    LIVE TRACKER
+                  </span>
+                )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: 4 }}>
                   <span style={{ fontSize: '1.2rem' }}>{step.icon}</span>
                   <span style={{ fontWeight: 800, fontSize: '0.85rem', color: '#0f172a' }}>{step.title}</span>
@@ -803,6 +838,179 @@ export default function AiRiskContent() {
                   >
                     Block All Rogue Shadow AI Assets in One-Click
                   </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: MONITOR AI AGENTS */}
+            {onboardingStep === 'agents' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                {/* Agent Fleet Stats */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                  <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '0.85rem 1.25rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <span style={{ fontSize: '2rem' }}>🤖</span>
+                    <div>
+                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' }}>Active Agent Crews</div>
+                      <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0f172a' }}>
+                        {agentFleet.filter(a => a.status === 'Active').length} <span style={{ fontSize: '0.8rem', fontWeight: 500, color: '#64748b' }}>/ {agentFleet.length} Online</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '0.85rem 1.25rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <span style={{ fontSize: '2rem' }}>📡</span>
+                    <div>
+                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' }}>DLP Heartbeats Checked</div>
+                      <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0f172a' }}>
+                        {agentFleet.reduce((acc, a) => acc + a.logsCount, 0).toLocaleString()} <span style={{ fontSize: '0.8rem', fontWeight: 500, color: '#16a34a' }}>🟢 Nominal</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 10, padding: '0.85rem 1.25rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <span style={{ fontSize: '2rem' }}>🚨</span>
+                    <div>
+                      <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' }}>Restricted/Vulnerable</div>
+                      <div style={{ fontSize: '1.4rem', fontWeight: 900, color: agentFleet.some(a => a.status !== 'Active') ? '#dc2626' : '#16a34a' }}>
+                        {agentFleet.filter(a => a.status !== 'Active').length} <span style={{ fontSize: '0.8rem', fontWeight: 500, color: '#64748b' }}>Flagged Crews</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Main Split Inventory */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.45fr 1fr', gap: '1.25rem' }}>
+                  {/* Table Inventory */}
+                  <div style={{ background: '#fff', border: '1px solid #cbd5e1', borderRadius: 10, padding: '1rem', overflowX: 'auto' }}>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.65rem' }}>📋 Live Running Agent Registry</div>
+                    <table className="data-table" style={{ fontSize: '0.76rem' }}>
+                      <thead>
+                        <tr>
+                          <th>Agent Crew Name</th>
+                          <th>Framework</th>
+                          <th>Data Access Scope</th>
+                          <th>Vulnerabilities</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {agentFleet.map(a => {
+                          const isSelected = selectedAgentId === a.id;
+                          return (
+                            <tr
+                              key={a.id}
+                              onClick={() => setSelectedAgentId(isSelected ? null : a.id)}
+                              style={{ cursor: 'pointer', background: isSelected ? 'rgba(124, 58, 237, 0.04)' : undefined }}
+                            >
+                              <td style={{ fontWeight: 800, color: isSelected ? '#7c3aed' : '#0f172a' }}>{a.name}</td>
+                              <td style={{ fontFamily: 'monospace' }}>{a.framework}</td>
+                              <td style={{ fontSize: '0.7rem', color: '#64748b' }}>{a.scope}</td>
+                              <td style={{ fontWeight: 700, color: a.violations > 0 ? '#dc2626' : '#16a34a' }}>
+                                {a.violations > 0 ? `${a.violations} leak alert(s)` : '✓ Safe'}
+                              </td>
+                              <td>
+                                <span className="badge" style={{
+                                  background: a.status === 'Active' ? '#f0fdf4' : a.status === 'Restricted' ? '#fef2f2' : '#fffbeb',
+                                  color: a.status === 'Active' ? '#16a34a' : a.status === 'Restricted' ? '#dc2626' : '#d97706',
+                                  border: `1px solid ${a.status === 'Active' ? '#bbf7d0' : a.status === 'Restricted' ? '#fecaca' : '#fde68a'}`,
+                                  fontSize: '0.65rem', fontWeight: 800, padding: '2px 8px'
+                                }}>
+                                  {a.status}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Inspector Panel */}
+                  <div style={{ background: '#fff', border: '1px solid #cbd5e1', borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column' }}>
+                    {selectedAgentId ? (() => {
+                      const agent = agentFleet.find(a => a.id === selectedAgentId);
+                      if (!agent) return null;
+                      return (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', height: '100%' }}>
+                          <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <span style={{ fontSize: '0.6rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' }}>Agent Details Inspector</span>
+                              <span style={{ fontSize: '0.58rem', fontWeight: 800, padding: '1px 6px', borderRadius: 8, background: '#ede9fe', color: '#7c3aed' }}>{agent.framework}</span>
+                            </div>
+                            <h4 style={{ fontSize: '0.9rem', fontWeight: 900, color: '#0f172a', margin: '4px 0 0' }}>{agent.name}</h4>
+                            <p style={{ fontSize: '0.72rem', color: '#64748b', marginTop: 2 }}>{agent.purpose}</p>
+                          </div>
+
+                          <div style={{ borderTop: '1px dashed #e2e8f0', paddingTop: '0.5rem' }}>
+                            <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>Data Scope / Integrations</span>
+                            <div style={{ fontSize: '0.72rem', color: '#334155', fontWeight: 600, marginTop: 2 }}>{agent.scope}</div>
+                          </div>
+
+                          <div style={{ borderTop: '1px dashed #e2e8f0', paddingTop: '0.5rem' }}>
+                            <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>Active System Prompt</span>
+                            <textarea
+                              readOnly
+                              value={agent.systemPrompt}
+                              style={{ width: '100%', height: 60, marginTop: 4, padding: '0.4rem', fontSize: '0.7rem', fontFamily: 'monospace', border: '1px solid #e2e8f0', borderRadius: 6, background: '#f8fafc', color: '#475569', resize: 'none' }}
+                            />
+                          </div>
+
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 'auto', borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem' }}>
+                            {agent.status !== 'Active' ? (
+                              <button
+                                onClick={() => {
+                                  setIsScanning(true);
+                                  setScanProgress(15);
+                                  setScanLogs([`[AGENT-GATEWAY] Establishing secure API hook for '${agent.id}'...`]);
+                                  setTimeout(() => {
+                                    setScanProgress(55);
+                                    setScanLogs(prev => [...prev, `[PII-SHIELD] Masking credentials and cleaning system prompt templates...`]);
+                                  }, 300);
+                                  setTimeout(() => {
+                                    setScanProgress(85);
+                                    setScanLogs(prev => [...prev, `[DLP-SHIELD] Injecting prompt-injection guard filters into tool outputs...`]);
+                                  }, 600);
+                                  setTimeout(() => {
+                                    setScanProgress(100);
+                                    setScanLogs(prev => [...prev, `[COMPLETE] Gateway shield active. Agent '${agent.name}' successfully validated and cleared! 🟢`]);
+                                    setIsScanning(false);
+                                    setAgentFleet(prev =>
+                                      prev.map(a => a.id === agent.id ? { ...a, status: 'Active', violations: 0 } : a)
+                                    );
+                                  }, 900);
+                                }}
+                                style={{
+                                  background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff', border: 'none',
+                                  padding: '0.45rem', borderRadius: 6, fontWeight: 800, fontSize: '0.74rem', cursor: 'pointer',
+                                  boxShadow: '0 2px 6px rgba(16, 185, 129, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px'
+                                }}
+                              >
+                                ⚡ Auto-Secure Agent
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  setAgentFleet(prev =>
+                                    prev.map(a => a.id === agent.id ? { ...a, status: 'Restricted', violations: 1 } : a)
+                                  );
+                                  alert(`Enforcement Action: Agent '${agent.name}' API token revoked. Suspended session.`);
+                                }}
+                                style={{
+                                  background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: '#fff', border: 'none',
+                                  padding: '0.45rem', borderRadius: 6, fontWeight: 800, fontSize: '0.74rem', cursor: 'pointer',
+                                  boxShadow: '0 2px 6px rgba(220, 38, 38, 0.15)'
+                                }}
+                              >
+                                🚫 Revoke API Key & Quarantine
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })() : (
+                      <div style={{ color: '#94a3b8', fontStyle: 'italic', margin: 'auto', textAlign: 'center', fontSize: '0.75rem' }}>
+                        💡 Select an active agent crew hostname in the running registry table<br/>to load its system prompts & token actions...
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -1356,6 +1564,13 @@ export default function AiRiskContent() {
         }
         .pulsing-glow {
           animation: flowPulse 2.8s infinite linear;
+        }
+
+        /* Pulsing Glow Animation for Live Tracker Badge */
+        @keyframes tabPulse {
+          0% { transform: scale(1); opacity: 0.95; }
+          50% { transform: scale(1.05); opacity: 1; }
+          100% { transform: scale(1); opacity: 0.95; }
         }
       `}</style>
     </>
