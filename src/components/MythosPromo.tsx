@@ -52,18 +52,18 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
         style={{
           background: "#ffffff",
           color: "#0f172a",
-          width: "95vw",
-          maxWidth: "1400px",
-          height: "90vh",
-          maxHeight: "900px",
-          borderRadius: "24px",
+          width: "100vw",
+          maxWidth: "none",
+          height: "100vh",
+          maxHeight: "none",
+          borderRadius: "0",
           position: "relative",
-          overflowY: "auto",
+          overflow: "hidden",
           fontFamily: "Inter, sans-serif",
-          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
           display: "flex",
           flexDirection: "column",
-          padding: "3rem 2rem"
+          padding: "1.5rem 2rem",
+          boxSizing: "border-box"
         }}
         id="mythos-promo"
       >
@@ -79,23 +79,25 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
       <style>{`
         .mythos-grid {
           display: grid;
-          grid-template-columns: 350px 1fr;
-          gap: 2rem;
-          max-width: 1300px;
+          grid-template-columns: 320px 1fr;
+          gap: 1.5rem;
+          max-width: 1600px;
           margin: 0 auto;
           position: relative;
           z-index: 10;
           flex: 1;
+          height: calc(100vh - 140px);
+          width: 100%;
         }
         .mythos-tab {
-          padding: 1rem 1.25rem;
-          border-radius: 12px;
+          padding: 0.6rem 0.75rem;
+          border-radius: 8px;
           cursor: pointer;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           border: 1px solid transparent;
           display: flex;
           flex-direction: column;
-          gap: 0.25rem;
+          gap: 0.15rem;
         }
         .mythos-tab:hover {
           background: #f8fafc;
@@ -113,7 +115,9 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
           position: relative;
           box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
           height: 100%;
-          min-height: 500px;
+          min-height: 0;
+          display: flex;
+          flex-direction: column;
         }
         .mythos-screen-header {
           background: #f8fafc;
@@ -129,8 +133,8 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
           border-radius: 50%;
         }
         .mythos-screen-content {
-          padding: 2rem;
-          height: calc(100% - 53px);
+          padding: 1.5rem;
+          flex: 1;
           position: relative;
           display: flex;
           align-items: center;
@@ -172,29 +176,29 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
       {/* Background ambient glow */}
       <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translate(-50%, -50%)", width: "80vw", height: "80vw", background: "radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 60%)", pointerEvents: "none", zIndex: 1 }} />
 
-      <div style={{ position: "relative", zIndex: 10, textAlign: "center", marginBottom: "3rem" }}>
-        <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 900, letterSpacing: "-0.03em", marginBottom: "0.75rem", color: "#0f172a" }}>
+      <div style={{ position: "relative", zIndex: 10, textAlign: "center", marginBottom: "1rem", flexShrink: 0 }}>
+        <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 900, letterSpacing: "-0.03em", marginBottom: "0.25rem", color: "#0f172a" }}>
           The <span style={{ background: "linear-gradient(90deg, #7c3aed, #4f46e5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Post-Mythos</span> Era Demands More.
         </h2>
-        <p style={{ fontSize: "1.05rem", color: "#64748b", maxWidth: "600px", margin: "0 auto", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "0.95rem", color: "#64748b", maxWidth: "700px", margin: "0 auto", lineHeight: 1.4 }}>
           Machine-speed attacks require machine-speed defense. Experience the 9 core pillars of the Risk Operations Center (ROC) powered by PosturePilot.
         </p>
       </div>
 
       <div className="mythos-grid">
         {/* Left Tabs */}
-        <div className="mythos-tab-list" style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <div className="mythos-tab-list" style={{ display: "flex", flexDirection: "column", gap: "0.25rem", height: "100%", justifyContent: "space-between" }}>
           {FEATURES.map((feat) => (
             <div 
               key={feat.id} 
               className={`mythos-tab ${activeFeature === feat.id ? 'active' : ''}`}
               onClick={() => handleManualSelect(feat.id)}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                <span style={{ fontSize: "1.25rem", filter: activeFeature === feat.id ? "drop-shadow(0 0 6px rgba(124,58,237,0.4))" : "none" }}>{feat.icon}</span>
-                <span style={{ fontSize: "1.05rem", fontWeight: activeFeature === feat.id ? 800 : 600, color: activeFeature === feat.id ? "#0f172a" : "#475569" }}>{feat.title}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span style={{ fontSize: "1.1rem", filter: activeFeature === feat.id ? "drop-shadow(0 0 6px rgba(124,58,237,0.4))" : "none" }}>{feat.icon}</span>
+                <span style={{ fontSize: "0.95rem", fontWeight: activeFeature === feat.id ? 800 : 600, color: activeFeature === feat.id ? "#0f172a" : "#475569" }}>{feat.title}</span>
               </div>
-              <div style={{ fontSize: "0.85rem", color: activeFeature === feat.id ? "#6d28d9" : "#64748b", marginTop: "0.25rem", paddingLeft: "2rem" }}>
+              <div style={{ fontSize: "0.75rem", color: activeFeature === feat.id ? "#6d28d9" : "#64748b", marginTop: "0.1rem", paddingLeft: "1.6rem" }}>
                 {feat.desc}
               </div>
             </div>
