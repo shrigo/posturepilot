@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import ShieldViz from "@/components/ShieldViz";
+import MythosPromo from "@/components/MythosPromo";
 import { useState, useEffect } from "react";
 import { useClient } from "@/context/ClientContext";
 
@@ -33,6 +34,7 @@ export default function Page() {
   const [menuOpen,setMenuOpen]=useState(false);
   const [showTop,setShowTop]=useState(false);
   const [activeMockupTab, setActiveMockupTab] = useState("Main Terminal");
+  const [isPromoOpen, setIsPromoOpen] = useState(false);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -192,6 +194,7 @@ export default function Page() {
           </a>
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
           <Link href="/login" className="nav-try-free" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
+          <button onClick={() => setIsPromoOpen(true)} className="nav-try-free" style={{background:"linear-gradient(135deg,#eab308,#f59e0b)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,border:"none",cursor:"pointer",boxShadow:"0 4px 16px rgba(234,179,8,0.35)",marginLeft:"0.25rem"}}>✨ View Promo</button>
           <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
             <span style={{transform:menuOpen?"rotate(45deg) translate(5px,5px)":"none"}}/>
             <span style={{opacity:menuOpen?0:1}}/>
@@ -309,6 +312,9 @@ export default function Page() {
           <span key={c} style={{fontSize:"0.85rem",fontWeight:700,color:"#fff",whiteSpace:"nowrap"}}>{c}</span>
         ))}
       </div>
+
+      {/* MYTHOS PROMO MODAL */}
+      {isPromoOpen && <MythosPromo onClose={() => setIsPromoOpen(false)} />}
 
       {/* ── CONFIGURE ── */}
       <section id="configure" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"#fff",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
