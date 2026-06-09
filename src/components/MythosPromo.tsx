@@ -1437,29 +1437,6 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               {/* SLIDE 4: Pricing Tier Plans */}
               {activeSlide === 3 && (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "0.25rem" }}>
-                    <button
-                      onClick={() => handleManualSlideSelect(0)}
-                      style={{
-                        background: "rgba(124, 58, 237, 0.08)",
-                        border: "1px solid rgba(124, 58, 237, 0.2)",
-                        color: "#7c3aed",
-                        padding: "0.25rem 0.55rem",
-                        borderRadius: "6px",
-                        fontSize: "0.65rem",
-                        fontWeight: 700,
-                        cursor: "pointer",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "0.3rem",
-                        transition: "all 0.15s ease"
-                      }}
-                      onMouseEnter={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.15)"}
-                      onMouseLeave={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.08)"}
-                    >
-                      ← Back to {activeModule.title} Cockpit
-                    </button>
-                  </div>
                   <div style={{ textAlign: "center", marginBottom: "0.4rem" }}>
                     <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#7c3aed", letterSpacing: "0.15em", textTransform: "uppercase" }}>SUBSCRIPTION MODELS</div>
                     <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
@@ -1542,12 +1519,40 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                             width: "100%",
                             marginTop: "0.3rem"
                           }}
-                          onClick={() => alert(`Pilot trial request sent for ${plan.name} cockpit package!`)}
+                          onClick={() => {
+                            alert(`Initiating trial registration for ${plan.name} plan. Redirecting to account portal...`);
+                            window.location.href = `/login?plan=${plan.name.toLowerCase()}`;
+                          }}
                         >
                           {plan.price === "999" ? "Contact Sales" : "Start 14-Day Trial"}
                         </button>
                       </div>
                     ))}
+                  </div>
+
+                  {/* Back to Cockpit aligned bottom right */}
+                  <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "0.75rem" }}>
+                    <button
+                      onClick={() => handleManualSlideSelect(0)}
+                      style={{
+                        background: "rgba(124, 58, 237, 0.08)",
+                        border: "1px solid rgba(124, 58, 237, 0.2)",
+                        color: "#7c3aed",
+                        padding: "0.35rem 0.75rem",
+                        borderRadius: "6px",
+                        fontSize: "0.65rem",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.3rem",
+                        transition: "all 0.15s ease"
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.15)"}
+                      onMouseLeave={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.08)"}
+                    >
+                      ← Back to {activeModule.title} Cockpit
+                    </button>
                   </div>
                 </div>
               )}
