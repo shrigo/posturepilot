@@ -689,6 +689,10 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             0%, 100% { opacity: 0.4; }
             50% { opacity: 1; }
           }
+          @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.6); }
+          }
           @keyframes growBar {
             from { width: 0%; }
             to { width: 100%; }
@@ -1005,11 +1009,158 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                       {/* Traffic Control */}
                       {activeModuleId === "traffic" && (
-                        <div style={{ position: "relative", width: 180, height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <svg viewBox="0 0 200 150" style={{ width: "100%", height: "100%" }}>
-                            <path d="M 10 75 Q 40 85, 70 75 T 110 32 T 150 90 T 190 75" fill="none" stroke="#f59e0b" strokeWidth="2" style={{ filter: "drop-shadow(0 0 3px #f59e0b)" }} />
-                            <circle cx="110" cy="32" r="3" fill="#f59e0b" style={{ animation: "pulseGlow 2s infinite" }} />
-                          </svg>
+                        <div style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(3, 1fr)",
+                          gap: "0.5rem",
+                          width: "95%",
+                          height: "92%",
+                          padding: "0.2rem"
+                        }}>
+                          {/* Tile 1: Flow Anomaly Detection */}
+                          <div style={{
+                            background: "rgba(15, 23, 42, 0.6)",
+                            border: "1px solid rgba(245, 158, 11, 0.2)",
+                            borderRadius: "8px",
+                            padding: "0.4rem",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            height: "100%",
+                            boxSizing: "border-box"
+                          }}>
+                            <div style={{ textAlign: "left" }}>
+                              <div style={{ fontSize: "0.55rem", color: "#f59e0b", fontWeight: 800, fontFamily: "monospace", letterSpacing: "0.05em", textTransform: "uppercase" }}>FLOW ANOMALY</div>
+                              <div style={{ fontSize: "0.45rem", color: "#64748b", marginTop: "2px" }}>Subnet exfiltration block</div>
+                            </div>
+                            
+                            {/* SVG Graphic */}
+                            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              <svg viewBox="0 0 100 70" style={{ width: "100%", height: "100%" }}>
+                                {/* Nodes */}
+                                <circle cx="20" cy="45" r="5" fill="#10b981" />
+                                <text x="20" y="56" textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">Subnet A</text>
+                                
+                                <circle cx="50" cy="20" r="5" fill="#10b981" />
+                                <text x="50" y="12" textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">Subnet B</text>
+                                
+                                <circle cx="80" cy="45" r="5" fill="#ef4444" style={{ animation: "pulseRed 1.5s infinite" }} />
+                                <text x="80" y="56" textAnchor="middle" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="bold">Unauth IP</text>
+                                
+                                {/* Links */}
+                                <line x1="25" y1="41" x2="45" y2="24" stroke="#10b981" strokeWidth="1" strokeDasharray="2 2" />
+                                <line x1="25" y1="45" x2="75" y2="45" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 4s linear infinite" }} />
+                                
+                                {/* Anomaly Label */}
+                                <rect x="35" y="38" width="30" height="8" rx="2" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" strokeWidth="0.3" />
+                                <text x="50" y="44" textAnchor="middle" fill="#f87171" fontSize="4.5" fontWeight="bold" fontFamily="monospace">BLOCKED</text>
+                              </svg>
+                            </div>
+                          </div>
+
+                          {/* Tile 2: Bandwidth Peak Analyzer */}
+                          <div style={{
+                            background: "rgba(15, 23, 42, 0.6)",
+                            border: "1px solid rgba(16, 185, 129, 0.2)",
+                            borderRadius: "8px",
+                            padding: "0.4rem",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            height: "100%",
+                            boxSizing: "border-box"
+                          }}>
+                            <div style={{ textAlign: "left" }}>
+                              <div style={{ fontSize: "0.55rem", color: "#10b981", fontWeight: 800, fontFamily: "monospace", letterSpacing: "0.05em", textTransform: "uppercase" }}>BANDWIDTH PEAK</div>
+                              <div style={{ fontSize: "0.45rem", color: "#64748b", marginTop: "2px" }}>Exfiltration spike check</div>
+                            </div>
+                            
+                            {/* SVG Graphic */}
+                            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              <svg viewBox="0 0 100 70" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                                <defs>
+                                  <linearGradient id="tile2Glow" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="#ef4444" stopOpacity="0.25" />
+                                    <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+                                  </linearGradient>
+                                </defs>
+                                {/* Grid lines */}
+                                <line x1="5" y1="15" x2="95" y2="15" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" />
+                                <line x1="5" y1="35" x2="95" y2="35" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" />
+                                <line x1="5" y1="55" x2="95" y2="55" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                                
+                                {/* Dotted Limit */}
+                                <line x1="5" y1="30" x2="95" y2="30" stroke="#3b82f6" strokeWidth="0.5" strokeDasharray="1.5 1.5" />
+                                <text x="8" y="27" fill="#3b82f6" fontSize="4.2" fontFamily="monospace">Limit (5.0G)</text>
+                                
+                                {/* Area Path with Anomaly Spike */}
+                                <path d="M 5 55 Q 25 52, 40 45 T 60 12 T 75 50 T 95 55 L 95 55 L 5 55 Z" fill="url(#tile2Glow)" />
+                                <path d="M 5 55 Q 25 52, 40 45 T 60 12 T 75 50 T 95 55" fill="none" stroke="#ef4444" strokeWidth="1" />
+                                
+                                {/* Indicator Dot */}
+                                <circle cx="60" cy="12" r="1.5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 2px #ef4444)" }} />
+                                <text x="63" y="10" fill="#ef4444" fontSize="4.5" fontFamily="monospace" fontWeight="bold">8.24 Gbps</text>
+                              </svg>
+                            </div>
+                          </div>
+
+                          {/* Tile 3: Port Exposure Matrix */}
+                          <div style={{
+                            background: "rgba(15, 23, 42, 0.6)",
+                            border: "1px solid rgba(239, 68, 68, 0.2)",
+                            borderRadius: "8px",
+                            padding: "0.4rem",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            height: "100%",
+                            boxSizing: "border-box"
+                          }}>
+                            <div style={{ textAlign: "left" }}>
+                              <div style={{ fontSize: "0.55rem", color: "#ef4444", fontWeight: 800, fontFamily: "monospace", letterSpacing: "0.05em", textTransform: "uppercase" }}>PORT EXPOSURE</div>
+                              <div style={{ fontSize: "0.45rem", color: "#64748b", marginTop: "2px" }}>Perimeter scanning</div>
+                            </div>
+                            
+                            {/* Grid of ports */}
+                            <div style={{
+                              flex: 1,
+                              display: "grid",
+                              gridTemplateColumns: "repeat(3, 1fr)",
+                              gap: "3px",
+                              alignContent: "center",
+                              padding: "0.1rem 0"
+                            }}>
+                              {[
+                                { port: "80", status: "OK", color: "#10b981" },
+                                { port: "443", status: "OK", color: "#10b981" },
+                                { port: "22", status: "OK", color: "#10b981" },
+                                { port: "8080", status: "OK", color: "#10b981" },
+                                { port: "3389", status: "EXPOSED", color: "#ef4444", alert: true },
+                                { port: "1433", status: "SECURE", color: "#10b981" },
+                                { port: "3306", status: "SECURE", color: "#10b981" },
+                                { port: "21", status: "SECURE", color: "#10b981" },
+                                { port: "5432", status: "SECURE", color: "#10b981" }
+                              ].map((p, pIdx) => (
+                                <div
+                                  key={pIdx}
+                                  style={{
+                                    background: "rgba(30, 41, 59, 0.4)",
+                                    border: `1px solid ${p.color}44`,
+                                    borderRadius: "4px",
+                                    padding: "4px 2px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    animation: p.alert ? "pulseRed 1s infinite" : "none"
+                                  }}
+                                >
+                                  <span style={{ fontSize: "0.45rem", fontWeight: 700, color: "#94a3b8", fontFamily: "monospace" }}>{p.port}</span>
+                                  <span style={{ fontSize: "0.38rem", fontWeight: 900, color: p.color, fontFamily: "monospace", textTransform: "uppercase" }}>{p.status}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       )}
 
