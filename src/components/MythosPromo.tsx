@@ -407,65 +407,42 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
       />
       
       {/* Modal Box */}
-      <div 
-        style={{
-          background: "#f1f5f9",
-          color: "#0f172a",
-          width: "100vw",
-          maxWidth: "none",
-          height: "100vh",
-          maxHeight: "none",
-          borderRadius: "0",
-          position: "relative",
-          overflow: "hidden",
-          fontFamily: "Inter, system-ui, -apple-system, sans-serif",
-          display: "flex",
-          flexDirection: "column",
-          padding: "1.2rem 1.8rem",
-          boxSizing: "border-box",
-          zIndex: 10
-        }}
-        id="mythos-promo"
-      >
-        {/* Close Button */}
-        <button 
-          onClick={onClose}
-          style={{ position: "absolute", top: "1.2rem", right: "1.5rem", background: "#e2e8f0", border: "none", width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer", fontSize: "1.2rem", display: "flex", alignItems: "center", justifyContent: "center", color: "#475569", zIndex: 100, transition: "background 0.2s" }}
-          onMouseEnter={e => e.currentTarget.style.background = "#cbd5e1"}
-          onMouseLeave={e => e.currentTarget.style.background = "#e2e8f0"}
-        >
-          ✕
-        </button>
-
+      <div className="mythos-promo-modal" id="mythos-promo">
         <style>{`
-          .mythos-grid {
-            display: grid;
-            grid-template-columns: 290px 1fr;
-            gap: 1.5rem;
-            max-width: 1600px;
-            margin: 0 auto;
+          .mythos-promo-modal {
+            background: #ffffff;
+            color: #0f172a;
+            width: 92vw;
+            max-width: 1350px;
+            height: 540px;
+            border-radius: 20px;
             position: relative;
+            overflow: hidden;
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            box-sizing: border-box;
             z-index: 10;
-            flex: 1;
-            height: calc(100vh - 100px);
-            width: 100%;
-            min-height: 0;
+            box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35);
+            border: 1px solid #cbd5e1;
           }
-          .mythos-tab-list {
+          .mythos-sidebar {
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            height: 100%;
+            padding: 1rem 0.65rem;
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
-            height: 100%;
-            justify-content: flex-start;
+            gap: 0.2rem;
             overflow-y: auto;
             scrollbar-width: none;
-            padding-right: 0.25rem;
+            box-sizing: border-box;
           }
-          .mythos-tab-list::-webkit-scrollbar {
+          .mythos-sidebar::-webkit-scrollbar {
             display: none;
           }
           .mythos-tab {
-            padding: 0.5rem 0.75rem;
+            padding: 0.35rem 0.55rem;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -473,41 +450,72 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             background: #ffffff;
             display: flex;
             flex-direction: column;
-            gap: 0.05rem;
+            gap: 0.01rem;
             flex-shrink: 0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
           }
           .mythos-tab:hover {
-            background: #f8fafc;
+            background: #f1f5f9;
           }
           .mythos-tab.active {
             background: rgba(124, 58, 237, 0.05);
             border-left: 4px solid #7c3aed;
             box-shadow: 0 4px 12px rgba(124, 58, 237, 0.04);
           }
-          .mythos-canvas {
+          .mythos-right-canvas {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.05);
             height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 1.2rem 2.2rem 1rem;
+          }
+          .mythos-right-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.6rem;
+            flex-shrink: 0;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+          }
+          .mythos-close-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #475569;
+            transition: background 0.2s;
+            margin-top: -2px;
+          }
+          .mythos-close-btn:hover {
+            background: #cbd5e1;
+          }
+          .mythos-slideshow-frame {
+            flex: 1;
             min-height: 0;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
             position: relative;
+            justify-content: center;
           }
           .mythos-canvas-body {
             flex: 1;
             min-height: 0;
-            padding: 2.2rem 2.5rem 1.5rem;
+            padding: 0.2rem 1rem 0.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             animation: slideFadeIn 0.35s ease-out forwards;
           }
-          
-          /* Slide 1 Split Pane */
           .mythos-split-grid {
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
@@ -519,7 +527,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 310px;
+            height: 230px;
             background: #090d16;
             border-radius: 12px;
             border: 1px solid #e2e8f0;
@@ -532,37 +540,34 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             flex-direction: column;
             justify-content: center;
           }
-          
           .mythos-feature-item {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 10px;
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.6rem;
+            padding: 0.45rem 0.75rem;
+            margin-bottom: 0.4rem;
             display: flex;
             align-items: flex-start;
-            gap: 0.6rem;
+            gap: 0.5rem;
             transition: all 0.2s ease;
           }
           .mythos-feature-item:hover {
             border-color: #cbd5e1;
             background: #f1f5f9;
           }
-          
-          /* Slide 2 Funnel */
           .mythos-metric-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
             width: 100%;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.6rem;
           }
           .mythos-metric-col {
             border-right: 1px dashed #cbd5e1;
             padding-right: 0.75rem;
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            gap: 0.15rem;
           }
           .mythos-metric-col:last-child {
             border-right: none;
@@ -570,18 +575,17 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
           }
           .mythos-funnel-container {
             width: 100%;
-            height: 110px;
-            margin: 1rem 0;
+            height: 90px;
+            margin: 0.4rem 0;
             background: #f8fafc;
             border-radius: 12px;
             border: 1px solid #e2e8f0;
-            padding: 0.5rem 2rem;
+            padding: 0.35rem 1.5rem;
             display: flex;
             align-items: center;
+            justify-content: center;
             box-sizing: border-box;
           }
-          
-          /* Slide 3 SOAR */
           .mythos-terminal {
             background: #090d16;
             border: 1px solid #1e293b;
@@ -591,39 +595,37 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             justify-content: center;
             position: relative;
             overflow: hidden;
-            height: 310px;
+            height: 230px;
             box-shadow: inset 0 0 40px rgba(0,0,0,0.85);
           }
           .mythos-terminal-overlay {
             position: absolute;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
+            bottom: 0.75rem;
+            left: 0.75rem;
+            right: 0.75rem;
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 8px;
-            padding: 0.5rem 0.8rem;
+            padding: 0.4rem 0.6rem;
             font-family: monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #a5b4fc;
             z-index: 10;
           }
-          
-          /* Navigation Arrows */
           .mythos-nav-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.85);
             border: 1px solid #e2e8f0;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #475569;
             transition: all 0.2s ease;
             z-index: 50;
@@ -635,13 +637,11 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
           }
           .mythos-nav-arrow.left {
-            left: 0.8rem;
+            left: -0.6rem;
           }
           .mythos-nav-arrow.right {
-            right: 0.8rem;
+            right: -0.6rem;
           }
-          
-          /* Dash Pagination Indicator */
           .mythos-dash-indicator {
             width: 18px;
             height: 4px;
@@ -695,21 +695,24 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
           }
           
           @media(max-width: 980px) {
-            .mythos-grid {
+            .mythos-promo-modal {
               grid-template-columns: 1fr;
-              height: calc(100vh - 120px);
+              height: auto;
+              max-height: 92vh;
+              overflow-y: auto;
             }
-            .mythos-tab-list {
-              display: flex;
+            .mythos-sidebar {
+              border-right: none;
+              border-bottom: 1px solid #e2e8f0;
+              height: auto;
               flex-direction: row;
               overflow-x: auto;
               overflow-y: hidden;
-              height: auto;
-              padding-bottom: 0.5rem;
+              padding: 0.5rem;
               scroll-snap-type: x mandatory;
             }
             .mythos-tab {
-              min-width: 180px;
+              min-width: 185px;
               scroll-snap-align: start;
               border-left: none;
               border-bottom: 3px solid transparent;
@@ -718,12 +721,19 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               border-left: none;
               border-bottom: 3px solid #7c3aed;
             }
+            .mythos-right-canvas {
+              height: auto;
+              padding: 1rem;
+            }
             .mythos-split-grid {
               grid-template-columns: 1fr;
               grid-template-rows: auto auto;
               gap: 1rem;
             }
             .mythos-split-left {
+              height: 180px;
+            }
+            .mythos-terminal {
               height: 180px;
             }
             .mythos-metric-grid {
@@ -735,51 +745,55 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               border-bottom: 1px dashed #cbd5e1;
               padding-bottom: 0.5rem;
             }
-            .mythos-terminal {
-              grid-template-columns: 1fr;
-              grid-template-rows: 1fr auto;
-              height: 200px;
-            }
             .mythos-nav-arrow {
               display: none;
             }
           }
         `}</style>
 
-        {/* Ambient Top Title */}
-        <div style={{ position: "relative", zIndex: 10, textAlign: "center", marginBottom: "0.6rem", flexShrink: 0 }}>
-          <h2 style={{ fontSize: "clamp(1.4rem, 2.5vw, 1.8rem)", fontWeight: 900, letterSpacing: "-0.03em", marginBottom: "0.15rem", color: "#0f172a" }}>
-            The <span style={{ background: "linear-gradient(90deg, #7c3aed, #4f46e5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Post-Mythos</span> Era Demands More.
-          </h2>
-          <p style={{ fontSize: "0.85rem", color: "#64748b", maxWidth: "680px", margin: "0 auto", lineHeight: 1.35 }}>
-            Machine-speed threat models require machine-speed remediation. Explore the 12 core cockpit pillars of the PosturePilot Risk Operations Center (ROC).
-          </p>
+        {/* Left Tabs Sidebar */}
+        <div className="mythos-sidebar">
+          {MODULES_DATA.map((feat) => (
+            <div 
+              key={feat.id} 
+              className={`mythos-tab ${activeModuleId === feat.id ? 'active' : ''}`}
+              onClick={() => handleManualModuleSelect(feat.id)}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <span style={{ fontSize: "0.95rem" }}>{feat.icon}</span>
+                <span style={{ fontSize: "0.76rem", fontWeight: activeModuleId === feat.id ? 800 : 600, color: activeModuleId === feat.id ? "#7c3aed" : "#475569" }}>{feat.title}</span>
+              </div>
+              <div style={{ fontSize: "0.64rem", color: "#64748b", marginTop: "0.02rem", paddingLeft: "1.35rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                {feat.desc}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Main Grid Workspace */}
-        <div className="mythos-grid">
-          {/* Left Tabs */}
-          <div className="mythos-tab-list">
-            {MODULES_DATA.map((feat) => (
-              <div 
-                key={feat.id} 
-                className={`mythos-tab ${activeModuleId === feat.id ? 'active' : ''}`}
-                onClick={() => handleManualModuleSelect(feat.id)}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <span style={{ fontSize: "0.95rem" }}>{feat.icon}</span>
-                  <span style={{ fontSize: "0.82rem", fontWeight: activeModuleId === feat.id ? 800 : 600, color: activeModuleId === feat.id ? "#7c3aed" : "#475569" }}>{feat.title}</span>
-                </div>
-                <div style={{ fontSize: "0.7rem", color: "#64748b", marginTop: "0.05rem", paddingLeft: "1.35rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {feat.desc}
-                </div>
-              </div>
-            ))}
+        {/* Right Slideshow Canvas */}
+        <div className="mythos-right-canvas">
+          {/* Header block */}
+          <div className="mythos-right-header">
+            <div>
+              <h2 style={{ fontSize: "1.1rem", fontWeight: 900, letterSpacing: "-0.02em", color: "#0f172a", margin: 0 }}>
+                The <span style={{ background: "linear-gradient(90deg, #7c3aed, #4f46e5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Post-Mythos</span> Era Demands More.
+              </h2>
+              <p style={{ fontSize: "0.72rem", color: "#64748b", margin: "0.1rem 0 0", lineHeight: 1.2 }}>
+                Explore the 12 core cockpit pillars of the PosturePilot Risk Operations Center (ROC).
+              </p>
+            </div>
+            {/* Close Button */}
+            <button 
+              onClick={onClose}
+              className="mythos-close-btn"
+              aria-label="Close"
+            >
+              ✕
+            </button>
           </div>
 
-          {/* Right Slideshow Canvas */}
-          <div className="mythos-canvas">
-            
+          {/* Slideshow Frame */}
+          <div className="mythos-slideshow-frame">
             {/* Left & Right Chevrons */}
             <button onClick={handlePrevSlide} className="mythos-nav-arrow left" aria-label="Previous Slide">‹</button>
             <button onClick={handleNextSlide} className="mythos-nav-arrow right" aria-label="Next Slide">›</button>
@@ -790,12 +804,12 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               {/* SLIDE 1: Core Capabilities & Graphic */}
               {activeSlide === 0 && (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-                    <div style={{ fontSize: "0.65rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>COCKPIT PREVIEW</div>
-                    <h3 style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", fontWeight: 800, color: "#0f172a", margin: "0.2rem 0 0.15rem" }}>
+                  <div style={{ textAlign: "center", marginBottom: "0.6rem" }}>
+                    <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>COCKPIT PREVIEW</div>
+                    <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
                       {activeModule.title}
                     </h3>
-                    <p style={{ fontSize: "0.82rem", color: "#475569", margin: 0 }}>
+                    <p style={{ fontSize: "0.74rem", color: "#475569", margin: 0 }}>
                       {activeModule.tagline}
                     </p>
                   </div>
@@ -806,15 +820,15 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                       
                       {/* Posture Clearance */}
                       {activeModuleId === "posture" && (
-                        <div style={{ position: "relative", width: 170, height: 170, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ position: "relative", width: 140, height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
                           <svg viewBox="0 0 100 100" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", transform: "rotate(-90deg)" }}>
                             <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(139, 92, 246, 0.08)" strokeWidth="1.5" strokeDasharray="3 3" style={{ animation: "rotateClockwise 30s linear infinite" }} />
                             <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="5" />
                             <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" strokeWidth="5" strokeDasharray="235 251" strokeLinecap="round" />
                           </svg>
                           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 5 }}>
-                            <span style={{ fontSize: "1.8rem", animation: "float 4s ease-in-out infinite" }}>🛡️</span>
-                            <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#fff", marginTop: "0.1rem", fontFamily: "monospace" }}>94%</div>
+                            <span style={{ fontSize: "1.6rem", animation: "float 4s ease-in-out infinite" }}>🛡️</span>
+                            <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#fff", marginTop: "0.1rem", fontFamily: "monospace" }}>94%</div>
                           </div>
                           <div style={{ position: "absolute", width: "100%", height: "2px", background: "linear-gradient(90deg, transparent, rgba(16,185,129,0.4), transparent)", top: "50%", left: 0, animation: "scanline 3s linear infinite", pointerEvents: "none" }} />
                         </div>
@@ -822,31 +836,31 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* Cloud Altitude */}
                       {activeModuleId === "cloud" && (
-                        <div style={{ position: "relative", width: "100%", height: 160, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "0.2rem" }}>
+                        <div style={{ position: "relative", width: "100%", height: 140, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "0.2rem" }}>
                           <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
                             <line x1="20%" y1="20%" x2="50%" y2="50%" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
                             <line x1="80%" y1="25%" x2="50%" y2="50%" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
                             <line x1="50%" y1="50%" x2="30%" y2="80%" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3 3" />
                           </svg>
                           <div style={{ display: "flex", justifyContent: "space-around" }}>
-                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(30,41,59,0.9)", border: "1px solid rgba(255,255,255,0.08)", padding: "0.25rem 0.5rem", borderRadius: "8px", animation: "float 5s ease-in-out infinite" }}>
-                              <span style={{ fontSize: "0.85rem" }}>☁️</span>
-                              <span style={{ fontSize: "0.6rem", fontFamily: "monospace", color: "#cbd5e1" }}>AWS-PROD</span>
+                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(30,41,59,0.9)", border: "1px solid rgba(255,255,255,0.08)", padding: "0.2rem 0.4rem", borderRadius: "6px", animation: "float 5s ease-in-out infinite" }}>
+                              <span style={{ fontSize: "0.75rem" }}>☁️</span>
+                              <span style={{ fontSize: "0.55rem", fontFamily: "monospace", color: "#cbd5e1" }}>AWS-PROD</span>
                             </div>
-                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(30,41,59,0.9)", border: "1px solid rgba(255,255,255,0.08)", padding: "0.25rem 0.5rem", borderRadius: "8px", animation: "floatSlow 7s ease-in-out infinite" }}>
-                              <span style={{ fontSize: "0.85rem" }}>☁️</span>
-                              <span style={{ fontSize: "0.6rem", fontFamily: "monospace", color: "#cbd5e1" }}>GCP-DEV</span>
-                            </div>
-                          </div>
-                          <div style={{ display: "flex", justifyContent: "center" }}>
-                            <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#1e293b", border: "2px solid #3b82f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#3b82f6", animation: "pulseGlowBlue 2s infinite" }} />
+                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(30,41,59,0.9)", border: "1px solid rgba(255,255,255,0.08)", padding: "0.2rem 0.4rem", borderRadius: "6px", animation: "floatSlow 7s ease-in-out infinite" }}>
+                              <span style={{ fontSize: "0.75rem" }}>☁️</span>
+                              <span style={{ fontSize: "0.55rem", fontFamily: "monospace", color: "#cbd5e1" }}>GCP-DEV</span>
                             </div>
                           </div>
                           <div style={{ display: "flex", justifyContent: "center" }}>
-                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(239, 68, 68, 0.08)", border: "1px solid rgba(239, 68, 68, 0.18)", padding: "0.2rem 0.5rem", borderRadius: "8px" }}>
-                              <span style={{ fontSize: "0.7rem", animation: "pulseRed 1.5s infinite" }}>🚨</span>
-                              <span style={{ fontSize: "0.58rem", fontFamily: "monospace", color: "#f87171" }}>S3_PUBLIC_EXPOSED</span>
+                            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#1e293b", border: "2px solid #3b82f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#3b82f6", animation: "pulseGlowBlue 2s infinite" }} />
+                            </div>
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(239, 68, 68, 0.08)", border: "1px solid rgba(239, 68, 68, 0.18)", padding: "0.15rem 0.4rem", borderRadius: "6px" }}>
+                              <span style={{ fontSize: "0.65rem", animation: "pulseRed 1.5s infinite" }}>🚨</span>
+                              <span style={{ fontSize: "0.55rem", fontFamily: "monospace", color: "#f87171" }}>S3_PUBLIC_EXPOSED</span>
                             </div>
                           </div>
                         </div>
@@ -854,12 +868,12 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* Network Runway */}
                       {activeModuleId === "network" && (
-                        <div style={{ position: "relative", width: 200, height: 160, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ position: "relative", width: 180, height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
                           <svg viewBox="0 0 200 150" style={{ width: "100%", height: "100%" }}>
                             <path d="M 20 75 L 80 75 M 120 75 L 180 75" stroke="rgba(255,255,255,0.06)" strokeWidth="1.5" />
                             <path d="M 20 110 L 80 90 L 100 75" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ strokeDashoffset: 4, animation: "dash 2s linear infinite" }} />
                             <g transform="translate(100, 75)">
-                              <circle cx="0" cy="0" r="16" fill="#090d16" stroke="#3b82f6" strokeWidth="2" style={{ filter: "drop-shadow(0 0 6px rgba(59, 130, 246, 0.4))" }} />
+                              <circle cx="0" cy="0" r="14" fill="#090d16" stroke="#3b82f6" strokeWidth="2" style={{ filter: "drop-shadow(0 0 6px rgba(59, 130, 246, 0.4))" }} />
                             </g>
                             <circle cx="20" cy="75" r="3" fill="#10b981" />
                             <circle cx="20" cy="110" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }} />
@@ -870,19 +884,19 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* App Security Check */}
                       {activeModuleId === "appsec" && (
-                        <div style={{ position: "relative", width: "100%", height: 160, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0.2rem" }}>
-                          <div style={{ width: "85%", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                        <div style={{ position: "relative", width: "100%", height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0.2rem" }}>
+                          <div style={{ width: "85%", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
                             {[
                               { label: "Commits", count: "1,450 Scanned", w: "100%", c: "#334155" },
                               { label: "SAST Risks", count: "102 Triaged", w: "65%", c: "#eab308" },
                               { label: "SCA Blocks", count: "8 Fails", w: "25%", c: "#ef4444" }
                             ].map((bar, idx) => (
                               <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "0.1rem" }}>
-                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.6rem", fontFamily: "monospace" }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.55rem", fontFamily: "monospace" }}>
                                   <span style={{ color: "#cbd5e1" }}>{bar.label}</span>
                                   <span style={{ color: bar.c === "#ef4444" ? "#ef4444" : "#94a3b8" }}>{bar.count}</span>
                                 </div>
-                                <div style={{ width: "100%", height: "6px", background: "rgba(255,255,255,0.05)", borderRadius: "3px", overflow: "hidden" }}>
+                                <div style={{ width: "100%", height: "5px", background: "rgba(255,255,255,0.05)", borderRadius: "3px", overflow: "hidden" }}>
                                   <div style={{ width: bar.w, height: "100%", background: bar.c, borderRadius: "3px", animation: "growBar 1.5s ease-out forwards" }} />
                                 </div>
                               </div>
@@ -893,25 +907,25 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* AI Risk */}
                       {activeModuleId === "ai-risk" && (
-                        <div style={{ position: "relative", width: 220, height: 160, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
-                          <div style={{ background: "rgba(15, 23, 42, 0.85)", border: "1px solid rgba(255, 255, 255, 0.04)", borderRadius: "6px", width: "95%", padding: "0.3rem 0.5rem", display: "flex", flexDirection: "column", gap: "0.1rem" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.55rem", color: "#64748b", fontFamily: "monospace" }}>
+                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.4rem" }}>
+                          <div style={{ background: "rgba(15, 23, 42, 0.85)", border: "1px solid rgba(255, 255, 255, 0.04)", borderRadius: "6px", width: "95%", padding: "0.25rem 0.4rem", display: "flex", flexDirection: "column", gap: "0.1rem" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.5rem", color: "#64748b", fontFamily: "monospace" }}>
                               <span>PROMPT</span>
                               <span style={{ color: "#ef4444" }}>PII FOUND</span>
                             </div>
-                            <div style={{ fontSize: "0.62rem", fontFamily: "monospace", color: "#cbd5e1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            <div style={{ fontSize: "0.58rem", fontFamily: "monospace", color: "#cbd5e1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                               "Send audit logs to <span style={{ background: "rgba(239, 68, 68, 0.2)", color: "#ef4444" }}>john@bank.com</span>"
                             </div>
                           </div>
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", background: "linear-gradient(90deg, #7c3aed, #4f46e5)", padding: "0.25rem 0.6rem", borderRadius: "12px", color: "#fff", fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.05em" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", background: "linear-gradient(90deg, #7c3aed, #4f46e5)", padding: "0.2rem 0.5rem", borderRadius: "10px", color: "#fff", fontSize: "0.55rem", fontWeight: 800, letterSpacing: "0.05em" }}>
                             🛡️ AI POLICY FIREWALL
                           </div>
-                          <div style={{ background: "rgba(16, 185, 129, 0.05)", border: "1px solid rgba(16, 185, 129, 0.15)", borderRadius: "6px", width: "95%", padding: "0.3rem 0.5rem", display: "flex", flexDirection: "column", gap: "0.1rem" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.55rem", color: "#64748b", fontFamily: "monospace" }}>
+                          <div style={{ background: "rgba(16, 185, 129, 0.05)", border: "1px solid rgba(16, 185, 129, 0.15)", borderRadius: "6px", width: "95%", padding: "0.25rem 0.4rem", display: "flex", flexDirection: "column", gap: "0.1rem" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.5rem", color: "#64748b", fontFamily: "monospace" }}>
                               <span>CLEAN PROMPT</span>
                               <span style={{ color: "#10b981" }}>REDACTED</span>
                             </div>
-                            <div style={{ fontSize: "0.62rem", fontFamily: "monospace", color: "#cbd5e1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            <div style={{ fontSize: "0.58rem", fontFamily: "monospace", color: "#cbd5e1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                               "Send audit logs to <span style={{ background: "rgba(16, 185, 129, 0.2)", color: "#10b981" }}>[REDACTED]</span>"
                             </div>
                           </div>
@@ -920,22 +934,22 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* Risk Radar */}
                       {activeModuleId === "secure" && (
-                        <div style={{ position: "relative", width: 140, height: 140, borderRadius: "50%", border: "2px solid rgba(139, 92, 246, 0.18)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                        <div style={{ position: "relative", width: 120, height: 120, borderRadius: "50%", border: "2px solid rgba(139, 92, 246, 0.18)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
                           <div style={{ position: "absolute", width: "100%", height: "100%", border: "2px solid rgba(139, 92, 246, 0.08)", borderRadius: "50%", transform: "scale(0.66)" }} />
                           <div style={{ position: "absolute", width: "100%", height: "100%", border: "2px solid rgba(139, 92, 246, 0.04)", borderRadius: "50%", transform: "scale(0.33)" }} />
                           <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: "50%", background: "conic-gradient(from 0deg, transparent 70%, rgba(139, 92, 246, 0.55) 100%)", transformOrigin: "0 0", animation: "radarSweep 3s linear infinite" }} />
-                          <div style={{ position: "absolute", top: "25%", left: "65%", width: 5, height: 5, background: "#ef4444", borderRadius: "50%" }} />
-                          <div style={{ position: "relative", zIndex: 10, background: "#090d16", width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #8b5cf6" }}>
-                            <span style={{ fontSize: "0.95rem" }}>📡</span>
+                          <div style={{ position: "absolute", top: "25%", left: "65%", width: 4, height: 5, background: "#ef4444", borderRadius: "50%" }} />
+                          <div style={{ position: "relative", zIndex: 10, background: "#090d16", width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #8b5cf6" }}>
+                            <span style={{ fontSize: "0.85rem" }}>📡</span>
                           </div>
                         </div>
                       )}
 
                       {/* Identity PreCheck */}
                       {activeModuleId === "identity" && (
-                        <div style={{ position: "relative", width: 220, height: 160, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.6rem" }}>
-                          <div style={{ position: "relative", width: 56, height: 56, borderRadius: "50%", background: "rgba(255,255,255,0.01)", border: "2px solid rgba(59, 130, 246, 0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <span style={{ fontSize: "1.8rem" }}>🔑</span>
+                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
+                          <div style={{ position: "relative", width: 50, height: 50, borderRadius: "50%", background: "rgba(255,255,255,0.01)", border: "2px solid rgba(59, 130, 246, 0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <span style={{ fontSize: "1.6rem" }}>🔑</span>
                             <div style={{ position: "absolute", top: -3, left: -3, right: -3, bottom: -3, border: "2px solid transparent", borderTopColor: "#3b82f6", borderBottomColor: "#3b82f6", borderRadius: "50%", animation: "rotateClockwise 3s linear infinite" }} />
                           </div>
                         </div>
@@ -943,10 +957,10 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* Compliance Checkpoint */}
                       {activeModuleId === "infosec" && (
-                        <div style={{ position: "relative", width: 220, height: 160, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.6rem" }}>
-                          <div style={{ display: "flex", gap: "0.6rem", width: "100%", justifyContent: "center" }}>
+                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
+                          <div style={{ display: "flex", gap: "0.5rem", width: "100%", justifyContent: "center" }}>
                             {[{ label: "SOC2", val: 99, c: "#10b981" }, { label: "ISO", val: 100, c: "#10b981" }].map((m, idx) => (
-                              <div key={idx} style={{ position: "relative", width: 52, height: 52, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              <div key={idx} style={{ position: "relative", width: 46, height: 46, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <svg viewBox="0 0 36 36" style={{ width: "100%", height: "100%", transform: "rotate(-90deg)" }}>
                                   <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="3" />
                                   <circle cx="18" cy="18" r="15" fill="none" stroke={m.c} strokeWidth="3" strokeDasharray={`${m.val} 100`} />
@@ -959,10 +973,10 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* Dispatch Center */}
                       {activeModuleId === "dispatch" && (
-                        <div style={{ position: "relative", width: 220, height: 160, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
                           <svg viewBox="0 0 200 150" style={{ width: "100%", height: "100%" }}>
                             <path d="M 100 75 Q 70 45, 40 45" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3 3" style={{ animation: "dash 2s linear infinite" }} />
-                            <circle cx="100" cy="75" r="12" fill="#ef4444" stroke="#fff" strokeWidth="1" />
+                            <circle cx="100" cy="75" r="10" fill="#ef4444" stroke="#fff" strokeWidth="1" />
                             <g transform="translate(40, 45)">
                               <rect x="-12" y="-8" width="24" height="16" rx="3" fill="#ef4444" />
                               <text x="0" y="3" textAnchor="middle" fill="#fff" fontSize="6" fontWeight="800" fontFamily="sans-serif">JIRA</text>
@@ -973,12 +987,12 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* Fleet Health */}
                       {activeModuleId === "server" && (
-                        <div style={{ position: "relative", width: 220, height: 160, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.6rem" }}>
-                          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.35rem", width: "90%" }}>
+                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
+                          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.3rem", width: "90%" }}>
                             {Array.from({ length: 8 }).map((_, i) => (
-                              <div key={i} style={{ background: "rgba(30, 41, 59, 0.7)", border: `1px solid ${i === 4 ? "#ef4444" : "#10b981"}`, borderRadius: "4px", padding: "0.2rem 0.1rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                                <span style={{ fontSize: "0.55rem" }}>🖥️</span>
-                                <span style={{ fontSize: "0.4rem", fontFamily: "monospace", color: i === 4 ? "#ef4444" : "#10b981", fontWeight: 900 }}>{i === 4 ? "CVE" : "OK"}</span>
+                              <div key={i} style={{ background: "rgba(30, 41, 59, 0.7)", border: `1px solid ${i === 4 ? "#ef4444" : "#10b981"}`, borderRadius: "4px", padding: "0.15rem 0.1rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                                <span style={{ fontSize: "0.5rem" }}>🖥️</span>
+                                <span style={{ fontSize: "0.38rem", fontFamily: "monospace", color: i === 4 ? "#ef4444" : "#10b981", fontWeight: 900 }}>{i === 4 ? "CVE" : "OK"}</span>
                               </div>
                             ))}
                           </div>
@@ -987,18 +1001,18 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                       {/* Traffic Control */}
                       {activeModuleId === "traffic" && (
-                        <div style={{ position: "relative", width: 200, height: 160, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ position: "relative", width: 180, height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
                           <svg viewBox="0 0 200 150" style={{ width: "100%", height: "100%" }}>
                             <path d="M 10 75 Q 40 85, 70 75 T 110 32 T 150 90 T 190 75" fill="none" stroke="#f59e0b" strokeWidth="2" style={{ filter: "drop-shadow(0 0 3px #f59e0b)" }} />
-                            <circle cx="110" cy="32" r="3.5" fill="#f59e0b" style={{ animation: "pulseGlow 2s infinite" }} />
+                            <circle cx="110" cy="32" r="3" fill="#f59e0b" style={{ animation: "pulseGlow 2s infinite" }} />
                           </svg>
                         </div>
                       )}
 
                       {/* Flight Telemetry (KPIs) */}
                       {activeModuleId === "kpi" && (
-                        <div style={{ position: "relative", width: "90%", height: 140, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                          <div style={{ flex: 1, minHeight: 70 }}>
+                        <div style={{ position: "relative", width: "90%", height: 120, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                          <div style={{ flex: 1, minHeight: 60 }}>
                             <svg viewBox="0 0 300 100" style={{ width: "100%", height: "100%", overflow: "visible" }}>
                               <path d="M 0 20 L 50 25 L 100 45 L 150 78 L 200 84 L 250 88 L 300 90" fill="none" stroke="#8b5cf6" strokeWidth="2.5" />
                               <circle cx="300" cy="90" r="3" fill="#10b981" />
@@ -1011,18 +1025,18 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                     
                     {/* Right Features List */}
                     <div className="mythos-split-right">
-                      <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#7c3aed", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.35rem" }}>
+                      <div style={{ fontSize: "0.58rem", fontWeight: 800, color: "#7c3aed", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.3rem" }}>
                         CORE CAPABILITIES
                       </div>
                       <div>
                         {activeModule.coreFeatures.map((feat, idx) => (
                           <div className="mythos-feature-item" key={idx}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
                               <polyline points="20 6 9 17 4 12" />
                             </svg>
                             <div>
-                              <div style={{ fontSize: "0.78rem", fontWeight: 800, color: "#0f172a" }}>{feat.name}</div>
-                              <div style={{ fontSize: "0.68rem", color: "#64748b", marginTop: "0.05rem", lineHeight: 1.3 }}>{feat.desc}</div>
+                              <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#0f172a" }}>{feat.name}</div>
+                              <div style={{ fontSize: "0.65rem", color: "#64748b", marginTop: "0.02rem", lineHeight: 1.2 }}>{feat.desc}</div>
                             </div>
                           </div>
                         ))}
@@ -1035,12 +1049,12 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               {/* SLIDE 2: Filter Prioritization Funnel */}
               {activeSlide === 1 && (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ textAlign: "center", marginBottom: "1.2rem" }}>
-                    <div style={{ fontSize: "0.65rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>EXPOSURE FILTRATION</div>
-                    <h3 style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", fontWeight: 800, color: "#0f172a", margin: "0.2rem 0" }}>
+                  <div style={{ textAlign: "center", marginBottom: "0.6rem" }}>
+                    <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>EXPOSURE FILTRATION</div>
+                    <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
                       Prioritization Pipeline
                     </h3>
-                    <p style={{ fontSize: "0.8rem", color: "#475569", margin: 0 }}>
+                    <p style={{ fontSize: "0.74rem", color: "#475569", margin: 0 }}>
                       How PosturePilot filters vulnerabilities down to remediation tasks.
                     </p>
                   </div>
@@ -1049,17 +1063,17 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                   <div className="mythos-metric-grid">
                     {activeModule.funnelMetrics.map((m, idx) => (
                       <div className="mythos-metric-col" key={idx}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                          <span style={{ fontSize: "1.8rem", fontWeight: 950, color: idx === 3 ? "#15803d" : "#991b1b", fontFamily: "monospace", lineHeight: 1 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                          <span style={{ fontSize: "1.5rem", fontWeight: 950, color: idx === 3 ? "#15803d" : "#991b1b", fontFamily: "monospace", lineHeight: 1 }}>
                             {m.val}
                           </span>
                         </div>
-                        <div style={{ fontSize: "0.78rem", fontWeight: 800, color: "#1e293b", margin: "0.05rem 0" }}>
+                        <div style={{ fontSize: "0.72rem", fontWeight: 800, color: "#1e293b", margin: "0.02rem 0" }}>
                           {m.label}
                         </div>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.15rem" }}>
                           {m.desc.map((d, dIdx) => (
-                            <div key={dIdx} style={{ fontSize: "0.72rem", color: "#64748b", lineHeight: 1.3 }}>
+                            <div key={dIdx} style={{ fontSize: "0.65rem", color: "#64748b", lineHeight: 1.2 }}>
                               ▪ {d}
                             </div>
                           ))}
@@ -1068,48 +1082,273 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                     ))}
                   </div>
 
-                  {/* Horizontal SVG Funnel Graph */}
+                  {/* Custom Graphic Area per Module on Slide 2 */}
                   <div className="mythos-funnel-container">
-                    <svg viewBox="0 0 800 90" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-                      <defs>
-                        <linearGradient id="seg1" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#3b82f6" /><stop offset="100%" stopColor="#4f46e5" />
-                        </linearGradient>
-                        <linearGradient id="seg2" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#4f46e5" /><stop offset="100%" stopColor="#7c3aed" />
-                        </linearGradient>
-                        <linearGradient id="seg3" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#7c3aed" /><stop offset="100%" stopColor="#ef4444" />
-                        </linearGradient>
-                        <linearGradient id="seg4" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#ef4444" /><stop offset="100%" stopColor="#10b981" />
-                        </linearGradient>
-                      </defs>
-                      
-                      {/* Segment 1 */}
-                      <polygon points="0,5 180,15 180,75 0,85" fill="url(#seg1)" />
-                      <text x="90" y="50" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="800" fontFamily="sans-serif">
-                        {activeModule.funnelStages[0]}
-                      </text>
-                      
-                      {/* Segment 2 */}
-                      <polygon points="195,17 375,26 375,64 195,73" fill="url(#seg2)" />
-                      <text x="285" y="50" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="800" fontFamily="sans-serif">
-                        {activeModule.funnelStages[1]}
-                      </text>
-                      
-                      {/* Segment 3 */}
-                      <polygon points="390,28 570,35 570,55 390,62" fill="url(#seg3)" />
-                      <text x="480" y="50" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="800" fontFamily="sans-serif">
-                        {activeModule.funnelStages[2]}
-                      </text>
-                      
-                      {/* Segment 4 */}
-                      <polygon points="585,36 765,39 765,51 585,54" fill="url(#seg4)" />
-                      <text x="675" y="50" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="800" fontFamily="sans-serif">
-                        {activeModule.funnelStages[3]}
-                      </text>
-                    </svg>
+                    {activeModuleId === "posture" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <defs>
+                          <linearGradient id="glow-line-posture" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.2"/>
+                            <stop offset="100%" stopColor="#10b981" stopOpacity="0.9"/>
+                          </linearGradient>
+                        </defs>
+                        <path d="M 50 40 L 750 40" stroke="url(#glow-line-posture)" strokeWidth="4" strokeDasharray="8 6" style={{ animation: "dash 20s linear infinite" }} />
+                        <g transform="translate(100, 40)">
+                          <circle r="13" fill="#7c3aed" />
+                          <text y="3" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold">1</text>
+                          <text y="26" textAnchor="middle" fill="#475569" fontSize="8" fontWeight="bold">Raw Scan</text>
+                        </g>
+                        <g transform="translate(300, 40)">
+                          <circle r="13" fill="#4f46e5" />
+                          <text y="3" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold">2</text>
+                          <text y="26" textAnchor="middle" fill="#475569" fontSize="8" fontWeight="bold">Triage Gate</text>
+                        </g>
+                        <g transform="translate(500, 40)">
+                          <circle r="13" fill="#0891b2" />
+                          <text y="3" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold">3</text>
+                          <text y="26" textAnchor="middle" fill="#475569" fontSize="8" fontWeight="bold">JPI Check</text>
+                        </g>
+                        <g transform="translate(700, 40)">
+                          <circle r="13" fill="#10b981" style={{ filter: "drop-shadow(0 0 6px rgba(16,185,129,0.5))" }} />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">✓</text>
+                          <text y="26" textAnchor="middle" fill="#16a34a" fontSize="8" fontWeight="bold">Cleared</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "cloud" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 100 20 L 300 40 M 100 40 L 300 40 M 100 60 L 300 40 M 300 40 L 520 40 M 520 40 L 700 40" stroke="#cbd5e1" strokeWidth="1.5" />
+                        <path d="M 100 60 L 300 40 M 300 40 L 520 40" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ animation: "dash 3s linear infinite" }} />
+                        <g transform="translate(100, 20)"><circle r="10" fill="#3b82f6"/><text y="3" textAnchor="middle" fill="#fff" fontSize="7" fontWeight="bold">AWS</text></g>
+                        <g transform="translate(100, 40)"><circle r="10" fill="#0ea5e9"/><text y="3" textAnchor="middle" fill="#fff" fontSize="7" fontWeight="bold">GCP</text></g>
+                        <g transform="translate(100, 60)"><circle r="10" fill="#2563eb"/><text y="3" text-anchor="middle" fill="#fff" fontSize="7" fontWeight="bold">AZR</text></g>
+                        <g transform="translate(300, 40)">
+                          <circle r="14" fill="#f59e0b" />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="9">🛡️</text>
+                          <text y="26" text-anchor="middle" fill="#475569" fontSize="8" fontWeight="bold">IAM Audit</text>
+                        </g>
+                        <g transform="translate(520, 40)">
+                          <circle r="14" fill="#ef4444" style={{ filter: "drop-shadow(0 0 6px rgba(239,68,68,0.4))" }} />
+                          <text y="3" text-anchor="middle" fill="#fff" fontSize="9">🚨</text>
+                          <text y="26" text-anchor="middle" fill="#dc2626" fontSize="8" fontWeight="bold">Exposed Bucket</text>
+                        </g>
+                        <g transform="translate(700, 40)">
+                          <circle r="14" fill="#10b981" />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="9">🔒</text>
+                          <text y="26" text-anchor="middle" fill="#16a34a" fontSize="8" fontWeight="bold">Quarantined</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "network" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
+                        <path d="M 50 40 L 400 40" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ animation: "dash 2s linear infinite" }} />
+                        <path d="M 400 40 L 400 70" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 2" />
+                        <g transform="translate(150, 40)">
+                          <rect x="-40" y="-10" width="80" height="20" rx="5" fill="#475569" />
+                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">Border Inbound</text>
+                        </g>
+                        <g transform="translate(400, 40)">
+                          <circle r="13" fill="#ef4444" style={{ filter: "drop-shadow(0 0 5px #ef4444)" }} />
+                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">🔥</text>
+                          <text y="-20" text-anchor="middle" fill="#ef4444" fontSize="8" fontWeight="bold">IDS Trigger</text>
+                        </g>
+                        <g transform="translate(400, 70)">
+                          <circle r="4" fill="#ef4444" />
+                          <text y="14" text-anchor="middle" fill="#dc2626" fontSize="8" fontWeight="bold">Null Routed</text>
+                        </g>
+                        <g transform="translate(650, 40)">
+                          <rect x="-40" y="-10" width="80" height="20" rx="5" fill="#10b981" />
+                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">Clean Traffic</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "appsec" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
+                        <path d="M 50 40 L 500 40" stroke="#ef4444" strokeWidth="2" strokeDasharray="5 5" style={{ strokeDashoffset: 5, animation: "dash 3s linear infinite" }} />
+                        <g transform="translate(100, 40)">
+                          <rect x="-35" y="-12" width="70" height="24" rx="5" fill="#1e293b" stroke="#cbd5e1" strokeWidth="1" />
+                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8">Git Commit</text>
+                        </g>
+                        <g transform="translate(300, 40)">
+                          <rect x="-35" y="-12" width="70" height="24" rx="5" fill="#1e293b" stroke="#cbd5e1" stroke-width="1" />
+                          <text y="3" text-anchor="middle" fill="#eab308" fontSize="8">SAST Check</text>
+                        </g>
+                        <g transform="translate(500, 40)">
+                          <rect x="-35" y="-12" width="70" height="24" rx="5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 5px rgba(239,68,68,0.35))" }} />
+                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">SCA Block</text>
+                        </g>
+                        <g transform="translate(700, 40)">
+                          <circle r="13" fill="#94a3b8" />
+                          <text y="3" text-anchor="middle" fill="#fff" fontSize="9">🛑</text>
+                          <text y="26" text-anchor="middle" fill="#64748b" fontSize="8" fontWeight="bold">Deploy Halted</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "ai-risk" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
+                        <path d="M 50 40 L 750 40" stroke="#3b82f6" strokeWidth="2" strokeDasharray="10 5" style={{ animation: "dash 4s linear infinite" }} />
+                        <g transform="translate(120, 40)">
+                          <rect x="-45" y="-10" width="90" height="20" rx="4" fill="#0f172a" stroke="#38bdf8" />
+                          <text y="3" text-anchor="middle" fill="#38bdf8" fontSize="7" fontFamily="monospace">"API KEY: xoxb..."</text>
+                        </g>
+                        <g transform="translate(400, 40)">
+                          <circle r="16" fill="#7c3aed" style={{ filter: "drop-shadow(0 0 8px rgba(124,58,237,0.4))" }} />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="10">🛡️</text>
+                          <text y="26" text-anchor="middle" fill="#7c3aed" fontSize="8" fontWeight="bold">PII Redactor</text>
+                        </g>
+                        <g transform="translate(680, 40)">
+                          <rect x="-45" y="-10" width="90" height="20" rx="4" fill="#0f172a" stroke="#10b981" />
+                          <text y="3" text-anchor="middle" fill="#10b981" fontSize="7" fontFamily="monospace">"API KEY: [REDACTED]"</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "secure" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <circle cx="400" cy="40" r="30" fill="none" stroke="#e2e8f0" strokeWidth="1" />
+                        <circle cx="400" cy="40" r="18" fill="none" stroke="#cbd5e1" strokeWidth="1" />
+                        <circle cx="400" cy="40" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }} />
+                        <line x1="400" y1="5" x2="400" y2="75" stroke="#cbd5e1" strokeWidth="1" />
+                        <line x1="365" y1="40" x2="435" y2="40" stroke="#cbd5e1" strokeWidth="1" />
+                        <g transform="translate(150, 40)">
+                          <text x="0" y="0" text-anchor="middle" fill="#ef4444" fontSize="13" fontWeight="950">3.8M</text>
+                          <text x="0" y="12" text-anchor="middle" fill="#64748b" fontSize="8">Raw Findings</text>
+                        </g>
+                        <g transform="translate(650, 40)">
+                          <text x="0" y="0" text-anchor="middle" fill="#10b981" fontSize="13" fontWeight="950">420</text>
+                          <text x="0" y="12" text-anchor="middle" fill="#16a34a" fontSize="8">Actionable Risks</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "identity" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
+                        <path d="M 50 40 L 750 40" stroke="#8b5cf6" strokeWidth="2.5" strokeDasharray="6 4" style={{ animation: "dash 5s linear infinite" }} />
+                        <g transform="translate(150, 40)">
+                          <circle r="12" fill="#a855f7" />
+                          <text y="2.5" text-anchor="middle" fill="#fff" fontSize="6.5" fontWeight="bold">Okta</text>
+                        </g>
+                        <g transform="translate(350, 40)">
+                          <circle r="12" fill="#f59e0b" />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="9">🔑</text>
+                          <text y="26" text-anchor="middle" fill="#475569" fontSize="8">MFA Check</text>
+                        </g>
+                        <g transform="translate(550, 40)">
+                          <circle r="12" fill="#ef4444" />
+                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8">⚠</text>
+                          <text y="26" text-anchor="middle" fill="#ef4444" fontSize="8">Priv Drift</text>
+                        </g>
+                        <g transform="translate(700, 40)">
+                          <circle r="12" fill="#10b981" />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="8">✓</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "infosec" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
+                        <g transform="translate(100, 40)">
+                          <rect x="-30" y="-10" width="60" height="20" rx="4" fill="#f1f5f9" stroke="#cbd5e1" />
+                          <text y="2.5" text-anchor="middle" fill="#475569" fontSize="8" fontWeight="bold">CC5.1 Audit</text>
+                        </g>
+                        <g transform="translate(300, 40)">
+                          <rect x="-30" y="-10" width="60" height="20" rx="4" fill="#ecfdf5" stroke="#a7f3d0" />
+                          <text y="2.5" text-anchor="middle" fill="#047857" fontSize="8" fontWeight="bold">Evidence</text>
+                        </g>
+                        <g transform="translate(500, 40)">
+                          <rect x="-30" y="-10" width="60" height="20" rx="4" fill="#f5f3ff" stroke="#ddd6fe" />
+                          <text y="2.5" text-anchor="middle" fill="#6d28d9" fontSize="8" fontWeight="bold">Controls</text>
+                        </g>
+                        <g transform="translate(700, 40)">
+                          <circle r="14" fill="#10b981" style={{ filter: "drop-shadow(0 0 5px #10b981)" }} />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">SOC2</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "dispatch" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 100 40 H 400 M 400 40 L 600 20 M 400 40 L 600 60" stroke="#cbd5e1" strokeWidth="1.5" />
+                        <path d="M 100 40 H 400 M 400 40 L 600 60" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ animation: "dash 3s linear infinite" }} />
+                        <g transform="translate(100, 40)">
+                          <circle r="12" fill="#e11d48" />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="7">EDR</text>
+                        </g>
+                        <g transform="translate(400, 40)">
+                          <circle r="14" fill="#0f766e" />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="8">SOAR</text>
+                        </g>
+                        <g transform="translate(600, 20)">
+                          <rect x="-25" y="-10" width="50" height="20" rx="3" fill="#3b82f6" />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="8">Slack</text>
+                        </g>
+                        <g transform="translate(600, 60)">
+                          <rect x="-25" y="-10" width="50" height="20" rx="3" fill="#ef4444" />
+                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="8">Jira</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "server" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
+                        <g transform="translate(120, 40)">
+                          <circle r="11" fill="#10b981" />
+                          <text y="24" text-anchor="middle" fill="#64748b" fontSize="8">45K Fleet</text>
+                        </g>
+                        <g transform="translate(300, 40)">
+                          <circle r="11" fill="#ef4444" style={{ animation: "pulseRed 1.5s infinite" }} />
+                          <text y="24" text-anchor="middle" fill="#ef4444" fontSize="8">Drift Alert</text>
+                        </g>
+                        <g transform="translate(480, 40)">
+                          <circle r="11" fill="#3b82f6" />
+                          <text y="24" text-anchor="middle" fill="#3b82f6" fontSize="8">OS Patch</text>
+                        </g>
+                        <g transform="translate(660, 40)">
+                          <circle r="11" fill="#10b981" />
+                          <text y="24" text-anchor="middle" fill="#10b981" fontSize="8">EDR Active</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "traffic" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 50 40 C 200 10, 250 70, 400 40 C 550 10, 600 70, 750 40" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeDasharray="10 5" style={{ animation: "dash 8s linear infinite" }} />
+                        <line x1="250" y1="10" x2="250" y2="70" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 2" />
+                        <line x1="550" y1="10" x2="550" y2="70" stroke="#10b981" strokeWidth="1.5" strokeDasharray="2 2" />
+                        <g transform="translate(250, 40)">
+                          <circle r="7" fill="#ef4444" />
+                          <text y="-14" text-anchor="middle" fill="#ef4444" fontSize="8" fontWeight="bold">Peak Traffic</text>
+                        </g>
+                        <g transform="translate(550, 40)">
+                          <circle r="7" fill="#10b981" />
+                          <text y="-14" text-anchor="middle" fill="#10b981" fontSize="8" fontWeight="bold">Shaped</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {activeModuleId === "kpi" && (
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <path d="M 100 60 L 250 45 L 450 20 L 700 15" fill="none" stroke="#7c3aed" strokeWidth="3" />
+                        <circle cx="100" cy="60" r="4" fill="#ef4444" />
+                        <circle cx="250" cy="45" r="4" fill="#f59e0b" />
+                        <circle cx="450" cy="20" r="4" fill="#3b82f6" />
+                        <circle cx="700" cy="15" r="5" fill="#10b981" style={{ filter: "drop-shadow(0 0 5px #10b981)" }} />
+                        <text x="100" y="75" text-anchor="middle" fill="#64748b" fontSize="8">48.2h (Start)</text>
+                        <text x="250" y="32" text-anchor="middle" fill="#64748b" fontSize="8">12.4h (MTTA)</text>
+                        <text x="450" y="10" text-anchor="middle" fill="#3b82f6" fontSize="8">3.5h (MTTR)</text>
+                        <text x="700" y="32" text-anchor="middle" fill="#10b981" fontSize="8" fontWeight="bold">1.8h (SLA Goal)</text>
+                      </svg>
+                    )}
                   </div>
                 </div>
               )}
@@ -1117,12 +1356,12 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               {/* SLIDE 3: Enterprise Integration / Telemetry Checklist */}
               {activeSlide === 2 && (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-                    <div style={{ fontSize: "0.65rem", fontWeight: 800, color: "#15803d", letterSpacing: "0.15em", textTransform: "uppercase" }}>INTEGRATIONS & WORKFLOWS</div>
-                    <h3 style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", fontWeight: 800, color: "#0f172a", margin: "0.2rem 0 0.15rem" }}>
+                  <div style={{ textAlign: "center", marginBottom: "0.6rem" }}>
+                    <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#15803d", letterSpacing: "0.15em", textTransform: "uppercase" }}>INTEGRATIONS & WORKFLOWS</div>
+                    <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
                       Enterprise Automation
                     </h3>
-                    <p style={{ fontSize: "0.82rem", color: "#475569", margin: 0 }}>
+                    <p style={{ fontSize: "0.74rem", color: "#475569", margin: 0 }}>
                       Connect endpoints directly to enterprise dashboards.
                     </p>
                   </div>
@@ -1130,7 +1369,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                   <div className="mythos-split-grid">
                     {/* Left Terminals Graphic */}
                     <div className="mythos-terminal">
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", fontFamily: "monospace", fontSize: "0.72rem", color: "#cbd5e1", width: "90%", padding: "1rem", overflow: "hidden" }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontFamily: "monospace", fontSize: "0.68rem", color: "#cbd5e1", width: "90%", padding: "0.75rem", overflow: "hidden" }}>
                         <div><span style={{ color: "#4ade80" }}>$</span> posturepilot verify --module={activeModule.id}</div>
                         <div><span style={{ color: "#a5b4fc" }}>[INFO]</span> Initializing baseline security tests...</div>
                         <div><span style={{ color: "#a5b4fc" }}>[INFO]</span> Correlating ticket state with asset owner...</div>
@@ -1144,37 +1383,37 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
 
                     {/* Right Features Checklist */}
                     <div className="mythos-split-right">
-                      <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#10b981", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.35rem" }}>
+                      <div style={{ fontSize: "0.58rem", fontWeight: 800, color: "#10b981", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.3rem" }}>
                         ENTERPRISE CAPABILITIES
                       </div>
                       
                       {activeModule.enterpriseFeatures.map((feat, idx) => (
                         <div className="mythos-feature-item" key={idx} style={{ background: "rgba(16, 185, 129, 0.02)", borderColor: "rgba(16, 185, 129, 0.15)" }}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
                             <polyline points="20 6 9 17 4 12" />
                           </svg>
                           <div>
-                            <div style={{ fontSize: "0.78rem", fontWeight: 800, color: "#0f172a" }}>{feat.name}</div>
-                            <div style={{ fontSize: "0.68rem", color: "#64748b", marginTop: "0.05rem", lineHeight: 1.3 }}>{feat.desc}</div>
+                            <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#0f172a" }}>{feat.name}</div>
+                            <div style={{ fontSize: "0.65rem", color: "#64748b", marginTop: "0.02rem", lineHeight: 1.2 }}>{feat.desc}</div>
                           </div>
                         </div>
                       ))}
 
                       {/* CTA Upgrade Banner */}
-                      <div style={{ marginTop: "0.4rem", padding: "0.6rem 0.8rem", background: "rgba(124, 58, 237, 0.06)", border: "1px solid rgba(124, 58, 237, 0.15)", borderRadius: "8px" }}>
+                      <div style={{ marginTop: "0.3rem", padding: "0.5rem 0.75rem", background: "rgba(124, 58, 237, 0.06)", border: "1px solid rgba(124, 58, 237, 0.15)", borderRadius: "8px" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.5rem" }}>
                           <div>
-                            <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.05em" }}>UPGRADE TO ACCESS</div>
-                            <div style={{ fontSize: "0.68rem", color: "#475569", marginTop: "0.02rem" }}>Unlock complete ROC features.</div>
+                            <div style={{ fontSize: "0.58rem", fontWeight: 800, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.05em" }}>UPGRADE TO ACCESS</div>
+                            <div style={{ fontSize: "0.65rem", color: "#475569", marginTop: "0.01rem" }}>Unlock complete ROC features.</div>
                           </div>
                           <button 
                             style={{ 
                               background: "linear-gradient(135deg, #7c3aed, #4f46e5)", 
                               border: "none", 
                               color: "#fff", 
-                              padding: "0.3rem 0.6rem", 
+                              padding: "0.25rem 0.5rem", 
                               borderRadius: "6px", 
-                              fontSize: "0.68rem", 
+                              fontSize: "0.65rem", 
                               fontWeight: 700, 
                               cursor: "pointer", 
                               boxShadow: "0 2px 6px rgba(124, 58, 237, 0.2)"
@@ -1191,17 +1430,17 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                 </div>
               )}
 
-              {/* Centered slide controls bar matching the screenshots */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "1.2rem", flexShrink: 0 }}>
-                {/* Blue solid play button from screenshot */}
+              {/* Centered slide controls bar */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "0.75rem", flexShrink: 0 }}>
+                {/* Blue solid play button */}
                 <button 
                   onClick={() => setIsAutoPlaying(!isAutoPlaying)}
                   style={{ 
                     background: "none", 
                     border: "none", 
                     cursor: "pointer", 
-                    fontSize: "1rem", 
-                    color: "#2563eb", // blue play button from screenshots
+                    fontSize: "0.95rem", 
+                    color: "#2563eb", 
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -1217,7 +1456,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                   {isAutoPlaying ? "⏸" : "▶"}
                 </button>
 
-                {/* Horizontal navigation dashes from screenshot */}
+                {/* Horizontal navigation dashes */}
                 <div style={{ display: "flex", gap: "0.35rem" }}>
                   {Array.from({ length: totalSlides }).map((_, idx) => (
                     <div 
@@ -1231,7 +1470,6 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               </div>
 
             </div>
-
           </div>
         </div>
       </div>
