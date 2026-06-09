@@ -335,7 +335,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const totalSlides = 3;
+  const totalSlides = 4;
 
   // Auto-play logic transitions slides, then modules
   useEffect(() => {
@@ -1418,15 +1418,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                               cursor: "pointer", 
                               boxShadow: "0 2px 6px rgba(124, 58, 237, 0.2)"
                             }} 
-                            onClick={() => {
-                              onClose();
-                              setTimeout(() => {
-                                const el = document.getElementById("pricing");
-                                if (el) {
-                                  el.scrollIntoView({ behavior: "smooth" });
-                                }
-                              }, 100);
-                            }}
+                            onClick={() => handleManualSlideSelect(3)}
                           >
                             Upgrade
                           </button>
@@ -1434,6 +1426,101 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                       </div>
                     </div>
 
+                  </div>
+                </div>
+              )}
+
+              {/* SLIDE 4: Pricing Tier Plans */}
+              {activeSlide === 3 && (
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <div style={{ textAlign: "center", marginBottom: "0.4rem" }}>
+                    <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#7c3aed", letterSpacing: "0.15em", textTransform: "uppercase" }}>SUBSCRIPTION MODELS</div>
+                    <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
+                      Choose Your Activation Tier
+                    </h3>
+                    <p style={{ fontSize: "0.74rem", color: "#475569", margin: 0 }}>
+                      Unlock complete automation gates, EDR validation, and multi-tenant reporting.
+                    </p>
+                  </div>
+
+                  {/* Pricing Cards Grid */}
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem", width: "100%", marginTop: "0.2rem" }}>
+                    {[
+                      {
+                        name: "Starter",
+                        price: "149",
+                        c: "#4f46e5",
+                        features: ["1 user session", "Manual CSV Uploads", "500 vulnerability alerts", "All 12 ROC dashboards"],
+                        badge: null
+                      },
+                      {
+                        name: "Professional",
+                        price: "399",
+                        c: "#7c3aed",
+                        features: ["5 users · 3 direct sources", "Qualys · Tenable · Nessus APIs", "10,000 findings pipeline", "Full API/Webhook access"],
+                        badge: "MOST POPULAR"
+                      },
+                      {
+                        name: "MSSP Enterprise",
+                        price: "999",
+                        c: "#0891b2",
+                        features: ["Unlimited users", "Multi-tenant workspace", "White-label reports", "Dedicated security engineer"],
+                        badge: null
+                      }
+                    ].map((plan, idx) => (
+                      <div 
+                        key={idx} 
+                        style={{ 
+                          background: "#ffffff", 
+                          border: plan.badge ? "2px solid #7c3aed" : "1px solid #cbd5e1", 
+                          borderRadius: "12px", 
+                          padding: "0.5rem 0.7rem", 
+                          position: "relative",
+                          boxShadow: plan.badge ? "0 4px 15px rgba(124, 58, 237, 0.08)" : "0 2px 5px rgba(0,0,0,0.02)",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        {plan.badge && (
+                          <div style={{ position: "absolute", top: "-8px", right: "12px", background: "#7c3aed", color: "#fff", fontSize: "0.48rem", fontWeight: 900, padding: "2px 6px", borderRadius: "8px", letterSpacing: "0.05em" }}>
+                            {plan.badge}
+                          </div>
+                        )}
+                        <div>
+                          <div style={{ fontSize: "0.65rem", fontWeight: 800, color: "#64748b", textTransform: "uppercase" }}>{plan.name}</div>
+                          <div style={{ display: "flex", alignItems: "baseline", gap: "2px", margin: "0.15rem 0" }}>
+                            <span style={{ fontSize: "1.2rem", fontWeight: 950, color: "#0f172a" }}>${plan.price}</span>
+                            <span style={{ fontSize: "0.58rem", color: "#64748b" }}>/mo</span>
+                          </div>
+                          <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem", margin: "0.3rem 0" }}>
+                            {plan.features.map((feat, fIdx) => (
+                              <div key={fIdx} style={{ display: "flex", alignItems: "center", gap: "0.3rem", fontSize: "0.62rem", color: "#475569" }}>
+                                <span style={{ color: plan.c, fontWeight: "bold" }}>✓</span>
+                                <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{feat}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <button 
+                          style={{
+                            background: plan.badge ? "linear-gradient(135deg, #7c3aed, #4f46e5)" : "#f1f5f9",
+                            color: plan.badge ? "#fff" : "#475569",
+                            border: plan.badge ? "none" : "1px solid #cbd5e1",
+                            padding: "0.35rem 0.5rem",
+                            borderRadius: "6px",
+                            fontSize: "0.65rem",
+                            fontWeight: 700,
+                            cursor: "pointer",
+                            width: "100%",
+                            marginTop: "0.3rem"
+                          }}
+                          onClick={() => alert(`Pilot trial request sent for ${plan.name} cockpit package!`)}
+                        >
+                          {plan.price === "999" ? "Contact Sales" : "Start 14-Day Trial"}
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}

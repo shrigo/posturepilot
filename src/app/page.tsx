@@ -193,8 +193,24 @@ export default function Page() {
             👨‍✈️ CISO Cockpit
           </a>
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
-          <Link href="/login" className="nav-try-free" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,textDecoration:"none",boxShadow:"0 4px 16px rgba(79,70,229,0.35)"}}>Try Free →</Link>
-          <button onClick={() => setIsPromoOpen(true)} className="nav-try-free" style={{background:"linear-gradient(135deg,#eab308,#f59e0b)",color:"#fff",fontSize:"0.8rem",fontWeight:700,padding:"0.5rem 1.25rem",borderRadius:8,border:"none",cursor:"pointer",boxShadow:"0 4px 16px rgba(234,179,8,0.35)",marginLeft:"0.25rem"}}>✨ View Promo</button>
+          <button 
+            onClick={() => setIsPromoOpen(true)} 
+            className="nav-try-free" 
+            style={{
+              background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
+              color: "#fff",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              padding: "0.5rem 1.25rem",
+              borderRadius: 8,
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 4px 16px rgba(79,70,229,0.35)",
+              marginLeft: "0.25rem"
+            }}
+          >
+            ✨ View Promo
+          </button>
           <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
             <span style={{transform:menuOpen?"rotate(45deg) translate(5px,5px)":"none"}}/>
             <span style={{opacity:menuOpen?0:1}}/>
@@ -210,7 +226,22 @@ export default function Page() {
             style={{color:i===0?"#1e2d6e":i===1?"#4f46e5":i===2?"#7c3aed":"#16a34a"}}>{t}</a>
         ))}
         <Link href="/login" onClick={()=>setMenuOpen(false)} style={{color:"#64748b"}}>Sign in</Link>
-        <Link href="/login" onClick={()=>setMenuOpen(false)} style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",padding:"0.6rem 1rem",borderRadius:8,textAlign:"center",fontWeight:700,textDecoration:"none",marginTop:"0.25rem"}}>Try Free →</Link>
+        <button 
+          onClick={() => { setIsPromoOpen(true); setMenuOpen(false); }} 
+          style={{
+            background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
+            color: "#fff",
+            padding: "0.6rem 1rem",
+            borderRadius: 8,
+            textAlign: "center",
+            fontWeight: 700,
+            border: "none",
+            cursor: "pointer",
+            marginTop: "0.25rem"
+          }}
+        >
+          ✨ View Promo
+        </button>
       </div>
 
 
