@@ -16,6 +16,7 @@ export default function LoginPage() {
     setLoading(true);
     await new Promise(r => setTimeout(r, 800));
     if (email === 'demo@posturepilot.io' && password === 'Demo@1234') {
+      sessionStorage.removeItem('posturepilot_demo_mode');
       router.push('/dashboard');
     } else {
       setError('Invalid credentials. Use demo@posturepilot.io / Demo@1234');

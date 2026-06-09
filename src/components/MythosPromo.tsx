@@ -329,10 +329,10 @@ const MODULES_DATA: FeatureModule[] = [
   }
 ];
 
-export default function MythosPromo({ onClose }: { onClose: () => void }) {
+export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: () => void; initialSlide?: number }) {
   const [activeModuleId, setActiveModuleId] = useState<string>(MODULES_DATA[0].id);
-  const [activeSlide, setActiveSlide] = useState<number>(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+  const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(initialSlide === 0);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const totalSlides = 3;
