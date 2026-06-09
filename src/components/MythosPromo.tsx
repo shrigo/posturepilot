@@ -335,7 +335,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const totalSlides = 4;
+  const totalSlides = 3;
 
   // Auto-play logic transitions slides, then modules
   useEffect(() => {
@@ -795,8 +795,12 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
           {/* Slideshow Frame */}
           <div className="mythos-slideshow-frame">
             {/* Left & Right Chevrons */}
-            <button onClick={handlePrevSlide} className="mythos-nav-arrow left" aria-label="Previous Slide">‹</button>
-            <button onClick={handleNextSlide} className="mythos-nav-arrow right" aria-label="Next Slide">›</button>
+            {activeSlide < 3 && (
+              <>
+                <button onClick={handlePrevSlide} className="mythos-nav-arrow left" aria-label="Previous Slide">‹</button>
+                <button onClick={handleNextSlide} className="mythos-nav-arrow right" aria-label="Next Slide">›</button>
+              </>
+            )}
             
             {/* Slide Body */}
             <div className="mythos-canvas-body" key={`${activeModuleId}-${activeSlide}`}>
@@ -1433,6 +1437,29 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               {/* SLIDE 4: Pricing Tier Plans */}
               {activeSlide === 3 && (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "0.25rem" }}>
+                    <button
+                      onClick={() => handleManualSlideSelect(0)}
+                      style={{
+                        background: "rgba(124, 58, 237, 0.08)",
+                        border: "1px solid rgba(124, 58, 237, 0.2)",
+                        color: "#7c3aed",
+                        padding: "0.25rem 0.55rem",
+                        borderRadius: "6px",
+                        fontSize: "0.65rem",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.3rem",
+                        transition: "all 0.15s ease"
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.15)"}
+                      onMouseLeave={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.08)"}
+                    >
+                      ← Back to {activeModule.title} Cockpit
+                    </button>
+                  </div>
                   <div style={{ textAlign: "center", marginBottom: "0.4rem" }}>
                     <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#7c3aed", letterSpacing: "0.15em", textTransform: "uppercase" }}>SUBSCRIPTION MODELS</div>
                     <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
@@ -1526,43 +1553,45 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
               )}
 
               {/* Centered slide controls bar */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "0.75rem", flexShrink: 0 }}>
-                {/* Blue solid play button */}
-                <button 
-                  onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-                  style={{ 
-                    background: "none", 
-                    border: "none", 
-                    cursor: "pointer", 
-                    fontSize: "0.95rem", 
-                    color: "#2563eb", 
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginRight: "0.6rem",
-                    padding: 0,
-                    fontWeight: "bold",
-                    transition: "transform 0.1s ease"
-                  }}
-                  onMouseDown={e => e.currentTarget.style.transform = "scale(0.9)"}
-                  onMouseUp={e => e.currentTarget.style.transform = "scale(1)"}
-                  title={isAutoPlaying ? "Pause Loop" : "Play Loop"}
-                >
-                  {isAutoPlaying ? "⏸" : "▶"}
-                </button>
+              {activeSlide < 3 && (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "0.75rem", flexShrink: 0 }}>
+                  {/* Blue solid play button */}
+                  <button 
+                    onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+                    style={{ 
+                      background: "none", 
+                      border: "none", 
+                      cursor: "pointer", 
+                      fontSize: "0.95rem", 
+                      color: "#2563eb", 
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: "0.6rem",
+                      padding: 0,
+                      fontWeight: "bold",
+                      transition: "transform 0.1s ease"
+                    }}
+                    onMouseDown={e => e.currentTarget.style.transform = "scale(0.9)"}
+                    onMouseUp={e => e.currentTarget.style.transform = "scale(1)"}
+                    title={isAutoPlaying ? "Pause Loop" : "Play Loop"}
+                  >
+                    {isAutoPlaying ? "⏸" : "▶"}
+                  </button>
 
-                {/* Horizontal navigation dashes */}
-                <div style={{ display: "flex", gap: "0.35rem" }}>
-                  {Array.from({ length: totalSlides }).map((_, idx) => (
-                    <div 
-                      key={idx}
-                      className={`mythos-dash-indicator ${activeSlide === idx ? 'active' : ''}`}
-                      onClick={() => handleManualSlideSelect(idx)}
-                      title={`Slide ${idx + 1}`}
-                    />
-                  ))}
+                  {/* Horizontal navigation dashes */}
+                  <div style={{ display: "flex", gap: "0.35rem" }}>
+                    {Array.from({ length: totalSlides }).map((_, idx) => (
+                      <div 
+                        key={idx}
+                        className={`mythos-dash-indicator ${activeSlide === idx ? 'active' : ''}`}
+                        onClick={() => handleManualSlideSelect(idx)}
+                        title={`Slide ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
             </div>
           </div>
