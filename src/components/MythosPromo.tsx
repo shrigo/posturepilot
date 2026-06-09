@@ -1015,11 +1015,68 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                       {/* Flight Telemetry (KPIs) */}
                       {activeModuleId === "kpi" && (
-                        <div style={{ position: "relative", width: "90%", height: 120, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                          <div style={{ flex: 1, minHeight: 60 }}>
-                            <svg viewBox="0 0 300 100" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-                              <path d="M 0 20 L 50 25 L 100 45 L 150 78 L 200 84 L 250 88 L 300 90" fill="none" stroke="#8b5cf6" strokeWidth="2.5" />
-                              <circle cx="300" cy="90" r="3" fill="#10b981" />
+                        <div style={{ position: "relative", width: "95%", height: 190, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "0.2rem" }}>
+                          {/* Top Metric Strip */}
+                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
+                            <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
+                              <span style={{ fontSize: "0.55rem", color: "#64748b", fontFamily: "monospace" }}>MEAN TIME TO REMEDIATE</span>
+                              <span style={{ fontSize: "0.85rem", fontWeight: 900, color: "#10b981", fontFamily: "monospace" }}>1.8h <span style={{ fontSize: "0.55rem", color: "#64748b" }}>vs 48.2h legacy</span></span>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+                              <span style={{ fontSize: "0.55rem", color: "#64748b", fontFamily: "monospace" }}>SLA COMPLIANCE</span>
+                              <span style={{ fontSize: "0.85rem", fontWeight: 900, color: "#3b82f6", fontFamily: "monospace" }}>91.4% <span style={{ fontSize: "0.55rem", color: "#10b981" }}>▲ 12.8%</span></span>
+                            </div>
+                          </div>
+
+                          {/* Graphical Dashboard Panel */}
+                          <div style={{ flex: 1, minHeight: 120 }}>
+                            <svg viewBox="0 0 320 120" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                              <defs>
+                                <linearGradient id="kpiGlow" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
+                                  <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                                </linearGradient>
+                                <linearGradient id="legacyGlow" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#ef4444" stopOpacity="0.1" />
+                                  <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+                                </linearGradient>
+                              </defs>
+
+                              {/* Grid Lines */}
+                              <line x1="20" y1="10" x2="300" y2="10" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                              <line x1="20" y1="35" x2="300" y2="35" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                              <line x1="20" y1="60" x2="300" y2="60" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                              <line x1="20" y1="85" x2="300" y2="85" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                              <line x1="20" y1="110" x2="300" y2="110" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+
+                              {/* Y-Axis Labels */}
+                              <text x="15" y="13" textAnchor="end" fill="#475569" fontSize="5" fontFamily="monospace">48h</text>
+                              <text x="15" y="63" textAnchor="end" fill="#475569" fontSize="5" fontFamily="monospace">12h</text>
+                              <text x="15" y="113" textAnchor="end" fill="#475569" fontSize="5" fontFamily="monospace">0h</text>
+
+                              {/* X-Axis Labels */}
+                              <text x="30" y="117" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Wk 1</text>
+                              <text x="110" y="117" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Wk 2</text>
+                              <text x="190" y="117" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Wk 3</text>
+                              <text x="270" y="117" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Wk 4</text>
+
+                              {/* Area under curves */}
+                              <path d="M 20 10 L 100 20 L 180 30 L 260 38 L 300 42 L 300 110 L 20 110 Z" fill="url(#legacyGlow)" />
+                              <path d="M 20 10 L 100 70 L 180 95 L 260 105 L 300 106 L 300 110 L 20 110 Z" fill="url(#kpiGlow)" />
+
+                              {/* Legacy Line (Red dashed) */}
+                              <path d="M 20 10 L 100 20 L 180 30 L 260 38 L 300 42" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3 3" />
+                              <circle cx="300" cy="42" r="2.5" fill="#ef4444" />
+                              <text x="290" y="36" fill="#ef4444" fontSize="4.5" fontFamily="monospace" fontWeight="bold">Legacy MTTR (42h)</text>
+
+                              {/* Autopilot Line (Green Glowing) */}
+                              <path d="M 20 10 L 100 70 L 180 95 L 260 105 L 300 106" fill="none" stroke="#10b981" strokeWidth="2.5" />
+                              <circle cx="300" cy="106" r="3" fill="#10b981" style={{ filter: "drop-shadow(0 0 4px #10b981)" }} />
+                              <text x="290" y="99" fill="#10b981" fontSize="5.5" fontFamily="monospace" fontWeight="bold">Autopilot (1.8h)</text>
+
+                              {/* Target SLA Threshold Indicator Line */}
+                              <line x1="20" y1="102" x2="300" y2="102" stroke="#3b82f6" strokeWidth="1" strokeDasharray="1.5 1.5" />
+                              <text x="25" y="100" fill="#3b82f6" fontSize="4.5" fontFamily="monospace">SLA Target (4.0h)</text>
                             </svg>
                           </div>
                         </div>
@@ -1342,15 +1399,55 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                     {activeModuleId === "kpi" && (
                       <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-                        <path d="M 100 60 L 250 45 L 450 20 L 700 15" fill="none" stroke="#7c3aed" strokeWidth="3" />
-                        <circle cx="100" cy="60" r="4" fill="#ef4444" />
-                        <circle cx="250" cy="45" r="4" fill="#f59e0b" />
-                        <circle cx="450" cy="20" r="4" fill="#3b82f6" />
-                        <circle cx="700" cy="15" r="5" fill="#10b981" style={{ filter: "drop-shadow(0 0 5px #10b981)" }} />
-                        <text x="100" y="75" text-anchor="middle" fill="#64748b" fontSize="8">48.2h (Start)</text>
-                        <text x="250" y="32" text-anchor="middle" fill="#64748b" fontSize="8">12.4h (MTTA)</text>
-                        <text x="450" y="10" text-anchor="middle" fill="#3b82f6" fontSize="8">3.5h (MTTR)</text>
-                        <text x="700" y="32" text-anchor="middle" fill="#10b981" fontSize="8" fontWeight="bold">1.8h (SLA Goal)</text>
+                        {/* Horizontal Timeline Connector */}
+                        <line x1="100" y1="40" x2="700" y2="40" stroke="rgba(124, 58, 237, 0.15)" strokeWidth="2" strokeDasharray="3 3" />
+                        
+                        {/* Phase 1: 48.2h Start (Red Alert Badge) */}
+                        <g transform="translate(100, 40)">
+                          <rect x="-35" y="-18" width="70" height="24" rx="6" fill="#fee2e2" stroke="#ef4444" strokeWidth="1" />
+                          <text y="-2" textAnchor="middle" fill="#b91c1c" fontSize="8.5" fontWeight="900" fontFamily="monospace">48.2h</text>
+                          <text y="20" textAnchor="middle" fill="#ef4444" fontSize="7.5" fontWeight="bold">Legacy MTTR</text>
+                        </g>
+
+                        {/* Connection line 1 */}
+                        <path d="M 170 40 L 210 40" stroke="#ef4444" strokeWidth="1.5" />
+
+                        {/* Phase 2: 12.4h MTTA (Orange Alert Badge) */}
+                        <g transform="translate(260, 40)">
+                          <rect x="-35" y="-18" width="70" height="24" rx="6" fill="#ffedd5" stroke="#f97316" strokeWidth="1" />
+                          <text y="-2" textAnchor="middle" fill="#c2410c" fontSize="8.5" fontWeight="900" fontFamily="monospace">12.4h</text>
+                          <text y="20" textAnchor="middle" fill="#f97316" fontSize="7.5" fontWeight="bold">Mean MTTA</text>
+                        </g>
+
+                        {/* Connection line 2 */}
+                        <path d="M 330 40 L 370 40" stroke="#f97316" strokeWidth="1.5" />
+
+                        {/* Phase 3: 3.5h MTTR (Blue Alert Badge) */}
+                        <g transform="translate(420, 40)">
+                          <rect x="-35" y="-18" width="70" height="24" rx="6" fill="#dbeafe" stroke="#3b82f6" strokeWidth="1" />
+                          <text y="-2" textAnchor="middle" fill="#1e40af" fontSize="8.5" fontWeight="900" fontFamily="monospace">3.5h</text>
+                          <text y="20" textAnchor="middle" fill="#3b82f6" fontSize="7.5" fontWeight="bold">Mean MTTR</text>
+                        </g>
+
+                        {/* Connection line 3 */}
+                        <path d="M 490 40 L 530 40" stroke="#3b82f6" strokeWidth="1.5" />
+
+                        {/* Phase 4: 91% SLA Goal (Teal Success Ring) */}
+                        <g transform="translate(580, 40)">
+                          <circle r="16" fill="#ecfdf5" stroke="#10b981" strokeWidth="1.5" />
+                          <text y="3" textAnchor="middle" fill="#047857" fontSize="8.5" fontWeight="bold" fontFamily="monospace">91%</text>
+                          <text y="26" textAnchor="middle" fill="#10b981" fontSize="7.5" fontWeight="bold">SLA Met</text>
+                        </g>
+
+                        {/* Connection line 4 */}
+                        <path d="M 620 40 L 660 40" stroke="#10b981" strokeWidth="1.5" />
+
+                        {/* Phase 5: 1.8h Autopilot Goal (Glowing Green Badge) */}
+                        <g transform="translate(700, 40)">
+                          <rect x="-35" y="-18" width="70" height="24" rx="6" fill="#ecfdf5" stroke="#10b981" strokeWidth="2" style={{ filter: "drop-shadow(0 0 6px rgba(16,185,129,0.4))" }} />
+                          <text y="-2" textAnchor="middle" fill="#047857" fontSize="8.5" fontWeight="900" fontFamily="monospace">1.8h</text>
+                          <text y="20" textAnchor="middle" fill="#047857" fontSize="7.5" fontWeight="bold">Autopilot Goal</text>
+                        </g>
                       </svg>
                     )}
                   </div>
