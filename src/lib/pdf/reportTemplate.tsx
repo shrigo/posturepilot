@@ -144,7 +144,7 @@ export function ExecutiveReport({ data }: { data: ReportData }) {
         <View style={S.header}>
           <View style={S.headerLeft}>
             <Text style={S.logoText}>PosturePilot</Text>
-            <Text style={S.logoSub}>CONFIGURE · MONITOR · REPORT · SECURE</Text>
+            <Text style={S.logoSub}>CONFIGURE · MONITOR · SECURE · REPORT</Text>
           </View>
           <View style={S.headerRight}>
             <Text style={S.reportTitle}>Executive Security Posture Report</Text>

@@ -7,7 +7,7 @@ import MythosPromo from "@/components/MythosPromo";
 import { useState, useEffect } from "react";
 import { useClient } from "@/context/ClientContext";
 
-const TABS = ["Configure","Monitor","Report","Secure"];
+const TABS = ["Configure","Monitor","Secure","Report"];
 const BOARDS = [
   {id:"posture",icon:"🛡️",label:"Cyber Posture",val:"74",unit:"Risk Score",c:"#4f46e5"},
   {id:"cloud",icon:"☁️",label:"Cloud Security",val:"12",unit:"Open Issues",c:"#7c3aed"},
@@ -79,15 +79,15 @@ export default function Page() {
     <div id="top" style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh",maxWidth:"100%"}}>
       <style>{`
         *{box-sizing:border-box;margin:0;padding:0}
-        #configure, #monitor, #report, #secure, #features { scroll-margin-top: 64px; }
+        #configure, #monitor, #secure, #report, #features { scroll-margin-top: 64px; }
         html,body{max-width:100%;overflow-x:hidden;width:100%;position:relative;}
         .hcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,70,229,0.15)!important}
         .hcard{transition:all 0.2s}
         .nav-link{transition:all 0.18s ease;border-radius:8px;padding:0.35rem 0.75rem;}
         .nav-configure:hover{background:#1e2d6e;color:#fff!important;}
         .nav-monitor:hover{background:#4f46e5;color:#fff!important;}
-        .nav-report:hover{background:#7c3aed;color:#fff!important;}
         .nav-secure:hover{background:#16a34a;color:#fff!important;}
+        .nav-report:hover{background:#7c3aed;color:#fff!important;}
         .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
         .hamburger span{display:block;width:22px;height:2px;background:#0f172a;border-radius:2px;transition:all 0.2s;}
         .mobile-menu{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e7ff;padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
@@ -145,9 +145,9 @@ export default function Page() {
           <Image src="/hlogotag.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         </a>
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
-          {(["Configure","Monitor","Report","Secure"] as const).map((t,i,a)=>(
+          {(["Configure","Monitor","Secure","Report"] as const).map((t,i,a)=>(
             <span key={t} style={{display:"flex",alignItems:"center"}}>
-              <a href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())} className={`nav-link nav-${t.toLowerCase()}`} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#7c3aed":"#16a34a",textDecoration:"none"}}>{t}</a>
+              <a href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())} className={`nav-link nav-${t.toLowerCase()}`} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#16a34a":"#7c3aed",textDecoration:"none"}}>{t}</a>
               {i<a.length-1 && <span style={{display:"inline-block",width:6,height:18,background:"#f97316",borderRadius:3,margin:"0 0.35rem",flexShrink:0}}/>}
             </span>
           ))}
@@ -221,9 +221,9 @@ export default function Page() {
       {/* Mobile menu */}
       <div className={`mobile-menu${menuOpen?" open":""}`}>
         <a href="#features" onClick={(e)=>scrollToSection(e,"features")} style={{color:"#7c3aed", fontWeight:800, borderBottom:"2px solid #e0e7ff", paddingBottom:"0.8rem", marginBottom:"0.25rem"}}>👨‍✈️ CISO Cockpit</a>
-        {(["Configure","Monitor","Report","Secure"] as const).map((t,i)=>(
+        {(["Configure","Monitor","Secure","Report"] as const).map((t,i)=>(
           <a key={t} href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())}
-            style={{color:i===0?"#1e2d6e":i===1?"#4f46e5":i===2?"#7c3aed":"#16a34a"}}>{t}</a>
+            style={{color:i===0?"#1e2d6e":i===1?"#4f46e5":i===2?"#16a34a":"#7c3aed"}}>{t}</a>
         ))}
         <Link href="/login" onClick={()=>setMenuOpen(false)} style={{color:"#64748b"}}>Sign in</Link>
         <button 
@@ -791,6 +791,112 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ── SECURE ── */}
+      <section id="secure" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"linear-gradient(135deg,#14532d 0%,#15803d 50%,#16a34a 100%)",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
+        <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
+          <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
+            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#bbf7d0",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#fff",letterSpacing:"-0.03em"}}>Triple-Filter Triage — fix what actually matters</h2>
+            <p style={{color:"#bbf7d0",marginTop:"0.5rem",fontSize:"0.9rem"}}>Stop drowning in 10,000 findings. Our 3-layer engine surfaces only the ones that need action today.</p>
+          </div>
+
+          <div className="secure-main" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.5rem",marginBottom:"1.5rem"}}>
+
+            {/* Left: Filter funnel */}
+            <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+              {[
+                {step:"Filter 1",title:"Severity Gate",rule:"CVSS >= 7.0",desc:"Eliminates informational and low-noise findings immediately",c:"#4f46e5",icon:"🎯",
+                  bars:[{l:"Critical",v:95,n:23},{l:"High",v:72,n:67},{l:"Medium",v:20,n:0},{l:"Low",v:5,n:0}]},
+                {step:"Filter 2",title:"Exploitability Check",rule:"EPSS > 10% OR CISA KEV",desc:"Only surfaces findings with real-world exploit evidence",c:"#ea580c",icon:"⚡",
+                  bars:[{l:"KEV Listed",v:100,n:8},{l:"EPSS >50%",v:85,n:31},{l:"EPSS 10-50%",v:60,n:51},{l:"EPSS 1-10%",v:20,n:0},{l:"No PoC",v:5,n:0}]},
+                {step:"Filter 3",title:"Asset Criticality",rule:"Tier-1 · Prod · External",desc:"Prioritizes findings on your most valuable assets",c:"#dc2626",icon:"🏢",
+                  bars:[{l:"External-facing",v:100,n:18},{l:"Production",v:80,n:24},{l:"Internal",v:30,n:0},{l:"Dev/Test",v:5,n:0}]},
+              ].map((f,i)=>(
+                <div key={f.step} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderLeft:`4px solid ${f.c}`,borderRadius:14,padding:"1.1rem 1.25rem"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:"0.75rem",marginBottom:"0.625rem"}}>
+                    <div style={{width:40,height:40,borderRadius:"50%",background:`${f.c}12`,border:`2px solid ${f.c}30`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.1rem",flexShrink:0}}>{f.icon}</div>
+                    <div style={{flex:1}}>
+                      <div style={{display:"flex",alignItems:"center",gap:"0.5rem",marginBottom:2}}>
+                        <span style={{fontSize:"0.6rem",fontWeight:700,color:f.c,textTransform:"uppercase",letterSpacing:"0.08em"}}>{f.step}</span>
+                        <span style={{fontWeight:800,fontSize:"0.88rem",color:"#0f172a"}}>{f.title}</span>
+                      </div>
+                      <code style={{fontSize:"0.68rem",color:f.c,background:`${f.c}10`,padding:"1px 7px",borderRadius:5,fontWeight:700}}>{f.rule}</code>
+                    </div>
+                    {i < 2 && <span style={{fontSize:"1.25rem",color:"#cbd5e1"}}>↓</span>}
+                  </div>
+                  <div style={{fontSize:"0.72rem",color:"#64748b",marginBottom:"0.625rem"}}>{f.desc}</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:"0.3rem"}}>
+                    {f.bars.map((b:{l:string,v:number,n:number})=>(
+                      <div key={b.l} style={{display:"flex",alignItems:"center",gap:"0.5rem"}}>
+                        <span style={{fontSize:"0.58rem",color:"#64748b",width:90,flexShrink:0}}>{b.l}</span>
+                        <div style={{flex:1,height:6,background:"#e2e8f0",borderRadius:99}}>
+                          <div style={{height:"100%",width:`${b.v}%`,background:b.n>0?f.c:"#e2e8f0",borderRadius:99,opacity:b.n>0?1:0.25}}/>
+                        </div>
+                        <span style={{fontSize:"0.58rem",fontWeight:700,color:b.n>0?f.c:"#cbd5e1",width:22,textAlign:"right"}}>{b.n>0?b.n:"—"}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Right: 6 mini dashboard tiles with bar graphs */}
+            <div className="secure-tiles" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem",alignContent:"start"}}>
+              {[
+                {title:"Runway Reduction Gates",icon:"📉",c:"#16a34a",note:"99.6% noise cut",
+                  bars:[{l:"Raw (10K)",v:100,n:"10K"},{l:"After F1",v:25,n:"2.5K"},{l:"After F2",v:8,n:"800"},{l:"Actionable",v:0.5,n:"40"}]},
+                {title:"CVSS Airspeed Ranges",icon:"📊",c:"#4f46e5",note:"Only CVSS ≥ 7.0",
+                  bars:[{l:"Critical 9-10",v:23,n:23},{l:"High 7-8.9",v:67,n:67},{l:"Medium",v:45,n:0},{l:"Low/Info",v:20,n:0}]},
+                {title:"EPSS Storm Likelihood",icon:"⚡",c:"#ea580c",note:"Real exploit focus",
+                  bars:[{l:"EPSS >50%",v:100,n:31},{l:"EPSS 10-50%",v:60,n:51},{l:"EPSS 1-10%",v:20,n:0},{l:"No PoC",v:5,n:0}]},
+                {title:"Hangar Asset Tiers",icon:"🏢",c:"#dc2626",note:"Critical assets first",
+                  bars:[{l:"Tier-1 Prod",v:100,n:18},{l:"Tier-2",v:75,n:24},{l:"Internal",v:20,n:0},{l:"Dev/Test",v:5,n:0}]},
+                {title:"KEV Turbulence Rates",icon:"🔐",c:"#7c3aed",note:"8 CISA KEV found",
+                  bars:[{l:"KEV Match",v:100,n:8},{l:"Weaponized",v:75,n:6},{l:"PoC Exists",v:55,n:12},{l:"No Exploit",v:10,n:0}]},
+                {title:"SLA Altimeter Deadlines",icon:"⏰",c:"#d97706",note:"SLA gates active",
+                  bars:[{l:"Critical 24h",v:100,n:23},{l:"High 7d",v:55,n:39},{l:"Medium 30d",v:15,n:0},{l:"Low 90d",v:5,n:0}]},
+              ].map((tile:{title:string,icon:string,c:string,note:string,bars:{l:string,v:number,n:string|number}[]})=>(
+                <div key={tile.title} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,padding:"0.875rem",boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:"0.375rem",marginBottom:"0.625rem"}}>
+                    <span style={{fontSize:"0.875rem"}}>{tile.icon}</span>
+                    <span style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a"}}>{tile.title}</span>
+                  </div>
+                  <div style={{display:"flex",flexDirection:"column",gap:"0.3rem",marginBottom:"0.5rem"}}>
+                    {tile.bars.map((b:{l:string,v:number,n:string|number})=>{
+                      const isValActive = b.n !== 0 && b.n !== '0' && b.n !== '';
+                      return (
+                        <div key={b.l} style={{display:"flex",alignItems:"center",gap:"0.375rem"}}>
+                          <span style={{fontSize:"0.55rem",color:"#94a3b8",width:72,flexShrink:0}}>{b.l}</span>
+                          <div style={{flex:1,height:5,background:"#f1f5f9",borderRadius:99}}>
+                            <div style={{height:"100%",width:`${b.v}%`,background:isValActive?tile.c:"#e2e8f0",borderRadius:99,opacity:isValActive?1:0.2}}/>
+                          </div>
+                          <span style={{fontSize:"0.55rem",fontWeight:700,color:isValActive?tile.c:"#cbd5e1",width:26,textAlign:"right",flexShrink:0}}>{isValActive?b.n:"—"}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{fontSize:"0.58rem",color:tile.c,fontWeight:700,background:`${tile.c}10`,borderRadius:6,padding:"2px 6px",display:"inline-block"}}>{tile.note}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Before → After funnel result */}
+          <div className="funnel-result" style={{background:"linear-gradient(135deg,#f0fdf4,#dcfce7)",border:"1px solid #86efac",borderRadius:14,padding:"1.1rem 1.75rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"0.75rem",flexWrap:"wrap",textAlign:"center"}}>
+            {[{n:"10,000",l:"Raw Findings",c:"#dc2626",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"2,500",l:"After Severity",c:"#ea580c",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"800",l:"Exploitable",c:"#d97706",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"20–50",l:"Action Items",c:"#16a34a",arrow:false}].map((item,i)=>
+              item.arrow ? (
+                <span key={i} style={{fontSize:"1.5rem",color:"#86efac",fontWeight:700}}>→</span>
+              ) : (
+                <div key={i}>
+                  <div style={{fontSize:"1.5rem",fontWeight:900,color:item.c}}>{item.n}</div>
+                  <div style={{fontSize:"0.65rem",color:"#475569"}}>{item.l}</div>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* ── REPORT ── */}
       <section id="report" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"#f8fafc",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
         <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
@@ -969,111 +1075,6 @@ export default function Page() {
                 <div style={{fontSize:"0.7rem",color:"#64748b",marginTop:"0.25rem"}}>{s.l}</div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-      {/* ── SECURE ── */}
-      <section id="secure" style={{scrollMarginTop:"64px",padding:"25px 2rem 4rem",background:"linear-gradient(135deg,#14532d 0%,#15803d 50%,#16a34a 100%)",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
-        <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
-          <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
-            <div style={{fontSize:"0.68rem",fontWeight:700,color:"#bbf7d0",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
-            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#fff",letterSpacing:"-0.03em"}}>Triple-Filter Triage — fix what actually matters</h2>
-            <p style={{color:"#bbf7d0",marginTop:"0.5rem",fontSize:"0.9rem"}}>Stop drowning in 10,000 findings. Our 3-layer engine surfaces only the ones that need action today.</p>
-          </div>
-
-          <div className="secure-main" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.5rem",marginBottom:"1.5rem"}}>
-
-            {/* Left: Filter funnel */}
-            <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
-              {[
-                {step:"Filter 1",title:"Severity Gate",rule:"CVSS >= 7.0",desc:"Eliminates informational and low-noise findings immediately",c:"#4f46e5",icon:"🎯",
-                  bars:[{l:"Critical",v:95,n:23},{l:"High",v:72,n:67},{l:"Medium",v:20,n:0},{l:"Low",v:5,n:0}]},
-                {step:"Filter 2",title:"Exploitability Check",rule:"EPSS > 10% OR CISA KEV",desc:"Only surfaces findings with real-world exploit evidence",c:"#ea580c",icon:"⚡",
-                  bars:[{l:"KEV Listed",v:100,n:8},{l:"EPSS >50%",v:85,n:31},{l:"EPSS 10-50%",v:60,n:51},{l:"No Exploit",v:10,n:0}]},
-                {step:"Filter 3",title:"Asset Criticality",rule:"Tier-1 · Prod · External",desc:"Prioritizes findings on your most valuable assets",c:"#dc2626",icon:"🏢",
-                  bars:[{l:"External-facing",v:100,n:18},{l:"Production",v:80,n:24},{l:"Internal",v:30,n:0},{l:"Dev/Test",v:5,n:0}]},
-              ].map((f,i)=>(
-                <div key={f.step} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderLeft:`4px solid ${f.c}`,borderRadius:14,padding:"1.1rem 1.25rem"}}>
-                  <div style={{display:"flex",alignItems:"center",gap:"0.75rem",marginBottom:"0.625rem"}}>
-                    <div style={{width:40,height:40,borderRadius:"50%",background:`${f.c}12`,border:`2px solid ${f.c}30`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.1rem",flexShrink:0}}>{f.icon}</div>
-                    <div style={{flex:1}}>
-                      <div style={{display:"flex",alignItems:"center",gap:"0.5rem",marginBottom:2}}>
-                        <span style={{fontSize:"0.6rem",fontWeight:700,color:f.c,textTransform:"uppercase",letterSpacing:"0.08em"}}>{f.step}</span>
-                        <span style={{fontWeight:800,fontSize:"0.88rem",color:"#0f172a"}}>{f.title}</span>
-                      </div>
-                      <code style={{fontSize:"0.68rem",color:f.c,background:`${f.c}10`,padding:"1px 7px",borderRadius:5,fontWeight:700}}>{f.rule}</code>
-                    </div>
-                    {i < 2 && <span style={{fontSize:"1.25rem",color:"#cbd5e1"}}>↓</span>}
-                  </div>
-                  <div style={{fontSize:"0.72rem",color:"#64748b",marginBottom:"0.625rem"}}>{f.desc}</div>
-                  <div style={{display:"flex",flexDirection:"column",gap:"0.3rem"}}>
-                    {f.bars.map((b:{l:string,v:number,n:number})=>(
-                      <div key={b.l} style={{display:"flex",alignItems:"center",gap:"0.5rem"}}>
-                        <span style={{fontSize:"0.58rem",color:"#64748b",width:90,flexShrink:0}}>{b.l}</span>
-                        <div style={{flex:1,height:6,background:"#e2e8f0",borderRadius:99}}>
-                          <div style={{height:"100%",width:`${b.v}%`,background:b.n>0?f.c:"#e2e8f0",borderRadius:99,opacity:b.n>0?1:0.25}}/>
-                        </div>
-                        <span style={{fontSize:"0.58rem",fontWeight:700,color:b.n>0?f.c:"#cbd5e1",width:22,textAlign:"right"}}>{b.n>0?b.n:"—"}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Right: 6 mini dashboard tiles with bar graphs */}
-            <div className="secure-tiles" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem",alignContent:"start"}}>
-              {[
-                {title:"Runway Reduction Gates",icon:"📉",c:"#16a34a",note:"99.6% noise cut",
-                  bars:[{l:"Raw (10K)",v:100,n:"10K"},{l:"After F1",v:25,n:"2.5K"},{l:"After F2",v:8,n:"800"},{l:"Actionable",v:0.5,n:"40"}]},
-                {title:"CVSS Airspeed Ranges",icon:"📊",c:"#4f46e5",note:"Only CVSS ≥ 7.0",
-                  bars:[{l:"Critical 9-10",v:23,n:23},{l:"High 7-8.9",v:67,n:67},{l:"Medium",v:45,n:0},{l:"Low/Info",v:20,n:0}]},
-                {title:"EPSS Storm Likelihood",icon:"⚡",c:"#ea580c",note:"Real exploit focus",
-                  bars:[{l:"EPSS >50%",v:100,n:31},{l:"EPSS 10-50%",v:60,n:51},{l:"EPSS 1-10%",v:20,n:0},{l:"No PoC",v:5,n:0}]},
-                {title:"Hangar Asset Tiers",icon:"🏢",c:"#dc2626",note:"Critical assets first",
-                  bars:[{l:"Tier-1 Prod",v:100,n:18},{l:"Tier-2",v:75,n:24},{l:"Internal",v:20,n:0},{l:"Dev/Test",v:5,n:0}]},
-                {title:"KEV Turbulence Rates",icon:"🔐",c:"#7c3aed",note:"8 CISA KEV found",
-                  bars:[{l:"KEV Match",v:100,n:8},{l:"Weaponized",v:75,n:6},{l:"PoC Exists",v:55,n:12},{l:"No Exploit",v:10,n:0}]},
-                {title:"SLA Altimeter Deadlines",icon:"⏰",c:"#d97706",note:"SLA gates active",
-                  bars:[{l:"Critical 24h",v:100,n:23},{l:"High 7d",v:55,n:39},{l:"Medium 30d",v:15,n:0},{l:"Low 90d",v:5,n:0}]},
-              ].map((tile:{title:string,icon:string,c:string,note:string,bars:{l:string,v:number,n:string|number}[]})=>(
-                <div key={tile.title} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,padding:"0.875rem",boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
-                  <div style={{display:"flex",alignItems:"center",gap:"0.375rem",marginBottom:"0.625rem"}}>
-                    <span style={{fontSize:"0.875rem"}}>{tile.icon}</span>
-                    <span style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a"}}>{tile.title}</span>
-                  </div>
-                  <div style={{display:"flex",flexDirection:"column",gap:"0.3rem",marginBottom:"0.5rem"}}>
-                    {tile.bars.map((b:{l:string,v:number,n:string|number})=>{
-                      const isValActive = b.n !== 0 && b.n !== '0' && b.n !== '';
-                      return (
-                        <div key={b.l} style={{display:"flex",alignItems:"center",gap:"0.375rem"}}>
-                          <span style={{fontSize:"0.55rem",color:"#94a3b8",width:72,flexShrink:0}}>{b.l}</span>
-                          <div style={{flex:1,height:5,background:"#f1f5f9",borderRadius:99}}>
-                            <div style={{height:"100%",width:`${b.v}%`,background:isValActive?tile.c:"#e2e8f0",borderRadius:99,opacity:isValActive?1:0.2}}/>
-                          </div>
-                          <span style={{fontSize:"0.55rem",fontWeight:700,color:isValActive?tile.c:"#cbd5e1",width:26,textAlign:"right",flexShrink:0}}>{isValActive?b.n:"—"}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div style={{fontSize:"0.58rem",color:tile.c,fontWeight:700,background:`${tile.c}10`,borderRadius:6,padding:"2px 6px",display:"inline-block"}}>{tile.note}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Before → After funnel result */}
-          <div className="funnel-result" style={{background:"linear-gradient(135deg,#f0fdf4,#dcfce7)",border:"1px solid #86efac",borderRadius:14,padding:"1.1rem 1.75rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"0.75rem",flexWrap:"wrap",textAlign:"center"}}>
-            {[{n:"10,000",l:"Raw Findings",c:"#dc2626",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"2,500",l:"After Severity",c:"#ea580c",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"800",l:"Exploitable",c:"#d97706",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"20–50",l:"Action Items",c:"#16a34a",arrow:false}].map((item,i)=>
-              item.arrow ? (
-                <span key={i} style={{fontSize:"1.5rem",color:"#86efac",fontWeight:700}}>→</span>
-              ) : (
-                <div key={i}>
-                  <div style={{fontSize:"1.5rem",fontWeight:900,color:item.c}}>{item.n}</div>
-                  <div style={{fontSize:"0.65rem",color:"#475569"}}>{item.l}</div>
-                </div>
-              )
-            )}
           </div>
         </div>
       </section>
