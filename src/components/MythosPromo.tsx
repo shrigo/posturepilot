@@ -413,7 +413,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             background: #ffffff;
             color: #0f172a;
             width: 92vw;
-            max-width: 1350px;
+            max-width: 1100px;
             height: 550px;
             border-radius: 20px;
             position: relative;
@@ -470,7 +470,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
-            padding: 1.2rem 2.2rem 1rem;
+            padding: 1.2rem 1.6rem 1rem;
           }
           .mythos-right-header {
             display: flex;
