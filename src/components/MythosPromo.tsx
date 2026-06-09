@@ -1418,7 +1418,15 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
                               cursor: "pointer", 
                               boxShadow: "0 2px 6px rgba(124, 58, 237, 0.2)"
                             }} 
-                            onClick={() => alert("Upgrade request sent! Contact billing at billing@posturepilot.com to activate this pilot module.")}
+                            onClick={() => {
+                              onClose();
+                              setTimeout(() => {
+                                const el = document.getElementById("pricing");
+                                if (el) {
+                                  el.scrollIntoView({ behavior: "smooth" });
+                                }
+                              }, 100);
+                            }}
                           >
                             Upgrade
                           </button>
