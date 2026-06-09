@@ -414,7 +414,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             color: #0f172a;
             width: 92vw;
             max-width: 1350px;
-            height: 540px;
+            height: 550px;
             border-radius: 20px;
             position: relative;
             overflow: hidden;
@@ -430,10 +430,10 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             background: #f8fafc;
             border-right: 1px solid #e2e8f0;
             height: 100%;
-            padding: 1rem 0.65rem;
+            padding: 0.75rem 0.5rem;
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
+            gap: 0.15rem;
             overflow-y: auto;
             scrollbar-width: none;
             box-sizing: border-box;
@@ -442,7 +442,7 @@ export default function MythosPromo({ onClose }: { onClose: () => void }) {
             display: none;
           }
           .mythos-tab {
-            padding: 0.35rem 0.55rem;
+            padding: 0.28rem 0.5rem;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
