@@ -335,7 +335,15 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
             {currentClient.avatar}
           </div>
 
-          <button className="logout-btn" onClick={() => window.location.href = '/login'}>Sign out</button>
+          <button 
+            className="logout-btn" 
+            onClick={() => {
+              sessionStorage.removeItem('posturepilot_demo_mode');
+              window.location.href = '/';
+            }}
+          >
+            Sign out
+          </button>
         </div>
       </header>
     </div>
