@@ -475,7 +475,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           .mythos-right-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 0.6rem;
             flex-shrink: 0;
             border-bottom: 1px solid #f1f5f9;
@@ -787,16 +787,13 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
               </p>
             </div>
             {/* Logo and Close Button Container */}
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "-2px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <img 
                 src="/logo_promo.jpg" 
                 alt="Promo Logo" 
                 style={{ 
-                  height: "32px", 
-                  width: "auto", 
-                  borderRadius: "6px",
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-                  border: "1px solid #e2e8f0"
+                  height: "64px", 
+                  width: "auto"
                 }} 
               />
               <button 
