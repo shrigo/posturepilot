@@ -786,14 +786,28 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                 Explore the 12 core cockpit pillars of the PosturePilot Risk Operations Center (ROC).
               </p>
             </div>
-            {/* Close Button */}
-            <button 
-              onClick={onClose}
-              className="mythos-close-btn"
-              aria-label="Close"
-            >
-              ✕
-            </button>
+            {/* Logo and Close Button Container */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "-2px" }}>
+              <img 
+                src="/logo_promo.jpg" 
+                alt="Promo Logo" 
+                style={{ 
+                  height: "32px", 
+                  width: "auto", 
+                  borderRadius: "6px",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                  border: "1px solid #e2e8f0"
+                }} 
+              />
+              <button 
+                onClick={onClose}
+                className="mythos-close-btn"
+                style={{ marginTop: 0 }}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
           </div>
 
           {/* Slideshow Frame */}
