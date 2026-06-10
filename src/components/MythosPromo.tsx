@@ -794,7 +794,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                 style={{ 
                   height: "64px", 
                   width: "auto",
-                  padding: "4px 0"
+                  padding: "2px 0"
                 }} 
               />
               <button 
