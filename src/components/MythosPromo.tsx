@@ -412,15 +412,16 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           .mythos-promo-modal {
             background: #ffffff;
             color: #0f172a;
-            width: 92vw;
-            max-width: 1100px;
-            height: 550px;
+            width: 96vw;
+            max-width: 1440px;
+            height: 76vh;
+            max-height: 800px;
             border-radius: 20px;
             position: relative;
             overflow: hidden;
             font-family: Inter, system-ui, -apple-system, sans-serif;
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 300px 1fr;
             box-sizing: border-box;
             z-index: 10;
             box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35);
@@ -430,19 +431,34 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             background: #f8fafc;
             border-right: 1px solid #e2e8f0;
             height: 100%;
-            padding: 0.75rem 0.5rem;
+            padding: 0;
             display: flex;
             flex-direction: column;
-            gap: 0.15rem;
-            overflow-y: auto;
-            scrollbar-width: none;
+            overflow: hidden;
             box-sizing: border-box;
           }
           .mythos-sidebar::-webkit-scrollbar {
             display: none;
           }
+          .mythos-sidebar-logo {
+            padding: 0.8rem 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: transparent;
+          }
+          .mythos-sidebar-modules {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 0.4rem 0.5rem;
+            overflow: hidden;
+          }
           .mythos-tab {
-            padding: 0.28rem 0.5rem;
+            padding: 0.35rem 0.55rem;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -450,7 +466,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             background: #ffffff;
             display: flex;
             flex-direction: column;
-            gap: 0.01rem;
+            gap: 0.08rem;
             flex-shrink: 0;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
           }
@@ -510,7 +526,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           .mythos-canvas-body {
             flex: 1;
             min-height: 0;
-            padding: 0.2rem 1rem 0.5rem;
+            padding: 0 5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -518,37 +534,37 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           }
           .mythos-split-grid {
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
+            grid-template-columns: 1.2fr 0.8fr;
             gap: 2rem;
             height: 100%;
-            align-items: center;
+            align-items: stretch;
           }
           .mythos-split-left {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 230px;
+            height: 390px;
             background: #090d16;
-            border-radius: 12px;
+            border-radius: 14px;
             border: 1px solid #e2e8f0;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
           }
           .mythos-split-right {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            gap: 1.2rem;
           }
           .mythos-feature-item {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 0.45rem 0.75rem;
-            margin-bottom: 0.4rem;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
             display: flex;
             align-items: flex-start;
-            gap: 0.5rem;
+            gap: 0.65rem;
             transition: all 0.2s ease;
           }
           .mythos-feature-item:hover {
@@ -575,12 +591,12 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           }
           .mythos-funnel-container {
             width: 100%;
-            height: 90px;
-            margin: 0.4rem 0;
+            height: 120px;
+            margin: 0.5rem 0;
             background: #f8fafc;
             border-radius: 12px;
             border: 1px solid #e2e8f0;
-            padding: 0.35rem 1.5rem;
+            padding: 0.4rem 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -589,13 +605,13 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           .mythos-terminal {
             background: #090d16;
             border: 1px solid #1e293b;
-            border-radius: 12px;
+            border-radius: 14px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            height: 230px;
+            height: 260px;
             box-shadow: inset 0 0 40px rgba(0,0,0,0.85);
           }
           .mythos-terminal-overlay {
@@ -616,8 +632,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid #e2e8f0;
+            background: #7c3aed;
+            border: 1px solid #7c3aed;
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -626,14 +642,15 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             align-items: center;
             justify-content: center;
             font-size: 1.3rem;
-            color: #475569;
+            color: #ffffff;
             transition: all 0.2s ease;
             z-index: 50;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
           }
           .mythos-nav-arrow:hover {
             background: #ffffff;
-            color: #2563eb;
+            color: #7c3aed;
+            border-color: rgba(124, 58, 237, 0.3);
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
           }
           .mythos-nav-arrow.left {
@@ -694,8 +711,16 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             50% { opacity: 0.9; transform: scale(1.6); }
           }
           @keyframes growBar {
-            from { width: 0%; }
-            to { width: 100%; }
+            from { width: 0; }
+          }
+          @keyframes radarSweep {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          @keyframes jpiScanline {
+            0% { transform: translateY(0px); opacity: 0.6; }
+            50% { transform: translateY(198px); opacity: 0.3; }
+            100% { transform: translateY(0px); opacity: 0.6; }
           }
           
           @media(max-width: 980px) {
@@ -757,55 +782,56 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
         {/* Left Tabs Sidebar */}
         <div className="mythos-sidebar">
-          {MODULES_DATA.map((feat) => (
-            <div 
-              key={feat.id} 
-              className={`mythos-tab ${activeModuleId === feat.id ? 'active' : ''}`}
-              onClick={() => handleManualModuleSelect(feat.id)}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                <span style={{ fontSize: "0.95rem" }}>{feat.icon}</span>
-                <span style={{ fontSize: "0.76rem", fontWeight: activeModuleId === feat.id ? 800 : 600, color: activeModuleId === feat.id ? "#7c3aed" : "#475569" }}>{feat.title}</span>
+          {/* Logo at top */}
+          <div className="mythos-sidebar-logo">
+            <img
+              src="/logo_promo.jpg"
+              alt="PosturePilot"
+              style={{ height: "68px", width: "auto", objectFit: "contain" }}
+            />
+          </div>
+
+          {/* Modules spread evenly */}
+          <div className="mythos-sidebar-modules">
+            {MODULES_DATA.map((feat) => (
+              <div
+                key={feat.id}
+                className={`mythos-tab ${activeModuleId === feat.id ? 'active' : ''}`}
+                onClick={() => handleManualModuleSelect(feat.id)}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <span style={{ fontSize: "0.9rem" }}>{feat.icon}</span>
+                  <span style={{ fontSize: "0.74rem", fontWeight: activeModuleId === feat.id ? 800 : 600, color: activeModuleId === feat.id ? "#7c3aed" : "#475569" }}>{feat.title}</span>
+                </div>
+                <div style={{ fontSize: "0.62rem", color: "#64748b", marginTop: "0.02rem", paddingLeft: "1.35rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {feat.desc}
+                </div>
               </div>
-              <div style={{ fontSize: "0.64rem", color: "#64748b", marginTop: "0.02rem", paddingLeft: "1.35rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                {feat.desc}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Right Slideshow Canvas */}
         <div className="mythos-right-canvas">
           {/* Header block */}
           <div className="mythos-right-header">
-            <div>
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 900, letterSpacing: "-0.02em", color: "#0f172a", margin: 0 }}>
+            <div style={{ flex: 1, textAlign: "right", paddingRight: "0.75rem" }}>
+              <h2 style={{ fontSize: "1.55rem", fontWeight: 900, letterSpacing: "-0.02em", color: "#0f172a", margin: 0 }}>
                 The <span style={{ background: "linear-gradient(90deg, #7c3aed, #4f46e5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Post-Mythos</span> Era Demands More.
               </h2>
-              <p style={{ fontSize: "0.72rem", color: "#64748b", margin: "0.1rem 0 0", lineHeight: 1.2 }}>
+              <p style={{ fontSize: "0.9rem", color: "#64748b", margin: "0.2rem 0 0", lineHeight: 1.3 }}>
                 Explore the 12 core cockpit pillars of the PosturePilot Risk Operations Center (ROC).
               </p>
             </div>
-            {/* Logo and Close Button Container */}
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <img 
-                src="/logo_promo.jpg" 
-                alt="Promo Logo" 
-                style={{ 
-                  height: "64px", 
-                  width: "auto",
-                  padding: "2px 0"
-                }} 
-              />
-              <button 
-                onClick={onClose}
-                className="mythos-close-btn"
-                style={{ marginTop: 0 }}
-                aria-label="Close"
-              >
-                ✕
-              </button>
-            </div>
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="mythos-close-btn"
+              style={{ marginTop: 0, flexShrink: 0 }}
+              aria-label="Close"
+            >
+              ✕
+            </button>
           </div>
 
           {/* Slideshow Frame */}
@@ -813,7 +839,9 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             {/* Left & Right Chevrons */}
             {activeSlide < 3 && (
               <>
-                <button onClick={handlePrevSlide} className="mythos-nav-arrow left" aria-label="Previous Slide">‹</button>
+                {!(activeSlide === 0 && MODULES_DATA.findIndex(m => m.id === activeModuleId) === 0) && (
+                  <button onClick={handlePrevSlide} className="mythos-nav-arrow left" aria-label="Previous Slide">‹</button>
+                )}
                 <button onClick={handleNextSlide} className="mythos-nav-arrow right" aria-label="Next Slide">›</button>
               </>
             )}
@@ -824,12 +852,12 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
               {/* SLIDE 1: Core Capabilities & Graphic */}
               {activeSlide === 0 && (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ textAlign: "center", marginBottom: "0.6rem" }}>
-                    <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>COCKPIT PREVIEW</div>
-                    <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
+                  <div style={{ textAlign: "left", marginBottom: "2rem" }}>
+                    <div style={{ fontSize: "0.7rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>COCKPIT PREVIEW</div>
+                    <h3 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#0f172a", margin: "0.15rem 0" }}>
                       {activeModule.title}
                     </h3>
-                    <p style={{ fontSize: "0.74rem", color: "#475569", margin: 0 }}>
+                    <p style={{ fontSize: "0.85rem", color: "#475569", margin: 0 }}>
                       {activeModule.tagline}
                     </p>
                   </div>
@@ -840,182 +868,677 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                       
                       {/* Posture Clearance */}
                       {activeModuleId === "posture" && (
-                        <div style={{ position: "relative", width: 140, height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <svg viewBox="0 0 100 100" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", transform: "rotate(-90deg)" }}>
-                            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(139, 92, 246, 0.08)" strokeWidth="1.5" strokeDasharray="3 3" style={{ animation: "rotateClockwise 30s linear infinite" }} />
-                            <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="5" />
-                            <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" strokeWidth="5" strokeDasharray="235 251" strokeLinecap="round" />
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 0 280 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            <defs>
+                              <radialGradient id="jpiCore" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="#10b981" stopOpacity="0.18" />
+                                <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                              </radialGradient>
+                              <filter id="glow-g">
+                                <feGaussianBlur stdDeviation="1.8" result="blur" />
+                                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                              </filter>
+                            </defs>
+
+                            {/* ── Background orbit rings ── */}
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                            <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                            <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+                            {/* Rotating orbit dot */}
+                            <circle cx="100" cy="28" r="2.2" fill="#7c3aed" opacity="0.7" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 8s linear infinite" }} />
+
+                            {/* ── Outer ring: Host Posture (82%) ── */}
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+                            <circle cx="100" cy="100" r="72" fill="none" stroke="#3b82f6" strokeWidth="6"
+                              strokeDasharray="370 452" strokeLinecap="round"
+                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(59,130,246,0.5))" }} />
+                            <text x="100" y="-172" textAnchor="middle" fill="#3b82f6" fontSize="7" fontFamily="monospace" fontWeight="700"
+                              style={{ transform: "rotate(90deg) translateY(-100px)", transformOrigin: "100px 100px" }}>HOSTS 82%</text>
+
+                            {/* ── Middle ring: Cloud Posture (90%) ── */}
+                            <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+                            <circle cx="100" cy="100" r="56" fill="none" stroke="#a78bfa" strokeWidth="6"
+                              strokeDasharray="317 352" strokeLinecap="round"
+                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(167,139,250,0.5))" }} />
+
+                            {/* ── Inner ring: Code Posture (94%) ── */}
+                            <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+                            <circle cx="100" cy="100" r="40" fill="none" stroke="#10b981" strokeWidth="6"
+                              strokeDasharray="236 251" strokeLinecap="round"
+                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 4px rgba(16,185,129,0.6))" }} />
+
+                            {/* ── Core glow fill ── */}
+                            <circle cx="100" cy="100" r="30" fill="url(#jpiCore)" />
+
+                            {/* ── JPI Center label ── */}
+                            <text x="100" y="96" textAnchor="middle" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="900">94%</text>
+                            <text x="100" y="108" textAnchor="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">JPI SCORE</text>
+
+                            {/* ── Legend labels — horizontal strip at bottom ── */}
+                            <line x1="10" y1="178" x2="250" y2="178" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                            <circle cx="30" cy="188" r="4" fill="#10b981" />
+                            <text x="38" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Code 94%</text>
+                            <circle cx="105" cy="188" r="4" fill="#a78bfa" />
+                            <text x="113" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Cloud 90%</text>
+                            <circle cx="180" cy="188" r="4" fill="#3b82f6" />
+                            <text x="188" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Hosts 82%</text>
+
+                            {/* ── Clearance Gates panel (right side) ── */}
+                            <text x="198" y="38" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">CLEARANCE GATES</text>
+
+                            {/* Gate 1: Build — PASS */}
+                            <rect x="198" y="46" width="70" height="18" rx="4" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.8" />
+                            <circle cx="208" cy="55" r="3.5" fill="#10b981" filter="url(#glow-g)" />
+                            <text x="215" y="58" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">BUILD</text>
+                            <text x="265" y="58" textAnchor="end" fill="#10b981" fontSize="6" fontFamily="monospace" fontWeight="900">PASS</text>
+
+                            {/* Gate 2: Deploy — PASS */}
+                            <rect x="198" y="70" width="70" height="18" rx="4" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.8" />
+                            <circle cx="208" cy="79" r="3.5" fill="#10b981" filter="url(#glow-g)" />
+                            <text x="215" y="82" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">DEPLOY</text>
+                            <text x="265" y="82" textAnchor="end" fill="#10b981" fontSize="6" fontFamily="monospace" fontWeight="900">PASS</text>
+
+                            {/* Gate 3: Config — FAIL */}
+                            <rect x="198" y="94" width="70" height="18" rx="4" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.35)" strokeWidth="0.8" />
+                            <circle cx="208" cy="103" r="3.5" fill="#ef4444" style={{ animation: "pulseRed 1.2s infinite" }} />
+                            <text x="215" y="106" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">CONFIG</text>
+                            <text x="265" y="106" textAnchor="end" fill="#ef4444" fontSize="6" fontFamily="monospace" fontWeight="900">FAIL</text>
+
+                            {/* ── Threat Intel Sync node ── */}
+                            <text x="198" y="128" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">THREAT INTEL SYNC</text>
+                            <circle cx="208" cy="145" r="6" fill="none" stroke="rgba(245,158,11,0.2)" strokeWidth="1" style={{ animation: "pulseGlow 2s infinite" }} />
+                            <circle cx="208" cy="145" r="4" fill="#f59e0b" opacity="0.9" />
+                            <text x="215" y="149" fill="#fbbf24" fontSize="6.5" fontFamily="monospace" fontWeight="700">4 FEEDS LIVE</text>
+
+                            {/* ── Scanline overlay ── */}
+                            <rect x="0" y="0" width="280" height="2" fill="rgba(16,185,129,0.15)" rx="1"
+                              style={{ animation: "jpiScanline 3.5s linear infinite", transformOrigin: "center" }} />
+                            {/* Separator lines between legend items */}
+                            <line x1="97" y1="182" x2="97" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
+                            <line x1="172" y1="182" x2="172" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
                           </svg>
-                          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 5 }}>
-                            <span style={{ fontSize: "1.6rem", animation: "float 4s ease-in-out infinite" }}>🛡️</span>
-                            <div style={{ fontSize: "1.1rem", fontWeight: 900, color: "#fff", marginTop: "0.1rem", fontFamily: "monospace" }}>94%</div>
-                          </div>
-                          <div style={{ position: "absolute", width: "100%", height: "2px", background: "linear-gradient(90deg, transparent, rgba(16,185,129,0.4), transparent)", top: "50%", left: 0, animation: "scanline 3s linear infinite", pointerEvents: "none" }} />
                         </div>
                       )}
 
                       {/* Cloud Altitude */}
                       {activeModuleId === "cloud" && (
-                        <div style={{ position: "relative", width: "100%", height: 140, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "0.2rem" }}>
-                          <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-                            <line x1="20%" y1="20%" x2="50%" y2="50%" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                            <line x1="80%" y1="25%" x2="50%" y2="50%" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                            <line x1="50%" y1="50%" x2="30%" y2="80%" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3 3" />
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 -2 260 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            <defs>
+                              <radialGradient id="cloudHub" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+                              </radialGradient>
+                            </defs>
+
+                            {/* ── Connection lines from providers to hub ── */}
+                            {/* AWS → Hub */}
+                            <line x1="46" y1="59" x2="114" y2="108" stroke="#f59e0b" strokeWidth="1.2" strokeDasharray="4 3"
+                              style={{ animation: "dash 3s linear infinite" }} />
+                            {/* Azure → Hub */}
+                            <line x1="130" y1="80" x2="130" y2="108" stroke="#3b82f6" strokeWidth="1.2" strokeDasharray="4 3"
+                              style={{ animation: "dash 4s linear infinite" }} />
+                            {/* GCP → Hub */}
+                            <line x1="214" y1="59" x2="146" y2="108" stroke="#10b981" strokeWidth="1.2" strokeDasharray="4 3"
+                              style={{ animation: "dash 3.5s linear infinite" }} />
+                            {/* Hub → Exposed bucket (red dashed) */}
+                            <line x1="110" y1="122" x2="68" y2="150" stroke="#ef4444" strokeWidth="1.4" strokeDasharray="3 3"
+                              style={{ animation: "dash 2s linear infinite" }} />
+
+                            {/* ── AWS Node — name centered ── */}
+                            <rect x="6" y="15" width="80" height="44" rx="6" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
+                            <text x="46" y="35" textAnchor="middle" dominantBaseline="middle" fill="#f59e0b" fontSize="9" fontFamily="monospace" fontWeight="900">AWS</text>
+                            <text x="46" y="49" textAnchor="middle" dominantBaseline="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">850K resources</text>
+
+                            {/* AWS status badge on line */}
+                            <rect x="8" y="64" width="38" height="14" rx="3" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.35)" strokeWidth="0.7" />
+                            <circle cx="15" cy="71" r="2.5" fill="#ef4444" style={{ animation: "pulseRed 1.5s infinite" }} />
+                            <text x="20" y="74" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="700">3 DRIFT</text>
+
+                            {/* ── Azure Node — name centered ── */}
+                            <rect x="90" y="15" width="80" height="44" rx="6" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.4)" strokeWidth="1" />
+                            <text x="130" y="35" textAnchor="middle" dominantBaseline="middle" fill="#60a5fa" fontSize="9" fontFamily="monospace" fontWeight="900">AZURE</text>
+                            <text x="130" y="49" textAnchor="middle" dominantBaseline="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">142K resources</text>
+
+                            {/* Azure status badge on line */}
+                            <rect x="118" y="64" width="24" height="14" rx="3" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.7" />
+                            <text x="130" y="74" textAnchor="middle" fill="#10b981" fontSize="5" fontFamily="monospace" fontWeight="700">OK</text>
+
+                            {/* ── GCP Node — name centered ── */}
+                            <rect x="174" y="15" width="80" height="44" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.4)" strokeWidth="1" />
+                            <text x="214" y="35" textAnchor="middle" dominantBaseline="middle" fill="#10b981" fontSize="9" fontFamily="monospace" fontWeight="900">GCP</text>
+                            <text x="214" y="49" textAnchor="middle" dominantBaseline="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">204K resources</text>
+
+                            {/* GCP status badge on line */}
+                            <rect x="220" y="64" width="32" height="14" rx="3" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.7" />
+                            <circle cx="226" cy="71" r="2.5" fill="#10b981" />
+                            <text x="232" y="74" fill="#10b981" fontSize="5" fontFamily="monospace" fontWeight="700">IAM OK</text>
+
+                            {/* ── Central Hub ── */}
+                            <circle cx="130" cy="115" r="26" fill="url(#cloudHub)" />
+                            <circle cx="130" cy="115" r="18" fill="#0f172a" stroke="#3b82f6" strokeWidth="1.8"
+                              style={{ filter: "drop-shadow(0 0 6px rgba(59,130,246,0.5))" }} />
+                            <text x="130" y="112" textAnchor="middle" dominantBaseline="middle" fill="#3b82f6" fontSize="7" fontFamily="monospace" fontWeight="900">PP</text>
+                            <text x="130" y="123" textAnchor="middle" dominantBaseline="middle" fill="#64748b" fontSize="5" fontFamily="monospace">HUB</text>
+
+                            {/* ── Exposed Bucket Alert ── */}
+                            <rect x="10" y="150" width="114" height="28" rx="5" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.5)" strokeWidth="1" />
+                            <circle cx="24" cy="164" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }} />
+                            <text x="32" y="160" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">S3_LOGS</text>
+                            <text x="32" y="170" fill="#f87171" fontSize="5.5" fontFamily="monospace">PUBLIC EXPOSED</text>
+
+                            {/* ── Quarantined Key badge ── */}
+                            <rect x="136" y="150" width="114" height="28" rx="5" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.3)" strokeWidth="1" />
+                            <circle cx="150" cy="164" r="4" fill="#10b981" />
+                            <text x="158" y="160" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">IAM KEY</text>
+                            <text x="158" y="170" fill="#6ee7b7" fontSize="5.5" fontFamily="monospace">AUTO-QUARANTINED</text>
+
+                            {/* ── Live inventory strip ── */}
+                            <line x1="10" y1="186" x2="250" y2="186" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                            <circle cx="22" cy="193" r="3" fill="#3b82f6" />
+                            <text x="29" y="196" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">1.19M total assets</text>
+                            <circle cx="140" cy="193" r="3" fill="#ef4444" />
+                            <text x="147" y="196" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">810 keys revoked</text>
                           </svg>
-                          <div style={{ display: "flex", justifyContent: "space-around" }}>
-                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(30,41,59,0.9)", border: "1px solid rgba(255,255,255,0.08)", padding: "0.2rem 0.4rem", borderRadius: "6px", animation: "float 5s ease-in-out infinite" }}>
-                              <span style={{ fontSize: "0.75rem" }}>☁️</span>
-                              <span style={{ fontSize: "0.55rem", fontFamily: "monospace", color: "#cbd5e1" }}>AWS-PROD</span>
-                            </div>
-                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(30,41,59,0.9)", border: "1px solid rgba(255,255,255,0.08)", padding: "0.2rem 0.4rem", borderRadius: "6px", animation: "floatSlow 7s ease-in-out infinite" }}>
-                              <span style={{ fontSize: "0.75rem" }}>☁️</span>
-                              <span style={{ fontSize: "0.55rem", fontFamily: "monospace", color: "#cbd5e1" }}>GCP-DEV</span>
-                            </div>
-                          </div>
-                          <div style={{ display: "flex", justifyContent: "center" }}>
-                            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#1e293b", border: "2px solid #3b82f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#3b82f6", animation: "pulseGlowBlue 2s infinite" }} />
-                            </div>
-                          </div>
-                          <div style={{ display: "flex", justifyContent: "center" }}>
-                            <div style={{ display: "flex", gap: "0.3rem", alignItems: "center", background: "rgba(239, 68, 68, 0.08)", border: "1px solid rgba(239, 68, 68, 0.18)", padding: "0.15rem 0.4rem", borderRadius: "6px" }}>
-                              <span style={{ fontSize: "0.65rem", animation: "pulseRed 1.5s infinite" }}>🚨</span>
-                              <span style={{ fontSize: "0.55rem", fontFamily: "monospace", color: "#f87171" }}>S3_PUBLIC_EXPOSED</span>
-                            </div>
-                          </div>
                         </div>
                       )}
 
+
                       {/* Network Runway */}
                       {activeModuleId === "network" && (
-                        <div style={{ position: "relative", width: 180, height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <svg viewBox="0 0 200 150" style={{ width: "100%", height: "100%" }}>
-                            <path d="M 20 75 L 80 75 M 120 75 L 180 75" stroke="rgba(255,255,255,0.06)" strokeWidth="1.5" />
-                            <path d="M 20 110 L 80 90 L 100 75" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ strokeDashoffset: 4, animation: "dash 2s linear infinite" }} />
-                            <g transform="translate(100, 75)">
-                              <circle cx="0" cy="0" r="14" fill="#090d16" stroke="#3b82f6" strokeWidth="2" style={{ filter: "drop-shadow(0 0 6px rgba(59, 130, 246, 0.4))" }} />
-                            </g>
-                            <circle cx="20" cy="75" r="3" fill="#10b981" />
-                            <circle cx="20" cy="110" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }} />
-                            <circle cx="180" cy="75" r="3" fill="#10b981" />
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 -12 260 200" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            <defs>
+                              <linearGradient id="netFlow" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.6"/>
+                                <stop offset="100%" stopColor="#10b981" stopOpacity="0.6"/>
+                              </linearGradient>
+                            </defs>
+
+                            {/* ── Perimeter / Edge label ── */}
+                            <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">EDGE FIREWALL GATEWAY</text>
+
+                            {/* ── Internet → Firewall pipe ── */}
+                            <rect x="10" y="28" width="50" height="22" rx="4" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.4)" strokeWidth="1"/>
+                            <text x="35" y="39" textAnchor="middle" fill="#60a5fa" fontSize="6" fontFamily="monospace" fontWeight="900">INTERNET</text>
+                            <text x="35" y="46" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">142.6M pkts</text>
+
+                            {/* Arrow → Firewall */}
+                            <line x1="60" y1="39" x2="88" y2="39" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 3" style={{ animation: "dash 2s linear infinite" }}/>
+                            <polygon points="88,36 94,39 88,42" fill="#3b82f6"/>
+
+                            {/* ── Firewall node ── */}
+                            <rect x="94" y="22" width="72" height="34" rx="6" fill="rgba(30,41,59,0.9)" stroke="#3b82f6" strokeWidth="1.5" style={{ filter: "drop-shadow(0 0 5px rgba(59,130,246,0.3))" }}/>
+                            <text x="130" y="36" textAnchor="middle" fill="#3b82f6" fontSize="7" fontFamily="monospace" fontWeight="900">FIREWALL</text>
+                            <text x="130" y="46" textAnchor="middle" fill="#94a3b8" fontSize="5" fontFamily="monospace">IDS/IPS Active</text>
+
+                            {/* Arrow → Internal */}
+                            <line x1="166" y1="39" x2="194" y2="39" stroke="#10b981" strokeWidth="2" strokeDasharray="4 3" style={{ animation: "dash 3s linear infinite" }}/>
+                            <polygon points="194,36 200,39 194,42" fill="#10b981"/>
+                            <rect x="200" y="28" width="52" height="22" rx="4" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.4)" strokeWidth="1"/>
+                            <text x="226" y="39" textAnchor="middle" fill="#10b981" fontSize="6" fontFamily="monospace" fontWeight="900">INTERNAL</text>
+                            <text x="226" y="46" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Clean traffic</text>
+
+                            {/* ── Threat branch down ── */}
+                            <line x1="130" y1="56" x2="130" y2="76" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3 3" style={{ animation: "dash 1.5s linear infinite" }}/>
+                            <rect x="80" y="76" width="100" height="22" rx="5" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.5)" strokeWidth="1"/>
+                            <circle cx="94" cy="87" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }}/>
+                            <text x="102" y="91" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">IDS TRIGGERED</text>
+
+                            {/* ── Blocked IPs row ── */}
+                            <text x="130" y="116" textAnchor="middle" fill="#64748b" fontSize="6" fontFamily="monospace" fontWeight="800">BLOCKED SOURCE IPs</text>
+                            {["103.21.4.x", "45.155.x.x", "91.234.x.x", "185.x.x.x"].map((ip, i) => (
+                              <g key={i} transform={`translate(${18 + i * 60}, 122)`}>
+                                <rect x="0" y="0" width="52" height="16" rx="3" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.25)" strokeWidth="0.8"/>
+                                <text x="26" y="11" textAnchor="middle" fill="#f87171" fontSize="5" fontFamily="monospace">{ip}</text>
+                              </g>
+                            ))}
+
+                            {/* ── VPN Tunnel status ── */}
+                            <line x1="18" y1="152" x2="242" y2="152" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+                            <circle cx="30" cy="162" r="3.5" fill="#10b981"/>
+                            <text x="38" y="166" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">VPN: 48 tunnels active</text>
+                            <circle cx="148" cy="162" r="3.5" fill="#f59e0b"/>
+                            <text x="156" y="166" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">4,210 IPs geo-blocked</text>
                           </svg>
                         </div>
                       )}
 
                       {/* App Security Check */}
                       {activeModuleId === "appsec" && (
-                        <div style={{ position: "relative", width: "100%", height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0.2rem" }}>
-                          <div style={{ width: "85%", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 -3 260 200" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            <defs>
+                              <linearGradient id="pipeGrad" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="#475569" stopOpacity="0.9"/>
+                                <stop offset="100%" stopColor="#ef4444" stopOpacity="0.9"/>
+                              </linearGradient>
+                            </defs>
+
+                            {/* ── Pipeline title ── */}
+                            <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">CI/CD SECURITY PIPELINE</text>
+
+                            {/* ── Stage nodes ── */}
                             {[
-                              { label: "Commits", count: "1,450 Scanned", w: "100%", c: "#334155" },
-                              { label: "SAST Risks", count: "102 Triaged", w: "65%", c: "#eab308" },
-                              { label: "SCA Blocks", count: "8 Fails", w: "25%", c: "#ef4444" }
-                            ].map((bar, idx) => (
-                              <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "0.1rem" }}>
-                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.55rem", fontFamily: "monospace" }}>
-                                  <span style={{ color: "#cbd5e1" }}>{bar.label}</span>
-                                  <span style={{ color: bar.c === "#ef4444" ? "#ef4444" : "#94a3b8" }}>{bar.count}</span>
-                                </div>
-                                <div style={{ width: "100%", height: "5px", background: "rgba(255,255,255,0.05)", borderRadius: "3px", overflow: "hidden" }}>
-                                  <div style={{ width: bar.w, height: "100%", background: bar.c, borderRadius: "3px", animation: "growBar 1.5s ease-out forwards" }} />
-                                </div>
-                              </div>
+                              { x: 40, label: "GIT", sub: "Commit", color: "#ffffff" },
+                              { x: 100, label: "SAST", sub: "Static", color: "#a78bfa" },
+                              { x: 160, label: "SCA", sub: "Deps", color: "#f59e0b" },
+                              { x: 220, label: "DAST", sub: "Dynamic", color: "#3b82f6" },
+                            ].map((s, i) => (
+                              <g key={i}>
+                                <circle cx={s.x} cy="50" r="16" fill="#0f172a" stroke={s.color} strokeWidth="1.8" style={{ filter: `drop-shadow(0 0 4px ${s.color}66)` }}/>
+                                <text x={s.x} y="48" textAnchor="middle" fill={s.color} fontSize="6" fontFamily="monospace" fontWeight="900">{s.label}</text>
+                                <text x={s.x} y="57" textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">{s.sub}</text>
+                              </g>
                             ))}
-                          </div>
+                            {/* Connecting arrows */}
+                            {[
+                              { x: 56, color: "#a78bfa" },
+                              { x: 116, color: "#f59e0b" },
+                              { x: 176, color: "#3b82f6" }
+                            ].map((arrow, i) => (
+                              <line key={i} x1={arrow.x} y1="50" x2={arrow.x + 28} y2="50" stroke={arrow.color} strokeWidth="1.5" strokeDasharray="4 3" style={{ animation: "dash 3s linear infinite" }}/>
+                            ))}
+
+                            {/* ── Finding bars ── */}
+                            <text x="130" y="90" textAnchor="middle" fill="#64748b" fontSize="6" fontFamily="monospace" fontWeight="800">FINDINGS BY STAGE</text>
+                            {[
+                              { label: "120.4K imports", pct: 100, color: "#ffffff", y: 98 },
+                              { label: "18.2K SAST alerts", pct: 72, color: "#a78bfa", y: 114 },
+                              { label: "4.22K OWASP flaws", pct: 34, color: "#f59e0b", y: 130 },
+                              { label: "128 builds BLOCKED", pct: 8, color: "#ef4444", y: 146 },
+                            ].map((b, i) => (
+                              <g key={i}>
+                                <text x="18" y={b.y + 9} fill="#94a3b8" fontSize="5.5" fontFamily="monospace">{b.label}</text>
+                                <rect x="80" y={b.y} width="140" height="10" rx="2" fill="rgba(255,255,255,0.04)"/>
+                                <rect x="80" y={b.y} width={b.pct * 1.4} height="10" rx="2" fill={b.color} style={{ width: b.pct * 1.4, animation: "growBar 1.5s ease-out forwards" }}/>
+                                <text x={80 + b.pct * 1.4 + 3} y={b.y + 8} fill={b.color} fontSize="5" fontFamily="monospace">{b.pct}%</text>
+                              </g>
+                            ))}
+
+                            {/* ── Pipeline block alert ── */}
+                            <rect x="18" y="162" width="224" height="24" rx="5" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)" strokeWidth="1"/>
+                            <circle cx="32" cy="174" r="4" fill="#ef4444" style={{ animation: "pulseRed 1.2s infinite" }}/>
+                            <text x="41" y="172" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">PIPELINE BLOCKED</text>
+                            <text x="41" y="180" fill="#f87171" fontSize="5.5" fontFamily="monospace">CVE-2024-3094 — weaponised XZ lib detected in build #4821</text>
+                          </svg>
                         </div>
                       )}
 
                       {/* AI Risk */}
                       {activeModuleId === "ai-risk" && (
-                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.4rem" }}>
-                          <div style={{ background: "rgba(15, 23, 42, 0.85)", border: "1px solid rgba(255, 255, 255, 0.04)", borderRadius: "6px", width: "95%", padding: "0.25rem 0.4rem", display: "flex", flexDirection: "column", gap: "0.1rem" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.5rem", color: "#64748b", fontFamily: "monospace" }}>
-                              <span>PROMPT</span>
-                              <span style={{ color: "#ef4444" }}>PII FOUND</span>
-                            </div>
-                            <div style={{ fontSize: "0.58rem", fontFamily: "monospace", color: "#cbd5e1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                              "Send audit logs to <span style={{ background: "rgba(239, 68, 68, 0.2)", color: "#ef4444" }}>john@bank.com</span>"
-                            </div>
-                          </div>
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", background: "linear-gradient(90deg, #7c3aed, #4f46e5)", padding: "0.2rem 0.5rem", borderRadius: "10px", color: "#fff", fontSize: "0.55rem", fontWeight: 800, letterSpacing: "0.05em" }}>
-                            🛡️ AI POLICY FIREWALL
-                          </div>
-                          <div style={{ background: "rgba(16, 185, 129, 0.05)", border: "1px solid rgba(16, 185, 129, 0.15)", borderRadius: "6px", width: "95%", padding: "0.25rem 0.4rem", display: "flex", flexDirection: "column", gap: "0.1rem" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.5rem", color: "#64748b", fontFamily: "monospace" }}>
-                              <span>CLEAN PROMPT</span>
-                              <span style={{ color: "#10b981" }}>REDACTED</span>
-                            </div>
-                            <div style={{ fontSize: "0.58rem", fontFamily: "monospace", color: "#cbd5e1", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                              "Send audit logs to <span style={{ background: "rgba(16, 185, 129, 0.2)", color: "#10b981" }}>[REDACTED]</span>"
-                            </div>
-                          </div>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 -3 260 205" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            <defs>
+                              <radialGradient id="aiHub" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.25" />
+                                <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+                              </radialGradient>
+                              <linearGradient id="firewallGrad" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="#7c3aed" />
+                                <stop offset="100%" stopColor="#4f46e5" />
+                              </linearGradient>
+                            </defs>
+
+                            {/* ── Title ── */}
+                            <text x="130" y="12" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">AI GOVERNANCE & PROMPT FIREWALL</text>
+
+                            {/* ── LLM provider nodes (left column) ── */}
+                            {[
+                              { label: "GPT-4o", org: "OpenAI", color: "#10b981", y: 28 },
+                              { label: "Claude 3", org: "Anthropic", color: "#a78bfa", y: 66 },
+                              { label: "Gemini", org: "Google", color: "#3b82f6", y: 104 },
+                            ].map((m, i) => (
+                              <g key={i}>
+                                <rect x="8" y={m.y} width="80" height="30" rx="5"
+                                  fill={`rgba(${m.color === "#10b981" ? "16,185,129" : m.color === "#a78bfa" ? "167,139,250" : "59,130,246"},0.07)`}
+                                  stroke={m.color} strokeWidth="0.8" strokeOpacity="0.5" />
+                                <text x="48" y={m.y + 13} textAnchor="middle" dominantBaseline="middle" fill={m.color} fontSize="7" fontFamily="monospace" fontWeight="900">{m.label}</text>
+                                <text x="48" y={m.y + 24} textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">{m.org}</text>
+                                {/* data flow line */}
+                                <line x1="88" y1={m.y + 15} x2="110" y2="81" stroke={m.color} strokeWidth="1" strokeDasharray="3 2" strokeOpacity="0.6"
+                                  style={{ animation: "dash 3s linear infinite" }} />
+                              </g>
+                            ))}
+
+                            {/* ── Central AI Firewall Hub ── */}
+                            <circle cx="130" cy="81" r="28" fill="url(#aiHub)" />
+                            <circle cx="130" cy="81" r="20" fill="#0f172a" stroke="url(#firewallGrad)" strokeWidth="2"
+                              style={{ filter: "drop-shadow(0 0 8px rgba(124,58,237,0.6))" }} />
+                            <text x="130" y="76" textAnchor="middle" dominantBaseline="middle" fill="#a78bfa" fontSize="6" fontFamily="monospace" fontWeight="900">AI</text>
+                            <text x="130" y="86" textAnchor="middle" dominantBaseline="middle" fill="#7c3aed" fontSize="5" fontFamily="monospace" fontWeight="800">FIREWALL</text>
+
+                            {/* ── Intercept stream (right side) ── */}
+                            <text x="212" y="22" textAnchor="middle" fill="#64748b" fontSize="6" fontFamily="monospace" fontWeight="800">INTERCEPT LOG</text>
+
+                            {[
+                              { threat: "PII LEAK", prompt: "\"Send SSN to...\"", color: "#ef4444", y: 28, blocked: true },
+                              { threat: "JAILBREAK", prompt: "\"Ignore prev...\"", color: "#f59e0b", y: 57, blocked: true },
+                              { threat: "SHADOW IT", prompt: "\"Upload to...\"", color: "#f59e0b", y: 87, blocked: true },
+                              { threat: "CLEAN", prompt: "\"Summarise Q3...\"", color: "#10b981", y: 116, blocked: false },
+                            ].map((r, i) => (
+                              <g key={i}>
+                                <rect x="172" y={r.y} width="80" height="18" rx="3"
+                                  fill={r.blocked ? `rgba(${r.color === "#ef4444" ? "239,68,68" : "245,158,11"},0.07)` : "rgba(16,185,129,0.07)"}
+                                  stroke={r.color} strokeWidth="0.7" strokeOpacity="0.4" />
+                                <circle cx="180" cy={r.y + 9} r="3"
+                                  fill={r.color}
+                                  style={r.blocked && r.color === "#ef4444" ? { animation: "pulseRed 1.2s infinite" } : {}} />
+                                <text x="186" y={r.y + 7} fill={r.color} fontSize="5" fontFamily="monospace" fontWeight="800">{r.threat}</text>
+                                <text x="186" y={r.y + 14} fill="#64748b" fontSize="4.5" fontFamily="monospace">{r.prompt}</text>
+                                {r.blocked && (
+                                  <text x="248" y={r.y + 11} textAnchor="end" fill={r.color} fontSize="5" fontFamily="monospace" fontWeight="900">⛔</text>
+                                )}
+                              </g>
+                            ))}
+
+                            {/* Arrow Hub → intercept stream */}
+                            {[28, 57, 87, 116].map((y, i) => (
+                              <line key={`hub-line-${i}`} x1="150" y1="81" x2="172" y2={y + 9} stroke="rgba(124,58,237,0.3)" strokeWidth="0.8" strokeDasharray="3 2"
+                                style={{ animation: "dash 2s linear infinite" }} />
+                            ))}
+
+                            {/* ── AI Risk Score meter ── */}
+                            <text x="130" y="146" textAnchor="middle" fill="#64748b" fontSize="6" fontFamily="monospace" fontWeight="800">AI RISK SCORE</text>
+                            {/* Score bar background */}
+                            <rect x="18" y="152" width="224" height="10" rx="3" fill="rgba(255,255,255,0.04)" />
+                            {/* Score gradient bar: green → amber → red */}
+                            <rect x="18" y="152" width="80" height="10" rx="3" fill="#10b981" style={{ width: 80, animation: "growBar 2s ease-out forwards" }} />
+                            <rect x="98" y="152" width="70" height="10" fill="#f59e0b" style={{ width: 70, animation: "growBar 2.2s ease-out forwards" }} />
+                            <rect x="168" y="152" width="74" height="10" rx="3" fill="#ef4444" style={{ width: 74, animation: "growBar 2.4s ease-out forwards" }} />
+                            {/* Score pointer at 62 */}
+                            <line x1="157" y1="150" x2="157" y2="164" stroke="#ffffff" strokeWidth="1.2" />
+                            <text x="157" y="170" textAnchor="middle" fill="#ffffff" fontSize="6" fontFamily="monospace" fontWeight="900">62</text>
+                            <text x="157" y="177" textAnchor="middle" fill="#f59e0b" fontSize="5" fontFamily="monospace">ELEVATED</text>
+
+                            {/* ── Bottom stats strip ── */}
+                            <line x1="18" y1="174" x2="242" y2="174" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                            {[
+                              { color: "#ef4444", label: "12.4K prompts blocked", x: 18 },
+                              { color: "#a78bfa", label: "6 shadow AI tools", x: 140 },
+                            ].map((s, i) => (
+                              <g key={i}>
+                                <circle cx={s.x + 4} cy="184" r="3" fill={s.color} />
+                                <text x={s.x + 11} y="187" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">{s.label}</text>
+                              </g>
+                            ))}
+                          </svg>
                         </div>
                       )}
 
                       {/* Risk Radar */}
                       {activeModuleId === "secure" && (
-                        <div style={{ position: "relative", width: 120, height: 120, borderRadius: "50%", border: "2px solid rgba(139, 92, 246, 0.18)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                          <div style={{ position: "absolute", width: "100%", height: "100%", border: "2px solid rgba(139, 92, 246, 0.08)", borderRadius: "50%", transform: "scale(0.66)" }} />
-                          <div style={{ position: "absolute", width: "100%", height: "100%", border: "2px solid rgba(139, 92, 246, 0.04)", borderRadius: "50%", transform: "scale(0.33)" }} />
-                          <div style={{ position: "absolute", top: "50%", left: "50%", width: "50%", height: "50%", background: "conic-gradient(from 0deg, transparent 70%, rgba(139, 92, 246, 0.55) 100%)", transformOrigin: "0 0", animation: "radarSweep 3s linear infinite" }} />
-                          <div style={{ position: "absolute", top: "25%", left: "65%", width: 4, height: 5, background: "#ef4444", borderRadius: "50%" }} />
-                          <div style={{ position: "relative", zIndex: 10, background: "#090d16", width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #8b5cf6" }}>
-                            <span style={{ fontSize: "0.85rem" }}>📡</span>
-                          </div>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 9 260 195" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            {/* ── Radar scope left ── */}
+                            <circle cx="90" cy="100" r="72" fill="none" stroke="rgba(139,92,246,0.1)" strokeWidth="1"/>
+                            <circle cx="90" cy="100" r="52" fill="none" stroke="rgba(139,92,246,0.08)" strokeWidth="1"/>
+                            <circle cx="90" cy="100" r="32" fill="none" stroke="rgba(139,92,246,0.06)" strokeWidth="1"/>
+                            <circle cx="90" cy="100" r="14" fill="none" stroke="rgba(139,92,246,0.12)" strokeWidth="1"/>
+                            {/* Crosshairs */}
+                            <line x1="18" y1="100" x2="162" y2="100" stroke="rgba(139,92,246,0.08)" strokeWidth="0.5"/>
+                            <line x1="90" y1="28" x2="90" y2="172" stroke="rgba(139,92,246,0.08)" strokeWidth="0.5"/>
+                            
+                            {/* Sweep - Grouped with glowing leading edge for high visibility */}
+                            <g style={{ transformOrigin: "90px 100px", animation: "radarSweep 4s linear infinite" }}>
+                              <path d="M90 100 L90 28 A72 72 0 0 1 162 100 Z" fill="rgba(139,92,246,0.22)" />
+                              <line x1="90" y1="100" x2="90" y2="28" stroke="#a78bfa" strokeWidth="1.5" style={{ filter: "drop-shadow(0 0 4px #a78bfa)" }} />
+                            </g>
+
+                            {/* CVE blips */}
+                            <circle cx="128" cy="62" r="4.5" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }}/>
+                            <text x="135" y="58" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="700">EPSS 0.94</text>
+                            <circle cx="54" cy="72" r="3.5" fill="#f59e0b" style={{ animation: "pulseRed 1.8s infinite" }}/>
+                            <text x="28" y="68" fill="#f59e0b" fontSize="5" fontFamily="monospace" fontWeight="700">EPSS 0.61</text>
+                            <circle cx="140" cy="120" r="3" fill="#f59e0b"/>
+                            <circle cx="68" cy="135" r="2.5" fill="#10b981"/>
+                            <circle cx="110" cy="148" r="2.5" fill="#10b981"/>
+                            {/* Center dot */}
+                            <circle cx="90" cy="100" r="5" fill="#8b5cf6" style={{ filter: "drop-shadow(0 0 4px rgba(139,92,246,0.8))" }}/>
+
+                            {/* ── Right panel: triage stats ── */}
+                            <text x="212" y="32" textAnchor="middle" fill="#64748b" fontSize="6" fontFamily="monospace" fontWeight="800">CVE TRIAGE</text>
+                            {[
+                              { label: "3.84M total CVEs", dot: "#475569", y: 46 },
+                              { label: "180K asset hits", dot: "#3b82f6", y: 62 },
+                              { label: "8,510 exploitable", dot: "#f59e0b", y: 78 },
+                              { label: "420 actionable", dot: "#ef4444", y: 94 },
+                            ].map((r, i) => (
+                              <g key={i}>
+                                <circle cx="178" cy={r.y - 2} r="3.5" fill={r.dot}/>
+                                <text x="186" y={r.y + 1} fill="#cbd5e1" fontSize="6" fontFamily="monospace">{r.label}</text>
+                              </g>
+                            ))}
+
+                            {/* CISA KEV badge */}
+                            <rect x="174" y="108" width="76" height="18" rx="4" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.4)" strokeWidth="0.8"/>
+                            <text x="212" y="120" textAnchor="middle" fill="#ef4444" fontSize="5.5" fontFamily="monospace" fontWeight="800">CISA KEV MATCH</text>
+
+                            {/* EPSS legend */}
+                            <rect x="174" y="132" width="76" height="18" rx="4" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.35)" strokeWidth="0.8"/>
+                            <text x="212" y="144" textAnchor="middle" fill="#f59e0b" fontSize="5.5" fontFamily="monospace" fontWeight="800">EPSS &gt; 0.60</text>
+
+                            {/* Bottom strip */}
+                            <line x1="18" y1="180" x2="242" y2="180" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+                            <circle cx="28" cy="190" r="3" fill="#ef4444"/>
+                            <text x="35" y="193" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">Noise suppressed: 95%</text>
+                            <circle cx="148" cy="190" r="3" fill="#10b981"/>
+                            <text x="155" y="193" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">420 targets queued</text>
+                          </svg>
                         </div>
                       )}
 
                       {/* Identity PreCheck */}
                       {activeModuleId === "identity" && (
-                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
-                          <div style={{ position: "relative", width: 50, height: 50, borderRadius: "50%", background: "rgba(255,255,255,0.01)", border: "2px solid rgba(59, 130, 246, 0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <span style={{ fontSize: "1.6rem" }}>🔑</span>
-                            <div style={{ position: "absolute", top: -3, left: -3, right: -3, bottom: -3, border: "2px solid transparent", borderTopColor: "#3b82f6", borderBottomColor: "#3b82f6", borderRadius: "50%", animation: "rotateClockwise 3s linear infinite" }} />
-                          </div>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 0 260 200" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            {/* ── Title ── */}
+                            <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">SSO IDENTITY DIRECTORY</text>
+
+                            {/* ── Central IdP hub ── */}
+                            <circle cx="130" cy="85" r="20" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" style={{ filter: "drop-shadow(0 0 6px rgba(59,130,246,0.4))" }}/>
+                            <text x="130" y="82" textAnchor="middle" fill="#60a5fa" fontSize="6.5" fontFamily="monospace" fontWeight="900">OKTA</text>
+                            <text x="130" y="92" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">15.4K IDs</text>
+
+                            {/* ── User identity cards ── */}
+                            {[
+                              { x: 20, y: 30, label: "admin@corp", mfa: true, role: "SUPER ADMIN", drift: false },
+                              { x: 20, y: 90, label: "svc-deploy", mfa: false, role: "ORPHAN ACCT", drift: true },
+                              { x: 174, y: 30, label: "john@corp", mfa: true, role: "ENGINEER", drift: false },
+                              { x: 174, y: 90, label: "old-api-key", mfa: false, role: "PRIV DRIFT", drift: true },
+                            ].map((u, i) => {
+                              const color = u.drift ? "#ef4444" : "#10b981";
+                              const borderColor = u.drift ? "rgba(239,68,68,0.4)" : "rgba(16,185,129,0.3)";
+                              return (
+                                <g key={i}>
+                                  <rect x={u.x} y={u.y} width="66" height="38" rx="5" fill={u.drift ? "rgba(239,68,68,0.06)" : "rgba(16,185,129,0.05)"} stroke={borderColor} strokeWidth="0.8"/>
+                                  <circle cx={u.x + 10} cy={u.y + 12} r="4" fill={color} style={u.drift ? { animation: "pulseRed 1.4s infinite" } : {}}/>
+                                  <text x={u.x + 18} y={u.y + 15} fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">{u.label}</text>
+                                  <text x={u.x + 6} y={u.y + 28} fill={color} fontSize="5" fontFamily="monospace" fontWeight="700">{u.role}</text>
+                                  <text x={u.x + 6} y={u.y + 35} fill={u.mfa ? "#10b981" : "#ef4444"} fontSize="4.5" fontFamily="monospace">{u.mfa ? "MFA ✓" : "MFA MISSING"}</text>
+                                </g>
+                              );
+                            })}
+                            {/* Connection lines to hub */}
+                            <line x1="86" y1="49" x2="114" y2="72" stroke="#64748b" strokeWidth="1.2" strokeDasharray="2 2" style={{ animation: "dash 4s linear infinite reverse" }}/>
+                            <line x1="86" y1="109" x2="112" y2="95" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
+                            <line x1="174" y1="49" x2="146" y2="72" stroke="#64748b" strokeWidth="1.2" strokeDasharray="2 2" style={{ animation: "dash 4s linear infinite reverse" }}/>
+                            <line x1="174" y1="109" x2="148" y2="95" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
+
+                            {/* ── MFA Gap summary ── */}
+                            <rect x="60" y="130" width="140" height="22" rx="5" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)" strokeWidth="1"/>
+                            <circle cx="74" cy="141" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }}/>
+                            <text x="82" y="145" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">640 MFA POLICY GAPS</text>
+
+                            {/* ── Bottom strip ── */}
+                            <line x1="18" y1="166" x2="242" y2="166" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+                            <circle cx="28" cy="177" r="3" fill="#3b82f6"/>
+                            <text x="35" y="180" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">1.82K privilege drifts</text>
+                            <circle cx="148" cy="177" r="3" fill="#10b981"/>
+                            <text x="155" y="180" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">48 orphans disabled</text>
+                          </svg>
                         </div>
                       )}
 
                       {/* Compliance Checkpoint */}
                       {activeModuleId === "infosec" && (
-                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
-                          <div style={{ display: "flex", gap: "0.5rem", width: "100%", justifyContent: "center" }}>
-                            {[{ label: "SOC2", val: 99, c: "#10b981" }, { label: "ISO", val: 100, c: "#10b981" }].map((m, idx) => (
-                              <div key={idx} style={{ position: "relative", width: 46, height: 46, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <svg viewBox="0 0 36 36" style={{ width: "100%", height: "100%", transform: "rotate(-90deg)" }}>
-                                  <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="3" />
-                                  <circle cx="18" cy="18" r="15" fill="none" stroke={m.c} strokeWidth="3" strokeDasharray={`${m.val} 100`} />
-                                </svg>
-                              </div>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 0 260 200" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            {/* ── Title ── */}
+                            <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">CONTINUOUS AUDIT READINESS</text>
+
+                            {/* ── Framework gauges ── */}
+                            {[
+                              { cx: 38, label: "SOC2", val: 99, color: "#10b981", r: 26 },
+                              { cx: 104, label: "ISO27K", val: 100, color: "#10b981", r: 26 },
+                              { cx: 170, label: "PCI-DSS", val: 92, color: "#3b82f6", r: 26 },
+                              { cx: 230, label: "HIPAA", val: 88, color: "#a78bfa", r: 22 },
+                            ].map((g, i) => {
+                              const circ = 2 * Math.PI * g.r;
+                              const filled = (g.val / 100) * circ;
+                              return (
+                                <g key={i}>
+                                  <circle cx={g.cx} cy="62" r={g.r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5"/>
+                                  <circle cx={g.cx} cy="62" r={g.r} fill="none" stroke={g.color} strokeWidth="5"
+                                    strokeDasharray={`${filled} ${circ}`} strokeLinecap="round"
+                                    style={{ transform: "rotate(-90deg)", transformOrigin: `${g.cx}px 62px`, filter: `drop-shadow(0 0 3px ${g.color}88)` }}/>
+                                  <text x={g.cx} y="59" textAnchor="middle" fill="#fff" fontSize="7" fontFamily="monospace" fontWeight="900">{g.val}%</text>
+                                  <text x={g.cx} y="68" textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">{g.label}</text>
+                                </g>
+                              );
+                            })}
+
+                            {/* ── Evidence collection timeline ── */}
+                            <text x="130" y="106" textAnchor="middle" fill="#64748b" fontSize="6" fontFamily="monospace" fontWeight="800">EVIDENCE COLLECTED TODAY</text>
+                            <rect x="18" y="112" width="224" height="10" rx="3" fill="rgba(255,255,255,0.04)"/>
+                            <rect x="18" y="112" width="210" height="10" rx="3" fill="#10b981" style={{ width: 210, animation: "growBar 2s ease-out forwards", filter: "drop-shadow(0 0 3px rgba(16,185,129,0.4))" }}/>
+                            <text x="232" y="120" fill="#10b981" fontSize="5" fontFamily="monospace">320</text>
+
+                            {/* ── Policy violations row ── */}
+                            {[
+                              { label: "Config Deviations", val: "42", color: "#f59e0b", x: 18 },
+                              { label: "Controls Gaps", val: "0 critical", color: "#10b981", x: 140 },
+                            ].map((item, i) => (
+                              <g key={i}>
+                                <rect x={item.x} y="132" width="108" height="22" rx="4" fill={item.color === "#10b981" ? "rgba(16,185,129,0.06)" : "rgba(245,158,11,0.06)"} stroke={item.color === "#10b981" ? "rgba(16,185,129,0.3)" : "rgba(245,158,11,0.3)"} strokeWidth="0.8"/>
+                                <text x={item.x + 8} y="143" fill={item.color} fontSize="6" fontFamily="monospace" fontWeight="700">{item.val}</text>
+                                <text x={item.x + 8} y="150" fill="#64748b" fontSize="5" fontFamily="monospace">{item.label}</text>
+                              </g>
                             ))}
-                          </div>
+
+                            {/* ── Bottom strip ── */}
+                            <line x1="18" y1="168" x2="242" y2="168" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+                            <circle cx="28" cy="179" r="3" fill="#10b981"/>
+                            <text x="35" y="182" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">1,200 controls mapped</text>
+                            <circle cx="148" cy="179" r="3" fill="#3b82f6"/>
+                            <text x="155" y="182" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">Audit readiness 99%+</text>
+                          </svg>
                         </div>
                       )}
 
                       {/* Dispatch Center */}
                       {activeModuleId === "dispatch" && (
-                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <svg viewBox="0 0 200 150" style={{ width: "100%", height: "100%" }}>
-                            <path d="M 100 75 Q 70 45, 40 45" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3 3" style={{ animation: "dash 2s linear infinite" }} />
-                            <circle cx="100" cy="75" r="10" fill="#ef4444" stroke="#fff" strokeWidth="1" />
-                            <g transform="translate(40, 45)">
-                              <rect x="-12" y="-8" width="24" height="16" rx="3" fill="#ef4444" />
-                              <text x="0" y="3" textAnchor="middle" fill="#fff" fontSize="6" fontWeight="800" fontFamily="sans-serif">JIRA</text>
-                            </g>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 0 260 200" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            {/* ── Title ── */}
+                            <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">SOAR INCIDENT ROUTING</text>
+
+                            {/* ── Alert ingestion node ── */}
+                            <rect x="88" y="22" width="84" height="28" rx="6" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.5)" strokeWidth="1.2"/>
+                            <circle cx="102" cy="36" r="5" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }}/>
+                            <text x="112" y="34" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="900">ALERT CORE</text>
+                            <text x="112" y="43" fill="#94a3b8" fontSize="5" fontFamily="monospace">18.4K signals/day</text>
+
+                            {/* ── SOAR runbook node ── */}
+                            <line x1="130" y1="50" x2="130" y2="68" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 1.5s linear infinite" }}/>
+                            <rect x="84" y="68" width="92" height="28" rx="6" fill="rgba(124,58,237,0.08)" stroke="rgba(124,58,237,0.5)" strokeWidth="1.2"/>
+                            <text x="130" y="80" textAnchor="middle" fill="#a78bfa" fontSize="6.5" fontFamily="monospace" fontWeight="900">SOAR RUNBOOK</text>
+                            <text x="130" y="89" textAnchor="middle" fill="#94a3b8" fontSize="5" fontFamily="monospace">Classify → Assign → Escalate</text>
+
+                            {/* ── Fan-out to integrations ── */}
+                            <line x1="100" y1="96" x2="50" y2="118" stroke="#a78bfa" strokeWidth="1.2" strokeOpacity="0.6" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
+                            <line x1="130" y1="96" x2="130" y2="118" stroke="#a78bfa" strokeWidth="1.2" strokeOpacity="0.6" strokeDasharray="3 2" style={{ animation: "dash 2.5s linear infinite" }}/>
+                            <line x1="160" y1="96" x2="210" y2="118" stroke="#a78bfa" strokeWidth="1.2" strokeOpacity="0.6" strokeDasharray="3 2" style={{ animation: "dash 2s linear infinite" }}/>
+
+                            {/* Integration badges */}
+                            {[
+                              { x: 18, label: "JIRA", sub: "4.2K tickets", color: "#3b82f6" },
+                              { x: 98, label: "SLACK", sub: "War rooms", color: "#a78bfa" },
+                              { x: 178, label: "PagerDuty", sub: "On-call", color: "#f59e0b" },
+                            ].map((b, i) => (
+                              <g key={i}>
+                                <rect x={b.x} y="118" width="62" height="28" rx="5" fill={`rgba(${b.color === "#3b82f6" ? "59,130,246" : b.color === "#a78bfa" ? "167,139,250" : "245,158,11"},0.08)`} stroke={b.color} strokeWidth="0.8" strokeOpacity="0.4"/>
+                                <text x={b.x + 31} y="130" textAnchor="middle" fill={b.color} fontSize="6.5" fontFamily="monospace" fontWeight="900">{b.label}</text>
+                                <text x={b.x + 31} y="139" textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">{b.sub}</text>
+                              </g>
+                            ))}
+
+                            {/* ── Resolution strip ── */}
+                            <circle cx="28" cy="172" r="3" fill="#10b981"/>
+                            <text x="35" y="175" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">1,120 auto-resolved</text>
+                            <circle cx="148" cy="172" r="3" fill="#a78bfa"/>
+                            <text x="155" y="175" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">AI post-mortems generated</text>
                           </svg>
                         </div>
                       )}
 
                       {/* Fleet Health */}
                       {activeModuleId === "server" && (
-                        <div style={{ position: "relative", width: 200, height: 140, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
-                          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.3rem", width: "90%" }}>
-                            {Array.from({ length: 8 }).map((_, i) => (
-                              <div key={i} style={{ background: "rgba(30, 41, 59, 0.7)", border: `1px solid ${i === 4 ? "#ef4444" : "#10b981"}`, borderRadius: "4px", padding: "0.15rem 0.1rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                                <span style={{ fontSize: "0.5rem" }}>🖥️</span>
-                                <span style={{ fontSize: "0.38rem", fontFamily: "monospace", color: i === 4 ? "#ef4444" : "#10b981", fontWeight: 900 }}>{i === 4 ? "CVE" : "OK"}</span>
-                              </div>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 0 260 200" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            {/* ── Title ── */}
+                            <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">ENDPOINT FLEET HEALTH</text>
+
+                            {/* ── Server blade grid (5x3) ── */}
+                            {[
+                              { id: "SRV-01", edr: true, patch: true, cve: false },
+                              { id: "SRV-02", edr: true, patch: true, cve: false },
+                              { id: "SRV-03", edr: true, patch: false, cve: true },
+                              { id: "SRV-04", edr: true, patch: true, cve: false },
+                              { id: "SRV-05", edr: false, patch: false, cve: true },
+                              { id: "SRV-06", edr: true, patch: true, cve: false },
+                              { id: "SRV-07", edr: true, patch: true, cve: false },
+                              { id: "SRV-08", edr: true, patch: true, cve: false },
+                              { id: "SRV-09", edr: true, patch: true, cve: false },
+                              { id: "WKS-01", edr: false, patch: false, cve: true },
+                            ].map((s, i) => {
+                              const col = i % 5;
+                              const row = Math.floor(i / 5);
+                              const x = 18 + col * 48;
+                              const y = 24 + row * 52;
+                              const bad = s.cve || !s.edr;
+                              const borderColor = bad ? "#ef4444" : "#10b981";
+                              return (
+                                <g key={i}>
+                                  <rect x={x} y={y} width="40" height="40" rx="4" fill={bad ? "rgba(239,68,68,0.07)" : "rgba(16,185,129,0.05)"} stroke={borderColor} strokeWidth={bad ? "1.2" : "0.8"} style={bad ? { animation: "pulseRed 2s infinite" } : {}}/>
+                                  {/* LED strip */}
+                                  <rect x={x + 4} y={y + 4} width="32" height="4" rx="2" fill={bad ? "#ef4444" : "#10b981"} opacity="0.7"/>
+                                  <text x={x + 20} y={y + 22} textAnchor="middle" fill="#94a3b8" fontSize="5" fontFamily="monospace">{s.id}</text>
+                                  <text x={x + 20} y={y + 30} textAnchor="middle" fill={bad ? "#ef4444" : "#10b981"} fontSize="5" fontFamily="monospace" fontWeight="700">{bad ? (s.cve ? "CVE" : "NO EDR") : "OK"}</text>
+                                  <text x={x + 20} y={y + 37} textAnchor="middle" fill={s.patch ? "#10b981" : "#f59e0b"} fontSize="4.5" fontFamily="monospace">{s.patch ? "PATCHED" : "OUTDATED"}</text>
+                                </g>
+                              );
+                            })}
+
+                            {/* ── Bottom strip ── */}
+                            {[
+                              { color: "#10b981", label: "EDR: 45.1K covered", x: 18 },
+                              { color: "#f59e0b", label: "1.24K CVE hosts", x: 105 },
+                              { color: "#3b82f6", label: "128 patches pushed", x: 178 },
+                            ].map((s, i) => (
+                              <g key={i}>
+                                <circle cx={s.x + 4} cy="148" r="3" fill={s.color}/>
+                                <text x={s.x + 11} y="151" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">{s.label}</text>
+                              </g>
                             ))}
-                          </div>
+
+                            {/* ── Patch compliance bar ── */}
+                            <text x="18" y="166" fill="#64748b" fontSize="6" fontFamily="monospace" fontWeight="800">PATCH COMPLIANCE</text>
+                            <rect x="18" y="170" width="224" height="10" rx="3" fill="rgba(255,255,255,0.04)"/>
+                            <rect x="18" y="170" width="190" height="10" rx="3" fill="#3b82f6" style={{ width: 190, animation: "growBar 2s ease-out forwards", filter: "drop-shadow(0 0 3px rgba(59,130,246,0.4))" }}/>
+                            <text x="215" y="178" fill="#3b82f6" fontSize="5.5" fontFamily="monospace">85%</text>
+                          </svg>
                         </div>
                       )}
 
@@ -1178,70 +1701,74 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                       {/* Flight Telemetry (KPIs) */}
                       {activeModuleId === "kpi" && (
-                        <div style={{ position: "relative", width: "95%", height: 190, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "0.2rem" }}>
-                          {/* Top Metric Strip */}
-                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
-                            <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
-                              <span style={{ fontSize: "0.55rem", color: "#64748b", fontFamily: "monospace" }}>MEAN TIME TO REMEDIATE</span>
-                              <span style={{ fontSize: "0.85rem", fontWeight: 900, color: "#10b981", fontFamily: "monospace" }}>1.8h <span style={{ fontSize: "0.55rem", color: "#64748b" }}>vs 48.2h legacy</span></span>
-                            </div>
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-                              <span style={{ fontSize: "0.55rem", color: "#64748b", fontFamily: "monospace" }}>SLA COMPLIANCE</span>
-                              <span style={{ fontSize: "0.85rem", fontWeight: 900, color: "#3b82f6", fontFamily: "monospace" }}>91.4% <span style={{ fontSize: "0.55rem", color: "#10b981" }}>▲ 12.8%</span></span>
-                            </div>
-                          </div>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 0 280 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            <defs>
+                              <radialGradient id="hudGlow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="#10b981" stopOpacity="0.15" />
+                                <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                              </radialGradient>
+                              <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="2" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                              </filter>
+                              <linearGradient id="scanLine" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="#10b981" stopOpacity="0" />
+                                <stop offset="50%" stopColor="#10b981" stopOpacity="0.5" />
+                                <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                              </linearGradient>
+                            </defs>
 
-                          {/* Graphical Dashboard Panel */}
-                          <div style={{ flex: 1, minHeight: 120 }}>
-                            <svg viewBox="0 0 320 120" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-                              <defs>
-                                <linearGradient id="kpiGlow" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
-                                  <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
-                                </linearGradient>
-                                <linearGradient id="legacyGlow" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="0%" stopColor="#ef4444" stopOpacity="0.1" />
-                                  <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
-                                </linearGradient>
-                              </defs>
+                            {/* Background Grid */}
+                            <g opacity="0.1">
+                              <line x1="20" y1="107.5" x2="260" y2="107.5" stroke="#ffffff" strokeWidth="0.5" strokeDasharray="2 2" />
+                              <line x1="140" y1="20" x2="140" y2="195" stroke="#ffffff" strokeWidth="0.5" strokeDasharray="2 2" />
+                            </g>
 
-                              {/* Grid Lines */}
-                              <line x1="20" y1="10" x2="300" y2="10" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-                              <line x1="20" y1="35" x2="300" y2="35" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-                              <line x1="20" y1="60" x2="300" y2="60" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-                              <line x1="20" y1="85" x2="300" y2="85" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-                              <line x1="20" y1="110" x2="300" y2="110" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+                            {/* Central HUD Group */}
+                            <g transform="translate(140, 107.5)">
+                              {/* Background Glow */}
+                              <circle cx="0" cy="0" r="50" fill="url(#hudGlow)" />
+                              
+                              {/* Outer Scanning Ring */}
+                              <circle cx="0" cy="0" r="45" fill="none" stroke="rgba(16, 185, 129, 0.2)" strokeWidth="1" strokeDasharray="4 8" style={{ animation: "spinSlow 20s linear infinite" }} />
+                              
+                              {/* Inner Solid Ring */}
+                              <circle cx="0" cy="0" r="38" fill="none" stroke="rgba(16, 185, 129, 0.4)" strokeWidth="0.5" />
 
-                              {/* Y-Axis Labels */}
-                              <text x="15" y="13" textAnchor="end" fill="#475569" fontSize="5" fontFamily="monospace">48h</text>
-                              <text x="15" y="63" textAnchor="end" fill="#475569" fontSize="5" fontFamily="monospace">12h</text>
-                              <text x="15" y="113" textAnchor="end" fill="#475569" fontSize="5" fontFamily="monospace">0h</text>
+                              {/* Active Arc */}
+                              <path d="M 0 -38 A 38 38 0 1 1 -38 0" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" filter="url(#neonGlow)" />
+                              
+                              {/* Inner Metrics */}
+                              <text x="0" y="-8" textAnchor="middle" fill="#10b981" fontSize="18" fontWeight="bold" fontFamily="monospace" filter="url(#neonGlow)">1.8h</text>
+                              <text x="0" y="8" textAnchor="middle" fill="#94a3b8" fontSize="5" fontFamily="monospace" letterSpacing="0.1em">MTTR LIVE</text>
+                              <text x="0" y="18" textAnchor="middle" fill="#3b82f6" fontSize="4.5" fontFamily="monospace" fontWeight="bold">▲ 98.2% FASTER</text>
+                            </g>
 
-                              {/* X-Axis Labels */}
-                              <text x="30" y="117" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Wk 1</text>
-                              <text x="110" y="117" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Wk 2</text>
-                              <text x="190" y="117" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Wk 3</text>
-                              <text x="270" y="117" textAnchor="middle" fill="#475569" fontSize="5" fontFamily="monospace">Wk 4</text>
+                            {/* Left Side Data Nodes */}
+                            <g transform="translate(30, 85)">
+                              <circle cx="0" cy="0" r="1.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 2px #3b82f6)" }} />
+                              <text x="5" y="2" fill="#64748b" fontSize="5" fontFamily="monospace">SLA TARGET</text>
+                              <text x="5" y="10" fill="#f8fafc" fontSize="7" fontWeight="bold" fontFamily="monospace">4.0h</text>
+                              <line x1="0" y1="0" x2="60" y2="22" stroke="#3b82f6" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.6" />
+                              
+                              <circle cx="0" cy="45" r="1.5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 2px #ef4444)" }} />
+                              <text x="5" y="47" fill="#64748b" fontSize="5" fontFamily="monospace">LEGACY AVG</text>
+                              <text x="5" y="55" fill="#f8fafc" fontSize="7" fontWeight="bold" fontFamily="monospace">48.2h</text>
+                            </g>
 
-                              {/* Area under curves */}
-                              <path d="M 20 10 L 100 20 L 180 30 L 260 38 L 300 42 L 300 110 L 20 110 Z" fill="url(#legacyGlow)" />
-                              <path d="M 20 10 L 100 70 L 180 95 L 260 105 L 300 106 L 300 110 L 20 110 Z" fill="url(#kpiGlow)" />
+                            {/* Right Side Data Nodes */}
+                            <g transform="translate(250, 85)">
+                              <circle cx="0" cy="0" r="1.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 2px #10b981)" }} />
+                              <text x="-5" y="2" textAnchor="end" fill="#64748b" fontSize="5" fontFamily="monospace">REMEDIATION</text>
+                              <text x="-5" y="10" textAnchor="end" fill="#10b981" fontSize="7" fontWeight="bold" fontFamily="monospace">AUTOPILOT</text>
+                              <line x1="0" y1="0" x2="-60" y2="22" stroke="#10b981" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.6" />
 
-                              {/* Legacy Line (Red dashed) */}
-                              <path d="M 20 10 L 100 20 L 180 30 L 260 38 L 300 42" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3 3" />
-                              <circle cx="300" cy="42" r="2.5" fill="#ef4444" />
-                              <text x="290" y="36" fill="#ef4444" fontSize="4.5" fontFamily="monospace" fontWeight="bold">Legacy MTTR (42h)</text>
-
-                              {/* Autopilot Line (Green Glowing) */}
-                              <path d="M 20 10 L 100 70 L 180 95 L 260 105 L 300 106" fill="none" stroke="#10b981" strokeWidth="2.5" />
-                              <circle cx="300" cy="106" r="3" fill="#10b981" style={{ filter: "drop-shadow(0 0 4px #10b981)" }} />
-                              <text x="290" y="99" fill="#10b981" fontSize="5.5" fontFamily="monospace" fontWeight="bold">Autopilot (1.8h)</text>
-
-                              {/* Target SLA Threshold Indicator Line */}
-                              <line x1="20" y1="102" x2="300" y2="102" stroke="#3b82f6" strokeWidth="1" strokeDasharray="1.5 1.5" />
-                              <text x="25" y="100" fill="#3b82f6" fontSize="4.5" fontFamily="monospace">SLA Target (4.0h)</text>
-                            </svg>
-                          </div>
+                              <circle cx="0" cy="45" r="1.5" fill="#eab308" style={{ filter: "drop-shadow(0 0 2px #eab308)" }} />
+                              <text x="-5" y="47" textAnchor="end" fill="#64748b" fontSize="5" fontFamily="monospace">AI CONFIDENCE</text>
+                              <text x="-5" y="55" textAnchor="end" fill="#f8fafc" fontSize="7" fontWeight="bold" fontFamily="monospace">99.9%</text>
+                            </g>
+                          </svg>
                         </div>
                       )}
 
@@ -1249,10 +1776,11 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     
                     {/* Right Features List */}
                     <div className="mythos-split-right">
-                      <div style={{ fontSize: "0.58rem", fontWeight: 800, color: "#7c3aed", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.3rem" }}>
-                        CORE CAPABILITIES
-                      </div>
-                      <div>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <div style={{ fontSize: "0.66rem", fontWeight: 800, color: "#7c3aed", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.5rem" }}>
+                          CORE CAPABILITIES
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
                         {activeModule.coreFeatures.map((feat, idx) => (
                           <div className="mythos-feature-item" key={idx}>
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
@@ -1268,17 +1796,18 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     </div>
                   </div>
                 </div>
+                </div>
               )}
 
               {/* SLIDE 2: Filter Prioritization Funnel */}
               {activeSlide === 1 && (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ textAlign: "center", marginBottom: "0.6rem" }}>
-                    <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>EXPOSURE FILTRATION</div>
-                    <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
-                      Prioritization Pipeline
+                  <div style={{ textAlign: "left", marginBottom: "2rem" }}>
+                    <div style={{ fontSize: "0.7rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>EXPOSURE FILTRATION</div>
+                    <h3 style={{ fontSize: "1.8rem", fontWeight: 900, color: "#0f172a", margin: "0.15rem 0", letterSpacing: "-0.02em" }}>
+                      Prioritization <span style={{ color: "#7c3aed" }}>Pipeline</span>
                     </h3>
-                    <p style={{ fontSize: "0.74rem", color: "#475569", margin: 0 }}>
+                    <p style={{ fontSize: "0.85rem", color: "#475569", margin: 0 }}>
                       How PosturePilot filters vulnerabilities down to remediation tasks.
                     </p>
                   </div>
@@ -1288,16 +1817,23 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     {activeModule.funnelMetrics.map((m, idx) => (
                       <div className="mythos-metric-col" key={idx}>
                         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-                          <span style={{ fontSize: "1.5rem", fontWeight: 950, color: idx === 3 ? "#15803d" : "#991b1b", fontFamily: "monospace", lineHeight: 1 }}>
+                          <span style={{ 
+                            fontSize: "2.4rem", 
+                            fontWeight: 950, 
+                            fontFamily: "monospace", 
+                            lineHeight: 1,
+                            letterSpacing: "-0.05em",
+                            color: idx === 3 ? "#10b981" : "#dc2626"
+                          }}>
                             {m.val}
                           </span>
                         </div>
-                        <div style={{ fontSize: "0.72rem", fontWeight: 800, color: "#1e293b", margin: "0.02rem 0" }}>
+                        <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#1e293b", margin: "0.2rem 0" }}>
                           {m.label}
                         </div>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "0.15rem" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
                           {m.desc.map((d, dIdx) => (
-                            <div key={dIdx} style={{ fontSize: "0.65rem", color: "#64748b", lineHeight: 1.2 }}>
+                            <div key={dIdx} style={{ fontSize: "0.74rem", color: "#64748b", lineHeight: 1.3 }}>
                               ▪ {d}
                             </div>
                           ))}
@@ -1308,9 +1844,33 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                   {/* Custom Graphic Area per Module on Slide 2 */}
                   <div className="mythos-funnel-container">
-                    {activeModuleId === "posture" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-                        <defs>
+                    {/* Universal Pipeline Funnel Background */}
+                    <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }} viewBox="0 0 800 120" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="funnelBg" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#f1f5f9" stopOpacity="1"/>
+                          <stop offset="50%" stopColor="#e2e8f0" stopOpacity="0.4"/>
+                          <stop offset="100%" stopColor="#ede9fe" stopOpacity="0.9"/>
+                        </linearGradient>
+                        <linearGradient id="funnelStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#cbd5e1" stopOpacity="0.4"/>
+                          <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.6"/>
+                        </linearGradient>
+                      </defs>
+                      <path d="M -20 -20 L 820 35 L 820 85 L -20 140 Z" fill="url(#funnelBg)" />
+                      <path d="M -20 -20 L 820 35" stroke="url(#funnelStroke)" strokeWidth="3" />
+                      <path d="M -20 140 L 820 85" stroke="url(#funnelStroke)" strokeWidth="3" />
+                      <circle r="2" fill="#7c3aed" opacity="0.5"><animateMotion path="M 0 10 L 800 45" dur="2.2s" repeatCount="indefinite" /></circle>
+                      <circle r="3" fill="#3b82f6" opacity="0.3"><animateMotion path="M 0 110 L 800 75" dur="2.8s" repeatCount="indefinite" /></circle>
+                      <circle r="1.5" fill="#10b981" opacity="0.6"><animateMotion path="M 0 30 L 800 55" dur="1.7s" repeatCount="indefinite" /></circle>
+                      <circle r="4" fill="#64748b" opacity="0.15"><animateMotion path="M 0 90 L 800 65" dur="3.5s" repeatCount="indefinite" /></circle>
+                      <circle r="2" fill="#ef4444" opacity="0.4"><animateMotion path="M 0 50 L 400 50" dur="1.5s" repeatCount="indefinite" /><animate attributeName="opacity" values="0.4;0" dur="1.5s" repeatCount="indefinite" /></circle>
+                    </svg>
+
+                    <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "flex", alignItems: "center" }}>
+                      {activeModuleId === "posture" && (
+                        <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                          <defs>
                           <linearGradient id="glow-line-posture" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.2"/>
                             <stop offset="100%" stopColor="#10b981" stopOpacity="0.9"/>
@@ -1318,24 +1878,24 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         </defs>
                         <path d="M 50 40 L 750 40" stroke="url(#glow-line-posture)" strokeWidth="4" strokeDasharray="8 6" style={{ animation: "dash 20s linear infinite" }} />
                         <g transform="translate(100, 40)">
-                          <circle r="13" fill="#7c3aed" />
-                          <text y="3" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold">1</text>
-                          <text y="26" textAnchor="middle" fill="#475569" fontSize="8" fontWeight="bold">Raw Scan</text>
+                          <circle r="16" fill="#7c3aed" />
+                          <text y="4" textAnchor="middle" fill="#fff" fontSize="11" fontWeight="bold">1</text>
+                          <text y="32" textAnchor="middle" fill="#1e293b" fontSize="12" fontWeight="800">Raw Scan</text>
                         </g>
                         <g transform="translate(300, 40)">
-                          <circle r="13" fill="#4f46e5" />
-                          <text y="3" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold">2</text>
-                          <text y="26" textAnchor="middle" fill="#475569" fontSize="8" fontWeight="bold">Triage Gate</text>
+                          <circle r="16" fill="#4f46e5" />
+                          <text y="4" textAnchor="middle" fill="#fff" fontSize="11" fontWeight="bold">2</text>
+                          <text y="32" textAnchor="middle" fill="#1e293b" fontSize="12" fontWeight="800">Triage Gate</text>
                         </g>
                         <g transform="translate(500, 40)">
-                          <circle r="13" fill="#0891b2" />
-                          <text y="3" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold">3</text>
-                          <text y="26" textAnchor="middle" fill="#475569" fontSize="8" fontWeight="bold">JPI Check</text>
+                          <circle r="16" fill="#0891b2" />
+                          <text y="4" textAnchor="middle" fill="#fff" fontSize="11" fontWeight="bold">3</text>
+                          <text y="32" textAnchor="middle" fill="#1e293b" fontSize="12" fontWeight="800">JPI Check</text>
                         </g>
                         <g transform="translate(700, 40)">
-                          <circle r="13" fill="#10b981" style={{ filter: "drop-shadow(0 0 6px rgba(16,185,129,0.5))" }} />
-                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">✓</text>
-                          <text y="26" textAnchor="middle" fill="#16a34a" fontSize="8" fontWeight="bold">Cleared</text>
+                          <circle r="16" fill="#10b981" style={{ filter: "drop-shadow(0 0 6px rgba(16,185,129,0.5))" }} />
+                          <text y="4.5" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="bold">✓</text>
+                          <text y="32" textAnchor="middle" fill="#047857" fontSize="12" fontWeight="900">Cleared</text>
                         </g>
                       </svg>
                     )}
@@ -1613,6 +2173,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         </g>
                       </svg>
                     )}
+                    </div>
                   </div>
                 </div>
               )}
@@ -1620,51 +2181,78 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
               {/* SLIDE 3: Enterprise Integration / Telemetry Checklist */}
               {activeSlide === 2 && (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div style={{ textAlign: "center", marginBottom: "0.6rem" }}>
-                    <div style={{ fontSize: "0.62rem", fontWeight: 800, color: "#15803d", letterSpacing: "0.15em", textTransform: "uppercase" }}>INTEGRATIONS & WORKFLOWS</div>
-                    <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#0f172a", margin: "0.1rem 0" }}>
-                      Enterprise Automation
+                  <div style={{ textAlign: "left", marginBottom: "2rem" }}>
+                    <div style={{ fontSize: "0.7rem", fontWeight: 800, color: "#15803d", letterSpacing: "0.15em", textTransform: "uppercase" }}>INTEGRATIONS & WORKFLOWS</div>
+                    <h3 style={{ fontSize: "1.8rem", fontWeight: 900, color: "#0f172a", margin: "0.15rem 0", letterSpacing: "-0.02em" }}>
+                      Enterprise <span style={{ color: "#10b981" }}>Automation</span>
                     </h3>
-                    <p style={{ fontSize: "0.74rem", color: "#475569", margin: 0 }}>
+                    <p style={{ fontSize: "0.85rem", color: "#475569", margin: 0 }}>
                       Connect endpoints directly to enterprise dashboards.
                     </p>
                   </div>
 
                   <div className="mythos-split-grid">
                     {/* Left Terminals Graphic */}
-                    <div className="mythos-terminal">
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem", fontFamily: "monospace", fontSize: "0.68rem", color: "#cbd5e1", width: "90%", padding: "0.75rem", overflow: "hidden" }}>
+                    <div className="mythos-terminal" style={{ flexDirection: "column", justifyContent: "flex-start", padding: 0, height: "390px" }}>
+                      {/* Terminal MacOS Header */}
+                      <div style={{ width: "100%", height: "28px", background: "#1e293b", display: "flex", alignItems: "center", padding: "0 12px", gap: "6px", borderBottom: "1px solid #334155", flexShrink: 0 }}>
+                        <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ef4444" }}></div>
+                        <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#f59e0b" }}></div>
+                        <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#10b981" }}></div>
+                        <div style={{ marginLeft: "auto", fontSize: "0.6rem", color: "#64748b", fontFamily: "monospace", letterSpacing: "0.05em" }}>posturepilot-agent</div>
+                      </div>
+                      {/* Terminal Body */}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", fontFamily: "monospace", fontSize: "0.75rem", color: "#cbd5e1", width: "100%", padding: "1rem", overflow: "hidden", alignSelf: "flex-start" }}>
                         <div><span style={{ color: "#4ade80" }}>$</span> posturepilot verify --module={activeModule.id}</div>
+                        <div><span style={{ color: "#8b5cf6" }}>[SYS]</span> Negotiating TLS handshake with master...</div>
                         <div><span style={{ color: "#a5b4fc" }}>[INFO]</span> Initializing baseline security tests...</div>
                         <div><span style={{ color: "#a5b4fc" }}>[INFO]</span> Correlating ticket state with asset owner...</div>
                         <div><span style={{ color: "#4ade80" }}>[OK]</span> Integration triggers validated successfully.</div>
-                        <div style={{ color: "#facc15", animation: "pulseRed 1.5s infinite" }}>&gt; Monitoring active clearance...</div>
+                        <div><span style={{ color: "#8b5cf6" }}>[SYS]</span> Bootstrapping continuous telemetry layer...</div>
+                        <div><span style={{ color: "#a5b4fc" }}>[INFO]</span> Syncing IAM boundary profiles...</div>
+                        <div><span style={{ color: "#4ade80" }}>[OK]</span> Compliance matrix synchronized.</div>
+                        <div style={{ color: "#facc15", animation: "pulseRed 1.5s infinite", marginTop: "0.5rem" }}>&gt; Awaiting active telemetry streams...</div>
                       </div>
-                      <div className="mythos-terminal-overlay">
-                        🔌 Bi-sync triggers connected
+                      
+                      <div className="mythos-terminal-overlay" style={{ background: "linear-gradient(90deg, #1e293b, #0f172a)", borderLeft: "3px solid #10b981", color: "#10b981", display: "flex", alignItems: "center", gap: "0.5rem", width: "calc(100% - 1.5rem)", left: "0.75rem", bottom: "0.75rem", padding: "0.6rem 0.8rem", fontSize: "0.75rem" }}>
+                        <span style={{ fontSize: "1rem" }}>⚡</span> Bi-sync streaming active
                       </div>
                     </div>
 
                     {/* Right Features Checklist */}
                     <div className="mythos-split-right">
-                      <div style={{ fontSize: "0.58rem", fontWeight: 800, color: "#10b981", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.3rem" }}>
-                        ENTERPRISE CAPABILITIES
-                      </div>
-                      
-                      {activeModule.enterpriseFeatures.map((feat, idx) => (
-                        <div className="mythos-feature-item" key={idx} style={{ background: "rgba(16, 185, 129, 0.02)", borderColor: "rgba(16, 185, 129, 0.15)" }}>
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
-                            <polyline points="20 6 9 17 4 12" />
-                          </svg>
-                          <div>
-                            <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#0f172a" }}>{feat.name}</div>
-                            <div style={{ fontSize: "0.65rem", color: "#64748b", marginTop: "0.02rem", lineHeight: 1.2 }}>{feat.desc}</div>
-                          </div>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <div style={{ fontSize: "0.66rem", fontWeight: 800, color: "#10b981", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.5rem" }}>
+                          ENTERPRISE CAPABILITIES
                         </div>
-                      ))}
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
+                        {activeModule.enterpriseFeatures.map((feat, idx) => (
+                          <div className="mythos-feature-item" key={idx} style={{ 
+                            background: "linear-gradient(135deg, #ecfdf5, #ffffff)", 
+                            border: "1px solid #a7f3d0",
+                            borderRadius: "10px",
+                            padding: "0.8rem",
+                            boxShadow: "0 4px 10px -2px rgba(16,185,129,0.1)",
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: "0.75rem"
+                          }}>
+                            <div style={{ background: "#10b981", borderRadius: "50%", padding: "4px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            </div>
+                            <div>
+                              <div style={{ fontSize: "0.95rem", fontWeight: 900, color: "#0f172a" }}>{feat.name}</div>
+                              <div style={{ fontSize: "0.8rem", color: "#475569", marginTop: "0.15rem", lineHeight: 1.4 }}>{feat.desc}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
                       {/* CTA Upgrade Banner */}
-                      <div style={{ marginTop: "0.3rem", padding: "0.5rem 0.75rem", background: "rgba(124, 58, 237, 0.06)", border: "1px solid rgba(124, 58, 237, 0.15)", borderRadius: "8px" }}>
+                      <div style={{ padding: "0.5rem 0.75rem", background: "rgba(124, 58, 237, 0.06)", border: "1px solid rgba(124, 58, 237, 0.15)", borderRadius: "8px" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.5rem" }}>
                           <div>
                             <div style={{ fontSize: "0.58rem", fontWeight: 800, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.05em" }}>UPGRADE TO ACCESS</div>
