@@ -1287,10 +1287,10 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             </g>
 
                             {/* CVE blips */}
-                            <circle cx="128" cy="62" r="4.5" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }}/>
-                            <text x="135" y="58" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="700">EPSS 0.94</text>
-                            <circle cx="54" cy="72" r="3.5" fill="#f59e0b" style={{ animation: "pulseRed 1.8s infinite" }}/>
-                            <text x="28" y="68" fill="#f59e0b" fontSize="5" fontFamily="monospace" fontWeight="700">EPSS 0.61</text>
+                            <circle cx="128" cy="62" r="9.5" fill="#ef4444" style={{ animation: "pulseRed 1.2s infinite" }}/>
+                            <text x="128" y="64.5" textAnchor="middle" fill="#ffffff" fontSize="6.5" fontFamily="monospace" fontWeight="800">.94</text>
+                            <circle cx="54" cy="72" r="8.5" fill="#f59e0b" style={{ animation: "pulseRed 1.8s infinite" }}/>
+                            <text x="54" y="74.5" textAnchor="middle" fill="#0f172a" fontSize="5.8" fontFamily="monospace" fontWeight="800">.61</text>
                             <circle cx="140" cy="120" r="3" fill="#f59e0b"/>
                             <circle cx="68" cy="135" r="2.5" fill="#10b981"/>
                             <circle cx="110" cy="148" r="2.5" fill="#10b981"/>
@@ -1346,7 +1346,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                               { x: 20, y: 30, label: "admin@corp", mfa: true, role: "SUPER ADMIN", drift: false },
                               { x: 20, y: 95, label: "svc-deploy", mfa: false, role: "ORPHAN ACCT", drift: true },
                               { x: 174, y: 30, label: "john@corp", mfa: true, role: "ENGINEER", drift: false },
-                              { x: 174, y: 105, label: "old-api-key", mfa: false, role: "PRIV DRIFT", drift: true },
+                              { x: 174, y: 95, label: "old-api-key", mfa: false, role: "PRIV DRIFT", drift: true },
                             ].map((u, i) => {
                               const color = u.drift ? "#ef4444" : "#10b981";
                               const borderColor = u.drift ? "rgba(239,68,68,0.4)" : "rgba(16,185,129,0.3)";
@@ -1364,7 +1364,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             <line x1="86" y1="49" x2="114" y2="72" stroke="#64748b" strokeWidth="1.2" strokeDasharray="2 2" style={{ animation: "dash 4s linear infinite reverse" }}/>
                             <line x1="86" y1="114" x2="112" y2="92" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
                             <line x1="174" y1="49" x2="146" y2="72" stroke="#64748b" strokeWidth="1.2" strokeDasharray="2 2" style={{ animation: "dash 4s linear infinite reverse" }}/>
-                            <line x1="174" y1="124" x2="148" y2="95" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
+                            <line x1="174" y1="114" x2="148" y2="92" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
 
                             {/* ── MFA Gap summary ── */}
                             <rect x="60" y="146" width="140" height="20" rx="5" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)" strokeWidth="1"/>
