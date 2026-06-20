@@ -1849,24 +1849,24 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         </defs>
                         <path d="M 50 40 L 750 40" stroke="url(#glow-line-posture)" strokeWidth="4" strokeDasharray="8 6" style={{ animation: "dash 20s linear infinite" }} />
                         <g transform="translate(100, 40)">
-                          <circle r="16" fill="#7c3aed" />
-                          <text y="4" textAnchor="middle" fill="#fff" fontSize="11" fontWeight="bold">1</text>
-                          <text y="32" textAnchor="middle" fill="#1e293b" fontSize="12" fontWeight="800">Raw Scan</text>
+                          <circle r="13" fill="#7c3aed" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">1</text>
+                          <text y="28" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Raw Scan</text>
                         </g>
                         <g transform="translate(300, 40)">
-                          <circle r="16" fill="#4f46e5" />
-                          <text y="4" textAnchor="middle" fill="#fff" fontSize="11" fontWeight="bold">2</text>
-                          <text y="32" textAnchor="middle" fill="#1e293b" fontSize="12" fontWeight="800">Triage Gate</text>
+                          <circle r="13" fill="#4f46e5" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">2</text>
+                          <text y="28" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Triage Gate</text>
                         </g>
                         <g transform="translate(500, 40)">
-                          <circle r="16" fill="#0891b2" />
-                          <text y="4" textAnchor="middle" fill="#fff" fontSize="11" fontWeight="bold">3</text>
-                          <text y="32" textAnchor="middle" fill="#1e293b" fontSize="12" fontWeight="800">JPI Check</text>
+                          <circle r="13" fill="#0891b2" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">3</text>
+                          <text y="28" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">JPI Check</text>
                         </g>
                         <g transform="translate(700, 40)">
-                          <circle r="16" fill="#10b981" style={{ filter: "drop-shadow(0 0 6px rgba(16,185,129,0.5))" }} />
-                          <text y="4.5" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="bold">✓</text>
-                          <text y="32" textAnchor="middle" fill="#047857" fontSize="12" fontWeight="900">Cleared</text>
+                          <circle r="13" fill="#10b981" style={{ filter: "drop-shadow(0 0 6px rgba(16,185,129,0.5))" }} />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="bold">✓</text>
+                          <text y="28" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Cleared</text>
                         </g>
                       </svg>
                     )}
@@ -1879,19 +1879,19 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <g transform="translate(100, 40)"><circle r="10" fill="#0ea5e9"/><text y="3" textAnchor="middle" fill="#fff" fontSize="7" fontWeight="bold">GCP</text></g>
                         <g transform="translate(100, 60)"><circle r="10" fill="#2563eb"/><text y="3" text-anchor="middle" fill="#fff" fontSize="7" fontWeight="bold">AZR</text></g>
                         <g transform="translate(300, 40)">
-                          <circle r="14" fill="#f59e0b" />
-                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="9">🛡️</text>
-                          <text y="26" text-anchor="middle" fill="#475569" fontSize="8" fontWeight="bold">IAM Audit</text>
+                          <circle r="13" fill="#f59e0b" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9">🛡️</text>
+                          <text y="26" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">IAM Audit</text>
                         </g>
                         <g transform="translate(520, 40)">
-                          <circle r="14" fill="#ef4444" style={{ filter: "drop-shadow(0 0 6px rgba(239,68,68,0.4))" }} />
-                          <text y="3" text-anchor="middle" fill="#fff" fontSize="9">🚨</text>
-                          <text y="26" text-anchor="middle" fill="#dc2626" fontSize="8" fontWeight="bold">Exposed Bucket</text>
+                          <circle r="13" fill="#ef4444" style={{ filter: "drop-shadow(0 0 6px rgba(239,68,68,0.4))" }} />
+                          <text y="3" textAnchor="middle" fill="#fff" fontSize="9">🚨</text>
+                          <text y="26" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Exposed Bucket</text>
                         </g>
                         <g transform="translate(700, 40)">
-                          <circle r="14" fill="#10b981" />
-                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="9">🔒</text>
-                          <text y="26" text-anchor="middle" fill="#16a34a" fontSize="8" fontWeight="bold">Quarantined</text>
+                          <circle r="13" fill="#10b981" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9">🔒</text>
+                          <text y="26" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Quarantined</text>
                         </g>
                       </svg>
                     )}
@@ -1903,20 +1903,20 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <path d="M 400 40 L 400 70" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 2" />
                         <g transform="translate(150, 40)">
                           <rect x="-40" y="-10" width="80" height="20" rx="5" fill="#475569" />
-                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">Border Inbound</text>
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">Border Inbound</text>
                         </g>
                         <g transform="translate(400, 40)">
                           <circle r="13" fill="#ef4444" style={{ filter: "drop-shadow(0 0 5px #ef4444)" }} />
-                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">🔥</text>
-                          <text y="-20" text-anchor="middle" fill="#ef4444" fontSize="8" fontWeight="bold">IDS Trigger</text>
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">🔥</text>
+                          <text y="-20" textAnchor="middle" fill="#ef4444" fontSize="9" fontWeight="bold">IDS Trigger</text>
                         </g>
                         <g transform="translate(400, 70)">
                           <circle r="4" fill="#ef4444" />
-                          <text y="14" text-anchor="middle" fill="#dc2626" fontSize="8" fontWeight="bold">Null Routed</text>
+                          <text y="14" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Null Routed</text>
                         </g>
                         <g transform="translate(650, 40)">
                           <rect x="-40" y="-10" width="80" height="20" rx="5" fill="#10b981" />
-                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">Clean Traffic</text>
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">Clean Traffic</text>
                         </g>
                       </svg>
                     )}
@@ -1927,20 +1927,20 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <path d="M 50 40 L 500 40" stroke="#ef4444" strokeWidth="2" strokeDasharray="5 5" style={{ strokeDashoffset: 5, animation: "dash 3s linear infinite" }} />
                         <g transform="translate(100, 40)">
                           <rect x="-35" y="-12" width="70" height="24" rx="5" fill="#1e293b" stroke="#cbd5e1" strokeWidth="1" />
-                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8">Git Commit</text>
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">Git Commit</text>
                         </g>
                         <g transform="translate(300, 40)">
-                          <rect x="-35" y="-12" width="70" height="24" rx="5" fill="#1e293b" stroke="#cbd5e1" stroke-width="1" />
-                          <text y="3" text-anchor="middle" fill="#eab308" fontSize="8">SAST Check</text>
+                          <rect x="-35" y="-12" width="70" height="24" rx="5" fill="#1e293b" stroke="#cbd5e1" strokeWidth="1" />
+                          <text y="3.5" textAnchor="middle" fill="#eab308" fontSize="9" fontWeight="bold">SAST Check</text>
                         </g>
                         <g transform="translate(500, 40)">
                           <rect x="-35" y="-12" width="70" height="24" rx="5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 5px rgba(239,68,68,0.35))" }} />
-                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8" fontWeight="bold">SCA Block</text>
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">SCA Block</text>
                         </g>
                         <g transform="translate(700, 40)">
                           <circle r="13" fill="#94a3b8" />
-                          <text y="3" text-anchor="middle" fill="#fff" fontSize="9">🛑</text>
-                          <text y="26" text-anchor="middle" fill="#64748b" fontSize="8" fontWeight="bold">Deploy Halted</text>
+                          <text y="3" textAnchor="middle" fill="#fff" fontSize="9">🛑</text>
+                          <text y="26" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Deploy Halted</text>
                         </g>
                       </svg>
                     )}
@@ -1954,9 +1954,9 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                           <text y="3" text-anchor="middle" fill="#38bdf8" fontSize="7" fontFamily="monospace">"API KEY: xoxb..."</text>
                         </g>
                         <g transform="translate(400, 40)">
-                          <circle r="16" fill="#7c3aed" style={{ filter: "drop-shadow(0 0 8px rgba(124,58,237,0.4))" }} />
-                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="10">🛡️</text>
-                          <text y="26" text-anchor="middle" fill="#7c3aed" fontSize="8" fontWeight="bold">PII Redactor</text>
+                          <circle r="13" fill="#7c3aed" style={{ filter: "drop-shadow(0 0 8px rgba(124,58,237,0.4))" }} />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9">🛡️</text>
+                          <text y="26" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">PII Redactor</text>
                         </g>
                         <g transform="translate(680, 40)">
                           <rect x="-45" y="-10" width="90" height="20" rx="4" fill="#0f172a" stroke="#10b981" />
@@ -1973,12 +1973,12 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <line x1="400" y1="5" x2="400" y2="75" stroke="#cbd5e1" strokeWidth="1" />
                         <line x1="365" y1="40" x2="435" y2="40" stroke="#cbd5e1" strokeWidth="1" />
                         <g transform="translate(150, 40)">
-                          <text x="0" y="0" text-anchor="middle" fill="#ef4444" fontSize="13" fontWeight="950">3.8M</text>
-                          <text x="0" y="12" text-anchor="middle" fill="#64748b" fontSize="8">Raw Findings</text>
+                          <text x="0" y="0" textAnchor="middle" fill="#ef4444" fontSize="13" fontWeight="950">3.8M</text>
+                          <text x="0" y="12" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Raw Findings</text>
                         </g>
                         <g transform="translate(650, 40)">
-                          <text x="0" y="0" text-anchor="middle" fill="#10b981" fontSize="13" fontWeight="950">420</text>
-                          <text x="0" y="12" text-anchor="middle" fill="#16a34a" fontSize="8">Actionable Risks</text>
+                          <text x="0" y="0" textAnchor="middle" fill="#10b981" fontSize="13" fontWeight="950">420</text>
+                          <text x="0" y="12" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Actionable Risks</text>
                         </g>
                       </svg>
                     )}
@@ -1988,18 +1988,18 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <path d="M 50 40 L 750 40" stroke="#8b5cf6" strokeWidth="2.5" strokeDasharray="6 4" style={{ animation: "dash 5s linear infinite" }} />
                         <g transform="translate(150, 40)">
-                          <circle r="12" fill="#a855f7" />
-                          <text y="2.5" text-anchor="middle" fill="#fff" fontSize="6.5" fontWeight="bold">Okta</text>
+                          <circle r="13" fill="#a855f7" />
+                          <text y="2.5" textAnchor="middle" fill="#fff" fontSize="7.5" fontWeight="bold">Okta</text>
                         </g>
                         <g transform="translate(350, 40)">
-                          <circle r="12" fill="#f59e0b" />
-                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="9">🔑</text>
-                          <text y="26" text-anchor="middle" fill="#475569" fontSize="8">MFA Check</text>
+                          <circle r="13" fill="#f59e0b" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9">🔑</text>
+                          <text y="26" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">MFA Check</text>
                         </g>
                         <g transform="translate(550, 40)">
-                          <circle r="12" fill="#ef4444" />
-                          <text y="3" text-anchor="middle" fill="#fff" fontSize="8">⚠</text>
-                          <text y="26" text-anchor="middle" fill="#ef4444" fontSize="8">Priv Drift</text>
+                          <circle r="13" fill="#ef4444" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9">⚠</text>
+                          <text y="26" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Priv Drift</text>
                         </g>
                         <g transform="translate(700, 40)">
                           <circle r="12" fill="#10b981" />
@@ -2013,15 +2013,15 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <g transform="translate(100, 40)">
                           <rect x="-30" y="-10" width="60" height="20" rx="4" fill="#f1f5f9" stroke="#cbd5e1" />
-                          <text y="2.5" text-anchor="middle" fill="#475569" fontSize="8" fontWeight="bold">CC5.1 Audit</text>
+                          <text y="2.5" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">CC5.1 Audit</text>
                         </g>
                         <g transform="translate(300, 40)">
                           <rect x="-30" y="-10" width="60" height="20" rx="4" fill="#ecfdf5" stroke="#a7f3d0" />
-                          <text y="2.5" text-anchor="middle" fill="#047857" fontSize="8" fontWeight="bold">Evidence</text>
+                          <text y="2.5" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Evidence</text>
                         </g>
                         <g transform="translate(500, 40)">
                           <rect x="-30" y="-10" width="60" height="20" rx="4" fill="#f5f3ff" stroke="#ddd6fe" />
-                          <text y="2.5" text-anchor="middle" fill="#6d28d9" fontSize="8" fontWeight="bold">Controls</text>
+                          <text y="2.5" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Controls</text>
                         </g>
                         <g transform="translate(700, 40)">
                           <circle r="14" fill="#10b981" style={{ filter: "drop-shadow(0 0 5px #10b981)" }} />
@@ -2035,20 +2035,20 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <path d="M 100 40 H 400 M 400 40 L 600 20 M 400 40 L 600 60" stroke="#cbd5e1" strokeWidth="1.5" />
                         <path d="M 100 40 H 400 M 400 40 L 600 60" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ animation: "dash 3s linear infinite" }} />
                         <g transform="translate(100, 40)">
-                          <circle r="12" fill="#e11d48" />
-                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="7">EDR</text>
+                          <circle r="13" fill="#e11d48" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">EDR</text>
                         </g>
                         <g transform="translate(400, 40)">
-                          <circle r="14" fill="#0f766e" />
-                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="8">SOAR</text>
+                          <circle r="13" fill="#0f766e" />
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">SOAR</text>
                         </g>
                         <g transform="translate(600, 20)">
                           <rect x="-25" y="-10" width="50" height="20" rx="3" fill="#3b82f6" />
-                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="8">Slack</text>
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">Slack</text>
                         </g>
                         <g transform="translate(600, 60)">
                           <rect x="-25" y="-10" width="50" height="20" rx="3" fill="#ef4444" />
-                          <text y="3.5" text-anchor="middle" fill="#fff" fontSize="8">Jira</text>
+                          <text y="3.5" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold">Jira</text>
                         </g>
                       </svg>
                     )}
@@ -2057,20 +2057,20 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                       <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <g transform="translate(120, 40)">
-                          <circle r="11" fill="#10b981" />
-                          <text y="24" text-anchor="middle" fill="#64748b" fontSize="8">45K Fleet</text>
+                          <circle r="13" fill="#10b981" />
+                          <text y="24" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">45K Fleet</text>
                         </g>
                         <g transform="translate(300, 40)">
-                          <circle r="11" fill="#ef4444" style={{ animation: "pulseRed 1.5s infinite" }} />
-                          <text y="24" text-anchor="middle" fill="#ef4444" fontSize="8">Drift Alert</text>
+                          <circle r="13" fill="#ef4444" style={{ animation: "pulseRed 1.5s infinite" }} />
+                          <text y="24" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Drift Alert</text>
                         </g>
                         <g transform="translate(480, 40)">
-                          <circle r="11" fill="#3b82f6" />
-                          <text y="24" text-anchor="middle" fill="#3b82f6" fontSize="8">OS Patch</text>
+                          <circle r="13" fill="#3b82f6" />
+                          <text y="24" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">OS Patch</text>
                         </g>
                         <g transform="translate(660, 40)">
-                          <circle r="11" fill="#10b981" />
-                          <text y="24" text-anchor="middle" fill="#10b981" fontSize="8">EDR Active</text>
+                          <circle r="13" fill="#10b981" />
+                          <text y="24" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">EDR Active</text>
                         </g>
                       </svg>
                     )}
@@ -2081,12 +2081,12 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <line x1="250" y1="10" x2="250" y2="70" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 2" />
                         <line x1="550" y1="10" x2="550" y2="70" stroke="#10b981" strokeWidth="1.5" strokeDasharray="2 2" />
                         <g transform="translate(250, 40)">
-                          <circle r="7" fill="#ef4444" />
-                          <text y="-14" text-anchor="middle" fill="#ef4444" fontSize="8" fontWeight="bold">Peak Traffic</text>
+                          <circle r="11" fill="#ef4444" />
+                          <text y="-16" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Peak Traffic</text>
                         </g>
                         <g transform="translate(550, 40)">
-                          <circle r="7" fill="#10b981" />
-                          <text y="-14" text-anchor="middle" fill="#10b981" fontSize="8" fontWeight="bold">Shaped</text>
+                          <circle r="11" fill="#10b981" />
+                          <text y="-16" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Shaped</text>
                         </g>
                       </svg>
                     )}
@@ -2099,8 +2099,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         {/* Phase 1: 48.2h Start (Red Alert Badge) */}
                         <g transform="translate(100, 40)">
                           <rect x="-35" y="-18" width="70" height="24" rx="6" fill="#fee2e2" stroke="#ef4444" strokeWidth="1" />
-                          <text y="-2" textAnchor="middle" fill="#b91c1c" fontSize="8.5" fontWeight="900" fontFamily="monospace">48.2h</text>
-                          <text y="20" textAnchor="middle" fill="#ef4444" fontSize="7.5" fontWeight="bold">Legacy MTTR</text>
+                          <text y="-2" textAnchor="middle" fill="#b91c1c" fontSize="9" fontWeight="900" fontFamily="monospace">48.2h</text>
+                          <text y="20" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Legacy MTTR</text>
                         </g>
 
                         {/* Connection line 1 */}
@@ -2109,8 +2109,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         {/* Phase 2: 12.4h MTTA (Orange Alert Badge) */}
                         <g transform="translate(260, 40)">
                           <rect x="-35" y="-18" width="70" height="24" rx="6" fill="#ffedd5" stroke="#f97316" strokeWidth="1" />
-                          <text y="-2" textAnchor="middle" fill="#c2410c" fontSize="8.5" fontWeight="900" fontFamily="monospace">12.4h</text>
-                          <text y="20" textAnchor="middle" fill="#f97316" fontSize="7.5" fontWeight="bold">Mean MTTA</text>
+                          <text y="-2" textAnchor="middle" fill="#c2410c" fontSize="9" fontWeight="900" fontFamily="monospace">12.4h</text>
+                          <text y="20" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Mean MTTA</text>
                         </g>
 
                         {/* Connection line 2 */}
@@ -2119,8 +2119,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         {/* Phase 3: 3.5h MTTR (Blue Alert Badge) */}
                         <g transform="translate(420, 40)">
                           <rect x="-35" y="-18" width="70" height="24" rx="6" fill="#dbeafe" stroke="#3b82f6" strokeWidth="1" />
-                          <text y="-2" textAnchor="middle" fill="#1e40af" fontSize="8.5" fontWeight="900" fontFamily="monospace">3.5h</text>
-                          <text y="20" textAnchor="middle" fill="#3b82f6" fontSize="7.5" fontWeight="bold">Mean MTTR</text>
+                          <text y="-2" textAnchor="middle" fill="#1e40af" fontSize="9" fontWeight="900" fontFamily="monospace">3.5h</text>
+                          <text y="20" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">Mean MTTR</text>
                         </g>
 
                         {/* Connection line 3 */}
@@ -2128,9 +2128,9 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                         {/* Phase 4: 91% SLA Goal (Teal Success Ring) */}
                         <g transform="translate(580, 40)">
-                          <circle r="16" fill="#ecfdf5" stroke="#10b981" strokeWidth="1.5" />
-                          <text y="3" textAnchor="middle" fill="#047857" fontSize="8.5" fontWeight="bold" fontFamily="monospace">91%</text>
-                          <text y="26" textAnchor="middle" fill="#10b981" fontSize="7.5" fontWeight="bold">SLA Met</text>
+                          <circle r="13" fill="#ecfdf5" stroke="#10b981" strokeWidth="1.5" />
+                          <text y="3" textAnchor="middle" fill="#047857" fontSize="9" fontWeight="bold" fontFamily="monospace">91%</text>
+                          <text y="26" textAnchor="middle" fill="#0f172a" fontSize="9" fontWeight="bold">SLA Met</text>
                         </g>
 
                         {/* Connection line 4 */}
@@ -2139,8 +2139,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         {/* Phase 5: 1.8h Autopilot Goal (Glowing Green Badge) */}
                         <g transform="translate(700, 40)">
                           <rect x="-35" y="-18" width="70" height="24" rx="6" fill="#ecfdf5" stroke="#10b981" strokeWidth="2" style={{ filter: "drop-shadow(0 0 6px rgba(16,185,129,0.4))" }} />
-                          <text y="-2" textAnchor="middle" fill="#047857" fontSize="8.5" fontWeight="900" fontFamily="monospace">1.8h</text>
-                          <text y="20" textAnchor="middle" fill="#047857" fontSize="7.5" fontWeight="bold">Autopilot Goal</text>
+                          <text y="-2" textAnchor="middle" fill="#047857" fontSize="9" fontWeight="900" fontFamily="monospace">1.8h</text>
+                          <text y="20" textAnchor="middle" fill="#047857" fontSize="9" fontWeight="bold">Autopilot Goal</text>
                         </g>
                       </svg>
                     )}
