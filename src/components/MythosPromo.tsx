@@ -1576,60 +1576,60 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">GLOBAL TRAFFIC NEXUS</text>
 
                             {/* Grid lines */}
-                            <line x1="20" y1="110" x2="240" y2="110" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" strokeDasharray="3 3" />
+                            <line x1="20" y1="100" x2="240" y2="100" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" strokeDasharray="3 3" />
                             <line x1="130" y1="20" x2="130" y2="180" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" strokeDasharray="3 3" />
 
                             {/* Gateway Center Glow */}
-                            <circle cx="130" cy="110" r="30" fill="url(#gwGlow)" />
+                            <circle cx="130" cy="100" r="30" fill="url(#gwGlow)" />
 
                             {/* Node paths (Background lines) */}
-                            <line x1="30" y1="60" x2="130" y2="110" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
-                            <line x1="30" y1="110" x2="130" y2="110" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
-                            <line x1="30" y1="160" x2="130" y2="110" stroke="rgba(239,68,68,0.15)" strokeWidth="1.2" />
+                            <line x1="30" y1="50" x2="130" y2="100" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
+                            <line x1="30" y1="100" x2="130" y2="100" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
+                            <line x1="30" y1="150" x2="130" y2="100" stroke="rgba(239,68,68,0.15)" strokeWidth="1.2" />
                             
-                            <line x1="130" y1="110" x2="230" y2="70" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
-                            <line x1="130" y1="110" x2="230" y2="150" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
+                            <line x1="130" y1="100" x2="230" y2="60" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
+                            <line x1="130" y1="100" x2="230" y2="140" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
 
                             {/* Node A (AWS Ingress) */}
-                            <circle cx="30" cy="60" r="4.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 3px #3b82f6)" }} />
-                            <text x="24" y="52" fill="#cbd5e1" fontSize="5" fontFamily="monospace">AWS Ingress</text>
+                            <circle cx="30" cy="50" r="4.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 3px #3b82f6)" }} />
+                            <text x="24" y="42" fill="#cbd5e1" fontSize="5" fontFamily="monospace">AWS Ingress</text>
 
                             {/* Node B (SSO Ingress) */}
-                            <circle cx="30" cy="110" r="4.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
-                            <text x="24" y="102" fill="#cbd5e1" fontSize="5" fontFamily="monospace">SSO Ingress</text>
+                            <circle cx="30" cy="100" r="4.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
+                            <text x="24" y="92" fill="#cbd5e1" fontSize="5" fontFamily="monospace">SSO Ingress</text>
 
                             {/* Node C (Suspicious Ingress) */}
-                            <circle cx="30" cy="160" r="4.5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 3px #ef4444)", animation: "pulseRed 1s infinite" }} />
-                            <text x="24" y="152" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="700">Rogue Probe</text>
+                            <circle cx="30" cy="150" r="4.5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 3px #ef4444)", animation: "pulseRed 1s infinite" }} />
+                            <text x="24" y="142" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="700">Rogue Probe</text>
 
                             {/* Egress Node 1 (Production) */}
-                            <circle cx="230" cy="70" r="4.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
-                            <text x="236" y="73" fill="#cbd5e1" fontSize="5" fontFamily="monospace">Prod Cluster</text>
+                            <circle cx="230" cy="60" r="4.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
+                            <text x="236" y="63" fill="#cbd5e1" fontSize="5" fontFamily="monospace">Prod Cluster</text>
 
                             {/* Egress Node 2 (Storage) */}
-                            <circle cx="230" cy="150" r="4.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 3px #3b82f6)" }} />
-                            <text x="236" y="153" fill="#cbd5e1" fontSize="5" fontFamily="monospace">S3 Storage</text>
+                            <circle cx="230" cy="140" r="4.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 3px #3b82f6)" }} />
+                            <text x="236" y="143" fill="#cbd5e1" fontSize="5" fontFamily="monospace">S3 Storage</text>
 
                             {/* Gateway (GW) */}
-                            <circle cx="130" cy="110" r="10" fill="#0f172a" stroke="#7c3aed" strokeWidth="2.5" style={{ filter: "drop-shadow(0 0 5px #7c3aed)" }} />
-                            <text x="130" y="107" textAnchor="middle" fill="#a78bfa" fontSize="5.5" fontFamily="monospace" fontWeight="900">GW</text>
-                            <text x="130" y="115" textAnchor="middle" fill="#10b981" fontSize="4.5" fontFamily="monospace" fontWeight="800">ACTIVE</text>
+                            <circle cx="130" cy="100" r="10" fill="#0f172a" stroke="#7c3aed" strokeWidth="2.5" style={{ filter: "drop-shadow(0 0 5px #7c3aed)" }} />
+                            <text x="130" y="97" textAnchor="middle" fill="#a78bfa" fontSize="5.5" fontFamily="monospace" fontWeight="900">GW</text>
+                            <text x="130" y="105" textAnchor="middle" fill="#10b981" fontSize="4.5" fontFamily="monospace" fontWeight="800">ACTIVE</text>
 
                             {/* Allowed Flows (Ingress to Egress via GW) */}
                             <circle r="2.2" fill="#10b981" style={{ filter: "drop-shadow(0 0 2px #10b981)" }}>
-                              <animateMotion path="M 30 60 L 130 110 L 230 70" dur="2.4s" repeatCount="indefinite" />
+                              <animateMotion path="M 30 50 L 130 100 L 230 60" dur="2.4s" repeatCount="indefinite" />
                             </circle>
                             <circle r="2.2" fill="#10b981" style={{ filter: "drop-shadow(0 0 2px #10b981)" }}>
-                              <animateMotion path="M 30 110 L 130 110 L 230 150" dur="1.8s" repeatCount="indefinite" />
+                              <animateMotion path="M 30 100 L 130 100 L 230 140" dur="1.8s" repeatCount="indefinite" />
                             </circle>
 
                             {/* Blocked Flow (Terminates at GW with pulse) */}
                             <circle r="2.2" fill="#ef4444" style={{ filter: "drop-shadow(0 0 2px #ef4444)" }}>
-                              <animateMotion path="M 30 160 L 130 110" dur="1.5s" repeatCount="indefinite" />
+                              <animateMotion path="M 30 150 L 130 100" dur="1.5s" repeatCount="indefinite" />
                             </circle>
 
                             {/* Blocked indicator at gateway */}
-                            <circle cx="130" cy="110" r="13" fill="none" stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.8" style={{ transformOrigin: "130px 110px", animation: "spinSlow 6s linear infinite" }} />
+                            <circle cx="130" cy="100" r="13" fill="none" stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.8" style={{ transformOrigin: "130px 100px", animation: "spinSlow 6s linear infinite" }} />
                             
                             {/* Live Stats Overlay */}
                             <rect x="18" y="24" width="224" height="20" rx="4" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
