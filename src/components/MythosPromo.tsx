@@ -1838,9 +1838,9 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                       <circle r="2" fill="#ef4444" opacity="0.4"><animateMotion path="M 0 90 L 400 90" dur="1.5s" repeatCount="indefinite" /><animate attributeName="opacity" values="0.4;0" dur="1.5s" repeatCount="indefinite" /></circle>
                     </svg>
 
-                    <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "flex", alignItems: "center" }}>
+                    <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                       {activeModuleId === "posture" && (
-                        <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                        <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                           <defs>
                           <linearGradient id="glow-line-posture" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.2"/>
@@ -1872,7 +1872,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "cloud" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 100 20 L 300 40 M 100 40 L 300 40 M 100 60 L 300 40 M 300 40 L 520 40 M 520 40 L 700 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <path d="M 100 60 L 300 40 M 300 40 L 520 40" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ animation: "dash 3s linear infinite" }} />
                         <g transform="translate(100, 20)"><circle r="10" fill="#3b82f6"/><text y="3" textAnchor="middle" fill="#fff" fontSize="7" fontWeight="bold">AWS</text></g>
@@ -1897,7 +1897,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "network" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <path d="M 50 40 L 400 40" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ animation: "dash 2s linear infinite" }} />
                         <path d="M 400 40 L 400 70" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 2" />
@@ -1922,7 +1922,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "appsec" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <path d="M 50 40 L 500 40" stroke="#ef4444" strokeWidth="2" strokeDasharray="5 5" style={{ strokeDashoffset: 5, animation: "dash 3s linear infinite" }} />
                         <g transform="translate(100, 40)">
@@ -1946,7 +1946,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "ai-risk" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <path d="M 50 40 L 750 40" stroke="#3b82f6" strokeWidth="2" strokeDasharray="10 5" style={{ animation: "dash 4s linear infinite" }} />
                         <g transform="translate(120, 40)">
@@ -1966,7 +1966,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "secure" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <circle cx="400" cy="40" r="30" fill="none" stroke="#e2e8f0" strokeWidth="1" />
                         <circle cx="400" cy="40" r="18" fill="none" stroke="#cbd5e1" strokeWidth="1" />
                         <circle cx="400" cy="40" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }} />
@@ -1984,7 +1984,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "identity" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <path d="M 50 40 L 750 40" stroke="#8b5cf6" strokeWidth="2.5" strokeDasharray="6 4" style={{ animation: "dash 5s linear infinite" }} />
                         <g transform="translate(150, 40)">
@@ -2009,7 +2009,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "infosec" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <g transform="translate(100, 40)">
                           <rect x="-30" y="-10" width="60" height="20" rx="4" fill="#f1f5f9" stroke="#cbd5e1" />
@@ -2031,7 +2031,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "dispatch" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 100 40 H 400 M 400 40 L 600 20 M 400 40 L 600 60" stroke="#cbd5e1" strokeWidth="1.5" />
                         <path d="M 100 40 H 400 M 400 40 L 600 60" stroke="#ef4444" strokeWidth="2" strokeDasharray="4 4" style={{ animation: "dash 3s linear infinite" }} />
                         <g transform="translate(100, 40)">
@@ -2054,7 +2054,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "server" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 50 40 L 750 40" stroke="#cbd5e1" strokeWidth="1.5" />
                         <g transform="translate(120, 40)">
                           <circle r="11" fill="#10b981" />
@@ -2076,7 +2076,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "traffic" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         <path d="M 50 40 C 200 10, 250 70, 400 40 C 550 10, 600 70, 750 40" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeDasharray="10 5" style={{ animation: "dash 8s linear infinite" }} />
                         <line x1="250" y1="10" x2="250" y2="70" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 2" />
                         <line x1="550" y1="10" x2="550" y2="70" stroke="#10b981" strokeWidth="1.5" strokeDasharray="2 2" />
@@ -2092,7 +2092,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     )}
 
                     {activeModuleId === "kpi" && (
-                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                      <svg viewBox="0 0 800 80" style={{ width: "100%", height: "auto", overflow: "visible" }}>
                         {/* Horizontal Timeline Connector */}
                         <line x1="100" y1="40" x2="700" y2="40" stroke="rgba(124, 58, 237, 0.15)" strokeWidth="2" strokeDasharray="3 3" />
                         
