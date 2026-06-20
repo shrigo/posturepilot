@@ -295,7 +295,7 @@ export default function Page() {
                 Ingests from scanners, cloud, identity & endpoints
               </p>
               <div style={{display:"flex",gap:"0.75rem",flexWrap:"wrap"}}>
-                {["Qualys","Tenable","CrowdStrike",isEnterpriseMode?"Wiz":"SkyArmor","AWS Security Hub","Okta","SentinelOne","ServiceNow"].map(s=>(
+                {["Qualys","Tenable","CrowdStrike","Wiz","AWS","Okta","ServiceNow"].map(s=>(
                   <span key={s} style={{fontSize:"0.75rem",fontWeight:700,color:"#4f46e5",background:"#ede9fe",padding:"0.25rem 0.75rem",borderRadius:20,border:"1px solid #c4b5fd"}}>{s}</span>
                 ))}
               </div>
