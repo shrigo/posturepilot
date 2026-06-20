@@ -1283,7 +1283,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             {/* Sweep - Grouped with glowing leading edge for high visibility */}
                             <g style={{ transformOrigin: "90px 100px", animation: "radarSweep 4s linear infinite" }}>
                               <path d="M90 100 L90 28 A72 72 0 0 1 162 100 Z" fill="rgba(139,92,246,0.22)" />
-                              <line x1="90" y1="100" x2="90" y2="28" stroke="#a78bfa" strokeWidth="1.5" style={{ filter: "drop-shadow(0 0 4px #a78bfa)" }} />
+                              <line x1="90" y1="100" x2="90" y2="28" stroke="#a78bfa" strokeWidth="0.75" style={{ filter: "drop-shadow(0 0 3px #a78bfa)" }} />
                             </g>
 
                             {/* CVE blips */}
@@ -1344,9 +1344,9 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             {/* ── User identity cards ── */}
                             {[
                               { x: 20, y: 30, label: "admin@corp", mfa: true, role: "SUPER ADMIN", drift: false },
-                              { x: 20, y: 90, label: "svc-deploy", mfa: false, role: "ORPHAN ACCT", drift: true },
+                              { x: 20, y: 95, label: "svc-deploy", mfa: false, role: "ORPHAN ACCT", drift: true },
                               { x: 174, y: 30, label: "john@corp", mfa: true, role: "ENGINEER", drift: false },
-                              { x: 174, y: 90, label: "old-api-key", mfa: false, role: "PRIV DRIFT", drift: true },
+                              { x: 174, y: 105, label: "old-api-key", mfa: false, role: "PRIV DRIFT", drift: true },
                             ].map((u, i) => {
                               const color = u.drift ? "#ef4444" : "#10b981";
                               const borderColor = u.drift ? "rgba(239,68,68,0.4)" : "rgba(16,185,129,0.3)";
@@ -1362,21 +1362,21 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             })}
                             {/* Connection lines to hub */}
                             <line x1="86" y1="49" x2="114" y2="72" stroke="#64748b" strokeWidth="1.2" strokeDasharray="2 2" style={{ animation: "dash 4s linear infinite reverse" }}/>
-                            <line x1="86" y1="109" x2="112" y2="95" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
+                            <line x1="86" y1="114" x2="112" y2="92" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
                             <line x1="174" y1="49" x2="146" y2="72" stroke="#64748b" strokeWidth="1.2" strokeDasharray="2 2" style={{ animation: "dash 4s linear infinite reverse" }}/>
-                            <line x1="174" y1="109" x2="148" y2="95" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
+                            <line x1="174" y1="124" x2="148" y2="95" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 3s linear infinite" }}/>
 
                             {/* ── MFA Gap summary ── */}
-                            <rect x="60" y="130" width="140" height="22" rx="5" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)" strokeWidth="1"/>
-                            <circle cx="74" cy="141" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }}/>
-                            <text x="82" y="145" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">640 MFA POLICY GAPS</text>
+                            <rect x="60" y="146" width="140" height="20" rx="5" fill="rgba(239,68,68,0.07)" stroke="rgba(239,68,68,0.4)" strokeWidth="1"/>
+                            <circle cx="74" cy="156" r="3.5" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }}/>
+                            <text x="82" y="159" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">640 MFA POLICY GAPS</text>
 
                             {/* ── Bottom strip ── */}
-                            <line x1="18" y1="166" x2="242" y2="166" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
-                            <circle cx="28" cy="177" r="3" fill="#3b82f6"/>
-                            <text x="35" y="180" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">1.82K privilege drifts</text>
-                            <circle cx="148" cy="177" r="3" fill="#10b981"/>
-                            <text x="155" y="180" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">48 orphans disabled</text>
+                            <line x1="18" y1="172" x2="242" y2="172" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5"/>
+                            <circle cx="28" cy="183" r="3" fill="#3b82f6"/>
+                            <text x="35" y="186" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">1.82K privilege drifts</text>
+                            <circle cx="148" cy="183" r="3" fill="#10b981"/>
+                            <text x="155" y="186" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">48 orphans disabled</text>
                           </svg>
                         </div>
                       )}
@@ -1390,20 +1390,32 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                             {/* ── Framework gauges ── */}
                             {[
-                              { cx: 38, label: "SOC2", val: 99, color: "#10b981", r: 26 },
-                              { cx: 104, label: "ISO27K", val: 100, color: "#10b981", r: 26 },
-                              { cx: 170, label: "PCI-DSS", val: 92, color: "#3b82f6", r: 26 },
-                              { cx: 230, label: "HIPAA", val: 88, color: "#a78bfa", r: 22 },
+                              { cx: 38, label: "SOC2", val: 99, color: "#10b981", r: 24 },
+                              { cx: 100, label: "ISO27K", val: 100, color: "#10b981", r: 24 },
+                              { cx: 162, label: "PCI-DSS", val: 92, color: "#3b82f6", r: 24 },
+                              { cx: 224, label: "HIPAA", val: 88, color: "#a78bfa", r: 24 },
                             ].map((g, i) => {
                               const circ = 2 * Math.PI * g.r;
                               const filled = (g.val / 100) * circ;
                               return (
                                 <g key={i}>
-                                  <circle cx={g.cx} cy="62" r={g.r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5"/>
-                                  <circle cx={g.cx} cy="62" r={g.r} fill="none" stroke={g.color} strokeWidth="5"
-                                    strokeDasharray={`${filled} ${circ}`} strokeLinecap="round"
-                                    style={{ transform: "rotate(-90deg)", transformOrigin: `${g.cx}px 62px`, filter: `drop-shadow(0 0 3px ${g.color}88)` }}/>
-                                  <text x={g.cx} y="59" textAnchor="middle" fill="#fff" fontSize="7" fontFamily="monospace" fontWeight="900">{g.val}%</text>
+                                  <circle cx={g.cx} cy="62" r={g.r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4.5"/>
+                                  <circle cx={g.cx} cy="62" r={g.r} fill="none" stroke={g.color} strokeWidth="4.5"
+                                    strokeDasharray={circ} strokeDashoffset={circ} strokeLinecap="round"
+                                    style={{ transform: "rotate(-90deg)", transformOrigin: `${g.cx}px 62px`, filter: `drop-shadow(0 0 3px ${g.color}88)` }}>
+                                    <animate
+                                      attributeName="stroke-dashoffset"
+                                      from={circ}
+                                      to={circ - filled}
+                                      dur="1.5s"
+                                      begin="0.2s"
+                                      fill="freeze"
+                                      calcMode="spline"
+                                      keySplines="0.4 0 0.2 1"
+                                      keyTimes="0;1"
+                                    />
+                                  </circle>
+                                  <text x={g.cx} y="59" textAnchor="middle" fill="#fff" fontSize="7.5" fontFamily="monospace" fontWeight="900">{g.val}%</text>
                                   <text x={g.cx} y="68" textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">{g.label}</text>
                                 </g>
                               );
@@ -1544,230 +1556,181 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                       {/* Traffic Control */}
                       {activeModuleId === "traffic" && (
-                        <div style={{
-                          display: "grid",
-                          gridTemplateColumns: "repeat(3, 1fr)",
-                          gap: "0.5rem",
-                          width: "95%",
-                          height: "92%",
-                          padding: "0.2rem"
-                        }}>
-                          {/* Tile 1: Flow Anomaly Detection */}
-                          <div style={{
-                            background: "rgba(15, 23, 42, 0.6)",
-                            border: "1px solid rgba(245, 158, 11, 0.2)",
-                            borderRadius: "8px",
-                            padding: "0.4rem",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            height: "100%",
-                            boxSizing: "border-box"
-                          }}>
-                            <div style={{ textAlign: "left" }}>
-                              <div style={{ fontSize: "0.55rem", color: "#f59e0b", fontWeight: 800, fontFamily: "monospace", letterSpacing: "0.05em", textTransform: "uppercase" }}>FLOW ANOMALY</div>
-                              <div style={{ fontSize: "0.45rem", color: "#64748b", marginTop: "2px" }}>Subnet exfiltration block</div>
-                            </div>
-                            
-                            {/* SVG Graphic */}
-                            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                              <svg viewBox="0 0 100 70" style={{ width: "100%", height: "100%" }}>
-                                {/* Nodes */}
-                                <circle cx="20" cy="45" r="5" fill="#10b981" />
-                                <text x="20" y="56" textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">Subnet A</text>
-                                
-                                <circle cx="50" cy="20" r="5" fill="#10b981" />
-                                <text x="50" y="12" textAnchor="middle" fill="#64748b" fontSize="5" fontFamily="monospace">Subnet B</text>
-                                
-                                <circle cx="80" cy="45" r="5" fill="#ef4444" style={{ animation: "pulseRed 1.5s infinite" }} />
-                                <text x="80" y="56" textAnchor="middle" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="bold">Unauth IP</text>
-                                
-                                {/* Links */}
-                                <line x1="25" y1="41" x2="45" y2="24" stroke="#10b981" strokeWidth="1" strokeDasharray="2 2" />
-                                <line x1="25" y1="45" x2="75" y2="45" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3 2" style={{ animation: "dash 4s linear infinite" }} />
-                                
-                                {/* Anomaly Label */}
-                                <rect x="35" y="38" width="30" height="8" rx="2" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" strokeWidth="0.3" />
-                                <text x="50" y="44" textAnchor="middle" fill="#f87171" fontSize="4.5" fontWeight="bold" fontFamily="monospace">BLOCKED</text>
-                              </svg>
-                            </div>
-                          </div>
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 0 260 200" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            <defs>
+                              <filter id="glow-traffic">
+                                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                                <feMerge>
+                                  <feMergeNode in="blur" />
+                                  <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                              </filter>
+                              <radialGradient id="gwGlow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.25" />
+                                <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+                              </radialGradient>
+                            </defs>
 
-                          {/* Tile 2: Bandwidth Peak Analyzer */}
-                          <div style={{
-                            background: "rgba(15, 23, 42, 0.6)",
-                            border: "1px solid rgba(16, 185, 129, 0.2)",
-                            borderRadius: "8px",
-                            padding: "0.4rem",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            height: "100%",
-                            boxSizing: "border-box"
-                          }}>
-                            <div style={{ textAlign: "left" }}>
-                              <div style={{ fontSize: "0.55rem", color: "#10b981", fontWeight: 800, fontFamily: "monospace", letterSpacing: "0.05em", textTransform: "uppercase" }}>BANDWIDTH PEAK</div>
-                              <div style={{ fontSize: "0.45rem", color: "#64748b", marginTop: "2px" }}>Exfiltration spike check</div>
-                            </div>
-                            
-                            {/* SVG Graphic */}
-                            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                              <svg viewBox="0 0 100 70" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-                                <defs>
-                                  <linearGradient id="tile2Glow" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor="#ef4444" stopOpacity="0.25" />
-                                    <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
-                                  </linearGradient>
-                                </defs>
-                                {/* Grid lines */}
-                                <line x1="5" y1="15" x2="95" y2="15" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" />
-                                <line x1="5" y1="35" x2="95" y2="35" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" />
-                                <line x1="5" y1="55" x2="95" y2="55" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-                                
-                                {/* Dotted Limit */}
-                                <line x1="5" y1="30" x2="95" y2="30" stroke="#3b82f6" strokeWidth="0.5" strokeDasharray="1.5 1.5" />
-                                <text x="8" y="27" fill="#3b82f6" fontSize="4.2" fontFamily="monospace">Limit (5.0G)</text>
-                                
-                                {/* Area Path with Anomaly Spike */}
-                                <path d="M 5 55 Q 25 52, 40 45 T 60 12 T 75 50 T 95 55 L 95 55 L 5 55 Z" fill="url(#tile2Glow)" />
-                                <path d="M 5 55 Q 25 52, 40 45 T 60 12 T 75 50 T 95 55" fill="none" stroke="#ef4444" strokeWidth="1" />
-                                
-                                {/* Indicator Dot */}
-                                <circle cx="60" cy="12" r="1.5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 2px #ef4444)" }} />
-                                <text x="63" y="10" fill="#ef4444" fontSize="4.5" fontFamily="monospace" fontWeight="bold">8.24 Gbps</text>
-                              </svg>
-                            </div>
-                          </div>
+                            {/* ── Title ── */}
+                            <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">GLOBAL TRAFFIC NEXUS</text>
 
-                          {/* Tile 3: Port Exposure Matrix */}
-                          <div style={{
-                            background: "rgba(15, 23, 42, 0.6)",
-                            border: "1px solid rgba(239, 68, 68, 0.2)",
-                            borderRadius: "8px",
-                            padding: "0.4rem",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            height: "100%",
-                            boxSizing: "border-box"
-                          }}>
-                            <div style={{ textAlign: "left" }}>
-                              <div style={{ fontSize: "0.55rem", color: "#ef4444", fontWeight: 800, fontFamily: "monospace", letterSpacing: "0.05em", textTransform: "uppercase" }}>PORT EXPOSURE</div>
-                              <div style={{ fontSize: "0.45rem", color: "#64748b", marginTop: "2px" }}>Perimeter scanning</div>
-                            </div>
+                            {/* Grid lines */}
+                            <line x1="20" y1="110" x2="240" y2="110" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" strokeDasharray="3 3" />
+                            <line x1="130" y1="20" x2="130" y2="180" stroke="rgba(255,255,255,0.03)" strokeWidth="0.5" strokeDasharray="3 3" />
+
+                            {/* Gateway Center Glow */}
+                            <circle cx="130" cy="110" r="30" fill="url(#gwGlow)" />
+
+                            {/* Node paths (Background lines) */}
+                            <line x1="30" y1="60" x2="130" y2="110" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
+                            <line x1="30" y1="110" x2="130" y2="110" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
+                            <line x1="30" y1="160" x2="130" y2="110" stroke="rgba(239,68,68,0.15)" strokeWidth="1.2" />
                             
-                            {/* Grid of ports */}
-                            <div style={{
-                              flex: 1,
-                              display: "grid",
-                              gridTemplateColumns: "repeat(3, 1fr)",
-                              gap: "3px",
-                              alignContent: "center",
-                              padding: "0.1rem 0"
-                            }}>
-                              {[
-                                { port: "80", status: "OK", color: "#10b981" },
-                                { port: "443", status: "OK", color: "#10b981" },
-                                { port: "22", status: "OK", color: "#10b981" },
-                                { port: "8080", status: "OK", color: "#10b981" },
-                                { port: "3389", status: "EXPOSED", color: "#ef4444", alert: true },
-                                { port: "1433", status: "SECURE", color: "#10b981" },
-                                { port: "3306", status: "SECURE", color: "#10b981" },
-                                { port: "21", status: "SECURE", color: "#10b981" },
-                                { port: "5432", status: "SECURE", color: "#10b981" }
-                              ].map((p, pIdx) => (
-                                <div
-                                  key={pIdx}
-                                  style={{
-                                    background: "rgba(30, 41, 59, 0.4)",
-                                    border: `1px solid ${p.color}44`,
-                                    borderRadius: "4px",
-                                    padding: "4px 2px",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    animation: p.alert ? "pulseRed 1s infinite" : "none"
-                                  }}
-                                >
-                                  <span style={{ fontSize: "0.45rem", fontWeight: 700, color: "#94a3b8", fontFamily: "monospace" }}>{p.port}</span>
-                                  <span style={{ fontSize: "0.38rem", fontWeight: 900, color: p.color, fontFamily: "monospace", textTransform: "uppercase" }}>{p.status}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
+                            <line x1="130" y1="110" x2="230" y2="70" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
+                            <line x1="130" y1="110" x2="230" y2="150" stroke="rgba(255,255,255,0.06)" strokeWidth="1.2" />
+
+                            {/* Node A (AWS Ingress) */}
+                            <circle cx="30" cy="60" r="4.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 3px #3b82f6)" }} />
+                            <text x="24" y="52" fill="#cbd5e1" fontSize="5" fontFamily="monospace">AWS Ingress</text>
+
+                            {/* Node B (SSO Ingress) */}
+                            <circle cx="30" cy="110" r="4.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
+                            <text x="24" y="102" fill="#cbd5e1" fontSize="5" fontFamily="monospace">SSO Ingress</text>
+
+                            {/* Node C (Suspicious Ingress) */}
+                            <circle cx="30" cy="160" r="4.5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 3px #ef4444)", animation: "pulseRed 1s infinite" }} />
+                            <text x="24" y="152" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="700">Rogue Probe</text>
+
+                            {/* Egress Node 1 (Production) */}
+                            <circle cx="230" cy="70" r="4.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
+                            <text x="236" y="73" fill="#cbd5e1" fontSize="5" fontFamily="monospace">Prod Cluster</text>
+
+                            {/* Egress Node 2 (Storage) */}
+                            <circle cx="230" cy="150" r="4.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 3px #3b82f6)" }} />
+                            <text x="236" y="153" fill="#cbd5e1" fontSize="5" fontFamily="monospace">S3 Storage</text>
+
+                            {/* Gateway (GW) */}
+                            <circle cx="130" cy="110" r="10" fill="#0f172a" stroke="#7c3aed" strokeWidth="2.5" style={{ filter: "drop-shadow(0 0 5px #7c3aed)" }} />
+                            <text x="130" y="107" textAnchor="middle" fill="#a78bfa" fontSize="5.5" fontFamily="monospace" fontWeight="900">GW</text>
+                            <text x="130" y="115" textAnchor="middle" fill="#10b981" fontSize="4.5" fontFamily="monospace" fontWeight="800">ACTIVE</text>
+
+                            {/* Allowed Flows (Ingress to Egress via GW) */}
+                            <circle r="2.2" fill="#10b981" style={{ filter: "drop-shadow(0 0 2px #10b981)" }}>
+                              <animateMotion path="M 30 60 L 130 110 L 230 70" dur="2.4s" repeatCount="indefinite" />
+                            </circle>
+                            <circle r="2.2" fill="#10b981" style={{ filter: "drop-shadow(0 0 2px #10b981)" }}>
+                              <animateMotion path="M 30 110 L 130 110 L 230 150" dur="1.8s" repeatCount="indefinite" />
+                            </circle>
+
+                            {/* Blocked Flow (Terminates at GW with pulse) */}
+                            <circle r="2.2" fill="#ef4444" style={{ filter: "drop-shadow(0 0 2px #ef4444)" }}>
+                              <animateMotion path="M 30 160 L 130 110" dur="1.5s" repeatCount="indefinite" />
+                            </circle>
+
+                            {/* Blocked indicator at gateway */}
+                            <circle cx="130" cy="110" r="13" fill="none" stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.8" style={{ transformOrigin: "130px 110px", animation: "spinSlow 6s linear infinite" }} />
+                            
+                            {/* Live Stats Overlay */}
+                            <rect x="18" y="24" width="224" height="20" rx="4" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                            <text x="24" y="36" fill="#94a3b8" fontSize="5" fontFamily="monospace">BANDWIDTH: <tspan fill="#10b981" fontWeight="700">8.24 Gbps</tspan></text>
+                            <text x="105" y="36" fill="#94a3b8" fontSize="5" fontFamily="monospace">ACTIVE FLOWS: <tspan fill="#3b82f6" fontWeight="700">14,210</tspan></text>
+                            <text x="180" y="36" fill="#94a3b8" fontSize="5" fontFamily="monospace">DROPS: <tspan fill="#ef4444" fontWeight="700">0.04%</tspan></text>
+
+                            {/* Bottom Legend */}
+                            <line x1="18" y1="178" x2="242" y2="178" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                            <circle cx="28" cy="188" r="2.5" fill="#10b981" />
+                            <text x="35" y="191" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">Allowed packets forward</text>
+                            <circle cx="140" cy="188" r="2.5" fill="#ef4444" />
+                            <text x="147" y="191" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">Malicious requests blocked</text>
+                          </svg>
                         </div>
                       )}
 
                       {/* Flight Telemetry (KPIs) */}
                       {activeModuleId === "kpi" && (
                         <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <svg viewBox="0 0 280 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                          <svg viewBox="0 0 280 200" style={{ width: "100%", height: "100%", overflow: "visible" }}>
                             <defs>
-                              <radialGradient id="hudGlow" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stopColor="#10b981" stopOpacity="0.15" />
+                              <radialGradient id="hudGlowCyan" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.25" />
+                                <stop offset="70%" stopColor="#10b981" stopOpacity="0.06" />
                                 <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
                               </radialGradient>
-                              <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="2" result="blur" />
+                              <filter id="neonGlowCyan" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="3" result="blur" />
                                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
                               </filter>
-                              <linearGradient id="scanLine" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stopColor="#10b981" stopOpacity="0" />
-                                <stop offset="50%" stopColor="#10b981" stopOpacity="0.5" />
-                                <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
-                              </linearGradient>
                             </defs>
 
-                            {/* Background Grid */}
-                            <g opacity="0.1">
-                              <line x1="20" y1="107.5" x2="260" y2="107.5" stroke="#ffffff" strokeWidth="0.5" strokeDasharray="2 2" />
-                              <line x1="140" y1="20" x2="140" y2="195" stroke="#ffffff" strokeWidth="0.5" strokeDasharray="2 2" />
+                            {/* ── Title ── */}
+                            <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">FLIGHT TELEMETRY HUD</text>
+
+                            {/* Grid/Radar coordinates background */}
+                            <g opacity="0.08">
+                              <circle cx="130" cy="105" r="85" fill="none" stroke="#fff" strokeWidth="0.5" />
+                              <circle cx="130" cy="105" r="65" fill="none" stroke="#fff" strokeWidth="0.5" />
+                              <line x1="45" y1="105" x2="215" y2="105" stroke="#fff" strokeWidth="0.5" />
+                              <line x1="130" y1="20" x2="130" y2="190" stroke="#fff" strokeWidth="0.5" />
                             </g>
 
-                            {/* Central HUD Group */}
-                            <g transform="translate(140, 107.5)">
-                              {/* Background Glow */}
-                              <circle cx="0" cy="0" r="50" fill="url(#hudGlow)" />
-                              
-                              {/* Outer Scanning Ring */}
-                              <circle cx="0" cy="0" r="45" fill="none" stroke="rgba(16, 185, 129, 0.2)" strokeWidth="1" strokeDasharray="4 8" style={{ animation: "spinSlow 20s linear infinite" }} />
-                              
-                              {/* Inner Solid Ring */}
-                              <circle cx="0" cy="0" r="38" fill="none" stroke="rgba(16, 185, 129, 0.4)" strokeWidth="0.5" />
+                            {/* Central Dial Group */}
+                            <g transform="translate(130, 105)">
+                              {/* Central radial gradient */}
+                              <circle cx="0" cy="0" r="65" fill="url(#hudGlowCyan)" />
 
-                              {/* Active Arc */}
-                              <path d="M 0 -38 A 38 38 0 1 1 -38 0" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" filter="url(#neonGlow)" />
+                              {/* Ticks ring */}
+                              <circle cx="0" cy="0" r="58" fill="none" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="3" strokeDasharray="1 5" style={{ animation: "rotateClockwise 40s linear infinite" }} />
                               
-                              {/* Inner Metrics */}
-                              <text x="0" y="-8" textAnchor="middle" fill="#10b981" fontSize="18" fontWeight="bold" fontFamily="monospace" filter="url(#neonGlow)">1.8h</text>
-                              <text x="0" y="8" textAnchor="middle" fill="#94a3b8" fontSize="5" fontFamily="monospace" letterSpacing="0.1em">MTTR LIVE</text>
-                              <text x="0" y="18" textAnchor="middle" fill="#3b82f6" fontSize="4.5" fontFamily="monospace" fontWeight="bold">▲ 98.2% FASTER</text>
+                              {/* Subtitle Ring */}
+                              <circle cx="0" cy="0" r="50" fill="none" stroke="rgba(6, 182, 212, 0.15)" strokeWidth="1" strokeDasharray="8 4" style={{ animation: "rotateCounterClockwise 25s linear infinite" }} />
+
+                              {/* Target Dial arcs */}
+                              <circle cx="0" cy="0" r="44" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
+                              <path d="M 0 -44 A 44 44 0 1 1 -41.8 13.6" fill="none" stroke="#10b981" strokeWidth="4.5" strokeLinecap="round" filter="url(#neonGlowCyan)" />
+
+                              {/* Thin outer sweep line */}
+                              <line x1="0" y1="0" x2="0" y2="-56" stroke="#06b6d4" strokeWidth="1.2" opacity="0.8" style={{ transformOrigin: "0 0", animation: "radarSweep 5s linear infinite" }} />
+
+                              {/* Core Metrics Text */}
+                              <text x="0" y="-8" textAnchor="middle" fill="#10b981" fontSize="19" fontWeight="950" fontFamily="monospace" filter="url(#neonGlowCyan)">1.8h</text>
+                              <text x="0" y="6" textAnchor="middle" fill="#ffffff" fontSize="5.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.12em">MTTR COCKPIT</text>
+                              <text x="0" y="16" textAnchor="middle" fill="#06b6d4" fontSize="4.5" fontFamily="monospace" fontWeight="bold">▲ 98% AUTOPILOT</text>
+                              <text x="0" y="24" textAnchor="middle" fill="#10b981" fontSize="4" fontFamily="monospace" fontWeight="800">STATUS: OPTIMAL</text>
                             </g>
 
-                            {/* Left Side Data Nodes */}
-                            <g transform="translate(30, 85)">
-                              <circle cx="0" cy="0" r="1.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 2px #3b82f6)" }} />
-                              <text x="5" y="2" fill="#64748b" fontSize="5" fontFamily="monospace">SLA TARGET</text>
-                              <text x="5" y="10" fill="#f8fafc" fontSize="7" fontWeight="bold" fontFamily="monospace">4.0h</text>
-                              <line x1="0" y1="0" x2="60" y2="22" stroke="#3b82f6" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.6" />
+                            {/* Left Side Telemetry Readings */}
+                            <g transform="translate(20, 50)">
+                              <rect x="0" y="0" width="60" height="25" rx="3" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                              <text x="6" y="8" fill="#64748b" fontSize="4.5" fontFamily="monospace">SLA TARGET</text>
+                              <text x="6" y="19" fill="#3b82f6" fontSize="9" fontWeight="900" fontFamily="monospace">4.0h</text>
                               
-                              <circle cx="0" cy="45" r="1.5" fill="#ef4444" style={{ filter: "drop-shadow(0 0 2px #ef4444)" }} />
-                              <text x="5" y="47" fill="#64748b" fontSize="5" fontFamily="monospace">LEGACY AVG</text>
-                              <text x="5" y="55" fill="#f8fafc" fontSize="7" fontWeight="bold" fontFamily="monospace">48.2h</text>
+                              <rect x="0" y="32" width="60" height="25" rx="3" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                              <text x="6" y="40" fill="#64748b" fontSize="4.5" fontFamily="monospace">LEGACY AVG</text>
+                              <text x="6" y="51" fill="#ef4444" fontSize="9" fontWeight="900" fontFamily="monospace">48.2h</text>
                             </g>
 
-                            {/* Right Side Data Nodes */}
-                            <g transform="translate(250, 85)">
-                              <circle cx="0" cy="0" r="1.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 2px #10b981)" }} />
-                              <text x="-5" y="2" textAnchor="end" fill="#64748b" fontSize="5" fontFamily="monospace">REMEDIATION</text>
-                              <text x="-5" y="10" textAnchor="end" fill="#10b981" fontSize="7" fontWeight="bold" fontFamily="monospace">AUTOPILOT</text>
-                              <line x1="0" y1="0" x2="-60" y2="22" stroke="#10b981" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.6" />
-
-                              <circle cx="0" cy="45" r="1.5" fill="#eab308" style={{ filter: "drop-shadow(0 0 2px #eab308)" }} />
-                              <text x="-5" y="47" textAnchor="end" fill="#64748b" fontSize="5" fontFamily="monospace">AI CONFIDENCE</text>
-                              <text x="-5" y="55" textAnchor="end" fill="#f8fafc" fontSize="7" fontWeight="bold" fontFamily="monospace">99.9%</text>
+                            {/* Right Side Telemetry Readings */}
+                            <g transform="translate(200, 50)">
+                              <rect x="0" y="0" width="60" height="25" rx="3" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                              <text x="6" y="8" fill="#64748b" fontSize="4.5" fontFamily="monospace">MEAN MTTA</text>
+                              <text x="6" y="19" fill="#10b981" fontSize="9" fontWeight="900" fontFamily="monospace">12.4m</text>
+                              
+                              <rect x="0" y="32" width="60" height="25" rx="3" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                              <text x="6" y="40" fill="#64748b" fontSize="4.5" fontFamily="monospace">SLA FAILURES</text>
+                              <text x="6" y="51" fill="#10b981" fontSize="9" fontWeight="900" fontFamily="monospace">0.00%</text>
                             </g>
+
+                            {/* Live graph trace at the bottom */}
+                            <path d="M 25 175 L 50 170 L 75 178 L 100 165 L 125 172 L 150 155 L 175 168 L 200 160 L 225 174 L 255 170" fill="none" stroke="rgba(16, 185, 129, 0.35)" strokeWidth="1.2" strokeDasharray="3 1" />
+                            <circle cx="255" cy="170" r="2.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
+                            
+                            {/* Legend Strip */}
+                            <line x1="18" y1="182" x2="242" y2="182" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                            <circle cx="28" cy="191" r="2.5" fill="#10b981" />
+                            <text x="35" y="194" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">SLA Compliant state</text>
+                            <circle cx="140" cy="191" r="2.5" fill="#06b6d4" />
+                            <text x="147" y="194" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">Autopilot remediation loops active</text>
                           </svg>
                         </div>
                       )}
