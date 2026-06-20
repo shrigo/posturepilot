@@ -593,7 +593,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           }
           .mythos-funnel-container {
             width: 100%;
-            height: 120px;
+            height: 160px;
             margin: 0.5rem 0;
             background: #f8fafc;
             border-radius: 12px;
@@ -1815,7 +1815,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                   {/* Custom Graphic Area per Module on Slide 2 */}
                   <div className="mythos-funnel-container" style={{ position: "relative", overflow: "hidden" }}>
                     {/* Universal Pipeline Funnel Background */}
-                    <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }} viewBox="0 0 800 120" preserveAspectRatio="none">
+                    <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }} viewBox="0 0 800 160" preserveAspectRatio="none">
                       <defs>
                         <linearGradient id="funnelBg" x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor="#f1f5f9" stopOpacity="1"/>
@@ -1827,14 +1827,14 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                           <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.6"/>
                         </linearGradient>
                       </defs>
-                      <path d="M -20 -20 L 820 35 L 820 85 L -20 140 Z" fill="url(#funnelBg)" />
-                      <path d="M -20 -20 L 820 35" stroke="url(#funnelStroke)" strokeWidth="3" />
-                      <path d="M -20 140 L 820 85" stroke="url(#funnelStroke)" strokeWidth="3" />
-                      <circle r="2" fill="#7c3aed" opacity="0.5"><animateMotion path="M 0 10 L 800 45" dur="2.2s" repeatCount="indefinite" /></circle>
-                      <circle r="3" fill="#3b82f6" opacity="0.3"><animateMotion path="M 0 110 L 800 75" dur="2.8s" repeatCount="indefinite" /></circle>
-                      <circle r="1.5" fill="#10b981" opacity="0.6"><animateMotion path="M 0 30 L 800 55" dur="1.7s" repeatCount="indefinite" /></circle>
-                      <circle r="4" fill="#64748b" opacity="0.15"><animateMotion path="M 0 90 L 800 65" dur="3.5s" repeatCount="indefinite" /></circle>
-                      <circle r="2" fill="#ef4444" opacity="0.4"><animateMotion path="M 0 50 L 400 50" dur="1.5s" repeatCount="indefinite" /><animate attributeName="opacity" values="0.4;0" dur="1.5s" repeatCount="indefinite" /></circle>
+                      <path d="M -20 -20 L 820 50 L 820 110 L -20 180 Z" fill="url(#funnelBg)" />
+                      <path d="M -20 -20 L 820 50" stroke="url(#funnelStroke)" strokeWidth="3" />
+                      <path d="M -20 180 L 820 110" stroke="url(#funnelStroke)" strokeWidth="3" />
+                      <circle r="2" fill="#7c3aed" opacity="0.5"><animateMotion path="M 0 15 L 800 60" dur="2.2s" repeatCount="indefinite" /></circle>
+                      <circle r="3" fill="#3b82f6" opacity="0.3"><animateMotion path="M 0 145 L 800 100" dur="2.8s" repeatCount="indefinite" /></circle>
+                      <circle r="1.5" fill="#10b981" opacity="0.6"><animateMotion path="M 0 45 L 800 75" dur="1.7s" repeatCount="indefinite" /></circle>
+                      <circle r="4" fill="#64748b" opacity="0.15"><animateMotion path="M 0 115 L 800 85" dur="3.5s" repeatCount="indefinite" /></circle>
+                      <circle r="2" fill="#ef4444" opacity="0.4"><animateMotion path="M 0 70 L 400 70" dur="1.5s" repeatCount="indefinite" /><animate attributeName="opacity" values="0.4;0" dur="1.5s" repeatCount="indefinite" /></circle>
                     </svg>
 
                     <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "flex", alignItems: "center" }}>
