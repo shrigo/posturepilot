@@ -526,7 +526,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           .mythos-canvas-body {
             flex: 1;
             min-height: 0;
-            padding: 0 5rem;
+            padding: 0 6.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -573,7 +573,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           }
           .mythos-metric-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 1rem;
             width: 100%;
             margin-bottom: 0.6rem;
@@ -584,6 +584,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             display: flex;
             flex-direction: column;
             gap: 0.15rem;
+            min-width: 0;
+            overflow: hidden;
           }
           .mythos-metric-col:last-child {
             border-right: none;
@@ -601,6 +603,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
           }
           .mythos-terminal {
             background: #090d16;
@@ -673,8 +677,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           }
           
           @keyframes slideFadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
           }
           @keyframes rotateClockwise {
             from { transform: rotate(0deg); }
@@ -753,6 +757,9 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             .mythos-right-canvas {
               height: auto;
               padding: 1rem;
+            }
+            .mythos-canvas-body {
+              padding: 0 1.5rem;
             }
             .mythos-split-grid {
               grid-template-columns: 1fr;
@@ -1604,11 +1611,11 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                             {/* Egress Node 1 (Production) */}
                             <circle cx="230" cy="60" r="4.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
-                            <text x="236" y="63" fill="#cbd5e1" fontSize="5" fontFamily="monospace">Prod Cluster</text>
+                            <text x="222" y="63" textAnchor="end" fill="#cbd5e1" fontSize="5" fontFamily="monospace">Prod Cluster</text>
 
                             {/* Egress Node 2 (Storage) */}
                             <circle cx="230" cy="140" r="4.5" fill="#3b82f6" style={{ filter: "drop-shadow(0 0 3px #3b82f6)" }} />
-                            <text x="236" y="143" fill="#cbd5e1" fontSize="5" fontFamily="monospace">S3 Storage</text>
+                            <text x="222" y="143" textAnchor="end" fill="#cbd5e1" fontSize="5" fontFamily="monospace">S3 Storage</text>
 
                             {/* Gateway (GW) */}
                             <circle cx="130" cy="100" r="10" fill="#0f172a" stroke="#7c3aed" strokeWidth="2.5" style={{ filter: "drop-shadow(0 0 5px #7c3aed)" }} />
@@ -1764,13 +1771,13 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
               {/* SLIDE 2: Filter Prioritization Funnel */}
               {activeSlide === 1 && (
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", maxWidth: "100%", minWidth: 0, boxSizing: "border-box" }}>
                   <div style={{ textAlign: "left", marginBottom: "2rem" }}>
                     <div style={{ fontSize: "0.7rem", fontWeight: 800, color: "#2563eb", letterSpacing: "0.15em", textTransform: "uppercase" }}>EXPOSURE FILTRATION</div>
-                    <h3 style={{ fontSize: "1.8rem", fontWeight: 900, color: "#0f172a", margin: "0.15rem 0", letterSpacing: "-0.02em" }}>
+                    <h3 style={{ fontSize: "1.8rem", fontWeight: 900, color: "#000000", margin: "0.15rem 0", letterSpacing: "-0.02em" }}>
                       Prioritization <span style={{ color: "#7c3aed" }}>Pipeline</span>
                     </h3>
-                    <p style={{ fontSize: "0.85rem", color: "#475569", margin: 0 }}>
+                    <p style={{ fontSize: "0.85rem", color: "#1e293b", margin: 0, fontWeight: 600 }}>
                       How PosturePilot filters vulnerabilities down to remediation tasks.
                     </p>
                   </div>
@@ -1782,21 +1789,21 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
                           <span style={{ 
                             fontSize: "2.4rem", 
-                            fontWeight: 950, 
-                            fontFamily: "monospace", 
+                            fontWeight: 900, 
+                            fontFamily: "Inter, system-ui, -apple-system, sans-serif", 
                             lineHeight: 1,
-                            letterSpacing: "-0.05em",
-                            color: idx === 3 ? "#10b981" : "#dc2626"
+                            letterSpacing: "-0.03em",
+                            color: ["#ef4444", "#f97316", "#f59e0b", "#10b981"][idx]
                           }}>
                             {m.val}
                           </span>
                         </div>
-                        <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#1e293b", margin: "0.2rem 0" }}>
+                        <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0f172a", margin: "0.2rem 0" }}>
                           {m.label}
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
                           {m.desc.map((d, dIdx) => (
-                            <div key={dIdx} style={{ fontSize: "0.74rem", color: "#64748b", lineHeight: 1.3 }}>
+                            <div key={dIdx} style={{ fontSize: "0.74rem", color: "#334155", lineHeight: 1.3, fontWeight: 500 }}>
                               ▪ {d}
                             </div>
                           ))}
@@ -1806,7 +1813,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                   </div>
 
                   {/* Custom Graphic Area per Module on Slide 2 */}
-                  <div className="mythos-funnel-container">
+                  <div className="mythos-funnel-container" style={{ position: "relative", overflow: "hidden" }}>
                     {/* Universal Pipeline Funnel Background */}
                     <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }} viewBox="0 0 800 120" preserveAspectRatio="none">
                       <defs>
