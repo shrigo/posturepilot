@@ -345,7 +345,7 @@ export default function Page() {
               Stop auditing the past. Ingest live code, cloud, and host<br/>
               telemetry to orchestrate real-time clearance gates and<br/>
               auto-dispatch playbooks. Manage active threat waves,<br/>
-              verify compliance, and transform fragmented vulnerability<br/>
+              verify compliance guardrails, and transform vulnerability<br/>
               noise into 12 structured, framework-mapped command decks.
             </p>
 
