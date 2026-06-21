@@ -141,25 +141,28 @@ export default function Page() {
         /* Twinkling Star AI sparkle animation (No rotation, flashes scale/brightness) */
         .sparkle-ai-icon {
           display: inline-block;
-          animation: twinkle-star-glow 1.1s infinite ease-in-out;
+          font-size: 1.25rem;
+          margin-right: 4px;
+          animation: twinkle-star-glow 0.9s infinite ease-in-out;
         }
 
         @keyframes twinkle-star-glow {
           0%, 100% {
-            opacity: 0.3;
-            transform: scale(0.8);
-            filter: brightness(0.8) drop-shadow(0 0 1px rgba(251, 191, 36, 0.2));
+            opacity: 0.35;
+            transform: scale(0.75);
+            filter: drop-shadow(0 0 1px rgba(253, 224, 71, 0.2));
           }
-          40%, 60% {
+          35%, 65% {
             opacity: 0.7;
             transform: scale(1.0);
-            filter: brightness(1.2) drop-shadow(0 0 4px #fbbf24);
+            filter: drop-shadow(0 0 4px rgba(253, 224, 71, 0.6));
           }
           50% {
             opacity: 1;
-            transform: scale(1.35);
-            color: #fbbf24;
-            filter: brightness(1.6) drop-shadow(0 0 10px #fbbf24) drop-shadow(0 0 20px #f59e0b);
+            transform: scale(1.5);
+            color: #fff;
+            text-shadow: 0 0 8px #facc15, 0 0 16px #eab308;
+            filter: drop-shadow(0 0 10px #facc15) drop-shadow(0 0 20px #eab308) drop-shadow(0 0 30px #f59e0b);
           }
         }
 
