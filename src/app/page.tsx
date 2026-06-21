@@ -170,10 +170,10 @@ export default function Page() {
 
         @keyframes button-sparkle-glow {
           0%, 100% {
-            box-shadow: 0 2px 10px rgba(79, 70, 229, 0.08);
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
           }
           50% {
-            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.35), 0 0 12px rgba(79, 70, 229, 0.15);
+            box-shadow: 0 4px 25px rgba(124, 58, 237, 0.65), 0 0 12px rgba(124, 58, 237, 0.3);
           }
         }
       `}</style>
@@ -236,28 +236,30 @@ export default function Page() {
             onClick={() => setIsPromoOpen(true)} 
             className="nav-try-free nav-try-free-pulse" 
             style={{
-              color: "#4f46e5",
-              background: "rgba(79,70,229,0.08)",
-              border: "1px solid rgba(79,70,229,0.25)",
+              background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
+              color: "#fff",
+              border: "1px solid transparent",
               fontSize: "0.8rem",
               fontWeight: 700,
               padding: "0.5rem 1.25rem",
               borderRadius: 8,
               cursor: "pointer",
-              boxShadow: "0 2px 10px rgba(79,70,229,0.08)",
+              boxShadow: "0 4px 16px rgba(79,70,229,0.35)",
               marginLeft: "0.25rem",
               transition: "all 0.22s ease-in-out"
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.background = "linear-gradient(135deg, #4f46e5, #7c3aed)";
-              e.currentTarget.style.color = "#fff";
-              e.currentTarget.style.boxShadow = "0 4px 16px rgba(79,70,229,0.3)";
+              e.currentTarget.style.background = "rgba(79,70,229,0.08)";
+              e.currentTarget.style.color = "#4f46e5";
+              e.currentTarget.style.borderColor = "rgba(79,70,229,0.25)";
+              e.currentTarget.style.boxShadow = "0 2px 10px rgba(79,70,229,0.08)";
               e.currentTarget.style.transform = "translateY(-1px)";
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.background = "rgba(79,70,229,0.08)";
-              e.currentTarget.style.color = "#4f46e5";
-              e.currentTarget.style.boxShadow = "0 2px 10px rgba(79,70,229,0.08)";
+              e.currentTarget.style.background = "linear-gradient(135deg,#4f46e5,#7c3aed)";
+              e.currentTarget.style.color = "#fff";
+              e.currentTarget.style.borderColor = "transparent";
+              e.currentTarget.style.boxShadow = "0 4px 16px rgba(79,70,229,0.35)";
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
@@ -282,9 +284,9 @@ export default function Page() {
           onClick={() => { setIsPromoOpen(true); setMenuOpen(false); }} 
           className="nav-try-free-pulse"
           style={{
-            color: "#4f46e5",
-            background: "rgba(79,70,229,0.08)",
-            border: "1px solid rgba(79,70,229,0.2)",
+            background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
+            color: "#fff",
+            border: "1px solid transparent",
             padding: "0.6rem 1rem",
             borderRadius: 8,
             textAlign: "center",
@@ -294,12 +296,14 @@ export default function Page() {
             transition: "all 0.22s ease-in-out"
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.background = "linear-gradient(135deg, #4f46e5, #7c3aed)";
-            e.currentTarget.style.color = "#fff";
-          }}
-          onMouseLeave={e => {
             e.currentTarget.style.background = "rgba(79,70,229,0.08)";
             e.currentTarget.style.color = "#4f46e5";
+            e.currentTarget.style.borderColor = "rgba(79,70,229,0.2)";
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = "linear-gradient(135deg,#4f46e5,#7c3aed)";
+            e.currentTarget.style.color = "#fff";
+            e.currentTarget.style.borderColor = "transparent";
           }}
         >
           <span className="sparkle-ai-icon">✨</span> View Promo
