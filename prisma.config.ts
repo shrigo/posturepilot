@@ -8,6 +8,7 @@ export default defineConfig({
   },
   datasource: {
     url: env('DATABASE_URL'),
-    // directUrl used for migrations (bypasses pgbouncer pooler)
+    // directUrl bypasses pgBouncer transaction pooler — required for DDL (migrate/push)
+    directUrl: env('DIRECT_URL'),
   },
 });

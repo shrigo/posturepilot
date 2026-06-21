@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
 import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
@@ -148,34 +148,84 @@ export default function DispatchCenterPage() {
     return () => { active = false; };
   }, [currentClient.key]);
 
-  // Load from localStorage or seed
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedRules = localStorage.getItem('posturepilot_routing_rules');
-      if (savedRules) {
-        setRoutingRules(JSON.parse(savedRules));
-      } else {
-        setRoutingRules(DEFAULT_ROUTING_RULES);
-        localStorage.setItem('posturepilot_routing_rules', JSON.stringify(DEFAULT_ROUTING_RULES));
+  // ── Load rules: DB first, then localStorage fallback ──
+  const loadRules = useCallback(async () => {
+    try {
+      const res = await fetch('/api/soar/rules');
+      if (res.ok) {
+        const dbRules: RoutingRule[] = await res.json();
+        if (dbRules.length > 0) {
+          setRoutingRules(dbRules);
+          localStorage.setItem('posturepilot_routing_rules', JSON.stringify(dbRules));
+          return;
+        }
       }
-
-      const savedTickets = localStorage.getItem('posturepilot_soar_tickets');
-      if (savedTickets) {
-        setTickets(JSON.parse(savedTickets));
-      } else {
-        setTickets(SEED_TICKETS);
-        localStorage.setItem('posturepilot_soar_tickets', JSON.stringify(SEED_TICKETS));
-      }
-
-      const savedLogs = localStorage.getItem('posturepilot_soar_logs');
-      if (savedLogs) {
-        setLogs(JSON.parse(savedLogs));
-      } else {
-        setLogs(SEED_LOGS);
-        localStorage.setItem('posturepilot_soar_logs', JSON.stringify(SEED_LOGS));
-      }
+    } catch { /* network offline — fall through */ }
+    // Fallback: localStorage or seed
+    const saved = localStorage.getItem('posturepilot_routing_rules');
+    if (saved) {
+      setRoutingRules(JSON.parse(saved));
+    } else {
+      setRoutingRules(DEFAULT_ROUTING_RULES);
+      localStorage.setItem('posturepilot_routing_rules', JSON.stringify(DEFAULT_ROUTING_RULES));
     }
   }, []);
+
+  // ── Load tickets: DB first, then localStorage fallback ──
+  const loadTickets = useCallback(async () => {
+    try {
+      const res = await fetch('/api/soar/tickets');
+      if (res.ok) {
+        const dbTickets = await res.json();
+        if (dbTickets.length > 0) {
+          // DB stores createdAt as ISO string; convert to timestamp ms
+          const hydrated = dbTickets.map((t: Record<string, unknown>) => ({
+            ...t,
+            createdAt: typeof t.createdAt === 'string' ? new Date(t.createdAt).getTime() : t.createdAt,
+          }));
+          setTickets(hydrated);
+          localStorage.setItem('posturepilot_soar_tickets', JSON.stringify(hydrated));
+          return;
+        }
+      }
+    } catch { /* fall through */ }
+    const saved = localStorage.getItem('posturepilot_soar_tickets');
+    if (saved) {
+      setTickets(JSON.parse(saved));
+    } else {
+      setTickets(SEED_TICKETS);
+      localStorage.setItem('posturepilot_soar_tickets', JSON.stringify(SEED_TICKETS));
+    }
+  }, []);
+
+  // ── Load logs: DB first, then localStorage fallback ──
+  const loadLogs = useCallback(async () => {
+    try {
+      const res = await fetch('/api/soar/logs');
+      if (res.ok) {
+        const dbLogs: Array<{ message: string }> = await res.json();
+        if (dbLogs.length > 0) {
+          const msgs = dbLogs.map(l => l.message);
+          setLogs(msgs);
+          localStorage.setItem('posturepilot_soar_logs', JSON.stringify(msgs));
+          return;
+        }
+      }
+    } catch { /* fall through */ }
+    const saved = localStorage.getItem('posturepilot_soar_logs');
+    if (saved) {
+      setLogs(JSON.parse(saved));
+    } else {
+      setLogs(SEED_LOGS);
+      localStorage.setItem('posturepilot_soar_logs', JSON.stringify(SEED_LOGS));
+    }
+  }, []);
+
+  useEffect(() => {
+    loadRules();
+    loadTickets();
+    loadLogs();
+  }, [loadRules, loadTickets, loadLogs]);
 
   // Update clock ticker every second for live SLA
   useEffect(() => {
@@ -190,10 +240,20 @@ export default function DispatchCenterPage() {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [logs]);
 
-  // Sync back to localstorage when states modify
+  // Sync to both localStorage and DB
   const updateRules = (updated: RoutingRule[]) => {
     setRoutingRules(updated);
     localStorage.setItem('posturepilot_routing_rules', JSON.stringify(updated));
+  };
+
+  const saveRuleToDB = async (rule: RoutingRule) => {
+    try {
+      await fetch('/api/soar/rules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(rule),
+      });
+    } catch { /* silent — localStorage is the fallback */ }
   };
 
   const updateTickets = (updated: SoarTicket[]) => {
@@ -210,6 +270,7 @@ export default function DispatchCenterPage() {
     const next = [...routingRules];
     next[index].autoJira = !next[index].autoJira;
     updateRules(next);
+    saveRuleToDB(next[index]);
     addLog(`[SOAR-CONFIG] ${next[index].category} Jira auto-ticket toggled ${next[index].autoJira ? 'ON' : 'OFF'}.`);
   };
 
@@ -217,6 +278,7 @@ export default function DispatchCenterPage() {
     const next = [...routingRules];
     next[index].autoSnow = !next[index].autoSnow;
     updateRules(next);
+    saveRuleToDB(next[index]);
     addLog(`[SOAR-CONFIG] ${next[index].category} ServiceNow escalation toggled ${next[index].autoSnow ? 'ON' : 'OFF'}.`);
   };
 
@@ -227,11 +289,12 @@ export default function DispatchCenterPage() {
     updateLogs(nextLogs);
   };
 
-  const clearAllLogs = () => {
+  const clearAllLogs = async () => {
     updateLogs([]);
+    try { await fetch('/api/soar/logs', { method: 'DELETE' }); } catch { /* silent */ }
   };
 
-  const handleResolveTicket = (ticketId: string) => {
+  const handleResolveTicket = async (ticketId: string) => {
     const nextTickets = tickets.map(t => {
       if (t.id === ticketId) {
         addLog(`[TICKET-RESOLVE] Ticket ${t.id} (${t.cveId}) marked as RESOLVED by ${currentClient.name} operator.`);
@@ -240,6 +303,14 @@ export default function DispatchCenterPage() {
       return t;
     });
     updateTickets(nextTickets);
+    // Persist resolve to DB
+    try {
+      await fetch('/api/soar/tickets', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: ticketId, status: 'Resolved' }),
+      });
+    } catch { /* silent */ }
   };
 
   const handleManualIngestSimulate = () => {

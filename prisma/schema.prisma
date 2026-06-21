@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider   = "postgresql"
 }
 
 // ─── Org / Tenant ────────────────────────────────────────────────────────────
@@ -73,4 +73,51 @@ model Finding {
   @@index([cveId])
   @@index([severity])
   @@index([status])
+}
+
+// ─── SOAR Routing Rules ───────────────────────────────────────────────────────
+model SoarRule {
+  id        String   @id @default(cuid())
+  orgId     String
+  category  String   // Cloud Altitude | Network Runway | App Security Check | Identity PreCheck
+  leadName  String
+  leadRole  String
+  avatar    String
+  autoJira  Boolean  @default(false)
+  autoSnow  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([orgId, category])
+  @@index([orgId])
+}
+
+// ─── SOAR Auto-Generated Tickets ─────────────────────────────────────────────
+model SoarTicket {
+  id         String   @id   // e.g. JIRA-SEC-1249 | SNOW-INC-9281
+  orgId      String
+  cveId      String?
+  title      String
+  asset      String
+  assignee   String
+  avatar     String
+  severity   String           // Critical | High | Medium | Low
+  status     String           // Open | Dispatched | Remediation In-Flight | Resolved
+  system     String           // Jira | ServiceNow
+  slaLimitMs Float
+  createdAt  DateTime @default(now())
+
+  @@index([orgId])
+  @@index([status])
+  @@index([severity])
+}
+
+// ─── SOAR Dispatch Audit Logs ─────────────────────────────────────────────────
+model SoarLog {
+  id        String   @id @default(cuid())
+  orgId     String
+  message   String
+  createdAt DateTime @default(now())
+
+  @@index([orgId])
 }
