@@ -333,7 +333,7 @@ export default function Page() {
           {/* LEFT */}
           <div className="hero-left">
             <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
-              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Active AI-ASPM · 12 Security Dashboards
+              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Active AI-ASPM · 12 Security Cockpits
             </div>
 
             <h1 style={{fontSize:"clamp(2.2rem,3.6vw,3.2rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.1,color:"#0f172a",marginBottom:"1.25rem"}}>
@@ -345,8 +345,8 @@ export default function Page() {
               Stop auditing the past. Ingest live code, cloud, and host<br/>
               telemetry to orchestrate real-time clearance gates and<br/>
               auto-dispatch playbooks. Manage active threat waves,<br/>
-              verify compliance guardrails, and transform vulnerability<br/>
-              noise into 12 structured, framework-mapped command decks.
+              verify compliance guardrails, and transform fragmented<br/>
+              vulnerability noise into a unified Security Flight Deck.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
