@@ -338,11 +338,15 @@ export default function Page() {
 
             <h1 style={{fontSize:"clamp(2.0rem,3.2vw,2.8rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.1,color:"#0f172a",marginBottom:"1.25rem"}}>
               <span style={{color:"#1e2d6e"}}>Command Your Security</span><br/>
-              <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>With Next-Gen AI-ASPM</span>
+              <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>with Next-Gen AI-ASPM</span>
             </h1>
 
-            <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:440}}>
-              Stop auditing the past. Ingest live code, cloud, and host telemetry to orchestrate real-time clearance gates and auto-dispatch remediation playbooks. Manage active threat waves, verify compliance, and instantly transform fragmented vulnerability noise into 12 structured, framework-mapped command decks.
+            <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:540}}>
+              Stop auditing the past. Ingest live code, cloud, and host<br/>
+              telemetry to orchestrate real-time clearance gates and<br/>
+              auto-dispatch playbooks. Manage active threat waves, verify<br/>
+              compliance, and transform fragmented vulnerability noise<br/>
+              into 12 structured, framework-mapped command decks.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
