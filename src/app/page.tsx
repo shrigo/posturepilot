@@ -336,7 +336,7 @@ export default function Page() {
               <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Active AI-ASPM · 12 Security Dashboards
             </div>
 
-            <h1 style={{fontSize:"clamp(2.0rem,3.2vw,2.8rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.1,color:"#0f172a",marginBottom:"1.25rem"}}>
+            <h1 style={{fontSize:"clamp(2.2rem,3.6vw,3.2rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.1,color:"#0f172a",marginBottom:"1.25rem"}}>
               <span style={{color:"#1e2d6e"}}>Command Your Security</span><br/>
               <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>with Next-Gen AI-ASPM</span>
             </h1>
