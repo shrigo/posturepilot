@@ -333,16 +333,16 @@ export default function Page() {
           {/* LEFT */}
           <div className="hero-left">
             <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
-              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live AI-ASPM · 12 Security Cockpits
+              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 12 Security Dashboards
             </div>
 
             <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#0f172a",marginBottom:"1.25rem"}}>
-              <span style={{color:"#1e2d6e"}}>Your Security Flight Deck</span><br/>
-              <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>On Autopilot</span>
+              <span style={{color:"#1e2d6e"}}>Your Security</span><br/>
+              <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Command Center</span>
             </h1>
 
             <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:440}}>
-              Consolidate scanner, cloud, and endpoint telemetry into 12 live command dashboards. Auto-route incidents via the SOAR dispatch gate, calculate your Joint Posture Index (JPI), and monitor active threat waves in real-time.
+              Consolidate your security stack. Instantly transform multi-scanner, cloud, and endpoint telemetry into 12 live, board-ready dashboards and the CISO Executive Cockpit.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
