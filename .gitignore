@@ -40,3 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 dev.db
+
+# Scratch scripts
+*.py
+*.psd
+public/*.JPG
+public/*.jpg
+public/*.pdf
