@@ -341,12 +341,12 @@ export default function Page() {
               <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>with Next-Gen AI-ASPM</span>
             </h1>
 
-            <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:540}}>
+            <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:570}}>
               Stop auditing the past. Ingest live code, cloud, and host<br/>
               telemetry to orchestrate real-time clearance gates and<br/>
               auto-dispatch playbooks. Manage active threat waves,<br/>
               verify compliance guardrails, and transform fragmented<br/>
-              vulnerability noise into a unified Security Flight Deck.
+              vulnerability noise into a unified Security Posture Flight Deck.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
