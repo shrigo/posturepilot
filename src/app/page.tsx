@@ -166,7 +166,7 @@ export default function Page() {
           }
         }
 
-        /* Pulsing button shadow for View Promo */
+        /* Pulsing button shadow for Mythos Engine */
         .nav-try-free-pulse {
           animation: button-sparkle-glow 2.5s infinite ease-in-out;
         }
@@ -266,7 +266,7 @@ export default function Page() {
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            <span className="sparkle-ai-icon">✨</span> View Promo
+            <span className="sparkle-ai-icon">✨</span> Mythos Engine
           </button>
           <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
             <span style={{transform:menuOpen?"rotate(45deg) translate(5px,5px)":"none"}}/>
@@ -309,7 +309,7 @@ export default function Page() {
             e.currentTarget.style.borderColor = "transparent";
           }}
         >
-          <span className="sparkle-ai-icon">✨</span> View Promo
+          <span className="sparkle-ai-icon">✨</span> Mythos Engine
         </button>
       </div>
 
