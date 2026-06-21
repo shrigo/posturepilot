@@ -333,16 +333,16 @@ export default function Page() {
           {/* LEFT */}
           <div className="hero-left">
             <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
-              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Live · 12 Security Dashboards
+              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Active AI-ASPM · 12 Security Dashboards
             </div>
 
             <h1 style={{fontSize:"clamp(2.4rem,4vw,4rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.06,color:"#0f172a",marginBottom:"1.25rem"}}>
-              <span style={{color:"#1e2d6e"}}>Your Security</span><br/>
-              <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Command Center</span>
+              <span style={{color:"#1e2d6e"}}>Command Your Security</span><br/>
+              <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>With Next-Gen AI-ASPM</span>
             </h1>
 
             <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:440}}>
-              Consolidate your security stack. Instantly transform multi-scanner, cloud, and endpoint telemetry into 12 live, board-ready dashboards and the CISO Executive Cockpit.
+              Stop auditing the past. Ingest live code, cloud, and host telemetry to orchestrate real-time clearance gates and auto-dispatch remediation playbooks. Manage active threat waves, verify compliance, and instantly transform fragmented vulnerability noise into 12 structured, framework-mapped command decks.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
