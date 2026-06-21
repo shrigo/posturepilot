@@ -346,7 +346,7 @@ export default function Page() {
               telemetry to orchestrate real-time clearance gates and<br/>
               auto-dispatch playbooks. Manage active threat waves,<br/>
               verify compliance guardrails, and transform fragmented<br/>
-              vulnerability noise into a unified Security Posture Flight Deck.
+              vulnerability noise into a unified Posture Flight Deck.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
