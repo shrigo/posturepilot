@@ -138,61 +138,42 @@ export default function Page() {
           .nav-try-free{display:none!important;}
         }
         
-        /* Attention-grabbing View Demo Button styles */
-        .view-demo-glow-btn {
-          position: relative;
-          overflow: hidden;
-          background: #fff;
-          color: #4f46e5;
-          font-weight: 600;
-          font-size: 1rem;
-          padding: 0.875rem 1.5rem;
-          border-radius: 10px;
-          text-decoration: none;
-          border: 1px solid #c4b5fd;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          transition: all 0.3s ease;
-          animation: pulse-violet-glow 2.2s infinite ease-in-out;
-        }
-        .view-demo-glow-btn:hover {
-          background: #f5f3ff;
-          border-color: #7c3aed;
-          color: #7c3aed;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
-        }
-        
-        .sparkle-icon {
-          animation: sparkle-flash 1.8s infinite ease-in-out;
-          color: #7c3aed;
+        /* Twinkling Star AI sparkle animation */
+        .sparkle-ai-icon {
           display: inline-block;
-          font-size: 1.15rem;
+          animation: twinkle-star-glow 1.3s infinite ease-in-out;
         }
 
-        @keyframes pulse-violet-glow {
+        @keyframes twinkle-star-glow {
           0%, 100% {
-            box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4), 0 4px 10px rgba(0, 0, 0, 0.05);
-            border-color: #c4b5fd;
+            opacity: 0.4;
+            transform: scale(0.85);
+            filter: drop-shadow(0 0 1px rgba(251, 191, 36, 0.3));
+          }
+          20%, 80% {
+            opacity: 0.6;
+            transform: scale(0.95);
+            filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
           }
           50% {
-            box-shadow: 0 0 15px 4px rgba(124, 58, 237, 0.25), 0 4px 15px rgba(124, 58, 237, 0.15);
-            border-color: #7c3aed;
-          }
-        }
-
-        @keyframes sparkle-flash {
-          0%, 100% {
-            transform: scale(0.9) rotate(0deg);
-            opacity: 0.7;
-          }
-          50% {
-            transform: scale(1.3) rotate(90deg);
             opacity: 1;
-            color: #d97706; /* gold flash */
-            filter: drop-shadow(0 0 8px #d97706);
+            transform: scale(1.25);
+            color: #fbbf24; /* golden twinkle */
+            filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 15px #f59e0b);
+          }
+        }
+
+        /* Pulsing button shadow for View Promo */
+        .nav-try-free-pulse {
+          animation: button-sparkle-glow 2.5s infinite ease-in-out;
+        }
+
+        @keyframes button-sparkle-glow {
+          0%, 100% {
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+          }
+          50% {
+            box-shadow: 0 4px 25px rgba(124, 58, 237, 0.65), 0 0 12px rgba(124, 58, 237, 0.3);
           }
         }
       `}</style>
@@ -253,7 +234,7 @@ export default function Page() {
           <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
           <button 
             onClick={() => setIsPromoOpen(true)} 
-            className="nav-try-free" 
+            className="nav-try-free nav-try-free-pulse" 
             style={{
               background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
               color: "#fff",
@@ -267,7 +248,7 @@ export default function Page() {
               marginLeft: "0.25rem"
             }}
           >
-            ✨ View Promo
+            <span className="sparkle-ai-icon">✨</span> View Promo
           </button>
           <button className="hamburger" onClick={()=>setMenuOpen(o=>!o)} aria-label="Menu">
             <span style={{transform:menuOpen?"rotate(45deg) translate(5px,5px)":"none"}}/>
@@ -286,6 +267,7 @@ export default function Page() {
         <Link href="/login" onClick={()=>setMenuOpen(false)} style={{color:"#64748b"}}>Sign in</Link>
         <button 
           onClick={() => { setIsPromoOpen(true); setMenuOpen(false); }} 
+          className="nav-try-free-pulse"
           style={{
             background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
             color: "#fff",
@@ -298,7 +280,7 @@ export default function Page() {
             marginTop: "0.25rem"
           }}
         >
-          ✨ View Promo
+          <span className="sparkle-ai-icon">✨</span> View Promo
         </button>
       </div>
 
@@ -336,10 +318,7 @@ export default function Page() {
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
               <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Start Free Trial →</Link>
-              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} className="view-demo-glow-btn">
-                <span className="sparkle-icon">✨</span>
-                View Demo
-              </Link>
+              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} style={{background:"#fff",color:"#4f46e5",fontWeight:600,fontSize:"1rem",padding:"0.875rem 1.5rem",borderRadius:10,textDecoration:"none",border:"1px solid #c4b5fd"}}>View Demo</Link>
             </div>
 
             <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
