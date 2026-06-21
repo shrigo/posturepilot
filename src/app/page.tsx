@@ -137,6 +137,64 @@ export default function Page() {
         @media(max-width:400px){
           .nav-try-free{display:none!important;}
         }
+        
+        /* Attention-grabbing View Demo Button styles */
+        .view-demo-glow-btn {
+          position: relative;
+          overflow: hidden;
+          background: #fff;
+          color: #4f46e5;
+          font-weight: 600;
+          font-size: 1rem;
+          padding: 0.875rem 1.5rem;
+          border-radius: 10px;
+          text-decoration: none;
+          border: 1px solid #c4b5fd;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          transition: all 0.3s ease;
+          animation: pulse-violet-glow 2.2s infinite ease-in-out;
+        }
+        .view-demo-glow-btn:hover {
+          background: #f5f3ff;
+          border-color: #7c3aed;
+          color: #7c3aed;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+        }
+        
+        .sparkle-icon {
+          animation: sparkle-flash 1.8s infinite ease-in-out;
+          color: #7c3aed;
+          display: inline-block;
+          font-size: 1.15rem;
+        }
+
+        @keyframes pulse-violet-glow {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4), 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-color: #c4b5fd;
+          }
+          50% {
+            box-shadow: 0 0 15px 4px rgba(124, 58, 237, 0.25), 0 4px 15px rgba(124, 58, 237, 0.15);
+            border-color: #7c3aed;
+          }
+        }
+
+        @keyframes sparkle-flash {
+          0%, 100% {
+            transform: scale(0.9) rotate(0deg);
+            opacity: 0.7;
+          }
+          50% {
+            transform: scale(1.3) rotate(90deg);
+            opacity: 1;
+            color: #d97706; /* gold flash */
+            filter: drop-shadow(0 0 8px #d97706);
+          }
+        }
       `}</style>
 
       {/* NAV */}
@@ -278,7 +336,10 @@ export default function Page() {
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
               <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Start Free Trial →</Link>
-              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} style={{background:"#fff",color:"#4f46e5",fontWeight:600,fontSize:"1rem",padding:"0.875rem 1.5rem",borderRadius:10,textDecoration:"none",border:"1px solid #c4b5fd"}}>View Demo</Link>
+              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} className="view-demo-glow-btn">
+                <span className="sparkle-icon">✨</span>
+                View Demo
+              </Link>
             </div>
 
             <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
