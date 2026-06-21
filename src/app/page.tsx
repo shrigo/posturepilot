@@ -138,28 +138,28 @@ export default function Page() {
           .nav-try-free{display:none!important;}
         }
         
-        /* Twinkling Star AI sparkle animation */
+        /* Twinkling Star AI sparkle animation (No rotation, flashes scale/brightness) */
         .sparkle-ai-icon {
           display: inline-block;
-          animation: twinkle-star-glow 1.3s infinite ease-in-out;
+          animation: twinkle-star-glow 1.1s infinite ease-in-out;
         }
 
         @keyframes twinkle-star-glow {
           0%, 100% {
-            opacity: 0.4;
-            transform: scale(0.85);
-            filter: drop-shadow(0 0 1px rgba(251, 191, 36, 0.3));
+            opacity: 0.3;
+            transform: scale(0.8);
+            filter: brightness(0.8) drop-shadow(0 0 1px rgba(251, 191, 36, 0.2));
           }
-          20%, 80% {
-            opacity: 0.6;
-            transform: scale(0.95);
-            filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
+          40%, 60% {
+            opacity: 0.7;
+            transform: scale(1.0);
+            filter: brightness(1.2) drop-shadow(0 0 4px #fbbf24);
           }
           50% {
             opacity: 1;
-            transform: scale(1.25);
-            color: #fbbf24; /* golden twinkle */
-            filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 15px #f59e0b);
+            transform: scale(1.35);
+            color: #fbbf24;
+            filter: brightness(1.6) drop-shadow(0 0 10px #fbbf24) drop-shadow(0 0 20px #f59e0b);
           }
         }
 
@@ -170,10 +170,10 @@ export default function Page() {
 
         @keyframes button-sparkle-glow {
           0%, 100% {
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+            box-shadow: 0 2px 10px rgba(79, 70, 229, 0.08);
           }
           50% {
-            box-shadow: 0 4px 25px rgba(124, 58, 237, 0.65), 0 0 12px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.35), 0 0 12px rgba(79, 70, 229, 0.15);
           }
         }
       `}</style>
@@ -236,16 +236,29 @@ export default function Page() {
             onClick={() => setIsPromoOpen(true)} 
             className="nav-try-free nav-try-free-pulse" 
             style={{
-              background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
-              color: "#fff",
+              color: "#4f46e5",
+              background: "rgba(79,70,229,0.08)",
+              border: "1px solid rgba(79,70,229,0.25)",
               fontSize: "0.8rem",
               fontWeight: 700,
               padding: "0.5rem 1.25rem",
               borderRadius: 8,
-              border: "none",
               cursor: "pointer",
-              boxShadow: "0 4px 16px rgba(79,70,229,0.35)",
-              marginLeft: "0.25rem"
+              boxShadow: "0 2px 10px rgba(79,70,229,0.08)",
+              marginLeft: "0.25rem",
+              transition: "all 0.22s ease-in-out"
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = "linear-gradient(135deg, #4f46e5, #7c3aed)";
+              e.currentTarget.style.color = "#fff";
+              e.currentTarget.style.boxShadow = "0 4px 16px rgba(79,70,229,0.3)";
+              e.currentTarget.style.transform = "translateY(-1px)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = "rgba(79,70,229,0.08)";
+              e.currentTarget.style.color = "#4f46e5";
+              e.currentTarget.style.boxShadow = "0 2px 10px rgba(79,70,229,0.08)";
+              e.currentTarget.style.transform = "translateY(0)";
             }}
           >
             <span className="sparkle-ai-icon">✨</span> View Promo
@@ -269,15 +282,24 @@ export default function Page() {
           onClick={() => { setIsPromoOpen(true); setMenuOpen(false); }} 
           className="nav-try-free-pulse"
           style={{
-            background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
-            color: "#fff",
+            color: "#4f46e5",
+            background: "rgba(79,70,229,0.08)",
+            border: "1px solid rgba(79,70,229,0.2)",
             padding: "0.6rem 1rem",
             borderRadius: 8,
             textAlign: "center",
             fontWeight: 700,
-            border: "none",
             cursor: "pointer",
-            marginTop: "0.25rem"
+            marginTop: "0.25rem",
+            transition: "all 0.22s ease-in-out"
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = "linear-gradient(135deg, #4f46e5, #7c3aed)";
+            e.currentTarget.style.color = "#fff";
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = "rgba(79,70,229,0.08)";
+            e.currentTarget.style.color = "#4f46e5";
           }}
         >
           <span className="sparkle-ai-icon">✨</span> View Promo
