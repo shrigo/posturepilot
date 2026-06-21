@@ -1,5 +1,7 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useClient } from "@/context/ClientContext";
+
 
 interface FeatureDetail {
   name: string;
@@ -330,6 +332,7 @@ const MODULES_DATA: FeatureModule[] = [
 ];
 
 export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: () => void; initialSlide?: number }) {
+  const { currentClient, isEnterpriseMode, isUnderAttack, slaThresholds } = useClient();
   const [activeModuleId, setActiveModuleId] = useState<string>(MODULES_DATA[0].id);
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(initialSlide === 0);
@@ -396,7 +399,53 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
     }
   };
 
-  const activeModule = MODULES_DATA.find((m) => m.id === activeModuleId) || MODULES_DATA[0];
+  const clientScaleFactors: Record<string, number> = {
+    WELLS: 1.0,
+    TOYOTA: 0.65,
+    UR: 0.35,
+    CISCO: 2.0,
+    DISNEY: 0.9,
+  };
+
+  const activeModuleStatic = MODULES_DATA.find((m) => m.id === activeModuleId) || MODULES_DATA[0];
+
+  const activeModule = useMemo(() => {
+    const scale = clientScaleFactors[currentClient.key] || 1.0;
+    const mod = { ...activeModuleStatic };
+
+    if (mod.id === 'posture') {
+      const rawNum = Math.round(4180000 * scale * (isUnderAttack ? 3.5 : 1.0));
+      const groupedNum = Math.round(320600 * scale * (isUnderAttack ? 4.0 : 1.0));
+      const exposedNum = Math.round(42100 * scale * (isUnderAttack ? 5.2 : 1.0));
+      const clearedMultiplier = isUnderAttack ? 0.25 : (1.0 + (slaThresholds.critical - 7) * 0.05);
+      const clearedNum = Math.round(12400 * scale * clearedMultiplier);
+
+      const formatNum = (n: number) => {
+        if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M';
+        if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+        return n.toLocaleString();
+      };
+
+      mod.funnelMetrics = [
+        { val: formatNum(rawNum), label: "Raw Detections", desc: ["Discovered across all assets", "Uncontextualized risk data"] },
+        { val: formatNum(groupedNum), label: "Grouped Risk Flags", desc: ["Consolidated into clusters", "Eliminates duplicate alerts"] },
+        { val: formatNum(exposedNum), label: "Exposed Assets", desc: ["Publicly facing vulnerables", "Active threat intel correlation"] },
+        { val: formatNum(clearedNum), label: "Auto-Cleared Gates", desc: ["Cleared at deployment gates", "Safe configuration pathways"] }
+      ];
+    }
+
+    return mod;
+  }, [activeModuleStatic, currentClient, isUnderAttack, isEnterpriseMode, slaThresholds]);
+
+  const slaBreachPenalty = Math.max(0, (7 - slaThresholds.critical) * 2) + Math.max(0, (30 - slaThresholds.high) * 0.5);
+  let postureScore = Math.max(30, Math.min(100, (currentClient.key === 'UR' ? 91 : currentClient.key === 'CISCO' ? 96 : currentClient.key === 'TOYOTA' ? 85 : currentClient.key === 'DISNEY' ? 81 : 76) - Math.round(slaBreachPenalty)));
+  if (isUnderAttack) {
+    postureScore = 42;
+  }
+
+  const codePct = Math.min(100, Math.round(postureScore * 1.0));
+  const cloudPct = Math.min(100, Math.round(postureScore * 0.95));
+  const hostsPct = Math.min(100, Math.round(postureScore * 0.87));
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -880,8 +929,8 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                           <svg viewBox="0 0 280 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
                             <defs>
                               <radialGradient id="jpiCore" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stopColor="#10b981" stopOpacity="0.18" />
-                                <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                                <stop offset="0%" stopColor={isUnderAttack ? "#ef4444" : "#10b981"} stopOpacity="0.18" />
+                                <stop offset="100%" stopColor={isUnderAttack ? "#ef4444" : "#10b981"} stopOpacity="0" />
                               </radialGradient>
                               <filter id="glow-g">
                                 <feGaussianBlur stdDeviation="1.8" result="blur" />
@@ -896,41 +945,41 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             {/* Rotating orbit dot */}
                             <circle cx="100" cy="28" r="2.2" fill="#7c3aed" opacity="0.7" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 8s linear infinite" }} />
 
-                            {/* ── Outer ring: Host Posture (82%) ── */}
+                            {/* ── Outer ring: Host Posture ── */}
                             <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                             <circle cx="100" cy="100" r="72" fill="none" stroke="#3b82f6" strokeWidth="6"
-                              strokeDasharray="370 452" strokeLinecap="round"
-                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(59,130,246,0.5))" }} />
+                              strokeDasharray={`${2 * Math.PI * 72}`} strokeDashoffset={`${2 * Math.PI * 72 * (1 - hostsPct / 100)}`} strokeLinecap="round"
+                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(59,130,246,0.5))", transition: "stroke-dashoffset 0.8s ease" }} />
                             <text x="100" y="-172" textAnchor="middle" fill="#3b82f6" fontSize="7" fontFamily="monospace" fontWeight="700"
-                              style={{ transform: "rotate(90deg) translateY(-100px)", transformOrigin: "100px 100px" }}>HOSTS 82%</text>
+                              style={{ transform: "rotate(90deg) translateY(-100px)", transformOrigin: "100px 100px" }}>HOSTS {hostsPct}%</text>
 
-                            {/* ── Middle ring: Cloud Posture (90%) ── */}
+                            {/* ── Middle ring: Cloud Posture ── */}
                             <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                             <circle cx="100" cy="100" r="56" fill="none" stroke="#a78bfa" strokeWidth="6"
-                              strokeDasharray="317 352" strokeLinecap="round"
-                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(167,139,250,0.5))" }} />
+                              strokeDasharray={`${2 * Math.PI * 56}`} strokeDashoffset={`${2 * Math.PI * 56 * (1 - cloudPct / 100)}`} strokeLinecap="round"
+                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(167,139,250,0.5))", transition: "stroke-dashoffset 0.8s ease" }} />
 
-                            {/* ── Inner ring: Code Posture (94%) ── */}
+                            {/* ── Inner ring: Code Posture ── */}
                             <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                             <circle cx="100" cy="100" r="40" fill="none" stroke="#10b981" strokeWidth="6"
-                              strokeDasharray="236 251" strokeLinecap="round"
-                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 4px rgba(16,185,129,0.6))" }} />
+                              strokeDasharray={`${2 * Math.PI * 40}`} strokeDashoffset={`${2 * Math.PI * 40 * (1 - codePct / 100)}`} strokeLinecap="round"
+                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 4px rgba(16,185,129,0.6))", transition: "stroke-dashoffset 0.8s ease" }} />
 
                             {/* ── Core glow fill ── */}
                             <circle cx="100" cy="100" r="30" fill="url(#jpiCore)" />
 
                             {/* ── JPI Center label ── */}
-                            <text x="100" y="96" textAnchor="middle" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="900">94%</text>
+                            <text x="100" y="96" textAnchor="middle" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="900">{postureScore}%</text>
                             <text x="100" y="108" textAnchor="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">JPI SCORE</text>
 
                             {/* ── Legend labels — horizontal strip at bottom ── */}
                             <line x1="10" y1="178" x2="250" y2="178" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
                             <circle cx="30" cy="188" r="4" fill="#10b981" />
-                            <text x="38" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Code 94%</text>
+                            <text x="38" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Code {codePct}%</text>
                             <circle cx="105" cy="188" r="4" fill="#a78bfa" />
-                            <text x="113" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Cloud 90%</text>
+                            <text x="113" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Cloud {cloudPct}%</text>
                             <circle cx="180" cy="188" r="4" fill="#3b82f6" />
-                            <text x="188" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Hosts 82%</text>
+                            <text x="188" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Hosts {hostsPct}%</text>
 
                             {/* ── Clearance Gates panel (right side) ── */}
                             <text x="198" y="38" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">CLEARANCE GATES</text>
@@ -947,20 +996,39 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             <text x="215" y="82" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">DEPLOY</text>
                             <text x="265" y="82" textAnchor="end" fill="#10b981" fontSize="6" fontFamily="monospace" fontWeight="900">PASS</text>
 
-                            {/* Gate 3: Config — FAIL */}
-                            <rect x="198" y="94" width="70" height="18" rx="4" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.35)" strokeWidth="0.8" />
-                            <circle cx="208" cy="103" r="3.5" fill="#ef4444" style={{ animation: "pulseRed 1.2s infinite" }} />
-                            <text x="215" y="106" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">CONFIG</text>
-                            <text x="265" y="106" textAnchor="end" fill="#ef4444" fontSize="6" fontFamily="monospace" fontWeight="900">FAIL</text>
+                            {/* Gate 3: Config — FAIL when under attack */}
+                            <rect 
+                              x="198" 
+                              y="94" 
+                              width="70" 
+                              height="18" 
+                              rx="4" 
+                              fill={isUnderAttack ? "rgba(239,68,68,0.08)" : "rgba(16,185,129,0.08)"} 
+                              stroke={isUnderAttack ? "rgba(239,68,68,0.45)" : "rgba(16,185,129,0.35)"} 
+                              strokeWidth="0.8" 
+                            />
+                            <circle 
+                              cx="208" 
+                              cy="103" 
+                              r="3.5" 
+                              fill={isUnderAttack ? "#ef4444" : "#10b981"} 
+                              style={isUnderAttack ? { animation: "pulseRed 1.2s infinite" } : {}} 
+                            />
+                            <text x="215" y="106" fill={isUnderAttack ? "#ef4444" : "#10b981"} fontSize="6.5" fontFamily="monospace" fontWeight="700">CONFIG</text>
+                            <text x="265" y="106" textAnchor="end" fill={isUnderAttack ? "#ef4444" : "#10b981"} fontSize="6" fontFamily="monospace" fontWeight="900">
+                              {isUnderAttack ? "FAIL" : "PASS"}
+                            </text>
 
                             {/* ── Threat Intel Sync node ── */}
                             <text x="198" y="128" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">THREAT INTEL SYNC</text>
                             <circle cx="208" cy="145" r="6" fill="none" stroke="rgba(245,158,11,0.2)" strokeWidth="1" style={{ animation: "pulseGlow 2s infinite" }} />
                             <circle cx="208" cy="145" r="4" fill="#f59e0b" opacity="0.9" />
-                            <text x="215" y="149" fill="#fbbf24" fontSize="6.5" fontFamily="monospace" fontWeight="700">4 FEEDS LIVE</text>
+                            <text x="215" y="149" fill="#fbbf24" fontSize="6.5" fontFamily="monospace" fontWeight="700">
+                              {isUnderAttack ? "ATTACK WAVE" : "5 FEEDS LIVE"}
+                            </text>
 
                             {/* ── Scanline overlay ── */}
-                            <rect x="0" y="0" width="280" height="2" fill="rgba(16,185,129,0.15)" rx="1"
+                            <rect x="0" y="0" width="280" height="2" fill={isUnderAttack ? "rgba(239,68,68,0.18)" : "rgba(16,185,129,0.15)"} rx="1"
                               style={{ animation: "jpiScanline 3.5s linear infinite", transformOrigin: "center" }} />
                             {/* Separator lines between legend items */}
                             <line x1="97" y1="182" x2="97" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />

@@ -1,6 +1,32 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useClient } from '@/context/ClientContext';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const radarCockpitConfig: ModuleCockpitConfig = {
+  title: 'Risk Radar Telemetry',
+  badge: 'Module 06',
+  apiEndpoint: '/api/findings/summary',
+  rings: [
+    { label: 'KEV%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'EPSS%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'Triaged%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'RADAR',
+  funnel: [
+    { label: 'CVE Database', sublabel: 'Total CVE findings cataloged', color: '#7c3aed' },
+    { label: 'KEV Matched', sublabel: 'CISA KEV active exploits matched', color: '#ef4444' },
+    { label: 'EPSS > 0.6', sublabel: 'High EPSS score exploit probability', color: '#ea580c' },
+    { label: 'Actionable Risks', sublabel: 'Top prioritized risks needing triage', color: '#10b981' },
+  ],
+  gates: ['KEV MATCH', 'EPSS FILTER', 'TRIAGE GATE'],
+  syncLabel: 'Telemetry Feeds Scanned',
+  checklist: [
+    { name: 'KEV Prioritization', desc: 'Prioritize CISA KEV active exploit vectors dynamically.' },
+    { name: 'EPSS Score Scaling', desc: 'Incorporate EPSS predictability models for risk assessment.' },
+  ],
+};
 
 interface TriageFinding {
   id: string;
@@ -29,6 +55,7 @@ const INITIAL_TRIAGE_FINDINGS: TriageFinding[] = [
 ];
 
 export default function SecureTriagePage() {
+  const { currentClient } = useClient();
   // Funnel settings
   const [minCvss, setMinCvss] = useState<number>(7.0);
   const [minEpss, setMinEpss] = useState<number>(10);
@@ -39,6 +66,21 @@ export default function SecureTriagePage() {
   const [findings, setFindings] = useState<TriageFinding[]>(INITIAL_TRIAGE_FINDINGS);
   const [actionLog, setActionLog] = useState<string[]>([]);
   const [isPatching, setIsPatching] = useState<string | null>(null);
+
+  // Fetch live findings data
+  const [liveData, setLiveData] = useState<ModuleLiveData | null>(null);
+  useEffect(() => {
+    let active = true;
+    fetch('/api/findings/summary')
+      .then(res => res.json())
+      .then(data => {
+        if (active && !data.error) {
+          setLiveData(data);
+        }
+      })
+      .catch(err => console.error('[secure fetch]', err));
+    return () => { active = false; };
+  }, [currentClient.key]);
 
   // Calculate live funnel numbers
   const rawFindings = 10000;
@@ -246,6 +288,9 @@ export default function SecureTriagePage() {
           </button>
         </div>
       </div>
+
+      {/* Cockpit telemetry card */}
+      <ModuleCockpitCard config={radarCockpitConfig} live={liveData} />
 
       {/* Funnel Config + Funnel Results Row */}
       <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '1rem', marginBottom: '1rem' }}>

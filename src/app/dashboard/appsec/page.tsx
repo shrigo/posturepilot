@@ -4,6 +4,31 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { appsecData } from '@/data/mockData';
 import Link from 'next/link';
 import { useClient } from '@/context/ClientContext';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const appsecCockpitConfig: ModuleCockpitConfig = {
+  title: 'App Security Telemetry',
+  badge: 'Module 04',
+  apiEndpoint: '/api/findings/appsec',
+  rings: [
+    { label: 'SAST%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'SCA%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'DAST%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'APPSEC',
+  funnel: [
+    { label: 'Commits Scanned', sublabel: 'Total git commits analyzed', color: '#7c3aed' },
+    { label: 'SAST Flags', sublabel: 'Static code vulnerabilities flagged', color: '#ef4444' },
+    { label: 'SCA Vulns', sublabel: 'Vulnerable third-party libraries (dependencies)', color: '#ea580c' },
+    { label: 'Build Blocks', sublabel: 'Failed builds blocked by policy', color: '#10b981' },
+  ],
+  gates: ['SAST SCAN', 'SCA CHECK', 'DAST RUN'],
+  syncLabel: 'AST Engines Synced',
+  checklist: [
+    { name: 'Secure Pipeline Gates', desc: 'Deploy automated SAST/SCA gates blocking critical vulnerabilities.' },
+    { name: 'Dependency Protection', desc: 'Monitor third-party packages and apply hot-fixes / updates.' },
+  ],
+};
 
 interface LiveData {
   hasLiveData: boolean; total: number; critical: number; high: number; patchBacklog: number;
@@ -128,8 +153,8 @@ export default function AppsecPage() {
 
   useEffect(() => {
     fetch('/api/findings/appsec').then(r => r.json())
-      .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
-  }, []);
+      .then(d => { if (d.hasLiveData) setLive(d); else setLive(null); }).catch(() => {});
+  }, [currentClient.key]);
 
   // Triggering ASPM scan simulation
   const startSecurityScan = () => {
@@ -278,6 +303,9 @@ export default function AppsecPage() {
             </div>
           ))}
         </div>
+
+        {/* Cockpit telemetry card */}
+        <ModuleCockpitCard config={appsecCockpitConfig} live={live as any} />
 
         {/* ========================================================================= */}
         {/* INTERACTIVE CONTROLS TABS */}

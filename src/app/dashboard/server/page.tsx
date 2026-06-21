@@ -3,6 +3,31 @@ import { useEffect, useState } from 'react';
 import { serverData } from '@/data/mockData';
 import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const serverCockpitConfig: ModuleCockpitConfig = {
+  title: 'Fleet Health Telemetry',
+  badge: 'Module 10',
+  apiEndpoint: '/api/findings/server',
+  rings: [
+    { label: 'EDR%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'Patched%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'Compliant%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'FLEET',
+  funnel: [
+    { label: 'Fleet Workloads', sublabel: 'Total VM server instances tracked', color: '#7c3aed' },
+    { label: 'EDR Coverage Gaps', sublabel: 'Servers missing active EDR agents', color: '#ef4444' },
+    { label: 'Critical Host CVEs', sublabel: 'Unresolved critical host vulnerabilities', color: '#ea580c' },
+    { label: 'Patches Deployed', sublabel: 'Vulnerability patches successfully deployed', color: '#10b981' },
+  ],
+  gates: ['EDR AGENT', 'OS PATCH', 'BASELINE'],
+  syncLabel: 'Active Workload Agents',
+  checklist: [
+    { name: 'EDR Compliance', desc: 'Deploy EDR agents on 100% of internal server workloads.' },
+    { name: 'OS Patch Updates', desc: 'Verify baseline security policies and apply OS updates regularly.' },
+  ],
+};
 
 const healthColor: Record<string, string> = { good: '#16a34a', warning: '#d97706', critical: '#dc2626' };
 
@@ -69,8 +94,8 @@ export default function ServerPage() {
 
   useEffect(() => {
     fetch('/api/findings/server').then(r => r.json())
-      .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
-  }, []);
+      .then(d => { if (d.hasLiveData) setLive(d); else setLive(null); }).catch(() => {});
+  }, [currentClient.key]);
 
   // Sync EDR Provider with Enterprise Mode on start
   useEffect(() => {
@@ -359,6 +384,9 @@ export default function ServerPage() {
             </div>
           ))}
         </div>
+
+        {/* Cockpit telemetry card */}
+        <ModuleCockpitCard config={serverCockpitConfig} live={live as any} />
 
         {/* ========================================================================= */}
         {/* EDR PERFORMANCE COMPARATOR & SEARCH CONTROLS */}

@@ -4,6 +4,31 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useClient } from '@/context/ClientContext';
 import { cloudData } from '@/data/mockData';
 import Link from 'next/link';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const cloudCockpitConfig: ModuleCockpitConfig = {
+  title: 'Cloud Altitude Telemetry',
+  badge: 'Module 02',
+  apiEndpoint: '/api/findings/cloud',
+  rings: [
+    { label: 'IAM%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'Storage%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'Compute%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'ALTITUDE',
+  funnel: [
+    { label: 'Cloud Assets', sublabel: 'Total cloud resources inventory', color: '#7c3aed' },
+    { label: 'IAM Drifts', sublabel: 'IAM permission drift alerts', color: '#ef4444' },
+    { label: 'Exposed Buckets', sublabel: 'Publicly readable storage containers', color: '#ea580c' },
+    { label: 'Quarantined Keys', sublabel: 'Stale / leaked cloud credentials quarantined', color: '#10b981' },
+  ],
+  gates: ['IAM AUDIT', 'BUCKET SCAN', 'KEY ROTATE'],
+  syncLabel: 'CNAPP Nodes Connected',
+  checklist: [
+    { name: 'CIS Benchmark Audited', desc: 'Verify CIS controls compliance across AWS/Azure/GCP environments.' },
+    { name: 'Credential Protection', desc: 'Secure cloud service accounts and rotate credential access keys.' },
+  ],
+};
 
 // Detailed public cloud storage buckets configured per tenant
 const initialExposedBuckets: Record<string, { id: string; name: string; type: string; provider: string; exposure: string; status: 'Exposed' | 'Secured' }[]> = {
@@ -48,6 +73,21 @@ export default function CloudPage() {
     setSyncProgress(0);
     setIsSyncing(false);
     setCloudFilter('ALL');
+  }, [currentClient.key]);
+
+  // Fetch live findings data
+  const [liveData, setLiveData] = useState<ModuleLiveData | null>(null);
+  useEffect(() => {
+    let active = true;
+    fetch('/api/findings/cloud')
+      .then(res => res.json())
+      .then(data => {
+        if (active && !data.error) {
+          setLiveData(data);
+        }
+      })
+      .catch(err => console.error('[cloud fetch]', err));
+    return () => { active = false; };
   }, [currentClient.key]);
 
   // Resolve exposed storage buckets for dynamic calculation
@@ -258,6 +298,9 @@ export default function CloudPage() {
             );
           })}
         </div>
+
+        {/* Cockpit telemetry card */}
+        <ModuleCockpitCard config={cloudCockpitConfig} live={liveData} />
 
         {/* ========================================================================= */}
         {/* CNAPP TOOLS CONNECTORS & CONSOLE LOGS ROW */}

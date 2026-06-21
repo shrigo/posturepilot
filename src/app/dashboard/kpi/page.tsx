@@ -4,6 +4,31 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { kpiData } from '@/data/mockData';
 import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const kpiCockpitConfig: ModuleCockpitConfig = {
+  title: 'Flight Telemetry KPIs',
+  badge: 'Module 12',
+  apiEndpoint: '/api/findings/kpi',
+  rings: [
+    { label: 'SLA%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'MTTA%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'MTTR%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'TELEMETRY',
+  funnel: [
+    { label: 'SLA Targets Set', sublabel: 'Total compliance SLA targets mapped', color: '#7c3aed' },
+    { label: 'MTTA Measured', sublabel: 'Mean time to acknowledge tickets', color: '#ef4444' },
+    { label: 'MTTR Benchmarked', sublabel: 'Mean time to remediate tickets', color: '#ea580c' },
+    { label: 'Autopilot Triggers', sublabel: 'Autopilot threat loop resolutions triggered', color: '#10b981' },
+  ],
+  gates: ['SLA DIAL', 'MTTA TRACK', 'MTTR LOOP'],
+  syncLabel: 'Active KPI Metrics',
+  checklist: [
+    { name: 'MTTR Response Loop', desc: 'Optimize incident response and resolution time SLAs.' },
+    { name: 'Autopilot Policies', desc: 'Configure automatic resolution logic for low-risk alerts.' },
+  ],
+};
 
 interface LiveData {
   hasLiveData: boolean; total: number; critical: number; high: number;
@@ -18,8 +43,8 @@ export default function KpiPage() {
 
   useEffect(() => {
     fetch('/api/findings/kpi').then(r => r.json())
-      .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
-  }, []);
+      .then(d => { if (d.hasLiveData) setLive(d); else setLive(null); }).catch(() => {});
+  }, [currentClient.key]);
 
   const sevChart: any[] = live
     ? Object.entries(live.bySeverity).map(([name, value]) => ({ name, value }))
@@ -76,6 +101,9 @@ export default function KpiPage() {
             </div>
           ))}
         </div>
+
+        {/* Cockpit telemetry card */}
+        <ModuleCockpitCard config={kpiCockpitConfig} live={live as any} />
 
         <div className="card" style={{ marginBottom:'1.25rem' }}>
           <div className="card-title">{live ? '📊 Findings by Severity (Live)' : '📈 KPI Trend (6 months)'}</div>

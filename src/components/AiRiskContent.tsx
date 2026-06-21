@@ -3,6 +3,32 @@ import { useEffect, useState } from 'react';
 import { aiRiskData } from '@/data/mockData';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useClient } from '@/context/ClientContext';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const aiRiskCockpitConfig: ModuleCockpitConfig = {
+  title: 'AI Risk Telemetry',
+  badge: 'Module 05',
+  apiEndpoint: '/api/findings/ai-risk',
+  rings: [
+    { label: 'Masked%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'Redacted%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'Audited%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'AI RISK',
+  funnel: [
+    { label: 'Prompts Intercepted', sublabel: 'Total user prompts evaluated', color: '#7c3aed' },
+    { label: 'Flagged Requests', sublabel: 'Prompts violating security policies', color: '#ef4444' },
+    { label: 'PII Redacted', sublabel: 'Instances of PII data masked', color: '#ea580c' },
+    { label: 'Shadow Tools Found', sublabel: 'Shadow AI integrations discovered', color: '#10b981' },
+  ],
+  gates: ['DLP MASK', 'PROMPT SCAN', 'TOOL AUDIT'],
+  syncLabel: 'AI Gateways Active',
+  checklist: [
+    { name: 'Model Data Leakage', desc: 'Prevent training data extraction and prompt leakage vectors.' },
+    { name: 'DLP Prompt Redaction', desc: 'Enforce inline data loss prevention (DLP) prompt filtering rules.' },
+  ],
+};
 
 const toolDetails: Record<string, {
   desc: string;
@@ -128,6 +154,7 @@ interface LiveData {
 }
 
 export default function AiRiskContent() {
+  const { currentClient } = useClient();
   const [live, setLive] = useState<LiveData | null>(null);
   
   // Interactive AI Policy Firewall Rules State
@@ -234,8 +261,8 @@ export default function AiRiskContent() {
 
   useEffect(() => {
     fetch('/api/findings/ai-risk').then(r => r.json())
-      .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
-  }, []);
+      .then(d => { if (d.hasLiveData) setLive(d); else setLive(null); }).catch(() => {});
+  }, [currentClient.key]);
 
   // Dynamic SOC telemetry feed ticking timestamps up dynamically!
   useEffect(() => {
@@ -393,6 +420,9 @@ export default function AiRiskContent() {
             </div>
           ))}
         </div>
+
+        {/* Cockpit telemetry card */}
+        <ModuleCockpitCard config={aiRiskCockpitConfig} live={live as any} />
 
         {/* ========================================================================= */}
         {/* NEW ONBOARDING LIFECYCLE, PROTECTION CONNECTOR & SCANNING CENTER */}

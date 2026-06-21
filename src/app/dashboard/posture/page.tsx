@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
+import CockpitPipelineCard, { LiveFeedData } from '@/components/CockpitPipelineCard';
+
 
 // CVE Status indicator colors
 const statusColor: Record<string, string> = {
@@ -13,12 +15,7 @@ const statusColor: Record<string, string> = {
   'Mitigated':      '#10b981',
 };
 
-interface LiveSummary {
-  total: number; critical: number; high: number; riskScore: number;
-  slaCompliance: number; avgCvss: string; bySeverity: Record<string,number>;
-  byTool: Record<string,number>; recentScans: { id:string; sourceTool:string; findingCount:number; createdAt:string }[];
-  topCVEs: { cveId:string|null; count:number }[];
-}
+type LiveSummary = LiveFeedData & { avgCvss?: string; maxCvss?: string; recentScans?: { id:string; sourceTool:string; findingCount:number; createdAt:string }[]; topCVEs?: { cveId:string|null; count:number }[] };
 
 // Client-Specific Cyber Posture Metadata Mappings
 const clientPostureMeta = {
@@ -433,6 +430,14 @@ export default function PosturePage() {
           </div>
         ))}
       </div>
+
+      {/* Cockpit Pipeline SVGs & GRC Controls — wired to live feed + computed posture score */}
+      <CockpitPipelineCard
+        moduleId="posture"
+        live={live ?? undefined}
+        postureScore={postureScore}
+        mitigatedCount={mitigatedCount}
+      />
 
       {/* Row 2: Severity / Trends Chart + Active Threat Campaigns */}
       <div className="grid-2-1" style={{ marginBottom: '1.25rem' }}>

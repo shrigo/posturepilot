@@ -2,6 +2,31 @@
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useClient } from '@/context/ClientContext';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const infosecCockpitConfig: ModuleCockpitConfig = {
+  title: 'Compliance Checkpoint Telemetry',
+  badge: 'Module 08',
+  apiEndpoint: '/api/findings/infosec',
+  rings: [
+    { label: 'SOC2%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'ISO%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'PCI%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'COMPLY',
+  funnel: [
+    { label: 'Controls Mapped', sublabel: 'Total compliance framework controls mapped', color: '#7c3aed' },
+    { label: 'Evidence Collected', sublabel: 'Evidence logs collected dynamically', color: '#ef4444' },
+    { label: 'Policy Violations', sublabel: 'Active security policy violations detected', color: '#ea580c' },
+    { label: 'Gaps Closed', sublabel: 'Identified compliance gaps resolved', color: '#10b981' },
+  ],
+  gates: ['SOC2', 'ISO27K', 'PCI/HIPAA'],
+  syncLabel: 'Frameworks Tracked',
+  checklist: [
+    { name: 'Evidence Auto-Collect', desc: 'Auto-collect logs and system configurations for framework audits.' },
+    { name: 'Continuous Monitoring', desc: 'Audit compliance postures hourly and trigger alert violations.' },
+  ],
+};
 
 // Frameworks metadata
 const frameworksMeta = [
@@ -249,6 +274,21 @@ export default function GRCPage() {
   const approvedPolicies = policyValues.filter(v => v === 'Approved').length;
   const policyRate = policyValues.length > 0 ? Math.round((approvedPolicies / policyValues.length) * 100) : 0;
 
+  // Fetch live findings data
+  const [liveData, setLiveData] = useState<ModuleLiveData | null>(null);
+  useEffect(() => {
+    let active = true;
+    fetch('/api/findings/infosec')
+      .then(res => res.json())
+      .then(data => {
+        if (active && !data.error) {
+          setLiveData(data);
+        }
+      })
+      .catch(err => console.error('[infosec fetch]', err));
+    return () => { active = false; };
+  }, [currentClient.key]);
+
   // Charting framework progress data
   const chartData = frameworksMeta.map(f => ({
     name: f.name.split(' ')[0], // abbreviation for clean chart ticks
@@ -364,6 +404,9 @@ export default function GRCPage() {
         </div>
 
       </div>
+
+      {/* Cockpit telemetry card */}
+      <ModuleCockpitCard config={infosecCockpitConfig} live={liveData} />
 
       {/* ── ROW 2: FRAMEWORK AUDITS & POLICY SIGN-OFFS ── */}
       <div className="grid-2" style={{ marginBottom: '1.25rem' }}>

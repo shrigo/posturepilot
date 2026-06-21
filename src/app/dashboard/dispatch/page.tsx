@@ -2,6 +2,31 @@
 import { useState, useEffect, useRef } from 'react';
 import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const dispatchCockpitConfig: ModuleCockpitConfig = {
+  title: 'Dispatch Center Telemetry',
+  badge: 'Module 09',
+  apiEndpoint: '/api/findings/summary',
+  rings: [
+    { label: 'Routed%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'Ticketed%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'Resolved%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'DISPATCH',
+  funnel: [
+    { label: 'Alerts Ingested', sublabel: 'Total security alerts ingested', color: '#7c3aed' },
+    { label: 'SOAR Routed', sublabel: 'Alerts auto-routed by SOAR playbooks', color: '#ef4444' },
+    { label: 'Tickets Generated', sublabel: 'Tickets created in Jira / ServiceNow', color: '#ea580c' },
+    { label: 'Incidents Resolved', sublabel: 'Mitigated and closed alerts', color: '#10b981' },
+  ],
+  gates: ['SOAR ROUTE', 'JIRA TICKET', 'SNow SYNC'],
+  syncLabel: 'Routing Integrations',
+  checklist: [
+    { name: 'SOAR Automation', desc: 'Verify SOAR routing rules and auto-ticket generation pipelines.' },
+    { name: 'SLA Tracking', desc: 'Monitor ticket SLA breaches and escalate overdue incidents.' },
+  ],
+};
 
 interface RoutingRule {
   category: string;
@@ -107,6 +132,21 @@ export default function DispatchCenterPage() {
   const [ticker, setTicker] = useState<number>(0);
   const [simulationState, setSimulationState] = useState<'idle' | 'running'>('idle');
   const terminalEndRef = useRef<HTMLDivElement>(null);
+  
+  // Fetch live findings data
+  const [liveData, setLiveData] = useState<ModuleLiveData | null>(null);
+  useEffect(() => {
+    let active = true;
+    fetch('/api/findings/summary')
+      .then(res => res.json())
+      .then(data => {
+        if (active && !data.error) {
+          setLiveData(data);
+        }
+      })
+      .catch(err => console.error('[dispatch fetch]', err));
+    return () => { active = false; };
+  }, [currentClient.key]);
 
   // Load from localStorage or seed
   useEffect(() => {
@@ -370,6 +410,9 @@ export default function DispatchCenterPage() {
           </button>
         </div>
       </div>
+
+      {/* Cockpit telemetry card */}
+      <ModuleCockpitCard config={dispatchCockpitConfig} live={liveData} />
 
       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '1rem', marginBottom: '1rem' }}>
         

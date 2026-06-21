@@ -4,6 +4,31 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { trafficData } from '@/data/mockData';
 import { useClient } from '@/context/ClientContext';
 import Link from 'next/link';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const trafficCockpitConfig: ModuleCockpitConfig = {
+  title: 'Traffic Control Telemetry',
+  badge: 'Module 11',
+  apiEndpoint: '/api/findings/traffic',
+  rings: [
+    { label: 'Clean%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'Inspected%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'Blocked%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'TRAFFIC',
+  funnel: [
+    { label: 'Packets Logged', sublabel: 'Total perimeter packets logged', color: '#7c3aed' },
+    { label: 'Protocol Anomalies', sublabel: 'Workloads violating RFC port standards', color: '#ef4444' },
+    { label: 'Geo-Fence Hits', sublabel: 'Requests from geo-blocked zones', color: '#ea580c' },
+    { label: 'Blocked Payloads', sublabel: 'Malicious packets blocked at edge', color: '#10b981' },
+  ],
+  gates: ['FLOW INSPECT', 'GEO BLOCK', 'PAYLOAD SCAN'],
+  syncLabel: 'Firewall Interfaces Mapped',
+  checklist: [
+    { name: 'Flow Inspection', desc: 'Inspect flow protocols at edge interface layers continuously.' },
+    { name: 'Geo-Fence Enforce', desc: 'Deploy automatic perimeter shaper rules to block geo-IP sources.' },
+  ],
+};
 
 interface LiveData {
   hasLiveData: boolean; total: number; critical: number; high: number;
@@ -57,8 +82,8 @@ export default function TrafficPage() {
 
   useEffect(() => {
     fetch('/api/findings/traffic').then(r => r.json())
-      .then(d => { if (d.hasLiveData) setLive(d); }).catch(() => {});
-  }, []);
+      .then(d => { if (d.hasLiveData) setLive(d); else setLive(null); }).catch(() => {});
+  }, [currentClient.key]);
 
   // Reset simulator values on client change for repeatable demo presentations
   useEffect(() => {
@@ -293,6 +318,9 @@ export default function TrafficPage() {
             </div>
           ))}
         </div>
+
+        {/* Cockpit telemetry card */}
+        <ModuleCockpitCard config={trafficCockpitConfig} live={live as any} />
 
         {/* ========================================================================= */}
         {/* VOLUME CHART & SPIKES ROW */}

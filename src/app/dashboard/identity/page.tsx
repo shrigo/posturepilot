@@ -1,6 +1,31 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useClient } from '@/context/ClientContext';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const identityCockpitConfig: ModuleCockpitConfig = {
+  title: 'Identity PreCheck Telemetry',
+  badge: 'Module 07',
+  apiEndpoint: '',
+  rings: [
+    { label: 'MFA%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'Compliant%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'Clean%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'IDENTITY',
+  funnel: [
+    { label: 'SSO Identities', sublabel: 'Total directories SSO users mapped', color: '#7c3aed' },
+    { label: 'Privilege Drifts', sublabel: 'IAM users with excessive role drift', color: '#ef4444' },
+    { label: 'MFA Gaps', sublabel: 'Active users without MFA enforcement', color: '#ea580c' },
+    { label: 'Orphans Disabled', sublabel: 'Orphaned stale accounts deactivated', color: '#10b981' },
+  ],
+  gates: ['MFA CHECK', 'PRIV AUDIT', 'ORPHAN SWEEP'],
+  syncLabel: 'SSO Directories Mapped',
+  checklist: [
+    { name: 'Directory Integration', desc: 'Secure Active Directory / Okta SSO authentication endpoints.' },
+    { name: 'MFA Enforcement', desc: 'Audit and enforce multi-factor authentication coverage.' },
+  ],
+};
 
 // Standard identity directory connections
 const clientIdentityMeta = {
@@ -360,6 +385,9 @@ export default function IdentityPage() {
         </div>
 
       </div>
+
+      {/* Cockpit telemetry card */}
+      <ModuleCockpitCard config={identityCockpitConfig} live={null} />
 
       {/* ── ROW 2: SSO TRAVEL ANOMALIES & ROLE DRIFT AUDIT ── */}
       <div className="grid-2" style={{ marginBottom: '1.25rem' }}>

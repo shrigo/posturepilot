@@ -3,6 +3,31 @@ import { useEffect, useState } from 'react';
 import { useClient } from '@/context/ClientContext';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Link from 'next/link';
+import ModuleCockpitCard, { ModuleCockpitConfig, ModuleLiveData } from '@/components/ModuleCockpitCard';
+
+const networkCockpitConfig: ModuleCockpitConfig = {
+  title: 'Network Runway Telemetry',
+  badge: 'Module 03',
+  apiEndpoint: '/api/findings/network',
+  rings: [
+    { label: 'Inbound%', color: '#10b981', glowColor: 'rgba(16,185,129,0.35)' },
+    { label: 'Lateral%', color: '#a78bfa', glowColor: 'rgba(167,139,250,0.35)' },
+    { label: 'Egress%', color: '#3b82f6', glowColor: 'rgba(59,130,246,0.35)' },
+  ],
+  indexLabel: 'RUNWAY',
+  funnel: [
+    { label: 'Packets Logged', sublabel: 'Total firewall ingress packets logged', color: '#7c3aed' },
+    { label: 'Port Probes', sublabel: 'Probes on restricted ports detected', color: '#ef4444' },
+    { label: 'Geo-Blocked IPs', sublabel: 'Connection attempts from restricted geo-zones', color: '#ea580c' },
+    { label: 'Clean Payloads', sublabel: 'Valid non-malicious payloads forwarded', color: '#10b981' },
+  ],
+  gates: ['FIREWALL', 'PORT SCAN', 'GEO FENCE'],
+  syncLabel: 'Network Gateways Scanned',
+  checklist: [
+    { name: 'Boundary Protection', desc: 'Verify perimeter firewall access controls and geo-IP blocks.' },
+    { name: 'Port Compliance', desc: 'Scan external interfaces to audit and close vulnerable ports.' },
+  ],
+};
 
 // Client-Specific Network Gateways and Base Indices
 const clientNetworkMeta = {
@@ -567,6 +592,21 @@ export default function NetworkPage() {
 
   // Mock Recharts chart data (weekly activity flow) scaled by selected cloud provider
   const isUR = currentClient.key === 'UR';
+  // Fetch live findings data
+  const [liveData, setLiveData] = useState<ModuleLiveData | null>(null);
+  useEffect(() => {
+    let active = true;
+    fetch('/api/findings/network')
+      .then(res => res.json())
+      .then(data => {
+        if (active && !data.error) {
+          setLiveData(data);
+        }
+      })
+      .catch(err => console.error('[network fetch]', err));
+    return () => { active = false; };
+  }, [currentClient.key]);
+
   const scale = cloudProvider === 'AWS' ? 1.5 : cloudProvider === 'Azure' ? 1.0 : 0.6;
   const firewallChartData = [
     { day: 'Mon', blocked: Math.round((isUR ? 240 : 1240) * scale), allowed: Math.round((isUR ? 8400 : 3800) * scale) },
@@ -684,6 +724,9 @@ export default function NetworkPage() {
         </div>
 
       </div>
+
+      {/* Cockpit telemetry card */}
+      <ModuleCockpitCard config={networkCockpitConfig} live={liveData} />
 
       {/* ── ROW 1: FIREWALL ACL PORT SWEEPER & IDS INTRUSION prevenion WIDGETS ── */}
       <div className="grid-2" style={{ marginBottom: '1.25rem' }}>
