@@ -344,9 +344,9 @@ export default function Page() {
             <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:540}}>
               Stop auditing the past. Ingest live code, cloud, and host<br/>
               telemetry to orchestrate real-time clearance gates and<br/>
-              auto-dispatch playbooks. Manage active threat waves, verify<br/>
-              compliance, and transform fragmented vulnerability noise<br/>
-              into 12 structured, framework-mapped command decks.
+              auto-dispatch playbooks. Manage active threat waves,<br/>
+              verify compliance, and transform fragmented vulnerability<br/>
+              noise into 12 structured, framework-mapped command decks.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
