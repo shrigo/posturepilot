@@ -104,7 +104,7 @@ export default function Page() {
           .hamburger{display:flex!important;}
           .mobile-banner{display:none!important;}
           .hero-grid{grid-template-columns:1fr!important;text-align:center;}
-          .hero-grid p{margin-left:auto!important;margin-right:auto!important;}
+          .hero-grid p{margin-left:auto!important;margin-right:auto!important;font-size:0.9rem!important;line-height:1.5!important;padding:0 0.5rem;}
           .shield-wrap{justify-content:center!important;order:1!important;}
           .shield-wrap svg{width:100%!important;max-width:400px!important;height:auto!important;margin:0 auto;}
           .hero-left{order:2!important;}
@@ -136,6 +136,9 @@ export default function Page() {
         }
         @media(max-width:400px){
           .nav-try-free{display:none!important;}
+        }
+        @media(max-width:768px){
+          .desktop-br { display: none !important; }
         }
         
         /* Twinkling Star AI sparkle animation (No rotation, flashes scale/brightness) */
@@ -342,10 +345,10 @@ export default function Page() {
             </h1>
 
             <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:570}}>
-              Stop auditing the past. Ingest live code, cloud, and host<br/>
-              telemetry to orchestrate real-time clearance gates and<br/>
-              auto-dispatch playbooks. Manage active threat waves,<br/>
-              verify compliance guardrails, and transform fragmented<br/>
+              Stop auditing the past. Ingest live code, cloud, and host<br className="desktop-br"/>
+              telemetry to orchestrate real-time clearance gates and<br className="desktop-br"/>
+              auto-dispatch playbooks. Manage active threat waves,<br className="desktop-br"/>
+              verify compliance guardrails, and transform fragmented<br className="desktop-br"/>
               vulnerability noise into a unified Posture Flight Deck.
             </p>
 
