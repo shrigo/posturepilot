@@ -84,10 +84,10 @@ export default function Page() {
         .hcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,70,229,0.15)!important}
         .hcard{transition:all 0.2s}
         .nav-link{transition:all 0.18s ease;border-radius:8px;padding:0.35rem 0.75rem;}
-        .nav-configure:hover{background:#1e2d6e;color:#fff!important;}
-        .nav-monitor:hover{background:#4f46e5;color:#fff!important;}
-        .nav-secure:hover{background:#16a34a;color:#fff!important;}
-        .nav-report:hover{background:#7c3aed;color:#fff!important;}
+        .nav-configure:hover{background:#000d55;color:#fff!important;}
+        .nav-monitor:hover{background:#5722e1;color:#fff!important;}
+        .nav-secure:hover{background:#3f7000;color:#fff!important;}
+        .nav-report:hover{background:#fd590b;color:#fff!important;}
         .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
         .hamburger span{display:block;width:22px;height:2px;background:#0f172a;border-radius:2px;transition:all 0.2s;}
         .mobile-menu{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e7ff;padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
