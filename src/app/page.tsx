@@ -340,8 +340,8 @@ export default function Page() {
             </div>
 
             <h1 style={{fontSize:"clamp(2.2rem,3.6vw,3.2rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.1,color:"#0f172a",marginBottom:"1.25rem"}}>
-              <span style={{color:"#1e2d6e"}}>Command Your Security</span><br/>
-              <span style={{background:"linear-gradient(90deg,#6d28d9,#7c3aed)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>with Next-Gen AI-ASPM</span>
+              <span style={{color:"#010859"}}>Command Your Security</span><br/>
+              <span style={{color:"#4103d9"}}>with Next-Gen AI-ASPM</span>
             </h1>
 
             <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:570}}>
