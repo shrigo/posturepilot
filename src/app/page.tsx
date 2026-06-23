@@ -192,8 +192,8 @@ export default function Page() {
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Secure","Report"] as const).map((t,i,a)=>(
             <span key={t} style={{display:"flex",alignItems:"center"}}>
-              <a href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())} className={`nav-link nav-${t.toLowerCase()}`} style={{color: i===0?"#1e2d6e": i===1?"#4f46e5": i===2?"#16a34a":"#7c3aed",textDecoration:"none"}}>{t}</a>
-              {i<a.length-1 && <span style={{display:"inline-block",width:6,height:18,background:"#f97316",borderRadius:3,margin:"0 0.35rem",flexShrink:0}}/>}
+              <a href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())} className={`nav-link nav-${t.toLowerCase()}`} style={{color: i===0?"#000d55": i===1?"#5722e1": i===2?"#3f7000":"#fd590b",textDecoration:"none"}}>{t}</a>
+              {i<a.length-1 && <span style={{display:"inline-block",width:2,height:18,background:"#f97316",borderRadius:1,margin:"0 0.35rem",flexShrink:0}}/>}
             </span>
           ))}
         </div>
