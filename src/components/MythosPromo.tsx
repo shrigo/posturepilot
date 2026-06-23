@@ -850,10 +850,10 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
         <div className="mythos-sidebar">
           {/* Logo at top */}
           <div className="mythos-sidebar-logo">
-            <img
-              src="/logo_promo.jpg"
-              alt="PosturePilot"
-              style={{ height: "68px", width: "auto", objectFit: "contain" }}
+            <img 
+              src="/hlogotag_v2.jpg" 
+              alt="PosturePilot" 
+              style={{ height: "42px", width: "auto", objectFit: "contain" }}
             />
           </div>
 
