@@ -496,7 +496,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            background: transparent;
+            background: #fff;
           }
           .mythos-sidebar-modules {
             flex: 1;
