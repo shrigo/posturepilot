@@ -853,7 +853,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             <img 
               src="/hlogotag_v2.jpg" 
               alt="PosturePilot" 
-              style={{ height: "42px", width: "auto", objectFit: "contain" }}
+              style={{ height: "68px", width: "auto", objectFit: "contain" }}
             />
           </div>
 
