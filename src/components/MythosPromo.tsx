@@ -331,19 +331,184 @@ const MODULES_DATA: FeatureModule[] = [
   }
 ];
 
+const PostureClearanceSVG = ({ 
+  hostsPct, 
+  cloudPct, 
+  codePct, 
+  postureScore, 
+  isUnderAttack 
+}: { 
+  hostsPct: number; 
+  cloudPct: number; 
+  codePct: number; 
+  postureScore: number; 
+  isUnderAttack: boolean; 
+}) => {
+  const [animProgress, setAnimProgress] = useState(0);
+
+  useEffect(() => {
+    setAnimProgress(0);
+    let start: number | null = null;
+    const duration = 1800; // 1.8 seconds for smooth premium presentation
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progressVal = Math.min(elapsed / duration, 1);
+      
+      // Easing function: easeOutQuart
+      const easeOutQuart = 1 - Math.pow(1 - progressVal, 4);
+      setAnimProgress(easeOutQuart);
+
+      if (progressVal < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      animationFrameId = requestAnimationFrame(animate);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [hostsPct, cloudPct, codePct, postureScore]);
+
+  const currentCodePct = Math.round(codePct * animProgress);
+  const currentCloudPct = Math.round(cloudPct * animProgress);
+  const currentHostsPct = Math.round(hostsPct * animProgress);
+  const currentScore = Math.round(postureScore * animProgress);
+
+  const currentCodePctFloat = codePct * animProgress;
+  const currentCloudPctFloat = cloudPct * animProgress;
+  const currentHostsPctFloat = hostsPct * animProgress;
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <svg viewBox="0 0 280 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+        <defs>
+          <radialGradient id="jpiCore" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor={isUnderAttack ? "#ef4444" : "#10b981"} stopOpacity="0.18" />
+            <stop offset="100%" stopColor={isUnderAttack ? "#ef4444" : "#10b981"} stopOpacity="0" />
+          </radialGradient>
+          <filter id="glow-g">
+            <feGaussianBlur stdDeviation="1.8" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+
+        {/* ── Background orbit rings ── */}
+        <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+        <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+        <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+        {/* Rotating orbit dots for 3 rings */}
+        <circle cx="100" cy="28" r="2.2" fill="#3b82f6" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 8s linear infinite" }} />
+        <circle cx="100" cy="44" r="2.2" fill="#a78bfa" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 6s linear infinite" }} />
+        <circle cx="100" cy="60" r="2.2" fill="#10b981" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 4s linear infinite" }} />
+
+        {/* ── Outer ring: Host Posture ── */}
+        <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+        <circle cx="100" cy="100" r="72" fill="none" stroke="#3b82f6" strokeWidth="6"
+          strokeDasharray={`${2 * Math.PI * 72}`} strokeDashoffset={`${2 * Math.PI * 72 * (1 - currentHostsPctFloat / 100)}`} strokeLinecap="round"
+          style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(59,130,246,0.5))" }} />
+        <text x="100" y="-172" textAnchor="middle" fill="#3b82f6" fontSize="7" fontFamily="monospace" fontWeight="700"
+          style={{ transform: "rotate(90deg) translateY(-100px)", transformOrigin: "100px 100px" }}>HOSTS {currentHostsPct}%</text>
+
+        {/* ── Middle ring: Cloud Posture ── */}
+        <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+        <circle cx="100" cy="100" r="56" fill="none" stroke="#a78bfa" strokeWidth="6"
+          strokeDasharray={`${2 * Math.PI * 56}`} strokeDashoffset={`${2 * Math.PI * 56 * (1 - currentCloudPctFloat / 100)}`} strokeLinecap="round"
+          style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(167,139,250,0.5))" }} />
+
+        {/* ── Inner ring: Code Posture ── */}
+        <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+        <circle cx="100" cy="100" r="40" fill="none" stroke="#10b981" strokeWidth="6"
+          strokeDasharray={`${2 * Math.PI * 40}`} strokeDashoffset={`${2 * Math.PI * 40 * (1 - currentCodePctFloat / 100)}`} strokeLinecap="round"
+          style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 4px rgba(16,185,129,0.6))" }} />
+
+        {/* ── Core glow fill ── */}
+        <circle cx="100" cy="100" r="30" fill="url(#jpiCore)" />
+
+        {/* ── JPI Center label ── */}
+        <text x="100" y="96" textAnchor="middle" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="900">{currentScore}%</text>
+        <text x="100" y="108" textAnchor="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">JPI SCORE</text>
+
+        {/* ── Legend labels — horizontal strip at bottom ── */}
+        <line x1="10" y1="178" x2="250" y2="178" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+        <circle cx="30" cy="188" r="4" fill="#10b981" />
+        <text x="38" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Code {codePct}%</text>
+        <circle cx="105" cy="188" r="4" fill="#a78bfa" />
+        <text x="113" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Cloud {cloudPct}%</text>
+        <circle cx="180" cy="188" r="4" fill="#3b82f6" />
+        <text x="188" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Hosts {hostsPct}%</text>
+
+        {/* ── Clearance Gates panel (right side) ── */}
+        <text x="198" y="38" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">CLEARANCE GATES</text>
+
+        {/* Gate 1: Build — PASS */}
+        <rect x="198" y="46" width="70" height="18" rx="4" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.8" />
+        <circle cx="208" cy="55" r="3.5" fill="#10b981" filter="url(#glow-g)" />
+        <text x="215" y="58" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">BUILD</text>
+        <text x="265" y="58" textAnchor="end" fill="#10b981" fontSize="6" fontFamily="monospace" fontWeight="900">PASS</text>
+
+        {/* Gate 2: Deploy — PASS */}
+        <rect x="198" y="70" width="70" height="18" rx="4" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.8" />
+        <circle cx="208" cy="79" r="3.5" fill="#10b981" filter="url(#glow-g)" />
+        <text x="215" y="82" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">DEPLOY</text>
+        <text x="265" y="82" textAnchor="end" fill="#10b981" fontSize="6" fontFamily="monospace" fontWeight="900">PASS</text>
+
+        {/* Gate 3: Config — FAIL when under attack */}
+        <rect 
+          x="198" 
+          y="94" 
+          width="70" 
+          height="18" 
+          rx="4" 
+          fill={isUnderAttack ? "rgba(239,68,68,0.08)" : "rgba(16,185,129,0.08)"} 
+          stroke={isUnderAttack ? "rgba(239,68,68,0.45)" : "rgba(16,185,129,0.35)"} 
+          strokeWidth="0.8" 
+        />
+        <circle 
+          cx="208" 
+          cy="103" 
+          r="3.5" 
+          fill={isUnderAttack ? "#ef4444" : "#10b981"} 
+          style={isUnderAttack ? { animation: "pulseRed 1.2s infinite" } : {}} 
+        />
+        <text x="215" y="106" fill={isUnderAttack ? "#ef4444" : "#10b981"} fontSize="6.5" fontFamily="monospace" fontWeight="700">CONFIG</text>
+        <text x="265" y="106" textAnchor="end" fill={isUnderAttack ? "#ef4444" : "#10b981"} fontSize="6" fontFamily="monospace" fontWeight="900">
+          {isUnderAttack ? "FAIL" : "PASS"}
+        </text>
+
+        {/* ── Threat Intel Sync node ── */}
+        <text x="198" y="128" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">THREAT INTEL SYNC</text>
+        <circle cx="208" cy="145" r="6" fill="none" stroke="rgba(245,158,11,0.2)" strokeWidth="1" style={{ animation: "pulseGlow 2s infinite" }} />
+        <circle cx="208" cy="145" r="4" fill="#f59e0b" opacity="0.9" />
+        <text x="215" y="149" fill="#fbbf24" fontSize="6.5" fontFamily="monospace" fontWeight="700">
+          {isUnderAttack ? "ATTACK WAVE" : "5 FEEDS LIVE"}
+        </text>
+
+        {/* ── Scanline overlay ── */}
+        <rect x="0" y="0" width="280" height="2" fill={isUnderAttack ? "rgba(239,68,68,0.18)" : "rgba(16,185,129,0.15)"} rx="1"
+          style={{ animation: "jpiScanline 3.5s linear infinite", transformOrigin: "center" }} />
+        {/* Separator lines between legend items */}
+        <line x1="97" y1="182" x2="97" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
+        <line x1="172" y1="182" x2="172" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
+      </svg>
+    </div>
+  );
+};
+
 export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: () => void; initialSlide?: number }) {
   const { currentClient, isEnterpriseMode, isUnderAttack, slaThresholds } = useClient();
   const [activeModuleId, setActiveModuleId] = useState<string>(MODULES_DATA[0].id);
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(initialSlide === 0);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const [drawProgress, setDrawProgress] = useState(0);
-
-  useEffect(() => {
-    setDrawProgress(0);
-    const t = setTimeout(() => setDrawProgress(1), 100);
-    return () => clearTimeout(t);
-  }, [activeModuleId, activeSlide]);
 
   const totalSlides = 3;
 
@@ -453,11 +618,6 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
   const codePct = Math.min(100, Math.round(postureScore * 1.0));
   const cloudPct = Math.min(100, Math.round(postureScore * 0.95));
   const hostsPct = Math.min(100, Math.round(postureScore * 0.87));
-
-  const currentCodePct = drawProgress ? codePct : 0;
-  const currentCloudPct = drawProgress ? cloudPct : 0;
-  const currentHostsPct = drawProgress ? hostsPct : 0;
-  const currentScore = drawProgress ? postureScore : 0;
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -946,118 +1106,13 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                       
                       {/* Posture Clearance */}
                       {activeModuleId === "posture" && (
-                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          <svg viewBox="0 0 280 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-                            <defs>
-                              <radialGradient id="jpiCore" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stopColor={isUnderAttack ? "#ef4444" : "#10b981"} stopOpacity="0.18" />
-                                <stop offset="100%" stopColor={isUnderAttack ? "#ef4444" : "#10b981"} stopOpacity="0" />
-                              </radialGradient>
-                              <filter id="glow-g">
-                                <feGaussianBlur stdDeviation="1.8" result="blur" />
-                                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                              </filter>
-                            </defs>
-
-                            {/* ── Background orbit rings ── */}
-                            <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-                            <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-                            <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-                            {/* Rotating orbit dots for 3 rings */}
-                            <circle cx="100" cy="28" r="2.2" fill="#3b82f6" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 8s linear infinite" }} />
-                            <circle cx="100" cy="44" r="2.2" fill="#a78bfa" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 6s linear infinite" }} />
-                            <circle cx="100" cy="60" r="2.2" fill="#10b981" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 4s linear infinite" }} />
-
-                            {/* ── Outer ring: Host Posture ── */}
-                            <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
-                            <circle cx="100" cy="100" r="72" fill="none" stroke="#3b82f6" strokeWidth="6"
-                              strokeDasharray={`${2 * Math.PI * 72}`} strokeDashoffset={`${2 * Math.PI * 72 * (1 - currentHostsPct / 100)}`} strokeLinecap="round"
-                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(59,130,246,0.5))", transition: "stroke-dashoffset 0.8s ease" }} />
-                            <text x="100" y="-172" textAnchor="middle" fill="#3b82f6" fontSize="7" fontFamily="monospace" fontWeight="700"
-                              style={{ transform: "rotate(90deg) translateY(-100px)", transformOrigin: "100px 100px" }}>HOSTS {currentHostsPct}%</text>
-
-                            {/* ── Middle ring: Cloud Posture ── */}
-                            <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
-                            <circle cx="100" cy="100" r="56" fill="none" stroke="#a78bfa" strokeWidth="6"
-                              strokeDasharray={`${2 * Math.PI * 56}`} strokeDashoffset={`${2 * Math.PI * 56 * (1 - currentCloudPct / 100)}`} strokeLinecap="round"
-                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(167,139,250,0.5))", transition: "stroke-dashoffset 0.8s ease" }} />
-
-                            {/* ── Inner ring: Code Posture ── */}
-                            <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
-                            <circle cx="100" cy="100" r="40" fill="none" stroke="#10b981" strokeWidth="6"
-                              strokeDasharray={`${2 * Math.PI * 40}`} strokeDashoffset={`${2 * Math.PI * 40 * (1 - currentCodePct / 100)}`} strokeLinecap="round"
-                              style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 4px rgba(16,185,129,0.6))", transition: "stroke-dashoffset 0.8s ease" }} />
-
-                            {/* ── Core glow fill ── */}
-                            <circle cx="100" cy="100" r="30" fill="url(#jpiCore)" />
-
-                            {/* ── JPI Center label ── */}
-                            <text x="100" y="96" textAnchor="middle" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="900">{currentScore}%</text>
-                            <text x="100" y="108" textAnchor="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">JPI SCORE</text>
-
-                            {/* ── Legend labels — horizontal strip at bottom ── */}
-                            <line x1="10" y1="178" x2="250" y2="178" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-                            <circle cx="30" cy="188" r="4" fill="#10b981" />
-                            <text x="38" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Code {codePct}%</text>
-                            <circle cx="105" cy="188" r="4" fill="#a78bfa" />
-                            <text x="113" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Cloud {cloudPct}%</text>
-                            <circle cx="180" cy="188" r="4" fill="#3b82f6" />
-                            <text x="188" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Hosts {hostsPct}%</text>
-
-                            {/* ── Clearance Gates panel (right side) ── */}
-                            <text x="198" y="38" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">CLEARANCE GATES</text>
-
-                            {/* Gate 1: Build — PASS */}
-                            <rect x="198" y="46" width="70" height="18" rx="4" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.8" />
-                            <circle cx="208" cy="55" r="3.5" fill="#10b981" filter="url(#glow-g)" />
-                            <text x="215" y="58" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">BUILD</text>
-                            <text x="265" y="58" textAnchor="end" fill="#10b981" fontSize="6" fontFamily="monospace" fontWeight="900">PASS</text>
-
-                            {/* Gate 2: Deploy — PASS */}
-                            <rect x="198" y="70" width="70" height="18" rx="4" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.8" />
-                            <circle cx="208" cy="79" r="3.5" fill="#10b981" filter="url(#glow-g)" />
-                            <text x="215" y="82" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">DEPLOY</text>
-                            <text x="265" y="82" textAnchor="end" fill="#10b981" fontSize="6" fontFamily="monospace" fontWeight="900">PASS</text>
-
-                            {/* Gate 3: Config — FAIL when under attack */}
-                            <rect 
-                              x="198" 
-                              y="94" 
-                              width="70" 
-                              height="18" 
-                              rx="4" 
-                              fill={isUnderAttack ? "rgba(239,68,68,0.08)" : "rgba(16,185,129,0.08)"} 
-                              stroke={isUnderAttack ? "rgba(239,68,68,0.45)" : "rgba(16,185,129,0.35)"} 
-                              strokeWidth="0.8" 
-                            />
-                            <circle 
-                              cx="208" 
-                              cy="103" 
-                              r="3.5" 
-                              fill={isUnderAttack ? "#ef4444" : "#10b981"} 
-                              style={isUnderAttack ? { animation: "pulseRed 1.2s infinite" } : {}} 
-                            />
-                            <text x="215" y="106" fill={isUnderAttack ? "#ef4444" : "#10b981"} fontSize="6.5" fontFamily="monospace" fontWeight="700">CONFIG</text>
-                            <text x="265" y="106" textAnchor="end" fill={isUnderAttack ? "#ef4444" : "#10b981"} fontSize="6" fontFamily="monospace" fontWeight="900">
-                              {isUnderAttack ? "FAIL" : "PASS"}
-                            </text>
-
-                            {/* ── Threat Intel Sync node ── */}
-                            <text x="198" y="128" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">THREAT INTEL SYNC</text>
-                            <circle cx="208" cy="145" r="6" fill="none" stroke="rgba(245,158,11,0.2)" strokeWidth="1" style={{ animation: "pulseGlow 2s infinite" }} />
-                            <circle cx="208" cy="145" r="4" fill="#f59e0b" opacity="0.9" />
-                            <text x="215" y="149" fill="#fbbf24" fontSize="6.5" fontFamily="monospace" fontWeight="700">
-                              {isUnderAttack ? "ATTACK WAVE" : "5 FEEDS LIVE"}
-                            </text>
-
-                            {/* ── Scanline overlay ── */}
-                            <rect x="0" y="0" width="280" height="2" fill={isUnderAttack ? "rgba(239,68,68,0.18)" : "rgba(16,185,129,0.15)"} rx="1"
-                              style={{ animation: "jpiScanline 3.5s linear infinite", transformOrigin: "center" }} />
-                            {/* Separator lines between legend items */}
-                            <line x1="97" y1="182" x2="97" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
-                            <line x1="172" y1="182" x2="172" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
-                          </svg>
-                        </div>
+                        <PostureClearanceSVG
+                          hostsPct={hostsPct}
+                          cloudPct={cloudPct}
+                          codePct={codePct}
+                          postureScore={postureScore}
+                          isUnderAttack={isUnderAttack}
+                        />
                       )}
 
                       {/* Cloud Altitude */}

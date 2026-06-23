@@ -41,8 +41,7 @@ export default function CockpitPipelineCard({
   const { currentClient, isEnterpriseMode, isUnderAttack, slaThresholds } = useClient();
 
   // ── Mount animation: rings draw from 0 → target on load & data change ──
-  const [animated, setAnimated] = useState(false);
-  const [displayScore, setDisplayScore] = useState(0);
+  const [animProgress, setAnimProgress] = useState(0);
 
   const hasLive = !!live && live.total > 0;
 
@@ -141,40 +140,51 @@ export default function CockpitPipelineCard({
   const circMiddle = 2 * Math.PI * rMiddle;
   const circInner  = 2 * Math.PI * rInner;
 
-  // Target dash values (full arc at target %)
-  const targetOuter  = (hostsPct / 100) * circOuter;
-  const targetMiddle = (cloudPct / 100) * circMiddle;
-  const targetInner  = (codePct  / 100) * circInner;
-
-  // ── Animation: draw from zero ONLY when client changes ──────────────────
+  // ── Animation: requestAnimationFrame counting up smoothly over 1.8 seconds ──
   useEffect(() => {
-    setAnimated(false);
-    setDisplayScore(0);
-    const t = setTimeout(() => setAnimated(true), 60);
-    return () => clearTimeout(t);
-  }, [currentClient.key]); // ← ONLY client switch triggers redraw from zero
+    setAnimProgress(0);
+    let start: number | null = null;
+    const duration = 1800; // 1.8 seconds for smooth premium presentation
+    let animationFrameId: number;
 
-  // Counter animation: 0 → postureScore over ~900ms
-  useEffect(() => {
-    if (!animated) return;
-    const duration = 2000;
-    const start = performance.now();
-    let raf: number;
-    const step = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      // Ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayScore(Math.round(eased * postureScore));
-      if (progress < 1) raf = requestAnimationFrame(step);
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progressVal = Math.min(elapsed / duration, 1);
+      
+      // Easing function: easeOutQuart
+      const easeOutQuart = 1 - Math.pow(1 - progressVal, 4);
+      setAnimProgress(easeOutQuart);
+
+      if (progressVal < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
     };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [animated, postureScore]);
 
-  // drawn arc length: 0 when rings are empty, target when fully filled
-  const dashOuter  = animated ? targetOuter  : 0;
-  const dashMiddle = animated ? targetMiddle : 0;
-  const dashInner  = animated ? targetInner  : 0;
+    const timeoutId = setTimeout(() => {
+      animationFrameId = requestAnimationFrame(animate);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [currentClient.key, postureScore]);
+
+  const currentCodePct = Math.round(codePct * animProgress);
+  const currentCloudPct = Math.round(cloudPct * animProgress);
+  const currentHostsPct = Math.round(hostsPct * animProgress);
+  const displayScore = Math.round(postureScore * animProgress);
+
+  const currentCodePctFloat = codePct * animProgress;
+  const currentCloudPctFloat = cloudPct * animProgress;
+  const currentHostsPctFloat = hostsPct * animProgress;
+
+  const dashOuter  = (currentHostsPctFloat / 100) * circOuter;
+  const dashMiddle = (currentCloudPctFloat / 100) * circMiddle;
+  const dashInner  = (currentCodePctFloat / 100) * circInner;
 
   const gateColor  = (fail: boolean) => fail ? '#ef4444' : '#10b981';
   const gateFill   = (fail: boolean) => fail ? 'rgba(239,68,68,0.08)' : 'rgba(16,185,129,0.08)';
@@ -325,33 +335,28 @@ export default function CockpitPipelineCard({
               <circle key={i} cx="100" cy="100" r={r} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
             ))}
 
-            {/* Orbiting dot */}
-            <circle cx="100" cy="28" r="2.2" fill="#7c3aed" opacity="0.8"
-              style={{ transformOrigin: '100px 100px', animation: 'rotateClockwise 8s linear infinite' }} />
+            {/* Rotating orbit dots for 3 rings */}
+            <circle cx="100" cy="28" r="2.2" fill="#3b82f6" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 8s linear infinite" }} />
+            <circle cx="100" cy="44" r="2.2" fill="#a78bfa" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 6s linear infinite" }} />
+            <circle cx="100" cy="60" r="2.2" fill="#10b981" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 4s linear infinite" }} />
 
             {/* ── Hosts ring (outer / blue) ── */}
             <circle cx="100" cy="100" r={rOuter} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
             <circle cx="100" cy="100" r={rOuter} fill="none" stroke="#3b82f6" strokeWidth="5.5"
               strokeDasharray={circOuter} strokeDashoffset={circOuter - dashOuter} strokeLinecap="round"
-              style={{ transform: 'rotate(-90deg)', transformOrigin: '100px 100px',
-                filter: 'drop-shadow(0 0 3px rgba(59,130,246,0.5))',
-                transition: 'stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1) 0.5s' }} />
+              style={{ transform: 'rotate(-90deg)', transformOrigin: '100px 100px', filter: 'drop-shadow(0 0 3px rgba(59,130,246,0.5))' }} />
 
             {/* ── Cloud ring (middle / purple) ── */}
             <circle cx="100" cy="100" r={rMiddle} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
             <circle cx="100" cy="100" r={rMiddle} fill="none" stroke="#a78bfa" strokeWidth="5.5"
               strokeDasharray={circMiddle} strokeDashoffset={circMiddle - dashMiddle} strokeLinecap="round"
-              style={{ transform: 'rotate(-90deg)', transformOrigin: '100px 100px',
-                filter: 'drop-shadow(0 0 3px rgba(167,139,250,0.5))',
-                transition: 'stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1) 0.3s' }} />
+              style={{ transform: 'rotate(-90deg)', transformOrigin: '100px 100px', filter: 'drop-shadow(0 0 3px rgba(167,139,250,0.5))' }} />
 
             {/* ── Code ring (inner / green) ── */}
             <circle cx="100" cy="100" r={rInner} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
             <circle cx="100" cy="100" r={rInner} fill="none" stroke="#10b981" strokeWidth="5.5"
               strokeDasharray={circInner} strokeDashoffset={circInner - dashInner} strokeLinecap="round"
-              style={{ transform: 'rotate(-90deg)', transformOrigin: '100px 100px',
-                filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.6))',
-                transition: 'stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1) 0.1s' }} />
+              style={{ transform: 'rotate(-90deg)', transformOrigin: '100px 100px', filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.6))' }} />
 
             {/* Core glow */}
             <circle cx="100" cy="100" r="30" fill="url(#jpiCoreDynamic)" />
