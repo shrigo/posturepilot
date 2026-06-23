@@ -74,8 +74,7 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
   const { currentClient, isEnterpriseMode, isUnderAttack } = useClient();
 
   // ── Animation state ────────────────────────────────────────────────────────
-  const [animated, setAnimated] = useState(false);
-  const [displayScore, setDisplayScore] = useState(0);
+  const [animProgress, setAnimProgress] = useState(0);
 
   const hasLive = !!live && (live.hasLiveData === true || (live.total ?? 0) > 0);
 
@@ -104,38 +103,51 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
   const circMiddle = 2 * Math.PI * rMiddle;
   const circInner  = 2 * Math.PI * rInner;
 
-  const targetOuter  = (outerPct  / 100) * circOuter;
-  const targetMiddle = (middlePct / 100) * circMiddle;
-  const targetInner  = (innerPct  / 100) * circInner;
-
-  // drawn arc: 0 when empty, target when full
-  const dashOuter  = animated ? targetOuter  : 0;
-  const dashMiddle = animated ? targetMiddle : 0;
-  const dashInner  = animated ? targetInner  : 0;
-
-  // ── Animate on client switch ONLY ─────────────────────────────────────────
+  // ── Animation: requestAnimationFrame counting up smoothly over 1.8 seconds ──
   useEffect(() => {
-    setAnimated(false);
-    setDisplayScore(0);
-    const t = setTimeout(() => setAnimated(true), 60);
-    return () => clearTimeout(t);
-  }, [currentClient.key]);
+    setAnimProgress(0);
+    let start: number | null = null;
+    const duration = 1800; // 1.8 seconds for smooth premium presentation
+    let animationFrameId: number;
 
-  // Score counter: 0 → score over 2s
-  useEffect(() => {
-    if (!animated) return;
-    const duration = 2000;
-    const start = performance.now();
-    let raf: number;
-    const step = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayScore(Math.round(eased * score));
-      if (progress < 1) raf = requestAnimationFrame(step);
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progressVal = Math.min(elapsed / duration, 1);
+      
+      // Easing function: easeOutQuart
+      const easeOutQuart = 1 - Math.pow(1 - progressVal, 4);
+      setAnimProgress(easeOutQuart);
+
+      if (progressVal < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
     };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [animated, score]);
+
+    const timeoutId = setTimeout(() => {
+      animationFrameId = requestAnimationFrame(animate);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [currentClient.key, score]);
+
+  const currentInnerPct = Math.round(innerPct * animProgress);
+  const currentMiddlePct = Math.round(middlePct * animProgress);
+  const currentOuterPct = Math.round(outerPct * animProgress);
+  const displayScore = Math.round(score * animProgress);
+
+  const currentInnerPctFloat = innerPct * animProgress;
+  const currentMiddlePctFloat = middlePct * animProgress;
+  const currentOuterPctFloat = outerPct * animProgress;
+
+  const dashOuter  = (currentOuterPctFloat / 100) * circOuter;
+  const dashMiddle = (currentMiddlePctFloat / 100) * circMiddle;
+  const dashInner  = (currentInnerPctFloat / 100) * circInner;
 
   // ── Funnel values ──────────────────────────────────────────────────────────
   const attackMult = isUnderAttack ? 3.2 : 1.0;
@@ -289,33 +301,28 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
               <circle key={i} cx="100" cy="100" r={r} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
             ))}
 
-            {/* Orbiting dot */}
-            <circle cx="100" cy="28" r="2.2" fill="#7c3aed" opacity="0.8"
-              style={{ transformOrigin:'100px 100px', animation:'mcRotate 8s linear infinite' }} />
+            {/* Rotating orbit dots for 3 rings */}
+            <circle cx="100" cy="28" r="2.2" fill={ro.color} opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "mcRotate 8s linear infinite" }} />
+            <circle cx="100" cy="44" r="2.2" fill={rm.color} opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "mcRotate 6s linear infinite" }} />
+            <circle cx="100" cy="60" r="2.2" fill={ri.color} opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "mcRotate 4s linear infinite" }} />
 
             {/* Outer ring */}
             <circle cx="100" cy="100" r={rOuter} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
             <circle cx="100" cy="100" r={rOuter} fill="none" stroke={ro.color} strokeWidth="5.5"
               strokeDasharray={circOuter} strokeDashoffset={circOuter - dashOuter} strokeLinecap="round"
-              style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px',
-                filter:`drop-shadow(0 0 3px ${ro.glowColor})`,
-                transition:'stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1) 0.5s' }} />
+              style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 3px ${ro.glowColor})` }} />
 
             {/* Middle ring */}
             <circle cx="100" cy="100" r={rMiddle} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
             <circle cx="100" cy="100" r={rMiddle} fill="none" stroke={rm.color} strokeWidth="5.5"
               strokeDasharray={circMiddle} strokeDashoffset={circMiddle - dashMiddle} strokeLinecap="round"
-              style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px',
-                filter:`drop-shadow(0 0 3px ${rm.glowColor})`,
-                transition:'stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1) 0.3s' }} />
+              style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 3px ${rm.glowColor})` }} />
 
             {/* Inner ring */}
             <circle cx="100" cy="100" r={rInner} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
             <circle cx="100" cy="100" r={rInner} fill="none" stroke={ri.color} strokeWidth="5.5"
               strokeDasharray={circInner} strokeDashoffset={circInner - dashInner} strokeLinecap="round"
-              style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px',
-                filter:`drop-shadow(0 0 4px ${ri.glowColor})`,
-                transition:'stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1) 0.1s' }} />
+              style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 4px ${ri.glowColor})` }} />
 
             {/* Core glow */}
             <circle cx="100" cy="100" r="30" fill={`url(#mcCore-${config.indexLabel})`} />
