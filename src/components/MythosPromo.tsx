@@ -337,6 +337,13 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
   const [activeSlide, setActiveSlide] = useState<number>(initialSlide);
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(initialSlide === 0);
   const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [drawProgress, setDrawProgress] = useState(0);
+
+  useEffect(() => {
+    setDrawProgress(0);
+    const t = setTimeout(() => setDrawProgress(1), 100);
+    return () => clearTimeout(t);
+  }, [activeModuleId, activeSlide]);
 
   const totalSlides = 3;
 
@@ -446,6 +453,11 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
   const codePct = Math.min(100, Math.round(postureScore * 1.0));
   const cloudPct = Math.min(100, Math.round(postureScore * 0.95));
   const hostsPct = Math.min(100, Math.round(postureScore * 0.87));
+
+  const currentCodePct = drawProgress ? codePct : 0;
+  const currentCloudPct = drawProgress ? cloudPct : 0;
+  const currentHostsPct = drawProgress ? hostsPct : 0;
+  const currentScore = drawProgress ? postureScore : 0;
 
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -951,34 +963,36 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                             <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
                             <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
                             <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-                            {/* Rotating orbit dot */}
-                            <circle cx="100" cy="28" r="2.2" fill="#7c3aed" opacity="0.7" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 8s linear infinite" }} />
+                            {/* Rotating orbit dots for 3 rings */}
+                            <circle cx="100" cy="28" r="2.2" fill="#3b82f6" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 8s linear infinite" }} />
+                            <circle cx="100" cy="44" r="2.2" fill="#a78bfa" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 6s linear infinite" }} />
+                            <circle cx="100" cy="60" r="2.2" fill="#10b981" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 4s linear infinite" }} />
 
                             {/* ── Outer ring: Host Posture ── */}
                             <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                             <circle cx="100" cy="100" r="72" fill="none" stroke="#3b82f6" strokeWidth="6"
-                              strokeDasharray={`${2 * Math.PI * 72}`} strokeDashoffset={`${2 * Math.PI * 72 * (1 - hostsPct / 100)}`} strokeLinecap="round"
+                              strokeDasharray={`${2 * Math.PI * 72}`} strokeDashoffset={`${2 * Math.PI * 72 * (1 - currentHostsPct / 100)}`} strokeLinecap="round"
                               style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(59,130,246,0.5))", transition: "stroke-dashoffset 0.8s ease" }} />
                             <text x="100" y="-172" textAnchor="middle" fill="#3b82f6" fontSize="7" fontFamily="monospace" fontWeight="700"
-                              style={{ transform: "rotate(90deg) translateY(-100px)", transformOrigin: "100px 100px" }}>HOSTS {hostsPct}%</text>
+                              style={{ transform: "rotate(90deg) translateY(-100px)", transformOrigin: "100px 100px" }}>HOSTS {currentHostsPct}%</text>
 
                             {/* ── Middle ring: Cloud Posture ── */}
                             <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                             <circle cx="100" cy="100" r="56" fill="none" stroke="#a78bfa" strokeWidth="6"
-                              strokeDasharray={`${2 * Math.PI * 56}`} strokeDashoffset={`${2 * Math.PI * 56 * (1 - cloudPct / 100)}`} strokeLinecap="round"
+                              strokeDasharray={`${2 * Math.PI * 56}`} strokeDashoffset={`${2 * Math.PI * 56 * (1 - currentCloudPct / 100)}`} strokeLinecap="round"
                               style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(167,139,250,0.5))", transition: "stroke-dashoffset 0.8s ease" }} />
 
                             {/* ── Inner ring: Code Posture ── */}
                             <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
                             <circle cx="100" cy="100" r="40" fill="none" stroke="#10b981" strokeWidth="6"
-                              strokeDasharray={`${2 * Math.PI * 40}`} strokeDashoffset={`${2 * Math.PI * 40 * (1 - codePct / 100)}`} strokeLinecap="round"
+                              strokeDasharray={`${2 * Math.PI * 40}`} strokeDashoffset={`${2 * Math.PI * 40 * (1 - currentCodePct / 100)}`} strokeLinecap="round"
                               style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 4px rgba(16,185,129,0.6))", transition: "stroke-dashoffset 0.8s ease" }} />
 
                             {/* ── Core glow fill ── */}
                             <circle cx="100" cy="100" r="30" fill="url(#jpiCore)" />
 
                             {/* ── JPI Center label ── */}
-                            <text x="100" y="96" textAnchor="middle" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="900">{postureScore}%</text>
+                            <text x="100" y="96" textAnchor="middle" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="900">{currentScore}%</text>
                             <text x="100" y="108" textAnchor="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">JPI SCORE</text>
 
                             {/* ── Legend labels — horizontal strip at bottom ── */}
