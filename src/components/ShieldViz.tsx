@@ -241,7 +241,7 @@ export default function ShieldViz(){
     <div style={{position:'relative',width:'100%',maxWidth:713,margin:'0 auto'}}>
       <Image src="/pp_hr.gif" alt="PosturePilot Command Center"
         width={713} height={713} unoptimized
-        style={{width:'100%',height:'auto',display:'block',filter:'drop-shadow(0 8px 40px rgba(79,70,229,0.18))'}}
+        style={{width:'100%',height:'auto',display:'block'}}
         priority/>
     </div>
   );
@@ -262,8 +262,7 @@ export default function ShieldViz(){
     <div style={{position:'relative',width:'100%',maxWidth:713,margin:'0 auto'}}>
       <Image src="/pp_hr.gif" alt="PosturePilot Command Center"
         width={713} height={713} unoptimized
-        style={{width:'100%',height:'auto',display:'block',
-          filter:'drop-shadow(0 8px 40px rgba(79,70,229,0.18))'}}
+        style={{width:'100%',height:'auto',display:'block'}}
         priority/>
 
       <svg viewBox="0 0 620 620"
