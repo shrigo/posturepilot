@@ -788,11 +788,20 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
               border-right: none;
               border-bottom: 1px solid #e2e8f0;
               height: auto;
+              flex-direction: column;
+              padding: 0;
+            }
+            .mythos-sidebar-logo {
+              padding: 0.5rem;
+              border-bottom: 1px solid #e2e8f0;
+            }
+            .mythos-sidebar-modules {
               flex-direction: row;
               overflow-x: auto;
               overflow-y: hidden;
               padding: 0.5rem;
               scroll-snap-type: x mandatory;
+              gap: 0.5rem;
             }
             .mythos-tab {
               min-width: 185px;
