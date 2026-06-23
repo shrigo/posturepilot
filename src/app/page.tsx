@@ -345,10 +345,10 @@ export default function Page() {
             </h1>
 
             <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:570}}>
-              Stop auditing the past. Ingest live code, cloud, and host<br className="desktop-br"/>
-              telemetry to orchestrate real-time clearance gates and<br className="desktop-br"/>
-              auto-dispatch playbooks. Manage active threat waves,<br className="desktop-br"/>
-              verify compliance guardrails, and transform fragmented<br className="desktop-br"/>
+              Stop auditing the past. Ingest live code, cloud, and host<span className="desktop-br"><br/></span>
+              telemetry to orchestrate real-time clearance gates and<span className="desktop-br"><br/></span>
+              auto-dispatch playbooks. Manage active threat waves,<span className="desktop-br"><br/></span>
+              verify compliance guardrails, and transform fragmented<span className="desktop-br"><br/></span>
               vulnerability noise into a unified Posture Flight Deck.
             </p>
 
