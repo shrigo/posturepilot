@@ -56,7 +56,7 @@ export default function Sidebar() {
       <div className="sidebar-logo">
         <Link href="/" style={{ display: 'flex', justifyContent: 'center', width: '100%' }} onClick={handleLinkClick}>
           <Image
-            src="/hlogotag.jpg"
+            src="/hlogotag_v2.jpg"
             alt="PosturePilot — Home"
             width={248}
             height={84}

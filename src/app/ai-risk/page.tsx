@@ -14,7 +14,7 @@ export default function AiRiskPage() {
         boxShadow: '0 1px 3px rgba(0,0,0,0.02)', backdropFilter: 'blur(16px)'
       }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <Image src="/hlogotag.jpg" alt="PosturePilot" width={200} height={46} style={{ objectFit: 'contain', objectPosition: 'left' }} />
+          <Image src="/hlogotag_v2.jpg" alt="PosturePilot" width={200} height={46} style={{ objectFit: 'contain', objectPosition: 'left' }} />
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
           <Link

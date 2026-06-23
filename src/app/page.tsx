@@ -187,7 +187,7 @@ export default function Page() {
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"#fff",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
         <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="logo-container" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
-          <Image src="/hlogotag.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <Image src="/hlogotag_v2.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
         </a>
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.82rem",fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Secure","Report"] as const).map((t,i,a)=>(
@@ -1311,7 +1311,7 @@ export default function Page() {
 
       <footer style={{background:"#0f172a",padding:"2rem 2.5rem",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"1rem"}}>
         <div style={{display:"flex",flexDirection:"column",gap:"0.25rem"}}>
-          <Image src="/hlogotag.jpg" alt="PosturePilot" width={180} height={44} style={{objectFit:"contain",objectPosition:"left",mixBlendMode:"screen"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <Image src="/hlogotag_v2.jpg" alt="PosturePilot" width={180} height={44} style={{objectFit:"contain",objectPosition:"left",mixBlendMode:"screen"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
           <span style={{color:"#94a3b8",fontWeight:400,fontSize:"0.72rem"}}>Configure · Monitor · Report · Secure</span>
         </div>
         <span style={{fontSize:"0.7rem",color:"#f1f5f9"}}>© 2026 PosturePilot · posturepilot.io</span>
