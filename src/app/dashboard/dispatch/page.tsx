@@ -131,7 +131,7 @@ export default function DispatchCenterPage() {
   const [logs, setLogs] = useState<string[]>([]);
   const [ticker, setTicker] = useState<number>(0);
   const [simulationState, setSimulationState] = useState<'idle' | 'running'>('idle');
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalContainerRef = useRef<HTMLDivElement>(null);
   
   // Fetch live findings data
   const [liveData, setLiveData] = useState<ModuleLiveData | null>(null);
@@ -235,9 +235,11 @@ export default function DispatchCenterPage() {
     return () => clearInterval(timer);
   }, []);
 
-  // Auto-scroll terminal log
+  // Auto-scroll terminal log internally without jumping the page scroll
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (terminalContainerRef.current) {
+      terminalContainerRef.current.scrollTop = terminalContainerRef.current.scrollHeight;
+    }
   }, [logs]);
 
   // Sync to both localStorage and DB
@@ -616,7 +618,7 @@ export default function DispatchCenterPage() {
             </button>
           </div>
 
-          <div style={{
+          <div ref={terminalContainerRef} style={{
             flex: 1,
             background: '#020617',
             border: '1px solid #1e293b',
@@ -651,7 +653,7 @@ export default function DispatchCenterPage() {
                 );
               })
             )}
-            <div ref={terminalEndRef} />
+
           </div>
 
           <div style={{
