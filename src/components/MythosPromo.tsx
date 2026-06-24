@@ -522,183 +522,6 @@ const PostureClearanceSVG = ({
   );
 };
 
-const CloudAltitudeSVG = ({
-  score,
-  isUnderAttack
-}: {
-  score: number;
-  isUnderAttack: boolean;
-}) => {
-  const [animTime, setAnimTime] = useState(0);
-
-  useEffect(() => {
-    setAnimTime(0);
-    let start: number | null = null;
-    let animationFrameId: number;
-
-    const animate = (timestamp: number) => {
-      if (!start) start = timestamp;
-      const elapsed = timestamp - start;
-      setAnimTime(elapsed);
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    const timeoutId = setTimeout(() => {
-      animationFrameId = requestAnimationFrame(animate);
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [score]);
-
-  const progressVal = Math.min(animTime / 1800, 1);
-  const easedProgress = 1 - Math.pow(1 - progressVal, 4); // easeOutQuart
-
-  const innerPct = Math.min(100, score);
-  const middlePct = Math.min(100, Math.round(score * 0.95));
-  const outerPct = Math.min(100, Math.round(score * 0.88));
-
-  const currentInnerPct = Math.round(innerPct * easedProgress);
-  const currentMiddlePct = Math.round(middlePct * easedProgress);
-  const currentOuterPct = Math.round(outerPct * easedProgress);
-  const displayScore = Math.round(score * easedProgress);
-
-  const currentInnerPctFloat = innerPct * easedProgress;
-  const currentMiddlePctFloat = middlePct * easedProgress;
-  const currentOuterPctFloat = outerPct * easedProgress;
-
-  // Sync orbiting dots to follow the ring tips perfectly during creation
-  // and continue orbiting infinitely afterwards.
-  const getDotCoords = (center: number, radius: number, targetPct: number, time: number, orbitDuration: number) => {
-    const duration = 1800;
-    let angle = -90;
-    if (time < duration) {
-      const progress = Math.min(time / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4); // easeOutQuart
-      angle = -90 + (targetPct * eased * 3.6);
-    } else {
-      const extraTime = time - duration;
-      angle = -90 + (targetPct * 3.6) + (extraTime / orbitDuration) * 360;
-    }
-    const rad = (angle * Math.PI) / 180;
-    return {
-      cx: center + radius * Math.cos(rad),
-      cy: center + radius * Math.sin(rad)
-    };
-  };
-
-  const outerDot = getDotCoords(100, 72, outerPct, animTime, 8000);
-  const middleDot = getDotCoords(100, 56, middlePct, animTime, 6000);
-  const innerDot = getDotCoords(100, 40, innerPct, animTime, 4000);
-
-  // Gates for Cloud Altitude: 'IAM AUDIT', 'BUCKET SCAN', 'KEY ROTATE'
-  const g1Fail = isUnderAttack;
-  const g2Fail = isUnderAttack;
-  const g3Fail = isUnderAttack;
-
-  const gateColor  = (f: boolean) => f ? '#ef4444' : '#10b981';
-  const gateFill   = (f: boolean) => f ? 'rgba(239,68,68,0.08)'  : 'rgba(16,185,129,0.08)';
-  const gateStroke = (f: boolean) => f ? 'rgba(239,68,68,0.45)'  : 'rgba(16,185,129,0.35)';
-
-  return (
-    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <svg viewBox="0 0 280 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-        <defs>
-          <radialGradient id="cloudCore" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={isUnderAttack ? "#ef4444" : "#3b82f6"} stopOpacity="0.18" />
-            <stop offset="100%" stopColor={isUnderAttack ? "#ef4444" : "#3b82f6"} stopOpacity="0" />
-          </radialGradient>
-          <filter id="glow-cloud">
-            <feGaussianBlur stdDeviation="1.8" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-
-        {/* ── Background orbit rings ── */}
-        <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-        <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-        <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-
-        {/* Sync-moving orbit dots for 3 rings */}
-        <circle cx={outerDot.cx} cy={outerDot.cy} r="2.2" fill="#3b82f6" opacity="0.9" style={{ filter: "drop-shadow(0 0 2px rgba(59,130,246,0.6))" }} />
-        <circle cx={middleDot.cx} cy={middleDot.cy} r="2.2" fill="#a78bfa" opacity="0.9" style={{ filter: "drop-shadow(0 0 2px rgba(167,139,250,0.6))" }} />
-        <circle cx={innerDot.cx} cy={innerDot.cy} r="2.2" fill="#10b981" opacity="0.9" style={{ filter: "drop-shadow(0 0 2px rgba(16,185,129,0.7))" }} />
-
-        {/* ── Outer ring: Compute% ── */}
-        <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
-        <circle cx="100" cy="100" r="72" fill="none" stroke="#3b82f6" strokeWidth="6"
-          strokeDasharray={`${2 * Math.PI * 72}`} strokeDashoffset={`${2 * Math.PI * 72 * (1 - currentOuterPctFloat / 100)}`} strokeLinecap="round"
-          style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(59,130,246,0.5))" }} />
-
-        {/* ── Middle ring: Storage% ── */}
-        <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
-        <circle cx="100" cy="100" r="56" fill="none" stroke="#a78bfa" strokeWidth="6"
-          strokeDasharray={`${2 * Math.PI * 56}`} strokeDashoffset={`${2 * Math.PI * 56 * (1 - currentMiddlePctFloat / 100)}`} strokeLinecap="round"
-          style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 3px rgba(167,139,250,0.5))" }} />
-
-        {/* ── Inner ring: IAM% ── */}
-        <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
-        <circle cx="100" cy="100" r="40" fill="none" stroke="#10b981" strokeWidth="6"
-          strokeDasharray={`${2 * Math.PI * 40}`} strokeDashoffset={`${2 * Math.PI * 40 * (1 - currentInnerPctFloat / 100)}`} strokeLinecap="round"
-          style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px", filter: "drop-shadow(0 0 4px rgba(16,185,129,0.6))" }} />
-
-        {/* ── Core glow fill ── */}
-        <circle cx="100" cy="100" r="30" fill="url(#cloudCore)" />
-
-        {/* ── ALTITUDE Center label ── */}
-        <text x="100" y="96" textAnchor="middle" fill="#ffffff" fontSize="11" fontFamily="monospace" fontWeight="900">{displayScore}%</text>
-        <text x="100" y="108" textAnchor="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">ALTITUDE</text>
-
-        {/* ── Legend labels — horizontal strip at bottom ── */}
-        <line x1="10" y1="178" x2="250" y2="178" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-        <circle cx="30" cy="188" r="4" fill="#10b981" />
-        <text x="38" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">IAM {innerPct}%</text>
-        <circle cx="105" cy="188" r="4" fill="#a78bfa" />
-        <text x="114" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Storage {middlePct}%</text>
-        <circle cx="180" cy="188" r="4" fill="#3b82f6" />
-        <text x="188" y="192" fill="#cbd5e1" fontSize="6.5" fontFamily="monospace">Compute {outerPct}%</text>
-
-        {/* ── Clearance Gates panel (right side) ── */}
-        <text x="198" y="38" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">CLEARANCE GATES</text>
-
-        {/* Gate 1: IAM AUDIT */}
-        <rect x="198" y="46" width="70" height="18" rx="4" fill={gateFill(g1Fail)} stroke={gateStroke(g1Fail)} strokeWidth="0.8" />
-        <circle cx="208" cy="55" r="3.5" fill={gateColor(g1Fail)} filter="url(#glow-cloud)" style={g1Fail ? { animation: "pulseRed 1.2s infinite" } : {}} />
-        <text x="215" y="58" fill={gateColor(g1Fail)} fontSize="5.5" fontFamily="monospace" fontWeight="700">IAM AUDIT</text>
-        <text x="265" y="58" textAnchor="end" fill={gateColor(g1Fail)} fontSize="6" fontFamily="monospace" fontWeight="900">{g1Fail ? 'FAIL' : 'PASS'}</text>
-
-        {/* Gate 2: BUCKET SCAN */}
-        <rect x="198" y="70" width="70" height="18" rx="4" fill={gateFill(g2Fail)} stroke={gateStroke(g2Fail)} strokeWidth="0.8" />
-        <circle cx="208" cy="79" r="3.5" fill={gateColor(g2Fail)} filter="url(#glow-cloud)" style={g2Fail ? { animation: "pulseRed 1.2s infinite" } : {}} />
-        <text x="215" y="82" fill={gateColor(g2Fail)} fontSize="5.5" fontFamily="monospace" fontWeight="700">BUCKET SCAN</text>
-        <text x="265" y="82" textAnchor="end" fill={gateColor(g2Fail)} fontSize="6" fontFamily="monospace" fontWeight="900">{g2Fail ? 'FAIL' : 'PASS'}</text>
-
-        {/* Gate 3: KEY ROTATE */}
-        <rect x="198" y="94" width="70" height="18" rx="4" fill={gateFill(g3Fail)} stroke={gateStroke(g3Fail)} strokeWidth="0.8" />
-        <circle cx="208" cy="103" r="3.5" fill={gateColor(g3Fail)} filter="url(#glow-cloud)" style={g3Fail ? { animation: "pulseRed 1.2s infinite" } : {}} />
-        <text x="215" y="106" fill={gateColor(g3Fail)} fontSize="5.5" fontFamily="monospace" fontWeight="700">KEY ROTATE</text>
-        <text x="265" y="106" textAnchor="end" fill={gateColor(g3Fail)} fontSize="6" fontFamily="monospace" fontWeight="900">{g3Fail ? 'FAIL' : 'PASS'}</text>
-
-        {/* Sync node */}
-        <text x="198" y="128" textAnchor="start" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="900" letterSpacing="0.08em">SYNC NODE</text>
-        <circle cx="208" cy="144" r="5.5" fill="none" stroke="rgba(245,158,11,0.2)" strokeWidth="1" style={{ animation: 'pulseGlow 2s infinite' }} />
-        <circle cx="208" cy="144" r="3.5" fill="#f59e0b" />
-        <text x="216" y="148" fill="#fbbf24" fontSize="6.5" fontFamily="monospace" fontWeight="700">
-          {isUnderAttack ? 'BREACH WAVE' : '3 CNAPP Connected'}
-        </text>
-
-        {/* Separator lines between legend items */}
-        <line x1="97" y1="182" x2="97" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
-        <line x1="172" y1="182" x2="172" y2="194" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" />
-      </svg>
-    </div>
-  );
-};
-
 export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: () => void; initialSlide?: number }) {
   const { currentClient, isEnterpriseMode, isUnderAttack, slaThresholds } = useClient();
   const [activeModuleId, setActiveModuleId] = useState<string>(MODULES_DATA[0].id);
@@ -1313,10 +1136,85 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
 
                       {/* Cloud Altitude */}
                       {activeModuleId === "cloud" && (
-                        <CloudAltitudeSVG
-                          score={isUnderAttack ? 38 : postureScore}
-                          isUnderAttack={isUnderAttack}
-                        />
+                        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <svg viewBox="0 -2 260 215" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+                            <defs>
+                              <radialGradient id="cloudHub" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+                              </radialGradient>
+                            </defs>
+
+                            {/* ── Connection lines from providers to hub ── */}
+                            {/* AWS → Hub */}
+                            <line x1="46" y1="59" x2="114" y2="108" stroke="#f59e0b" strokeWidth="1.2" strokeDasharray="4 3"
+                              style={{ animation: "dash 3s linear infinite" }} />
+                            {/* Azure → Hub */}
+                            <line x1="130" y1="80" x2="130" y2="108" stroke="#3b82f6" strokeWidth="1.2" strokeDasharray="4 3"
+                              style={{ animation: "dash 4s linear infinite" }} />
+                            {/* GCP → Hub */}
+                            <line x1="214" y1="59" x2="146" y2="108" stroke="#10b981" strokeWidth="1.2" strokeDasharray="4 3"
+                              style={{ animation: "dash 3.5s linear infinite" }} />
+                            {/* Hub → Exposed bucket (red dashed) */}
+                            <line x1="110" y1="122" x2="68" y2="150" stroke="#ef4444" strokeWidth="1.4" strokeDasharray="3 3"
+                              style={{ animation: "dash 2s linear infinite" }} />
+
+                            {/* ── AWS Node — name centered ── */}
+                            <rect x="6" y="15" width="80" height="44" rx="6" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
+                            <text x="46" y="35" textAnchor="middle" dominantBaseline="middle" fill="#f59e0b" fontSize="9" fontFamily="monospace" fontWeight="900">AWS</text>
+                            <text x="46" y="49" textAnchor="middle" dominantBaseline="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">850K resources</text>
+
+                            {/* AWS status badge on line */}
+                            <rect x="8" y="64" width="38" height="14" rx="3" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.35)" strokeWidth="0.7" />
+                            <circle cx="15" cy="71" r="2.5" fill="#ef4444" style={{ animation: "pulseRed 1.5s infinite" }} />
+                            <text x="20" y="74" fill="#ef4444" fontSize="5" fontFamily="monospace" fontWeight="700">3 DRIFT</text>
+
+                            {/* ── Azure Node — name centered ── */}
+                            <rect x="90" y="15" width="80" height="44" rx="6" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.4)" strokeWidth="1" />
+                            <text x="130" y="35" textAnchor="middle" dominantBaseline="middle" fill="#60a5fa" fontSize="9" fontFamily="monospace" fontWeight="900">AZURE</text>
+                            <text x="130" y="49" textAnchor="middle" dominantBaseline="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">142K resources</text>
+
+                            {/* Azure status badge on line */}
+                            <rect x="118" y="64" width="24" height="14" rx="3" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.7" />
+                            <text x="130" y="74" textAnchor="middle" fill="#10b981" fontSize="5" fontFamily="monospace" fontWeight="700">OK</text>
+
+                            {/* ── GCP Node — name centered ── */}
+                            <rect x="174" y="15" width="80" height="44" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.4)" strokeWidth="1" />
+                            <text x="214" y="35" textAnchor="middle" dominantBaseline="middle" fill="#10b981" fontSize="9" fontFamily="monospace" fontWeight="900">GCP</text>
+                            <text x="214" y="49" textAnchor="middle" dominantBaseline="middle" fill="#94a3b8" fontSize="6" fontFamily="monospace">204K resources</text>
+
+                            {/* GCP status badge on line */}
+                            <rect x="220" y="64" width="32" height="14" rx="3" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" strokeWidth="0.7" />
+                            <circle cx="226" cy="71" r="2.5" fill="#10b981" />
+                            <text x="232" y="74" fill="#10b981" fontSize="5" fontFamily="monospace" fontWeight="700">IAM OK</text>
+
+                            {/* ── Central Hub ── */}
+                            <circle cx="130" cy="115" r="26" fill="url(#cloudHub)" />
+                            <circle cx="130" cy="115" r="18" fill="#0f172a" stroke="#3b82f6" strokeWidth="1.8"
+                              style={{ filter: "drop-shadow(0 0 6px rgba(59,130,246,0.5))" }} />
+                            <text x="130" y="112" textAnchor="middle" dominantBaseline="middle" fill="#3b82f6" fontSize="7" fontFamily="monospace" fontWeight="900">PP</text>
+                            <text x="130" y="123" textAnchor="middle" dominantBaseline="middle" fill="#64748b" fontSize="5" fontFamily="monospace">HUB</text>
+
+                            {/* ── Exposed Bucket Alert ── */}
+                            <rect x="10" y="150" width="114" height="28" rx="5" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.5)" strokeWidth="1" />
+                            <circle cx="24" cy="164" r="4" fill="#ef4444" style={{ animation: "pulseRed 1s infinite" }} />
+                            <text x="32" y="160" fill="#ef4444" fontSize="6.5" fontFamily="monospace" fontWeight="700">S3_LOGS</text>
+                            <text x="32" y="170" fill="#f87171" fontSize="5.5" fontFamily="monospace">PUBLIC EXPOSED</text>
+
+                            {/* ── Quarantined Key badge ── */}
+                            <rect x="136" y="150" width="114" height="28" rx="5" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.3)" strokeWidth="1" />
+                            <circle cx="150" cy="164" r="4" fill="#10b981" />
+                            <text x="158" y="160" fill="#10b981" fontSize="6.5" fontFamily="monospace" fontWeight="700">IAM KEY</text>
+                            <text x="158" y="170" fill="#6ee7b7" fontSize="5.5" fontFamily="monospace">AUTO-QUARANTINED</text>
+
+                            {/* ── Live inventory strip ── */}
+                            <line x1="10" y1="186" x2="250" y2="186" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                            <circle cx="22" cy="193" r="3" fill="#3b82f6" />
+                            <text x="29" y="196" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">1.19M total assets</text>
+                            <circle cx="140" cy="193" r="3" fill="#ef4444" />
+                            <text x="147" y="196" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">810 keys revoked</text>
+                          </svg>
+                        </div>
                       )}
 
 
