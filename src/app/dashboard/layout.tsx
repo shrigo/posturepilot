@@ -100,9 +100,13 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Scroll to top whenever the route changes (window is the actual scroll host)
+  // Scroll to top whenever the route changes (window is the actual scroll host, but content-scroll-container may also scroll)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
+    const contentContainer = document.querySelector('.content-scroll-container');
+    if (contentContainer) {
+      contentContainer.scrollTo({ top: 0, behavior: 'instant' });
+    }
   }, [pathname]);
 
   // Global capture click listener to block all interactions in guest demo mode
