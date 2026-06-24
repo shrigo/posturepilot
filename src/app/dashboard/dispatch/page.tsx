@@ -588,7 +588,7 @@ export default function DispatchCenterPage() {
             gap: '0.5rem'
           }}>
             <span>💡</span>
-            <span><strong>Pro-Tip Shrigo:</strong> Toggles immediately override the live parser. Files uploaded in <strong>Scan Check-In</strong> automatically create tickets aligned to this matrix!</span>
+            <span><strong>Pro-Tip:</strong> Toggles immediately override the live parser. Files uploaded in <strong>Scan Check-In</strong> automatically create tickets aligned to this matrix!</span>
           </div>
         </div>
 
