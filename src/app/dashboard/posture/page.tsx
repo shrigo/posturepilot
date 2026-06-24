@@ -424,8 +424,10 @@ export default function PosturePage() {
         ]) as { label: string; value: string; accent: string; delta: string; deltaColor: string }[]).map(s => (
           <div key={s.label} className="stat-card">
             <div className="stat-card-accent" style={{ background: s.accent }} />
-            <div className="stat-label">{s.label}</div>
-            <div className="stat-value" style={{ fontSize: '1.75rem', color: isUnderAttack && (s.label.includes('Score') || s.label.includes('Criticals') || s.label.includes('Level')) ? '#dc2626' : undefined }}>{s.value}</div>
+            <div>
+              <div className="stat-label">{s.label}</div>
+              <div className="stat-value" style={{ fontSize: '1.75rem', color: isUnderAttack && (s.label.includes('Score') || s.label.includes('Criticals') || s.label.includes('Level')) ? '#dc2626' : undefined }}>{s.value}</div>
+            </div>
             <div className="stat-delta" style={{ color: s.deltaColor || '#94a3b8', fontWeight: 800 }}>{s.delta}</div>
           </div>
         ))}

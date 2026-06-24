@@ -407,6 +407,11 @@ export default function DispatchCenterPage() {
     return { text: timeStr, color, percent: pct };
   };
 
+  const totalTickets = tickets.length;
+  const activeTickets = tickets.filter(t => t.status !== 'Resolved').length;
+  const resolvedTickets = tickets.filter(t => t.status === 'Resolved').length;
+  const breachedTickets = tickets.filter(t => t.status !== 'Resolved' && (Date.now() - t.createdAt) > t.slaLimitMs).length;
+
   return (
     <div className="page-content animate-in" style={{ paddingBottom: '3rem' }}>
       
@@ -469,6 +474,27 @@ export default function DispatchCenterPage() {
             🔄 Reset Seed
           </button>
         </div>
+      </div>
+
+      <div className="grid-4" style={{ marginBottom: '1.25rem' }}>
+        {[
+          { label: 'Total Incident Tickets', value: totalTickets.toLocaleString(), accent: '#7c3aed', delta: 'SOAR Ingested Ledger', target: 'Jira & ServiceNow synced' },
+          { label: 'Active Incidents', value: activeTickets.toLocaleString(), accent: '#ea580c', delta: 'Awaiting operator fix', target: 'Assigned to gate leads' },
+          { label: 'Resolved Incidents', value: resolvedTickets.toLocaleString(), accent: '#10b981', delta: 'Closed gates successfully', target: 'Auto-postmortems ready' },
+          { label: 'SLA Breach Warnings', value: breachedTickets.toLocaleString(), accent: '#dc2626', delta: 'Past SLA response limit', target: 'Requires escalation override' }
+        ].map(s => (
+          <div key={s.label} className="stat-card">
+            <div className="stat-card-accent" style={{ background: s.accent }} />
+            <div>
+              <div className="stat-label">{s.label}</div>
+              <div className="stat-value" style={{ color: s.accent }}>{s.value}</div>
+            </div>
+            <div>
+              <div className="stat-delta" style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 600, marginTop: '0.25rem' }}>{s.delta}</div>
+              <div style={{ fontSize: '0.68rem', color: '#94a3b8', marginTop: '0.25rem' }}>{s.target}</div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Cockpit telemetry card */}

@@ -694,8 +694,10 @@ export default function NetworkPage() {
 
         <div className="stat-card">
           <div className="stat-card-accent" style={{ background: '#dc2626' }} />
-          <div className="stat-label">Open Vulnerable Ports</div>
-          <div className="stat-value" style={{ color: '#dc2626', fontSize: '1.8rem', marginTop: 4 }}>{currentPortsCount}</div>
+          <div>
+            <div className="stat-label">Open Vulnerable Ports</div>
+            <div className="stat-value" style={{ color: '#dc2626', fontSize: '1.8rem', marginTop: 4 }}>{currentPortsCount}</div>
+          </div>
           <div className="stat-delta" style={{ color: closedCount > 0 ? '#10b981' : '#dc2626', fontWeight: 800 }}>
             {closedCount > 0 ? `🟢 Closed ${closedCount} open ports` : '🚨 exposed to network sweeps'}
           </div>
@@ -703,23 +705,25 @@ export default function NetworkPage() {
 
         <div className="stat-card">
           <div className="stat-card-accent" style={{ background: '#ea580c' }} />
-          <div className="stat-label">IDS Intrusion Threats</div>
-          <div className="stat-value" style={{ color: '#ea580c', fontSize: '1.8rem', marginTop: 4 }}>{currentAlertsCount}</div>
+          <div>
+            <div className="stat-label">IDS Intrusion Threats</div>
+            <div className="stat-value" style={{ color: '#ea580c', fontSize: '1.8rem', marginTop: 4 }}>{currentAlertsCount}</div>
+          </div>
           <div className="stat-delta" style={{ color: mitigatedCount > 0 ? '#10b981' : '#ea580c', fontWeight: 800 }}>
             {mitigatedCount > 0 ? `🟢 Mitigated ${mitigatedCount} attacks` : 'Inbound connection attempts'}
           </div>
         </div>
 
-        <div className="stat-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="stat-card">
           <div className="stat-card-accent" style={{ background: '#059669' }} />
           <div>
             <div className="stat-label">SLA Warn Status</div>
             <div className="stat-value" style={{ color: currentAlertsCount === 0 ? '#059669' : '#ea580c', fontSize: '1.1rem', fontWeight: 900, textTransform: 'uppercase', marginTop: 4 }}>
               {networkSla}
             </div>
-            <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: 6 }}>
-              Active Tunnels: <span style={{ fontWeight: 800, color: '#334155' }}>{activeVPNSessions} VPN Sessions</span>
-            </div>
+          </div>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: 6 }}>
+            Active Tunnels: <span style={{ fontWeight: 800, color: '#334155' }}>{activeVPNSessions} VPN Sessions</span>
           </div>
         </div>
 

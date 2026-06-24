@@ -294,14 +294,39 @@ export default function AppsecPage() {
             { label: 'Critical', value: String(dynamicCritical), accent: '#dc2626', delta: 'CVSS ≥ 9.0 (RCE & injection)' },
             { label: 'High Severity', value: String(dynamicHigh), accent: '#ea580c', delta: 'CVSS 7.0–8.9 (Secrets & auth)' },
             { label: 'Patch Backlog', value: String(dynamicBacklog), accent: '#d97706', delta: 'Awaiting git code release' },
-          ].map(s => (
-            <div key={s.label} className="stat-card">
-              <div className="stat-card-accent" style={{ background: s.accent }} />
-              <div className="stat-label">{s.label}</div>
-              <div className="stat-value" style={{ color: s.accent }}>{s.value}</div>
-              <div className="stat-delta delta-down">{s.delta}</div>
-            </div>
-          ))}
+          ].map((s, idx) => {
+            const dist = { sast: 45, dast: 25, sca: 20, secrets: 10 };
+            return (
+              <div key={s.label} className="stat-card">
+                <div className="stat-card-accent" style={{ background: s.accent }} />
+                <div>
+                  <div className="stat-label">{s.label}</div>
+                  <div className="stat-value" style={{ color: s.accent }}>{s.value}</div>
+                </div>
+                
+                {idx === 0 ? (
+                  <div style={{ marginTop: '0.5rem', borderTop: '1px solid #f1f5f9', paddingTop: '0.4rem' }}>
+                    {/* Multi-segment appsec distribution bar */}
+                    <div style={{ height: 6, background: '#e2e8f0', borderRadius: 99, display: 'flex', overflow: 'hidden', marginBottom: '0.3rem' }}>
+                      <div style={{ width: `${dist.sast}%`, background: '#7c3aed' }} title={`SAST: ${dist.sast}%`} />
+                      <div style={{ width: `${dist.dast}%`, background: '#3b82f6' }} title={`DAST: ${dist.dast}%`} />
+                      <div style={{ width: `${dist.sca}%`, background: '#0ea5e9' }} title={`SCA: ${dist.sca}%`} />
+                      <div style={{ width: `${dist.secrets}%`, background: '#f43f5e' }} title={`Secrets: ${dist.secrets}%`} />
+                    </div>
+                    {/* Miniature AppSec Badges */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', fontSize: '0.55rem', fontWeight: 800, color: '#64748b' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#7c3aed' }} /> SAST {dist.sast}%</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6' }} /> DAST {dist.dast}%</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#0ea5e9' }} /> SCA {dist.sca}%</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f43f5e' }} /> SEC {dist.secrets}%</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="stat-delta delta-down">{s.delta}</div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Cockpit telemetry card */}

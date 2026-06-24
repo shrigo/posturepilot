@@ -700,8 +700,10 @@ export default function CISOPage() {
 
                       <div className="stat-card">
                         <div className="stat-card-accent" style={{ background: isGroupUnderAttack ? '#ef4444' : '#10b981' }} />
-                        <div className="stat-label">Unified Compliance Score</div>
-                        <div className="stat-value" style={{ color: isGroupUnderAttack ? '#ef4444' : '#10b981', fontSize: '1.8rem' }}>{avgCompliance}%</div>
+                        <div>
+                          <div className="stat-label">Unified Compliance Score</div>
+                          <div className="stat-value" style={{ color: isGroupUnderAttack ? '#ef4444' : '#10b981', fontSize: '1.8rem' }}>{avgCompliance}%</div>
+                        </div>
                         <div className="stat-delta delta-up" style={{ color: isGroupUnderAttack ? '#dc2626' : (avgCompliance >= 80 ? '#10b981' : '#ea580c') }}>
                           {isGroupUnderAttack ? '🔴 OUT OF COMPLIANCE SLA' : (avgCompliance >= 80 ? '🟢 Meets target SLA threshold' : '🟡 Needs security patches')}
                         </div>
@@ -709,8 +711,10 @@ export default function CISOPage() {
 
                       <div className="stat-card">
                         <div className="stat-card-accent" style={{ background: '#dc2626' }} />
-                        <div className="stat-label">Total Open Critical Risks</div>
-                        <div className="stat-value" style={{ color: '#dc2626', fontSize: '1.8rem' }}>{totalCriticals}</div>
+                        <div>
+                          <div className="stat-label">Total Open Critical Risks</div>
+                          <div className="stat-value" style={{ color: '#dc2626', fontSize: '1.8rem' }}>{totalCriticals}</div>
+                        </div>
                         <div style={{ display: 'flex', gap: '4px', fontSize: '0.58rem', fontWeight: 800, color: '#94a3b8', borderTop: '1px solid #f1f5f9', paddingTop: '0.35rem', marginTop: '0.5rem' }}>
                           {activeTenants.map(t => (
                             <span key={t.key} style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, color: '#dc2626' }}>
@@ -722,9 +726,11 @@ export default function CISOPage() {
 
                       <div className="stat-card">
                         <div className="stat-card-accent" style={{ background: isGroupUnderAttack ? '#ef4444' : '#ea580c' }} />
-                        <div className="stat-label">SLA Warn Status</div>
-                        <div className="stat-value" style={{ color: isGroupUnderAttack ? '#dc2626' : '#ea580c', fontSize: '1.4rem', fontWeight: 900, textTransform: 'uppercase', height: '100%', display: 'flex', alignItems: 'center' }}>
-                          {isGroupUnderAttack ? 'CRITICAL SYSTEM BREACH' : slaStatus}
+                        <div>
+                          <div className="stat-label">SLA Warn Status</div>
+                          <div className="stat-value" style={{ color: isGroupUnderAttack ? '#dc2626' : '#ea580c', fontSize: '1.4rem', fontWeight: 900, textTransform: 'uppercase' }}>
+                            {isGroupUnderAttack ? 'CRITICAL SYSTEM BREACH' : slaStatus}
+                          </div>
                         </div>
                         <div className="stat-delta delta-down" style={{ color: slaStatus === 'CONFORMANCE' && !isGroupUnderAttack ? '#10b981' : '#dc2626' }}>
                           {totalBacklog} total issues in queue

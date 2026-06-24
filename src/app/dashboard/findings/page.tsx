@@ -64,7 +64,7 @@ const INJECTED_FINDINGS: Finding[] = [
 ];
 
 export default function FindingsPage() {
-  const { isUnderAttack, slaThresholds } = useClient();
+  const { isUnderAttack, slaThresholds, currentClient } = useClient();
 
   const [data, setData]             = useState<ApiResponse | null>(null);
   const [loading, setLoading]       = useState(true);
@@ -172,7 +172,7 @@ export default function FindingsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, sort, order, search, severity, tool, status, slaBreached]);
+  }, [page, sort, order, search, severity, tool, status, slaBreached, currentClient.key]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
@@ -390,8 +390,18 @@ export default function FindingsPage() {
         </div>
 
         {/* Table */}
-        <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, overflow: 'hidden' }}>
-          {loading ? (
+        <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, overflow: 'hidden', position: 'relative', minHeight: '180px' }}>
+          {loading && (
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+              background: 'linear-gradient(90deg, #7c3aed, #4f46e5)',
+              backgroundSize: '200% 100%',
+              animation: 'gradientShift 1.5s linear infinite',
+              zIndex: 10
+            }} />
+          )}
+
+          {!data && loading ? (
             <div style={{ padding: '4rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
               Loading findings…
             </div>
@@ -413,7 +423,7 @@ export default function FindingsPage() {
               )}
             </div>
           ) : (
-            <>
+            <div style={{ opacity: loading ? 0.6 : 1, transition: 'opacity 0.15s ease' }}>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
                   <thead>
@@ -572,7 +582,7 @@ export default function FindingsPage() {
                   </div>
                 </div>
               )}
-            </>
+            </div>
           )}
         </div>
       </div>

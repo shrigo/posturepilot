@@ -375,14 +375,39 @@ export default function ServerPage() {
             { label:'Unhealthy Hosts',   value: `${unhealthyHosts}`,           accent:'#ea580c', delta: 'Failed EDR heartbeats' },
             { label:'Patch Backlog',     value: `${criticalFindings}`,         accent:'#dc2626', delta: 'Requires EDR mitigation' },
             { label:'Overdue SLA',       value: `${slaBreached}`,              accent:'#d97706', delta: 'Target patches past due' },
-          ].map(s => (
-            <div key={s.label} className="stat-card">
-              <div className="stat-card-accent" style={{ background: s.accent }} />
-              <div className="stat-label">{s.label}</div>
-              <div className="stat-value" style={{ color: s.accent, fontSize: '1.8rem', lineHeight: '1.2' }}>{s.value}</div>
-              <div className="stat-delta delta-down">{s.delta}</div>
-            </div>
-          ))}
+          ].map((s, idx) => {
+            const dist = { linux: 60, windows: 25, docker: 10, other: 5 };
+            return (
+              <div key={s.label} className="stat-card">
+                <div className="stat-card-accent" style={{ background: s.accent }} />
+                <div>
+                  <div className="stat-label">{s.label}</div>
+                  <div className="stat-value" style={{ color: s.accent, fontSize: '1.8rem', lineHeight: '1.2' }}>{s.value}</div>
+                </div>
+                
+                {idx === 0 ? (
+                  <div style={{ marginTop: '0.5rem', borderTop: '1px solid #f1f5f9', paddingTop: '0.4rem' }}>
+                    {/* Multi-segment OS distribution bar */}
+                    <div style={{ height: 6, background: '#e2e8f0', borderRadius: 99, display: 'flex', overflow: 'hidden', marginBottom: '0.3rem' }}>
+                      <div style={{ width: `${dist.linux}%`, background: '#06b6d4' }} title={`Linux: ${dist.linux}%`} />
+                      <div style={{ width: `${dist.windows}%`, background: '#3b82f6' }} title={`Windows: ${dist.windows}%`} />
+                      <div style={{ width: `${dist.docker}%`, background: '#7c3aed' }} title={`Docker: ${dist.docker}%`} />
+                      <div style={{ width: `${dist.other}%`, background: '#ea580c' }} title={`Other: ${dist.other}%`} />
+                    </div>
+                    {/* Miniature OS Badges */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', fontSize: '0.55rem', fontWeight: 800, color: '#64748b' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4' }} /> NIX {dist.linux}%</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6' }} /> WIN {dist.windows}%</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#7c3aed' }} /> DCK {dist.docker}%</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ea580c' }} /> OTH {dist.other}%</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="stat-delta delta-down">{s.delta}</div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Cockpit telemetry card */}

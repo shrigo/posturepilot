@@ -381,25 +381,25 @@ export default function GRCPage() {
           <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#64748b', marginTop: 10, textTransform: 'uppercase' }}>Signed Policy Rate</div>
         </div>
 
-        <div className="stat-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="stat-card">
           <div className="stat-card-accent" style={{ background: '#3b82f6' }} />
           <div>
             <div className="stat-label">Active Framework Dockets</div>
             <div className="stat-value" style={{ color: '#3b82f6', fontSize: '1.8rem', marginTop: 4 }}>5 / 5</div>
-            <div style={{ fontSize: '0.65rem', color: '#64748b', marginTop: 6 }}>SOC2 · ISO27001 · NIST · PCI · HIPAA</div>
           </div>
+          <div style={{ fontSize: '0.65rem', color: '#64748b', marginTop: 6 }}>SOC2 · ISO27001 · NIST · PCI · HIPAA</div>
         </div>
 
-        <div className="stat-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="stat-card">
           <div className="stat-card-accent" style={{ background: '#ea580c' }} />
           <div>
             <div className="stat-label">Audit Readiness Status</div>
             <div className="stat-value" style={{ color: overallGrcScore >= 80 ? '#059669' : '#ea580c', fontSize: '1.35rem', fontWeight: 900, textTransform: 'uppercase', marginTop: 4 }}>
               {overallGrcScore >= 85 ? 'Optimized' : overallGrcScore >= 75 ? 'Conformance' : 'Deviation Warnings'}
             </div>
-            <div style={{ fontSize: '0.65rem', color: '#64748b', marginTop: 6 }}>
-              {overallGrcScore >= 80 ? '🟢 Meets corporate compliance limits' : '🟡 Review controls to reduce policy deviations'}
-            </div>
+          </div>
+          <div style={{ fontSize: '0.65rem', color: '#64748b', marginTop: 6 }}>
+            {overallGrcScore >= 80 ? '🟢 Meets corporate compliance limits' : '🟡 Review controls to reduce policy deviations'}
           </div>
         </div>
 

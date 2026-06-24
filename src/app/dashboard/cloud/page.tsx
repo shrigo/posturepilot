@@ -267,7 +267,7 @@ export default function CloudPage() {
               : { aws: 40, azure: 30, gcp: 20, oci: 10 };
             
             return (
-              <div key={s.label} className="stat-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: isAssetCard ? '155px' : 'auto' }}>
+              <div key={s.label} className="stat-card">
                 <div>
                   <div className="stat-card-accent" style={{ background: s.accent }} />
                   <div className="stat-label">{s.label}</div>

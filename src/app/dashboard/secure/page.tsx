@@ -280,6 +280,50 @@ export default function SecureTriagePage() {
         </button>
       </div>
 
+      <div className="grid-4" style={{ marginBottom: '1.25rem' }}>
+        {[
+          { label: 'Total Ingested CVEs', value: rawFindings.toLocaleString(), accent: '#7c3aed', delta: 'From active Wiz/Qualys scans', target: 'Consolidated database' },
+          { label: 'High Severity Threats', value: afterSeverity.toLocaleString(), accent: '#4f46e5', delta: `CVSS ≥ ${minCvss.toFixed(1)} threshold`, target: `${filteredFindings.length} match filters` },
+          { label: 'Exploitable Vectors', value: afterExploit.toLocaleString(), accent: '#ea580c', delta: 'KEV & EPSS matched', target: `${findings.filter(f => f.isKev).length} active KEV listed` },
+          { label: 'Actionable Risks', value: actionableCount.toLocaleString(), accent: '#16a34a', delta: 'Production priority targets', target: `Noise cut by ${((1 - (actionableCount/rawFindings)) * 100).toFixed(1)}%` },
+        ].map((s, idx) => {
+          const dist = { critical: 15, high: 35, medium: 40, low: 10 };
+          return (
+            <div key={s.label} className="stat-card">
+              <div className="stat-card-accent" style={{ background: s.accent }} />
+              <div>
+                <div className="stat-label">{s.label}</div>
+                <div className="stat-value" style={{ color: s.accent }}>{s.value}</div>
+              </div>
+              
+              {idx === 0 ? (
+                <div style={{ marginTop: '0.5rem', borderTop: '1px solid #f1f5f9', paddingTop: '0.4rem' }}>
+                  {/* Multi-segment vulnerability severity distribution bar */}
+                  <div style={{ height: 6, background: '#e2e8f0', borderRadius: 99, display: 'flex', overflow: 'hidden', marginBottom: '0.3rem' }}>
+                    <div style={{ width: `${dist.critical}%`, background: '#dc2626' }} title={`Critical: ${dist.critical}%`} />
+                    <div style={{ width: `${dist.high}%`, background: '#ea580c' }} title={`High: ${dist.high}%`} />
+                    <div style={{ width: `${dist.medium}%`, background: '#fbbf24' }} title={`Medium: ${dist.medium}%`} />
+                    <div style={{ width: `${dist.low}%`, background: '#16a34a' }} title={`Low: ${dist.low}%`} />
+                  </div>
+                  {/* Miniature Severity Badges */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', fontSize: '0.55rem', fontWeight: 800, color: '#64748b' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#dc2626' }} /> CRT {dist.critical}%</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ea580c' }} /> HIGH {dist.high}%</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#fbbf24' }} /> MED {dist.medium}%</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}><span style={{ width: 6, height: 6, borderRadius: '50%', background: '#16a34a' }} /> LOW {dist.low}%</span>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="stat-delta" style={{ color: '#475569', fontSize: '0.72rem', fontWeight: 600, marginTop: '0.25rem' }}>{s.delta}</div>
+                  <div style={{ fontSize: '0.68rem', color: '#94a3b8', marginTop: '0.25rem' }}>{s.target}</div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
       {/* Cockpit telemetry card */}
       <ModuleCockpitCard config={radarCockpitConfig} live={liveData} />
 

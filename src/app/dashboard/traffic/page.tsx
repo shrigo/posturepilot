@@ -312,8 +312,10 @@ export default function TrafficPage() {
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
-              <div className="stat-label">{s.label}</div>
-              <div className="stat-value" style={{ color: s.accent, fontSize: '1.8rem', lineHeight: '1.2' }}>{s.value}</div>
+              <div>
+                <div className="stat-label">{s.label}</div>
+                <div className="stat-value" style={{ color: s.accent, fontSize: '1.8rem', lineHeight: '1.2' }}>{s.value}</div>
+              </div>
               <div className="stat-delta delta-down">{s.delta}</div>
             </div>
           ))}

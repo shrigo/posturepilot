@@ -355,8 +355,10 @@ export default function IdentityPage() {
 
         <div className="stat-card">
           <div className="stat-card-accent" style={{ background: '#dc2626' }} />
-          <div className="stat-label">SSO Travel / Login Alerts</div>
-          <div className="stat-value" style={{ color: '#dc2626', fontSize: '1.8rem', marginTop: 4 }}>{activeAlertsCount}</div>
+          <div>
+            <div className="stat-label">SSO Travel / Login Alerts</div>
+            <div className="stat-value" style={{ color: '#dc2626', fontSize: '1.8rem', marginTop: 4 }}>{activeAlertsCount}</div>
+          </div>
           <div className="stat-delta" style={{ color: mitigatedCount > 0 ? '#10b981' : '#dc2626', fontWeight: 800 }}>
             {mitigatedCount > 0 ? `🟢 Revoked ${mitigatedCount} hijacked tokens` : '🚨 High CVSS travel spikes'}
           </div>
@@ -364,23 +366,25 @@ export default function IdentityPage() {
 
         <div className="stat-card">
           <div className="stat-card-accent" style={{ background: '#ea580c' }} />
-          <div className="stat-label">Excessive IAM Drift Roles</div>
-          <div className="stat-value" style={{ color: '#ea580c', fontSize: '1.8rem', marginTop: 4 }}>{permissionDrifts}</div>
+          <div>
+            <div className="stat-label">Excessive IAM Drift Roles</div>
+            <div className="stat-value" style={{ color: '#ea580c', fontSize: '1.8rem', marginTop: 4 }}>{permissionDrifts}</div>
+          </div>
           <div className="stat-delta" style={{ color: '#ea580c', fontWeight: 800 }}>
             Drifts from standard privilege
           </div>
         </div>
 
-        <div className="stat-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="stat-card">
           <div className="stat-card-accent" style={{ background: '#059669' }} />
           <div>
             <div className="stat-label">Zero Trust Status</div>
             <div className="stat-value" style={{ color: overallScore >= 80 ? '#059669' : '#ea580c', fontSize: '1.2rem', fontWeight: 900, textTransform: 'uppercase', marginTop: 4 }}>
               {zeroTrustStatus}
             </div>
-            <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: 6 }}>
-              {overallScore >= 80 ? '🟢 Identity parameters are optimal' : '🟡 Revoke active anomalies to secure credentials'}
-            </div>
+          </div>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: 6 }}>
+            {overallScore >= 80 ? '🟢 Identity parameters are optimal' : '🟡 Revoke active anomalies to secure credentials'}
           </div>
         </div>
 

@@ -94,10 +94,14 @@ export default function KpiPage() {
           ].map(s => (
             <div key={s.label} className="stat-card">
               <div className="stat-card-accent" style={{ background: s.accent }} />
-              <div className="stat-label">{s.label}</div>
-              <div className="stat-value" style={{ color: s.accent }}>{s.value}{s.suffix}</div>
-              <div className="stat-delta delta-down">{s.delta}</div>
-              <div style={{ fontSize:'0.68rem', color:'#94a3b8', marginTop:'0.25rem' }}>{s.target}</div>
+              <div>
+                <div className="stat-label">{s.label}</div>
+                <div className="stat-value" style={{ color: s.accent }}>{s.value}{s.suffix}</div>
+              </div>
+              <div>
+                <div className="stat-delta delta-down">{s.delta}</div>
+                <div style={{ fontSize:'0.68rem', color:'#94a3b8', marginTop:'0.25rem' }}>{s.target}</div>
+              </div>
             </div>
           ))}
         </div>
