@@ -126,7 +126,7 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [currentClient.key, score]);
+  }, []);
 
   const progressVal = Math.min(animTime / 1800, 1);
   const easedProgress = 1 - Math.pow(1 - progressVal, 4); // easeOutQuart
@@ -884,27 +884,27 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
               ))}
 
               {/* Sync-moving orbit dots for 3 rings */}
-              <circle cx={outerDot.cx} cy={outerDot.cy} r="2.2" fill={ro.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${ro.glowColor})` }} />
-              <circle cx={middleDot.cx} cy={middleDot.cy} r="2.2" fill={rm.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${rm.glowColor})` }} />
-              <circle cx={innerDot.cx} cy={innerDot.cy} r="2.2" fill={ri.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${ri.glowColor})` }} />
+              <circle cx={outerDot.cx} cy={outerDot.cy} r="2.2" fill={ro.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${ro.glowColor})`, transition: 'cx 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
+              <circle cx={middleDot.cx} cy={middleDot.cy} r="2.2" fill={rm.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${rm.glowColor})`, transition: 'cx 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
+              <circle cx={innerDot.cx} cy={innerDot.cy} r="2.2" fill={ri.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${ri.glowColor})`, transition: 'cx 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), cy 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
 
               {/* Outer ring */}
               <circle cx="100" cy="100" r={rOuter} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
               <circle cx="100" cy="100" r={rOuter} fill="none" stroke={ro.color} strokeWidth="5.5"
                 strokeDasharray={circOuter} strokeDashoffset={circOuter - dashOuter} strokeLinecap="round"
-                style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 3px ${ro.glowColor})` }} />
+                style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 3px ${ro.glowColor})`, transition: 'stroke-dashoffset 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
 
               {/* Middle ring */}
               <circle cx="100" cy="100" r={rMiddle} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
               <circle cx="100" cy="100" r={rMiddle} fill="none" stroke={rm.color} strokeWidth="5.5"
                 strokeDasharray={circMiddle} strokeDashoffset={circMiddle - dashMiddle} strokeLinecap="round"
-                style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 3px ${rm.glowColor})` }} />
+                style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 3px ${rm.glowColor})`, transition: 'stroke-dashoffset 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
 
               {/* Inner ring */}
               <circle cx="100" cy="100" r={rInner} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
               <circle cx="100" cy="100" r={rInner} fill="none" stroke={ri.color} strokeWidth="5.5"
                 strokeDasharray={circInner} strokeDashoffset={circInner - dashInner} strokeLinecap="round"
-                style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 4px ${ri.glowColor})` }} />
+                style={{ transform:'rotate(-90deg)', transformOrigin:'100px 100px', filter:`drop-shadow(0 0 4px ${ri.glowColor})`, transition: 'stroke-dashoffset 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
 
               {/* Core glow */}
               <circle cx="100" cy="100" r="30" fill={`url(#mcCore-${config.indexLabel})`} />

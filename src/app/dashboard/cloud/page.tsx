@@ -537,7 +537,7 @@ export default function CloudPage() {
             </p>
             <div style={{ flex: 1 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart key={`${currentClient.key}-${cloudFilter}`} data={dynamicBarData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                <BarChart key="cloud-category-misconfigurations" data={dynamicBarData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                   <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                   <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} />

@@ -375,6 +375,34 @@ export default function CISOPage() {
             grid-template-columns: 1fr !important;
           }
         }
+        @keyframes marquee {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+        .ticker-wrap {
+          width: 100%;
+          overflow: hidden;
+          padding: 8px 16px;
+          border-radius: 8px;
+          margin-bottom: 1rem;
+          border: 1px solid;
+          transition: all 0.3s ease;
+        }
+        .ticker-content {
+          display: inline-block;
+          white-space: nowrap;
+          animation: marquee 35s linear infinite;
+          font-size: 0.72rem;
+          font-family: monospace;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .spinning-gear {
+          animation: spin 3s linear infinite;
+          display: inline-block;
+        }
       `}</style>
       
       {/* ── CISO SECURE AUTHORIZATION GATE BAR ── */}
@@ -473,6 +501,22 @@ export default function CISOPage() {
         </div>
       </div>
 
+      {/* ── LIVE THREAT CAMPAIGN TICKER ── */}
+      <div className="ticker-wrap" style={{
+        background: isGroupUnderAttack ? 'linear-gradient(90deg, #991b1b, #7f1d1d)' : '#0f172a',
+        borderColor: isGroupUnderAttack ? '#ef4444' : '#1e293b',
+      }}>
+        <div className="ticker-content" style={{
+          color: isGroupUnderAttack ? '#fca5a5' : '#38bdf8',
+          fontWeight: isGroupUnderAttack ? 800 : 500,
+        }}>
+          {isGroupUnderAttack 
+            ? "🚨 CRITICAL CAMPAIGN ALERT: Active multi-tenant exploitation wave detected · SQL Injection attempts on Wells Fargo · DDoS sweep targeting CISCO gateway ingress · 148 critical CVEs exposed · Immediate SOAR mitigations required"
+            : "🟢 SYSTEM ALIGNMENT ACTIVE: All multi-tenant client postures conforming to SLA threshold targets · Wiz and Prisma telemetry synced · Gateways reporting nominal latency"
+          }
+        </div>
+      </div>
+
       {/* ── SECURITY CREDENTIALS LOCK PROMPT ── */}
       {pendingRole && (
         <div style={{
@@ -543,13 +587,13 @@ export default function CISOPage() {
           {/* ========================================================================= */}
           {/* CISO CONFIGURATOR PANEL (COMBINED VIEW SETTINGS) */}
           {/* ========================================================================= */}
-          <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 16 }}>
-            <div style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.75rem', marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem', background: 'rgba(255, 255, 255, 0.45)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', border: '1px solid rgba(226, 232, 240, 0.8)', borderRadius: 16 }}>
+            <div style={{ borderBottom: '1px solid rgba(241, 245, 249, 0.6)', paddingBottom: '0.75rem', marginBottom: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a' }}>⚙️ Executive Cockpit Configurator</h3>
                 <p style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 2 }}>Choose which subsidiaries are aggregated and select your custom telemetry widgets layout.</p>
               </div>
-              <span style={{ fontSize: '0.62rem', fontWeight: 800, padding: '2px 8px', borderRadius: 20, background: '#f5f3ff', color: '#7c3aed', border: '1px solid #ddd6fe' }}>
+              <span style={{ fontSize: '0.62rem', fontWeight: 800, padding: '2px 8px', borderRadius: 20, background: 'rgba(245, 243, 255, 0.6)', color: '#7c3aed', border: '1px solid rgba(221, 214, 254, 0.8)', backdropFilter: 'blur(4px)' }}>
                 CONFIG PANEL
               </span>
             </div>
@@ -565,8 +609,12 @@ export default function CISOPage() {
                       <label 
                         key={tenant.key} 
                         style={{ 
-                          display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.65rem 1rem', background: isChecked ? '#f8fafc' : '#ffffff', 
-                          border: isChecked ? `1.5px solid ${tenant.badgeColor}` : '1px solid #e2e8f0', borderRadius: 10, cursor: 'pointer', transition: 'all 0.15s',
+                          display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.65rem 1rem', 
+                          background: isChecked ? 'rgba(248, 250, 252, 0.85)' : 'rgba(255, 255, 255, 0.45)', 
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
+                          border: isChecked ? `1.5px solid ${tenant.badgeColor}` : '1px solid rgba(226, 232, 240, 0.6)', 
+                          borderRadius: 10, cursor: 'pointer', transition: 'all 0.15s',
                           flex: 1
                         }}
                       >
@@ -603,8 +651,10 @@ export default function CISOPage() {
                         key={key}
                         style={{ 
                           display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.5rem 0.75rem', 
-                          background: isChecked ? meta.bg : '#ffffff', 
-                          border: isChecked ? `1.5px solid ${meta.activeBorder}` : `1.5px solid ${meta.border}`, 
+                          background: isChecked ? `${meta.bg}bb` : 'rgba(255, 255, 255, 0.45)', 
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
+                          border: isChecked ? `1.5px solid ${meta.activeBorder}` : `1.5px solid rgba(226, 232, 240, 0.6)`, 
                           borderRadius: 10, transition: 'all 0.15s',
                           flex: 1
                         }}
@@ -759,20 +809,34 @@ export default function CISOPage() {
                             <AreaChart data={combinedTrendData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
                               <defs>
                                 <linearGradient id="colorCombined" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.2}/>
-                                  <stop offset="95%" stopColor="#7c3aed" stopOpacity={0.0}/>
+                                  <stop offset="5%" stopColor={isGroupUnderAttack ? '#ef4444' : '#7c3aed'} stopOpacity={0.3}/>
+                                  <stop offset="95%" stopColor={isGroupUnderAttack ? '#ef4444' : '#7c3aed'} stopOpacity={0.0}/>
                                 </linearGradient>
+                                <filter id="chartGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                  <feGaussianBlur stdDeviation="3" result="blur" />
+                                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
                               </defs>
                               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                               <XAxis dataKey="week" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                               <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[20, 100]} />
                               <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
-                              {selectedTenants.includes('WELLS') && <Area type="monotone" dataKey="WELLS" name="Wells Fargo" stroke="#dc2626" strokeWidth={2} fill="none" />}
-                              {selectedTenants.includes('TOYOTA') && <Area type="monotone" dataKey="TOYOTA" name="Toyota" stroke="#ea580c" strokeWidth={2} fill="none" />}
-                              {selectedTenants.includes('UR') && <Area type="monotone" dataKey="UR" name="United Rentals" stroke="#10b981" strokeWidth={2} fill="none" />}
-                              {selectedTenants.includes('CISCO') && <Area type="monotone" dataKey="CISCO" name="CISCO" stroke="#06b6d4" strokeWidth={2} fill="none" />}
-                              {selectedTenants.includes('DISNEY') && <Area type="monotone" dataKey="DISNEY" name="Disney" stroke="#a855f7" strokeWidth={2} fill="none" />}
-                              {selectedTenants.length > 1 && <Area type="monotone" dataKey="Combined" name="CISO Combined Average" stroke={isGroupUnderAttack ? '#ef4444' : '#7c3aed'} strokeWidth={3} fill="url(#colorCombined)" />}
+                              {selectedTenants.includes('WELLS') && <Area type="monotone" dataKey="WELLS" name="Wells Fargo" stroke="#dc2626" strokeWidth={1.5} fill="none" />}
+                              {selectedTenants.includes('TOYOTA') && <Area type="monotone" dataKey="TOYOTA" name="Toyota" stroke="#ea580c" strokeWidth={1.5} fill="none" />}
+                              {selectedTenants.includes('UR') && <Area type="monotone" dataKey="UR" name="United Rentals" stroke="#10b981" strokeWidth={1.5} fill="none" />}
+                              {selectedTenants.includes('CISCO') && <Area type="monotone" dataKey="CISCO" name="CISCO" stroke="#06b6d4" strokeWidth={1.5} fill="none" />}
+                              {selectedTenants.includes('DISNEY') && <Area type="monotone" dataKey="DISNEY" name="Disney" stroke="#a855f7" strokeWidth={1.5} fill="none" />}
+                              {selectedTenants.length > 1 && (
+                                <Area 
+                                  type="monotone" 
+                                  dataKey="Combined" 
+                                  name="CISO Combined Average" 
+                                  stroke={isGroupUnderAttack ? '#ef4444' : '#7c3aed'} 
+                                  strokeWidth={3} 
+                                  fill="url(#colorCombined)" 
+                                  style={{ filter: 'url(#chartGlow)' }}
+                                />
+                              )}
                             </AreaChart>
                           </ResponsiveContainer>
                         )}
@@ -798,15 +862,37 @@ export default function CISOPage() {
                         ) : (
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={frameworkComplianceData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                              <defs>
+                                <linearGradient id="wellsGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#ef4444" stopOpacity={1}/>
+                                  <stop offset="100%" stopColor="#991b1b" stopOpacity={0.75}/>
+                                </linearGradient>
+                                <linearGradient id="toyotaGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#ea580c" stopOpacity={1}/>
+                                  <stop offset="100%" stopColor="#c2410c" stopOpacity={0.75}/>
+                                </linearGradient>
+                                <linearGradient id="urGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#10b981" stopOpacity={1}/>
+                                  <stop offset="100%" stopColor="#047857" stopOpacity={0.75}/>
+                                </linearGradient>
+                                <linearGradient id="ciscoGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#06b6d4" stopOpacity={1}/>
+                                  <stop offset="100%" stopColor="#0e7490" stopOpacity={0.75}/>
+                                </linearGradient>
+                                <linearGradient id="disneyGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stopColor="#a855f7" stopOpacity={1}/>
+                                  <stop offset="100%" stopColor="#701a75" stopOpacity={0.75}/>
+                                </linearGradient>
+                              </defs>
                               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                               <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                               <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} domain={[0, 100]} />
                               <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
-                              {selectedTenants.includes('WELLS') && <Bar dataKey="WELLS" name="Wells Fargo" fill="#dc2626" radius={[4, 4, 0, 0]} barSize={6} />}
-                              {selectedTenants.includes('TOYOTA') && <Bar dataKey="TOYOTA" name="Toyota" fill="#ea580c" radius={[4, 4, 0, 0]} barSize={6} />}
-                              {selectedTenants.includes('UR') && <Bar dataKey="UR" name="United Rentals" fill="#10b981" radius={[4, 4, 0, 0]} barSize={6} />}
-                              {selectedTenants.includes('CISCO') && <Bar dataKey="CISCO" name="CISCO" fill="#06b6d4" radius={[4, 4, 0, 0]} barSize={6} />}
-                              {selectedTenants.includes('DISNEY') && <Bar dataKey="DISNEY" name="Disney" fill="#a855f7" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('WELLS') && <Bar dataKey="WELLS" name="Wells Fargo" fill="url(#wellsGrad)" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('TOYOTA') && <Bar dataKey="TOYOTA" name="Toyota" fill="url(#toyotaGrad)" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('UR') && <Bar dataKey="UR" name="United Rentals" fill="url(#urGrad)" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('CISCO') && <Bar dataKey="CISCO" name="CISCO" fill="url(#ciscoGrad)" radius={[4, 4, 0, 0]} barSize={6} />}
+                              {selectedTenants.includes('DISNEY') && <Bar dataKey="DISNEY" name="Disney" fill="url(#disneyGrad)" radius={[4, 4, 0, 0]} barSize={6} />}
                             </BarChart>
                           </ResponsiveContainer>
                         )}
@@ -1098,9 +1184,14 @@ export default function CISOPage() {
             {/* Compilation Console logs */}
             {isCompilingReport ? (
               <div style={{ flex: 1, background: '#090d16', padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: '#c084fc', fontFamily: 'monospace' }}>
-                <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>⚙️</div>
-                <div style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '0.5rem' }}>Compiling Executive Report: {Math.round(reportProgress)}%</div>
+                <div className="spinning-gear" style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>⚙️</div>
+                <div style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '0.5rem', color: '#fff' }}>Compiling Executive Report: {Math.round(reportProgress)}%</div>
                 
+                {/* Compiler progress bar */}
+                <div style={{ width: '100%', maxWidth: '600px', height: 6, background: 'rgba(255,255,255,0.05)', borderRadius: 99, marginBottom: '1.5rem', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${reportProgress}%`, background: '#c084fc', transition: 'width 0.15s ease' }} />
+                </div>
+
                 {/* Console Log stream box */}
                 <div style={{
                   width: '100%', maxWidth: '600px', height: '200px', background: '#020617', border: '1px solid #1e293b',
@@ -1110,7 +1201,10 @@ export default function CISOPage() {
                   {reportLogs.map((log, idx) => (
                     <div key={idx} style={{ opacity: idx === reportLogs.length - 1 ? 1 : 0.5 }}>{log}</div>
                   ))}
-                  <div style={{ width: 1, height: 1 }} />
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span style={{ color: '#34d399' }}>&gt;</span>
+                    <span style={{ animation: 'twinkle-star-glow 1s infinite', background: '#34d399', width: 6, height: 12, marginLeft: 6, display: 'inline-block', verticalAlign: 'middle' }} />
+                  </div>
                 </div>
               </div>
             ) : (

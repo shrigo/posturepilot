@@ -514,7 +514,7 @@ export default function OverviewPage() {
               
               <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart key={`${currentClient.key}-${activePostScore}`}>
+                  <PieChart key="overview-posture-gauge">
                     <defs>
                       <linearGradient id="postureGradient" x1="0" y1="0" x2="1" y2="0">
                         <stop offset="0%" stopColor="#ef4444" />
@@ -589,7 +589,7 @@ export default function OverviewPage() {
               </div>
               <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart key={`${currentClient.key}-${activePostScore}`}>
+                  <PieChart key="overview-severity-breakdown">
                     <Pie
                       data={severityDonutData}
                       cx="50%"
@@ -633,7 +633,7 @@ export default function OverviewPage() {
               </div>
               <div style={{ flex: 1, paddingTop: '0.5rem' }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart key={`${currentClient.key}-${activePostScore}`} data={categoryComplianceData} layout="vertical" margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                  <BarChart key="overview-controls-coverage" data={categoryComplianceData} layout="vertical" margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
                     <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10, fill: '#94a3b8' }} />
                     <YAxis dataKey="name" type="category" tick={{ fontSize: 9, fill: '#475569', fontWeight: 700 }} width={90} />

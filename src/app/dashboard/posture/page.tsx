@@ -478,7 +478,7 @@ export default function PosturePage() {
               Historical client posture curve. Checking off exploit hot-patches dynamically boosts active month rating.
             </p>
             <ResponsiveContainer width="100%" height={220}>
-              <LineChart key={`${currentClient.key}-${postureScore}`} data={dynamicMonthlyTrend}>
+              <LineChart key="posture-cyber-trend" data={dynamicMonthlyTrend}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#94a3b8' }} />
                 <YAxis domain={[30, 100]} tick={{ fontSize: 11, fill: '#94a3b8' }} />

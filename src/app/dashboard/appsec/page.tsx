@@ -807,7 +807,7 @@ export default function AppsecPage() {
             </p>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
               <ResponsiveContainer width="100%" height={160}>
-                <PieChart key={currentClient.key}>
+                <PieChart key="appsec-severity-distribution">
                   <Pie
                     data={sevChart}
                     cx="50%"

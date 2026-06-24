@@ -335,7 +335,7 @@ export default function TrafficPage() {
             </p>
             <div style={{ flex: 1, minHeight: 0 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart key={`${currentClient.key}-${blockedRegions.join('-')}-${Object.keys(ipThrottles).length}-${blockScale}`} data={activeChartData}>
+                <AreaChart key="traffic-volume-telemetry" data={activeChartData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                   <XAxis dataKey="hour" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                   <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} />

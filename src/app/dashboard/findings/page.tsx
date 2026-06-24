@@ -172,7 +172,7 @@ export default function FindingsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, sort, order, search, severity, tool, status, slaBreached, currentClient.key]);
+  }, [page, sort, order, search, severity, tool, status, slaBreached]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 

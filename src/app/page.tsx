@@ -36,6 +36,195 @@ export default function Page() {
   const [activeMockupTab, setActiveMockupTab] = useState("Main Terminal");
   const [isPromoOpen, setIsPromoOpen] = useState(false);
 
+  // Secure Section Sandbox States
+  const [cvssThreshold, setCvssThreshold] = useState<number>(7.0);
+  const [cisaKevOnly, setCisaKevOnly] = useState<boolean>(false);
+  const [tier1Only, setTier1Only] = useState<boolean>(false);
+  const [showSecureLockModal, setShowSecureLockModal] = useState<boolean>(false);
+
+  // Report Section Interactive Preview States
+  const [activeReportTab, setActiveReportTab] = useState<string>("Briefing");
+  const [reportCompileProgress, setReportCompileProgress] = useState<number>(0);
+  const [isReportCompiling, setIsReportCompiling] = useState<boolean>(false);
+  const [reportCompileLogs, setReportCompileLogs] = useState<string[]>([]);
+  const [reportCompileFinished, setReportCompileFinished] = useState<boolean>(false);
+  const [showReportLockModal, setShowReportLockModal] = useState<boolean>(false);
+
+  // Dynamic Report Card Content Helper
+  const getReportContent = () => {
+    switch (activeReportTab) {
+      case "Summary":
+        return {
+          title: "Executive Summary Report",
+          score: "82",
+          subtitle: "Acme Financial Corp · Leadership Summary",
+          scoreLabel: "Unified Rating",
+          scoreTrend: "🟢 Conformance Target Met",
+          kpiColor: "#4f46e5",
+          kpis: [
+            { l: "SLA Compliance", v: "95%", c: "#34d399", sub: "target 90%" },
+            { l: "Mean MTTR", v: "3.4d", c: "#60a5fa", sub: "improved 12%" },
+            { l: "Open Threats", v: "4", c: "#fbbf24", sub: "0 critical" }
+          ],
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              <div>
+                <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "#475569", marginBottom: 4 }}>📊 Subsidiary Posture Ratings</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  {[{ n: "Wells Fargo", v: 76, c: "#dc2626" }, { n: "Toyota", v: 85, c: "#ea580c" }, { n: "United Rentals", v: 91, c: "#10b981" }, { n: "Cisco BU", v: 96, c: "#06b6d4" }].map(b => (
+                    <div key={b.n} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '0.55rem', color: '#64748b', width: 64, flexShrink: 0 }}>{b.n}</span>
+                      <div style={{ flex: 1, height: 6, background: '#f1f5f9', borderRadius: 99 }}>
+                        <div style={{ height: '100%', width: `${b.v}%`, background: b.c, borderRadius: 99 }} />
+                      </div>
+                      <span style={{ fontSize: '0.55rem', fontWeight: 700, color: b.c }}>{b.v}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={{ background: "#ede9fe", borderRadius: 8, padding: "0.5rem 0.625rem", border: "1px solid #c4b5fd" }}>
+                <div style={{ fontSize: "0.58rem", fontWeight: 800, color: "#4f46e5", marginBottom: "0.25rem" }}>💡 Key Recommendation</div>
+                <div style={{ fontSize: "0.54rem", color: "#6d28d9", lineHeight: 1.3 }}>
+                  Upgrade Entra ID directory MFA policies to resolve 640 legacy auth policy gaps across United Rentals endpoints.
+                </div>
+              </div>
+            </div>
+          )
+        };
+      case "Technical":
+        return {
+          title: "Technical Findings Inventory",
+          score: "334",
+          subtitle: "Full Scan CVE & Tool Inventory",
+          scoreLabel: "Open Vulnerabilities",
+          scoreTrend: "↓ 12 patched today",
+          kpiColor: "#0891b2",
+          kpis: [
+            { l: "Critical CVSS", v: "23", c: "#f87171", sub: "8 CISA KEV" },
+            { l: "High Severity", v: "67", c: "#fb923c", sub: "14 SLA breach" },
+            { l: "Medium/Low", v: "244", c: "#a78bfa", sub: "auto-triaged" }
+          ],
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "#475569", marginBottom: 2 }}>🚨 Ingested Threat Vectors</div>
+              {[{ c: "CVE-2024-3400", s: "Critical", score: "10.0", t: "PaloAlto RCE" }, { c: "CVE-2024-21762", s: "Critical", score: "9.8", t: "Fortinet SSL VPN" }, { c: "CVE-2023-44487", s: "High", score: "7.5", t: "HTTP/2 Rapid Reset" }].map(v => (
+                <div key={v.c} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.3rem 0.5rem', background: '#f8fafc', borderRadius: 6, border: '1px solid #e2e8f0' }}>
+                  <div>
+                    <span style={{ fontSize: '0.58rem', fontFamily: 'monospace', fontWeight: 800, color: '#0f172a' }}>{v.c}</span>
+                    <span style={{ fontSize: '0.5rem', color: '#64748b', display: 'block' }}>{v.t}</span>
+                  </div>
+                  <span style={{ fontSize: '0.58rem', fontWeight: 900, color: v.s === 'Critical' ? '#dc2626' : '#ea580c', background: v.s === 'Critical' ? '#fef2f2' : '#fff7ed', padding: '2px 6px', borderRadius: 4 }}>
+                    {v.score}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )
+        };
+      case "SLA":
+        return {
+          title: "SLA Breach & Escalation Report",
+          score: "14",
+          subtitle: "Overdue Risk Resolution Tracker",
+          scoreLabel: "SLA Breached Issues",
+          scoreTrend: "⚠️ 3 Critical Overdue",
+          kpiColor: "#dc2626",
+          kpis: [
+            { l: "Avg Overdue", v: "18 days", c: "#f87171", sub: "limit 24h" },
+            { l: "High Overdue", v: "11", c: "#fb923c", sub: "limit 7d" },
+            { l: "Active Escalations", v: "Tier-2", c: "#a78bfa", sub: "owner notified" }
+          ],
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "#475569", marginBottom: 2 }}>⚠️ Overdue Resolution Queues</div>
+              {[{ cve: "CVE-2024-3400", owner: "Sarah Connor", days: "8d overdue" }, { cve: "CVE-2026-9800", owner: "Devon Vance", days: "10d overdue" }, { cve: "CVE-2026-1124", owner: "Marcus Brody", days: "12d overdue" }].map(t => (
+                <div key={t.cve} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.35rem 0.5rem', background: '#fff1f2', borderRadius: 6, border: '1px solid #fecaca' }}>
+                  <span style={{ fontSize: '0.58rem', fontFamily: 'monospace', fontWeight: 800, color: '#9f1239' }}>{t.cve}</span>
+                  <span style={{ fontSize: '0.52rem', color: '#be123c', fontWeight: 600 }}>{t.owner}</span>
+                  <span style={{ fontSize: '0.52rem', fontWeight: 700, color: '#ef4444' }}>{t.days}</span>
+                </div>
+              ))}
+            </div>
+          )
+        };
+      case "Compliance":
+        return {
+          title: "GRC Control Compliance Map",
+          score: "92%",
+          subtitle: "Regulatory Framework Coverages",
+          scoreLabel: "Aggregate Coverage",
+          scoreTrend: "🛡️ Audit Readiness Target Met",
+          kpiColor: "#16a34a",
+          kpis: [
+            { l: "SOC2", v: "87%", c: "#34d399", sub: "target 85%" },
+            { l: "ISO 27001", v: "79%", c: "#60a5fa", sub: "target 80%" },
+            { l: "NIST CSF", v: "92%", c: "#fb923c", sub: "target 90%" }
+          ],
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <div style={{ fontSize: "0.6rem", fontWeight: 700, color: "#475569", marginBottom: 2 }}>⚖️ Framework Conformances</div>
+              {[{ f: "SOC2 Type II", v: 87, c: "#10b981" }, { f: "ISO 27001:2022", v: 79, c: "#3b82f6" }, { f: "NIST CSF v2.0", v: 92, c: "#ea580c" }, { f: "PCI-DSS v4.0", v: 68, c: "#ef4444" }, { f: "HIPAA Security", v: 74, c: "#a855f7" }].map(fw => (
+                <div key={fw.f} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ fontSize: '0.54rem', color: '#64748b', width: 80, flexShrink: 0 }}>{fw.f}</span>
+                  <div style={{ flex: 1, height: 5, background: '#f1f5f9', borderRadius: 99 }}>
+                    <div style={{ height: '100%', width: `${fw.v}%`, background: fw.c, borderRadius: 99 }} />
+                  </div>
+                  <span style={{ fontSize: '0.54rem', fontWeight: 700, color: fw.c, width: 24, textAlign: 'right' }}>{fw.v}%</span>
+                </div>
+              ))}
+            </div>
+          )
+        };
+      case "Briefing":
+      default:
+        return {
+          title: "Executive Security Brief",
+          score: "74",
+          subtitle: "May 2026 · Consolidated CISO View",
+          scoreLabel: "Risk Score /100",
+          scoreTrend: "▲ +4 from last month",
+          kpiColor: "#7c3aed",
+          kpis: [
+            { l: "Critical", v: "23", c: "#f87171", sub: "↓5 this week" },
+            { l: "SLA Compliance", v: "91%", c: "#34d399", sub: "↑3% MoM" },
+            { l: "Avg CVSS", v: "7.4", c: "#fb923c", sub: "stable" }
+          ],
+          body: (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.6rem", fontWeight: 700, color: "#475569", marginBottom: 4 }}>
+                  <span>📈 CISO Joint Posture Trend — 90 Days</span>
+                  <span style={{ color: "#16a34a" }}>Improving</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "flex-end", gap: "3px", height: 40, borderBottom: "1px solid #e2e8f0", paddingBottom: 2 }}>
+                  {[82, 79, 77, 80, 76, 74, 71, 74, 72, 70, 74, 72].map((v, i) => (
+                    <div key={i} style={{ flex: 1, borderRadius: "2px 2px 0 0", background: i === 11 ? "#7c3aed" : "#e2e8f0", height: `${(v / 82) * 100}%`, minHeight: 3 }} />
+                  ))}
+                </div>
+              </div>
+              <div style={{ background: "#f8fafc", borderRadius: 8, padding: "0.5rem 0.625rem", border: "1px solid #e2e8f0" }}>
+                <div style={{ fontSize: "0.58rem", fontWeight: 700, color: "#475569", marginBottom: "0.35rem" }}>🏢 Subsidiary BU Risk Ledger Matrix</div>
+                {[{ n: "Wells Fargo", s: "76", c: "#dc2626" }, { n: "Toyota", s: "85", c: "#ea580c" }, { n: "United Rentals", s: "91", c: "#10b981" }].map(r => (
+                  <div key={r.n} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.58rem", padding: "2px 0", borderBottom: "1px solid #f1f5f9" }}>
+                    <span style={{ color: "#64748b" }}>{r.n}</span>
+                    <span style={{ fontWeight: 700, color: r.c }}>{r.s}/100</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        };
+    }
+  };
+
+  const reportData = getReportContent();
+
+  // CISO Cockpit Preview States
+  const [cisoThreatActive, setCisoThreatActive] = useState<boolean>(false);
+  const [cisoMitigating, setCisoMitigating] = useState<boolean>(false);
+  const [cisoMitigationProgress, setCisoMitigationProgress] = useState<number>(0);
+  const [showCisoLockModal, setShowCisoLockModal] = useState<boolean>(false);
+
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -75,6 +264,91 @@ export default function Page() {
     }
   }, []);
 
+  // --- Secure Section Dynamic Triage Logic ---
+  let f1Count = 10000;
+  if (cvssThreshold >= 9.5) f1Count = 50;
+  else if (cvssThreshold >= 9.0) f1Count = 230;
+  else if (cvssThreshold >= 8.5) f1Count = 680;
+  else if (cvssThreshold >= 8.0) f1Count = 1200;
+  else if (cvssThreshold >= 7.5) f1Count = 1900;
+  else if (cvssThreshold >= 7.0) f1Count = 2500;
+  else if (cvssThreshold >= 6.0) f1Count = 5400;
+  else f1Count = 7800;
+
+  // Compute breakdown for Filter 1 Severity Gate
+  const critF1 = cvssThreshold <= 9.0 ? (cvssThreshold <= 9.5 ? 230 : 50) : 0;
+  const highF1 = cvssThreshold <= 8.5 ? (cvssThreshold <= 8.0 ? (cvssThreshold <= 7.5 ? (cvssThreshold <= 7.0 ? 2270 : 1670) : 970) : 450) : 0;
+  const medF1 = cvssThreshold <= 6.0 ? (cvssThreshold <= 5.0 ? 2900 : 2400) : 0;
+  const lowF1 = cvssThreshold <= 5.0 ? 2400 : 0;
+
+  let f2Count = f1Count;
+  if (cisaKevOnly) {
+    f2Count = Math.max(8, Math.round(f1Count * 0.08));
+  } else {
+    f2Count = Math.max(800, Math.round(f1Count * 0.32));
+    if (f2Count > f1Count) f2Count = f1Count;
+  }
+
+  let f3Count = tier1Only
+    ? Math.max(20, Math.round(f2Count * 0.15))
+    : Math.max(50, Math.round(f2Count * 0.7));
+  if (f3Count > f2Count) f3Count = f2Count;
+
+  // --- Report Section simulated compile handler ---
+  const startReportCompilation = () => {
+    setIsReportCompiling(true);
+    setReportCompileProgress(0);
+    setReportCompileFinished(false);
+    setReportCompileLogs([]);
+
+    const logsList = [
+      "🔄 Initializing board-ready report compilation pipeline...",
+      "🔒 Securing transmission channel via TLS 1.3...",
+      "💼 Ingesting multi-tenant telemetry ledger...",
+      "📈 Compiling 12 Cockpit risk factors and MTTR records...",
+      "📋 Mapping active vulnerabilities to SOC 2, ISO 27001, and NIST CSF controls...",
+      "📊 Generating executive summary charts (Risk Trend, SLA compliance)...",
+      "📝 Drafting CISO mitigation directives & future roadmaps...",
+      "🔑 Applying corporate briefing signatures and digital seal...",
+      "✅ Briefing ready! Document successfully compiled."
+    ];
+
+    let logIndex = 0;
+    const interval = setInterval(() => {
+      setReportCompileProgress(p => {
+        if (p >= 100) {
+          clearInterval(interval);
+          setIsReportCompiling(false);
+          setReportCompileFinished(true);
+          return 100;
+        }
+        const nextProg = p + 12.5;
+        if (logIndex < logsList.length) {
+          setReportCompileLogs(logs => [...logs, `[${new Date().toLocaleTimeString()}] ${logsList[logIndex]}`]);
+          logIndex++;
+        }
+        return nextProg;
+      });
+    }, 250);
+  };
+
+  // --- CISO HUD Threat Mitigation Handler ---
+  const startCisoMitigation = () => {
+    setCisoMitigating(true);
+    setCisoMitigationProgress(0);
+    const interval = setInterval(() => {
+      setCisoMitigationProgress(p => {
+        if (p >= 100) {
+          clearInterval(interval);
+          setCisoMitigating(false);
+          setCisoThreatActive(false);
+          return 100;
+        }
+        return p + 10;
+      });
+    }, 150);
+  };
+
   return(
     <div id="top" style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh",maxWidth:"100%"}}>
       <style>{`
@@ -83,6 +357,40 @@ export default function Page() {
         html,body{max-width:100%;overflow-x:hidden;width:100%;position:relative;}
         .hcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,70,229,0.15)!important}
         .hcard{transition:all 0.2s}
+        .back-to-top-btn:hover{transform:scale(1.12)!important;box-shadow:0 8px 28px rgba(79,70,229,0.55)!important;}
+        .tenant-pill-wrap {
+          position: relative;
+          cursor: pointer;
+        }
+        .tenant-lock-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(15, 23, 42, 0.95);
+          backdrop-filter: blur(2px);
+          color: #facc15;
+          font-size: 0.52rem;
+          font-weight: 900;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          opacity: 0;
+          transition: opacity 0.2s ease;
+          pointer-events: none;
+          white-space: nowrap;
+          border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+        .tenant-pill-wrap:hover .tenant-lock-overlay {
+          opacity: 1;
+        }
+        .ciso-flash-active {
+          animation: ciso-alert-flash 1.5s infinite;
+          border-color: rgba(220, 38, 38, 0.5) !important;
+        }
+        @keyframes ciso-alert-flash {
+          0%, 100% { border-color: rgba(220, 38, 38, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+          50% { border-color: rgba(220, 38, 38, 0.6); box-shadow: 0 0 15px rgba(220, 38, 38, 0.25); }
+        }
         .nav-link{transition:all 0.18s ease;border-radius:8px;padding:0.35rem 0.75rem;}
         .nav-configure:hover{background:#000d55;color:#fff!important;}
         .nav-monitor:hover{background:#5722e1;color:#fff!important;}
@@ -187,7 +495,7 @@ export default function Page() {
       {/* NAV */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"#fff",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
         <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="logo-container" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
-          <Image src="/hlogotag_v2.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <Image src="/hlogotag_v2.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{e.currentTarget.style.display="none";}}/>
         </a>
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:"0rem",fontSize:"0.9rem",fontFamily:'"Adobe Clean UX", sans-serif',fontWeight:900,letterSpacing:"0.06em",textTransform:"uppercase"}}>
           {(["Configure","Monitor","Secure","Report"] as const).map((t,i,a)=>(
@@ -451,8 +759,8 @@ export default function Page() {
               {name:"OpenVAS",        c:"#2d2d2d", initials:"OV",  logoUrl:"/logos/openvas.png",                                  logoSize:100, methods:["Upload","API"],   cat:"Scanner"},
             ].map(tool=>(
               <div key={tool.name} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:18,padding:"2rem 2rem 2.5rem",borderTop:`4px solid ${tool.c}`,boxShadow:"0 2px 12px rgba(0,0,0,0.05)",transition:"all 0.2s",cursor:"default",display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}
-                onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.transform="translateY(-4px)";(e.currentTarget as HTMLDivElement).style.boxShadow=`0 12px 32px ${tool.c}25`;}}
-                onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.transform="none";(e.currentTarget as HTMLDivElement).style.boxShadow="0 2px 12px rgba(0,0,0,0.05)";}}>
+                onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.boxShadow=`0 12px 32px ${tool.c}25`;}}
+                onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 2px 12px rgba(0,0,0,0.05)";}}>
                 {/* Logo area */}
                 <div style={{width:140,height:140,borderRadius:18,background:"#ffffff",border:"1px solid #f1f5f9",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:"1.5rem",overflow:"hidden",boxShadow:"0 2px 12px rgba(0,0,0,0.06)"}}>
                   <img
@@ -862,7 +1170,9 @@ export default function Page() {
 
 
           <div style={{textAlign:"center",marginTop:"1.25rem"}}>
-            <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#1e2d6e",padding:"0.75rem 2rem",borderRadius:10,textDecoration:"none",fontWeight:800,fontSize:"0.9rem",border:"2px solid rgba(255,255,255,0.4)",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>View Live Dashboard →</Link>
+            <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#1e2d6e",padding:"0.75rem 2rem",borderRadius: 10, textDecoration: "none", border: "1px solid #cbd5e1", fontWeight: 700, fontSize: "0.88rem"}}>
+              View Full Dashboard →
+            </Link>
           </div>
         </div>
       </section>
@@ -872,8 +1182,63 @@ export default function Page() {
         <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#bbf7d0",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>🔒 Secure</div>
-            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#fff",letterSpacing:"-0.03em"}}>Triple-Filter Triage — fix what actually matters</h2>
-            <p style={{color:"#bbf7d0",marginTop:"0.5rem",fontSize:"0.9rem"}}>Stop drowning in 10,000 findings. Our 3-layer engine surfaces only the ones that need action today.</p>
+            <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,color:"#fff",letterSpacing:"-0.03em"}}>Triple-Filter Triage Sandbox</h2>
+            <p style={{color:"#bbf7d0",marginTop:"0.5rem",fontSize:"0.9rem"}}>Adjust the risk criteria to test our 3-layer noise reduction engine in real-time.</p>
+          </div>
+
+          {/* Dynamic Simulator Controls */}
+          <div style={{
+            background: "rgba(255, 255, 255, 0.08)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(255, 255, 255, 0.15)",
+            borderRadius: 16,
+            padding: "1.25rem 1.5rem",
+            marginBottom: "2rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "1.5rem",
+            color: "#fff",
+            boxShadow: "0 8px 32px rgba(20, 83, 45, 0.15)"
+          }}>
+            <div style={{ flex: "1 1 300px" }}>
+              <div style={{ display: "flex", justifyItems: "center", justifyContent: "space-between", marginBottom: "0.5rem", fontSize: "0.82rem", fontWeight: 700 }}>
+                <span>🎯 Severity Gate (CVSS Threshold)</span>
+                <span style={{ color: "#bbf7d0", fontWeight: 800 }}>CVSS ≥ {cvssThreshold.toFixed(1)}</span>
+              </div>
+              <input 
+                type="range" 
+                min="5.0" 
+                max="9.5" 
+                step="0.5" 
+                value={cvssThreshold} 
+                onChange={e => setCvssThreshold(parseFloat(e.target.value))}
+                style={{ width: "100%", accentColor: "#bbf7d0", cursor: "pointer" }}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontSize: "0.82rem", fontWeight: 700 }}>
+                <input 
+                  type="checkbox" 
+                  checked={cisaKevOnly} 
+                  onChange={e => setCisaKevOnly(e.target.checked)} 
+                  style={{ width: 16, height: 16, accentColor: "#bbf7d0", cursor: "pointer" }}
+                />
+                ⚡ CISA KEV Listed Only
+              </label>
+
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontSize: "0.82rem", fontWeight: 700 }}>
+                <input 
+                  type="checkbox" 
+                  checked={tier1Only} 
+                  onChange={e => setTier1Only(e.target.checked)} 
+                  style={{ width: 16, height: 16, accentColor: "#bbf7d0", cursor: "pointer" }}
+                />
+                🏢 Tier-1 Prod Assets Only
+              </label>
+            </div>
           </div>
 
           <div className="secure-main" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.5rem",marginBottom:"1.5rem"}}>
@@ -881,12 +1246,21 @@ export default function Page() {
             {/* Left: Filter funnel */}
             <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
               {[
-                {step:"Filter 1",title:"Severity Gate",rule:"CVSS >= 7.0",desc:"Eliminates informational and low-noise findings immediately",c:"#4f46e5",icon:"🎯",
-                  bars:[{l:"Critical",v:95,n:23},{l:"High",v:72,n:67},{l:"Medium",v:20,n:0},{l:"Low",v:5,n:0}]},
-                {step:"Filter 2",title:"Exploitability Check",rule:"EPSS > 10% OR CISA KEV",desc:"Only surfaces findings with real-world exploit evidence",c:"#ea580c",icon:"⚡",
-                  bars:[{l:"KEV Listed",v:100,n:8},{l:"EPSS >50%",v:85,n:31},{l:"EPSS 10-50%",v:60,n:51},{l:"EPSS 1-10%",v:20,n:0},{l:"No PoC",v:5,n:0}]},
-                {step:"Filter 3",title:"Asset Criticality",rule:"Tier-1 · Prod · External",desc:"Prioritizes findings on your most valuable assets",c:"#dc2626",icon:"🏢",
-                  bars:[{l:"External-facing",v:100,n:18},{l:"Production",v:80,n:24},{l:"Internal",v:30,n:0},{l:"Dev/Test",v:5,n:0}]},
+                {step:"Filter 1",title:"Severity Gate",rule:`CVSS >= ${cvssThreshold.toFixed(1)}`,desc:"Eliminates informational and low-noise findings immediately",c:"#4f46e5",icon:"🎯",
+                  bars:[{l:"Critical 9-10",v:critF1 > 0 ? Math.round(critF1 / 230 * 100) : 0,n:critF1},
+                        {l:"High 7-8.9",v:highF1 > 0 ? Math.round(highF1 / 2270 * 100) : 0,n:highF1},
+                        {l:"Medium 4-6.9",v:medF1 > 0 ? Math.round(medF1 / 2900 * 100) : 0,n:medF1},
+                        {l:"Low/Info 0-3.9",v:lowF1 > 0 ? Math.round(lowF1 / 2400 * 100) : 0,n:lowF1}]},
+                {step:"Filter 2",title:"Exploitability Check",rule:cisaKevOnly ? "CISA KEV Listed" : "EPSS > 10% OR CISA KEV",desc:"Only surfaces findings with active, weaponized exploit evidence",c:"#ea580c",icon:"⚡",
+                  bars:[{l:"CISA KEV Match",v:100,n:cisaKevOnly ? f2Count : Math.min(8, Math.round(f2Count * 0.05))},
+                        {l:"EPSS > 50%",v:cisaKevOnly ? 0 : 85,n:cisaKevOnly ? 0 : Math.round(f2Count * 0.35)},
+                        {l:"EPSS 10-50%",v:cisaKevOnly ? 0 : 60,n:cisaKevOnly ? 0 : Math.round(f2Count * 0.6)},
+                        {l:"No Known Exploit",v:cisaKevOnly ? 0 : 5,n:0}]},
+                {step:"Filter 3",title:"Asset Criticality",rule:tier1Only ? "Tier-1 Production Assets" : "All Ingested Assets",desc:"Prioritizes findings affecting your business-critical perimeters",c:"#dc2626",icon:"🏢",
+                  bars:[{l:"External-facing",v:100,n:Math.round(f3Count * 0.3)},
+                        {l:"Production Hub",v:80,n:tier1Only ? Math.round(f3Count * 0.7) : Math.round(f3Count * 0.5)},
+                        {l:"Internal LAN",v:tier1Only ? 0 : 30,n:tier1Only ? 0 : Math.round(f3Count * 0.2)},
+                        {l:"Dev/Test Labs",v:0,n:0}]},
               ].map((f,i)=>(
                 <div key={f.step} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderLeft:`4px solid ${f.c}`,borderRadius:14,padding:"1.1rem 1.25rem"}}>
                   <div style={{display:"flex",alignItems:"center",gap:"0.75rem",marginBottom:"0.625rem"}}>
@@ -919,18 +1293,18 @@ export default function Page() {
             {/* Right: 6 mini dashboard tiles with bar graphs */}
             <div className="secure-tiles" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.875rem",alignContent:"start"}}>
               {[
-                {title:"Runway Reduction Gates",icon:"📉",c:"#16a34a",note:"99.6% noise cut",
-                  bars:[{l:"Raw (10K)",v:100,n:"10K"},{l:"After F1",v:25,n:"2.5K"},{l:"After F2",v:8,n:"800"},{l:"Actionable",v:0.5,n:"40"}]},
-                {title:"CVSS Airspeed Ranges",icon:"📊",c:"#4f46e5",note:"Only CVSS ≥ 7.0",
-                  bars:[{l:"Critical 9-10",v:23,n:23},{l:"High 7-8.9",v:67,n:67},{l:"Medium",v:45,n:0},{l:"Low/Info",v:20,n:0}]},
-                {title:"EPSS Storm Likelihood",icon:"⚡",c:"#ea580c",note:"Real exploit focus",
-                  bars:[{l:"EPSS >50%",v:100,n:31},{l:"EPSS 10-50%",v:60,n:51},{l:"EPSS 1-10%",v:20,n:0},{l:"No PoC",v:5,n:0}]},
-                {title:"Hangar Asset Tiers",icon:"🏢",c:"#dc2626",note:"Critical assets first",
-                  bars:[{l:"Tier-1 Prod",v:100,n:18},{l:"Tier-2",v:75,n:24},{l:"Internal",v:20,n:0},{l:"Dev/Test",v:5,n:0}]},
-                {title:"KEV Turbulence Rates",icon:"🔐",c:"#7c3aed",note:"8 CISA KEV found",
-                  bars:[{l:"KEV Match",v:100,n:8},{l:"Weaponized",v:75,n:6},{l:"PoC Exists",v:55,n:12},{l:"No Exploit",v:10,n:0}]},
-                {title:"SLA Altimeter Deadlines",icon:"⏰",c:"#d97706",note:"SLA gates active",
-                  bars:[{l:"Critical 24h",v:100,n:23},{l:"High 7d",v:55,n:39},{l:"Medium 30d",v:15,n:0},{l:"Low 90d",v:5,n:0}]},
+                {title:"Runway Reduction Gates",icon:"📉",c:"#16a34a",note:`${(100 - (f3Count / 10000 * 100)).toFixed(1)}% noise cut`,
+                  bars:[{l:"Raw (10K)",v:100,n:"10K"},{l:"After F1",v:Math.max(5, Math.round(f1Count / 100)),n:f1Count.toLocaleString()},{l:"After F2",v:Math.max(2, Math.round(f2Count / 100)),n:f2Count.toLocaleString()},{l:"Actionable",v:0.5,n:f3Count.toLocaleString()}]},
+                {title:"CVSS Airspeed Ranges",icon:"📊",c:"#4f46e5",note:`CVSS ≥ ${cvssThreshold.toFixed(1)} Gate`,
+                  bars:[{l:"Critical 9-10",v:cvssThreshold <= 9.0 ? 95 : 0,n:critF1 > 0 ? critF1 : "—"},{l:"High 7-8.9",v:cvssThreshold <= 7.0 ? 72 : 0,n:highF1 > 0 ? highF1 : "—"},{l:"Medium",v:cvssThreshold <= 5.0 ? 40 : 0,n:medF1 > 0 ? medF1 : "—"},{l:"Low/Info",v:cvssThreshold <= 5.0 ? 20 : 0,n:lowF1 > 0 ? lowF1 : "—"}]},
+                {title:"EPSS Storm Likelihood",icon:"⚡",c:"#ea580c",note:cisaKevOnly ? "Kev Exclusive" : "Active Threat Focus",
+                  bars:[{l:"EPSS >50%",v:cisaKevOnly ? 0 : 100,n:cisaKevOnly ? "—" : Math.round(f2Count * 0.35)},{l:"EPSS 10-50%",v:cisaKevOnly ? 0 : 60,n:cisaKevOnly ? "—" : Math.round(f2Count * 0.6)},{l:"EPSS 1-10%",v:0,n:"—"},{l:"No Exploit",v:0,n:"—"}]},
+                {title:"Hangar Asset Tiers",icon:"🏢",c:"#dc2626",note:tier1Only ? "Tier-1 Locked" : "Ledger Scope",
+                  bars:[{l:"Tier-1 Prod",v:100,n:f3Count},{l:"Tier-2 Internal",v:tier1Only ? 0 : 75,n:tier1Only ? "—" : Math.round(f2Count * 0.2)},{l:"Dev Labs",v:0,n:"—"},{l:"Test Beds",v:0,n:"—"}]},
+                {title:"KEV Turbulence Rates",icon:"🔐",c:"#7c3aed",note:`${cisaKevOnly ? f2Count : Math.min(8, Math.round(f2Count * 0.05))} active KEV vectors`,
+                  bars:[{l:"KEV Match",v:100,n:cisaKevOnly ? f2Count : Math.min(8, Math.round(f2Count * 0.05))},{l:"Weaponized",v:75,n:cisaKevOnly ? Math.round(f2Count * 0.75) : Math.min(6, Math.round(f2Count * 0.04))},{l:"PoC Public",v:55,n:cisaKevOnly ? f2Count : Math.min(12, Math.round(f2Count * 0.06))},{l:"No Exploit",v:0,n:"—"}]},
+                {title:"SLA Altimeter Deadlines",icon:"⏰",c:"#d97706",note:"Auto-escalations active",
+                  bars:[{l:"Critical 24h",v:100,n:Math.round(f3Count * 0.4)},{l:"High 7d",v:55,n:Math.round(f3Count * 0.6)},{l:"Medium 30d",v:0,n:"—"},{l:"Low 90d",v:0,n:"—"}]},
               ].map((tile:{title:string,icon:string,c:string,note:string,bars:{l:string,v:number,n:string|number}[]})=>(
                 <div key={tile.title} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,padding:"0.875rem",boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
                   <div style={{display:"flex",alignItems:"center",gap:"0.375rem",marginBottom:"0.625rem"}}>
@@ -939,7 +1313,7 @@ export default function Page() {
                   </div>
                   <div style={{display:"flex",flexDirection:"column",gap:"0.3rem",marginBottom:"0.5rem"}}>
                     {tile.bars.map((b:{l:string,v:number,n:string|number})=>{
-                      const isValActive = b.n !== 0 && b.n !== '0' && b.n !== '';
+                      const isValActive = b.n !== 0 && b.n !== '0' && b.n !== '' && b.n !== '—';
                       return (
                         <div key={b.l} style={{display:"flex",alignItems:"center",gap:"0.375rem"}}>
                           <span style={{fontSize:"0.55rem",color:"#94a3b8",width:72,flexShrink:0}}>{b.l}</span>
@@ -958,17 +1332,54 @@ export default function Page() {
           </div>
 
           {/* Before → After funnel result */}
-          <div className="funnel-result" style={{background:"linear-gradient(135deg,#f0fdf4,#dcfce7)",border:"1px solid #86efac",borderRadius:14,padding:"1.1rem 1.75rem",display:"flex",alignItems:"center",justifyContent:"center",gap:"0.75rem",flexWrap:"wrap",textAlign:"center"}}>
-            {[{n:"10,000",l:"Raw Findings",c:"#dc2626",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"2,500",l:"After Severity",c:"#ea580c",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"800",l:"Exploitable",c:"#d97706",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:"20–50",l:"Action Items",c:"#16a34a",arrow:false}].map((item,i)=>
-              item.arrow ? (
-                <span key={i} style={{fontSize:"1.5rem",color:"#86efac",fontWeight:700}}>→</span>
-              ) : (
-                <div key={i}>
-                  <div style={{fontSize:"1.5rem",fontWeight:900,color:item.c}}>{item.n}</div>
-                  <div style={{fontSize:"0.65rem",color:"#475569"}}>{item.l}</div>
-                </div>
-              )
-            )}
+          <div style={{
+            background: "linear-gradient(135deg,#f0fdf4,#dcfce7)",
+            border: "1px solid #86efac",
+            borderRadius: 16,
+            padding: "1.25rem 1.75rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "1.25rem",
+            textAlign: "left"
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
+              {[{n:"10,000",l:"Raw Findings",c:"#dc2626",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:f1Count.toLocaleString(),l:"After Severity",c:"#ea580c",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:f2Count.toLocaleString(),l:"Exploitable Only",c:"#d97706",arrow:false},{n:"→",l:"",c:"#86efac",arrow:true},{n:f3Count.toString(),l:"Action Items",c:"#16a34a",arrow:false}].map((item,i)=>
+                item.arrow ? (
+                  <span key={i} style={{fontSize:"1.5rem",color:"#86efac",fontWeight:700}}>→</span>
+                ) : (
+                  <div key={i}>
+                    <div style={{fontSize:"1.5rem",fontWeight:900,color:item.c,fontFamily:"monospace"}}>{item.n}</div>
+                    <div style={{fontSize:"0.65rem",color:"#475569",fontWeight:600}}>{item.l}</div>
+                  </div>
+                )
+              )}
+            </div>
+
+            <button 
+              onClick={() => setShowSecureLockModal(true)}
+              style={{
+                background: "linear-gradient(135deg,#16a34a,#15803d)",
+                color: "#fff",
+                border: "none",
+                borderRadius: 10,
+                padding: "0.625rem 1.25rem",
+                fontSize: "0.8rem",
+                fontWeight: 800,
+                cursor: "pointer",
+                boxShadow: "0 4px 12px rgba(22,163,74,0.25)",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                transition: "all 0.2s"
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = "translateY(-1px)"}
+              onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
+            >
+              <span>🔬 Inspect Actionable Findings ({f3Count})</span>
+              <span style={{ fontSize: "0.75rem" }}>🔒</span>
+            </button>
           </div>
         </div>
       </section>
@@ -1004,131 +1415,197 @@ export default function Page() {
                   desc:"Maps every finding to SOC2, ISO 27001, NIST CSF, PCI-DSS and HIPAA framework controls with gap analysis.",
                   includes:["Control coverage % per framework","Gap analysis with evidence","Failed controls linked to CVEs","Remediation roadmap","Audit-ready evidence trail"],
                   formats:["PDF","XLSX"]},
-              ].map(r=>(
-                <div key={r.title} style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:14,padding:"1.1rem 1.25rem",borderLeft:`4px solid ${r.c}`,boxShadow:"0 2px 8px rgba(0,0,0,0.04)",display:"grid",gridTemplateColumns:"44px 1fr",gap:"1rem",alignItems:"start"}}>
-                  <div style={{width:44,height:44,borderRadius:12,background:`${r.c}12`,border:`1px solid ${r.c}25`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.35rem",flexShrink:0}}>{r.icon}</div>
-                  <div>
-                    <div style={{display:"flex",alignItems:"center",gap:"0.5rem",flexWrap:"wrap",marginBottom:"0.25rem"}}>
-                      <span style={{fontWeight:800,color:"#0f172a",fontSize:"0.92rem"}}>{r.title}</span>
-                      <span style={{fontSize:"0.6rem",fontWeight:600,color:"#64748b",background:"#f1f5f9",padding:"1px 7px",borderRadius:20}}>{r.audience}</span>
-                      <span style={{fontSize:"0.6rem",fontWeight:700,color:"#16a34a",marginLeft:"auto"}}>⚡ {r.time}</span>
-                    </div>
-                    <div style={{fontSize:"0.75rem",color:"#64748b",marginBottom:"0.625rem",lineHeight:1.55}}>{r.desc}</div>
-                    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.175rem 0.875rem",marginBottom:"0.625rem"}}>
-                      {r.includes.map(item=>(
-                        <div key={item} style={{display:"flex",alignItems:"flex-start",gap:"0.3rem",fontSize:"0.7rem",color:"#475569"}}>
-                          <span style={{color:r.c,fontWeight:700,flexShrink:0}}>✓</span>{item}
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{display:"flex",gap:"0.35rem"}}>
-                      {r.formats.map(f=><span key={f} style={{fontSize:"0.62rem",fontWeight:700,padding:"2px 7px",borderRadius:20,background:`${r.c}12`,color:r.c,border:`1px solid ${r.c}30`}}>{f}</span>)}
+              ].map(r=>{
+                const getTabKey = (t: string) => {
+                  if (t.includes("Briefing")) return "Briefing";
+                  if (t.includes("Summary")) return "Summary";
+                  if (t.includes("Technical")) return "Technical";
+                  if (t.includes("SLA")) return "SLA";
+                  if (t.includes("Compliance")) return "Compliance";
+                  return "Briefing";
+                };
+                const tabKey = getTabKey(r.title);
+                const isSelected = activeReportTab === tabKey;
+                return (
+                  <div 
+                    key={r.title} 
+                    onClick={() => {
+                      setActiveReportTab(tabKey);
+                      setReportCompileFinished(false);
+                    }}
+                    style={{
+                      background: isSelected ? "#f8fafc" : "#fff",
+                      border: isSelected ? `2px solid ${r.c}` : "1px solid #e2e8f0",
+                      borderLeft: `6px solid ${r.c}`,
+                      borderRadius: 14,
+                      padding: "1.1rem 1.25rem",
+                      boxShadow: isSelected ? `0 4px 20px ${r.c}15` : "0 2px 8px rgba(0,0,0,0.04)",
+                      display: "grid",
+                      gridTemplateColumns: "44px 1fr",
+                      gap: "1rem",
+                      alignItems: "start",
+                      cursor: "pointer",
+                      transition: "all 0.2s"
+                    }}
+                  >
+                    <div style={{width:44,height:44,borderRadius:12,background:`${r.c}12`,border:`1px solid ${r.c}25`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.35rem",flexShrink:0}}>{r.icon}</div>
+                    <div>
+                      <div style={{display:"flex",alignItems:"center",gap:"0.5rem",flexWrap:"wrap",marginBottom:"0.25rem"}}>
+                        <span style={{fontWeight:800,color:"#0f172a",fontSize:"0.92rem"}}>{r.title}</span>
+                        <span style={{fontSize:"0.6rem",fontWeight:600,color:"#64748b",background:"#f1f5f9",padding:"1px 7px",borderRadius:20}}>{r.audience}</span>
+                        <span style={{fontSize:"0.6rem",fontWeight:700,color:"#16a34a",marginLeft:"auto"}}>⚡ {r.time}</span>
+                      </div>
+                      <div style={{fontSize:"0.75rem",color:"#64748b",marginBottom:"0.625rem",lineHeight:1.55}}>{r.desc}</div>
+                      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.175rem 0.875rem",marginBottom:"0.625rem"}}>
+                        {r.includes.map(item=>(
+                          <div key={item} style={{display:"flex",alignItems:"flex-start",gap:"0.3rem",fontSize:"0.7rem",color:"#475569"}}>
+                            <span style={{color:r.c,fontWeight:700,flexShrink:0}}>✓</span>{item}
+                          </div>
+                        ))}
+                      </div>
+                      <div style={{display:"flex",gap:"0.35rem"}}>
+                        {r.formats.map(f=><span key={f} style={{fontSize:"0.62rem",fontWeight:700,padding:"2px 7px",borderRadius:20,background:`${r.c}12`,color:r.c,border:`1px solid ${r.c}30`}}>{f}</span>)}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="report-pdf">
-              <div style={{background:"#fff",border:"1px solid #e2e8f0",borderRadius:16,overflow:"hidden",boxShadow:"0 8px 32px rgba(0,0,0,0.1)",position:"sticky",top:80}}>
-                {/* PDF Header */}
-                <div style={{background:"linear-gradient(135deg,#1e2d6e,#4f46e5)",padding:"1rem 1.125rem"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"0.75rem"}}>
-                    <div>
-                      <div style={{fontSize:"0.5rem",color:"rgba(255,255,255,0.5)",textTransform:"uppercase",letterSpacing:"0.1em"}}>PosturePilot · Confidential · CISO Brief</div>
-                      <div style={{fontSize:"0.88rem",fontWeight:800,color:"#fff",marginTop:2}}>Executive Security Report</div>
-                      <div style={{fontSize:"0.55rem",color:"rgba(255,255,255,0.5)",marginTop:1}}>May 2026 · Acme Corp · Generated 2 min ago</div>
-                    </div>
-                    <div style={{textAlign:"right"}}>
-                      <div style={{fontSize:"2.25rem",fontWeight:900,color:"#fff",lineHeight:1}}>74</div>
-                      <div style={{fontSize:"0.5rem",color:"rgba(255,255,255,0.5)"}}>Risk Score /100</div>
-                      <div style={{fontSize:"0.5rem",color:"rgba(255,255,255,0.65)",fontWeight:700}}>▲ +4 from last month</div>
-                    </div>
-                  </div>
-                  {/* 6-KPI strip */}
-                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"0.3rem"}}>
-                    {[{l:"Critical",v:"23",c:"#f87171",sub:"↓5 this week"},{l:"SLA Compliance",v:"91%",c:"#34d399",sub:"↑3% MoM"},{l:"Avg CVSS",v:"7.4",c:"#fb923c",sub:"stable"},
-                      {l:"MTTR",v:"18d",c:"#a78bfa",sub:"target: 14d"},{l:"Patched",v:"68%",c:"#60a5fa",sub:"of total 334"},{l:"Open High",v:"67",c:"#fbbf24",sub:"14 SLA breach"}
-                    ].map(k=>(
-                      <div key={k.l} style={{background:"rgba(255,255,255,0.1)",borderRadius:7,padding:"0.35rem 0.5rem"}}>
-                        <div style={{fontSize:"0.48rem",color:"rgba(255,255,255,0.45)",marginBottom:1}}>{k.l}</div>
-                        <div style={{fontSize:"0.92rem",fontWeight:900,color:"#fff",lineHeight:1}}>{k.v}</div>
-                        <div style={{fontSize:"0.45rem",color:"rgba(255,255,255,0.4)",marginTop:1}}>{k.sub}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {/* Horizontal Tabs Above Card */}
+              <div style={{ display: 'flex', gap: '4px', marginBottom: '0.75rem', overflowX: 'auto', paddingBottom: '4px' }}>
+                {[
+                  { key: "Briefing", label: "Briefing", c: "#7c3aed" },
+                  { key: "Summary", label: "Summary", c: "#4f46e5" },
+                  { key: "Technical", label: "Technical", c: "#0891b2" },
+                  { key: "SLA", label: "SLA", c: "#dc2626" },
+                  { key: "Compliance", label: "Compliance", c: "#16a34a" }
+                ].map(t => (
+                  <button
+                    key={t.key}
+                    onClick={() => {
+                      setActiveReportTab(t.key);
+                      setReportCompileFinished(false);
+                    }}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: 8,
+                      border: 'none',
+                      background: activeReportTab === t.key ? t.c : 'rgba(124, 58, 237, 0.08)',
+                      color: activeReportTab === t.key ? '#fff' : '#475569',
+                      fontSize: '0.65rem',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      transition: 'all 0.15s'
+                    }}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
 
-                {/* PDF Body */}
-                <div style={{padding:"0.75rem 1rem"}}>
-                  {/* Risk trend */}
-                  <div style={{marginBottom:"0.75rem"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.4rem"}}>
-                      <span style={{fontSize:"0.6rem",fontWeight:700,color:"#475569"}}>📈 Risk Trend — 90 Days</span>
-                      <span style={{fontSize:"0.52rem",color:"#16a34a",fontWeight:700}}>↓ Improving</span>
+              <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.1)", position: "sticky", top: 80, minHeight: "360px", display: "flex", flexDirection: "column" }}>
+                
+                {isReportCompiling ? (
+                  /* 1. Compiling Terminal Screen */
+                  <div style={{ flex: 1, background: "#090d16", padding: "1.5rem", display: "flex", flexDirection: "column", color: reportData.kpiColor, fontFamily: "monospace", minHeight: "360px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.5rem" }}>
+                      <span style={{ fontSize: "1.25rem", animation: "twinkle-star-glow 1.5s infinite" }}>⚙️</span>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "#fff" }}>POSTURE COMPILER DAEMON</span>
+                      <span style={{ fontSize: "0.68rem", marginLeft: "auto", color: "#64748b" }}>{Math.round(reportCompileProgress)}%</span>
                     </div>
-                    <div style={{display:"flex",alignItems:"flex-end",gap:"2px",height:40}}>
-                      {[82,79,77,80,76,74,71,74,72,70,74,72].map((v,i)=>(
-                        <div key={i} style={{flex:1,borderRadius:"2px 2px 0 0",background:i===11?"#4f46e5":i>=9?"#818cf8":"#e2e8f0",height:`${(v/82)*100}%`,minHeight:3}}/>
-                      ))}
+                    {/* Compiling progress bar */}
+                    <div style={{ height: 4, background: "rgba(255,255,255,0.05)", borderRadius: 99, marginBottom: "1rem", overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${reportCompileProgress}%`, background: reportData.kpiColor, transition: "width 0.2s" }} />
                     </div>
-                    <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.45rem",color:"#94a3b8",marginTop:2}}>
-                      <span>Feb</span><span>Mar</span><span>Apr</span><span>May ▲</span>
-                    </div>
-                  </div>
-
-                  {/* Vuln + Patch summary */}
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem",marginBottom:"0.75rem"}}>
-                    <div style={{background:"#f8fafc",borderRadius:8,padding:"0.5rem 0.625rem",border:"1px solid #e2e8f0"}}>
-                      <div style={{fontSize:"0.58rem",fontWeight:700,color:"#475569",marginBottom:"0.35rem"}}>🔢 Vulnerability Summary</div>
-                      {[{l:"Total Found",v:"334",c:"#475569"},{l:"Critical",v:"23",c:"#dc2626"},{l:"High",v:"67",c:"#ea580c"},{l:"Medium",v:"148",c:"#d97706"},{l:"Low / Info",v:"96",c:"#16a34a"}].map(r=>(
-                        <div key={r.l} style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",padding:"1px 0",borderBottom:"1px solid #f1f5f9"}}>
-                          <span style={{color:"#64748b"}}>{r.l}</span><span style={{fontWeight:700,color:r.c}}>{r.v}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{background:"#f8fafc",borderRadius:8,padding:"0.5rem 0.625rem",border:"1px solid #e2e8f0"}}>
-                      <div style={{fontSize:"0.58rem",fontWeight:700,color:"#475569",marginBottom:"0.35rem"}}>🩹 Patch Coverage</div>
-                      {[{l:"Patched",v:"227",c:"#16a34a"},{l:"In Progress",v:"61",c:"#d97706"},{l:"Pending",v:"46",c:"#dc2626"},{l:"MTTR (avg)",v:"18 days",c:"#a78bfa"},{l:"SLA Breached",v:"14",c:"#dc2626"}].map(r=>(
-                        <div key={r.l} style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",padding:"1px 0",borderBottom:"1px solid #f1f5f9"}}>
-                          <span style={{color:"#64748b"}}>{r.l}</span><span style={{fontWeight:700,color:r.c}}>{r.v}</span>
-                        </div>
+                    <div style={{ flex: 1, background: "#020617", border: "1px solid #1e293b", borderRadius: 10, padding: "0.75rem", overflowY: "auto", fontSize: "0.62rem", color: "#34d399", display: "flex", flexDirection: "column", gap: 4, maxHeight: "200px" }}>
+                      {reportCompileLogs.map((log, idx) => (
+                        <div key={idx} style={{ opacity: idx === reportCompileLogs.length - 1 ? 1 : 0.4 }}>{log}</div>
                       ))}
                     </div>
                   </div>
+                ) : (
+                  /* 2. PDF Preview Layout */
+                  <div style={{ display: "flex", flexDirection: "column", flex: 1, position: "relative" }}>
+                    
+                    {/* Uncompiled Blurred Mask Gating Overlay */}
+                    {!reportCompileFinished && (
+                      <div style={{
+                        position: "absolute", inset: 0, background: "rgba(255, 255, 255, 0.45)", backdropFilter: "blur(5px)", WebkitBackdropFilter: "blur(5px)",
+                        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 10, padding: "1.5rem", textAlign: "center"
+                      }}>
+                        <div style={{ fontSize: "2.25rem", marginBottom: "0.75rem" }}>⚙️</div>
+                        <h4 style={{ fontSize: "0.95rem", fontWeight: 800, color: "#0f172a", marginBottom: "0.4rem" }}>Report Not Compiled</h4>
+                        <p style={{ fontSize: "0.75rem", color: "#64748b", marginBottom: "1.25rem" }}>Stage the live telemetry mapping sequence to generate this report page.</p>
+                        <button
+                          onClick={startReportCompilation}
+                          style={{
+                            background: `linear-gradient(135deg, ${reportData.kpiColor}, #4f46e5)`,
+                            color: "#fff", border: "none", borderRadius: 10, padding: "0.55rem 1.25rem", fontSize: "0.76rem", fontWeight: 800,
+                            cursor: "pointer", boxShadow: `0 4px 12px ${reportData.kpiColor}35`, transition: "transform 0.15s"
+                          }}
+                          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.03)"}
+                          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                        >
+                          ⚡ Compile & Stage PDF
+                        </button>
+                      </div>
+                    )}
 
-                  {/* Top CVEs */}
-                  <div style={{marginBottom:"0.75rem"}}>
-                    <div style={{fontSize:"0.6rem",fontWeight:700,color:"#475569",marginBottom:"0.4rem"}}>🎯 Top Critical CVEs</div>
-                    {[{cve:"CVE-2024-3400",cvss:"10.0",s:"CRIT",asset:"fw-01"},{cve:"CVE-2024-21762",cvss:"9.8",s:"CRIT",asset:"vpn-gw"},{cve:"CVE-2023-44487",cvss:"7.5",s:"HIGH",asset:"lb-01"}].map(c=>(
-                      <div key={c.cve} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"0.2rem 0.375rem",borderRadius:5,marginBottom:3,background:"#f8fafc"}}>
-                        <span style={{fontSize:"0.56rem",fontFamily:"monospace",color:"#1e2d6e",fontWeight:700}}>{c.cve}</span>
-                        <span style={{fontSize:"0.52rem",color:"#64748b"}}>{c.asset}</span>
-                        <div style={{display:"flex",gap:"0.3rem",alignItems:"center"}}>
-                          <span style={{fontSize:"0.54rem",fontWeight:700,color:c.s==="CRIT"?"#dc2626":"#ea580c"}}>{c.cvss}</span>
-                          <span style={{fontSize:"0.48rem",fontWeight:800,padding:"1px 4px",borderRadius:3,background:c.s==="CRIT"?"#fef2f2":"#fff7ed",color:c.s==="CRIT"?"#dc2626":"#ea580c"}}>{c.s}</span>
+                    {/* PDF Header */}
+                    <div style={{ background: `linear-gradient(135deg, #0f172a, ${reportData.kpiColor})`, padding: "1rem 1.125rem", color: "#fff" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
+                        <div>
+                          <div style={{ fontSize: "0.5rem", color: "rgba(255,255,255,0.45)", textTransform: "uppercase", letterSpacing: "0.15em" }}>PosturePilot · Confidential · CISO Brief</div>
+                          <div style={{ fontSize: "0.92rem", fontWeight: 900, marginTop: 2 }}>{reportData.title}</div>
+                          <div style={{ fontSize: "0.55rem", color: "rgba(255,255,255,0.45)", marginTop: 1 }}>{reportData.subtitle}</div>
+                        </div>
+                        <div style={{ textAlign: "right" }}>
+                          <div style={{ fontSize: "2.1rem", fontWeight: 900, lineHeight: 1 }}>{reportData.score}</div>
+                          <div style={{ fontSize: "0.5rem", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>{reportData.scoreLabel}</div>
+                          <div style={{ fontSize: "0.52rem", color: "#6ee7b7", fontWeight: 800, marginTop: 2 }}>{reportData.scoreTrend}</div>
                         </div>
                       </div>
-                    ))}
-                  </div>
 
-                  {/* Framework coverage */}
-                  <div>
-                    <div style={{fontSize:"0.6rem",fontWeight:700,color:"#475569",marginBottom:"0.4rem"}}>⚖️ Compliance Coverage</div>
-                    {[{f:"SOC2",v:87},{f:"ISO 27001",v:79},{f:"NIST CSF",v:92},{f:"PCI-DSS",v:68},{f:"HIPAA",v:74}].map(fw=>(
-                      <div key={fw.f} style={{display:"flex",alignItems:"center",gap:"0.4rem",marginBottom:"0.28rem"}}>
-                        <span style={{fontSize:"0.54rem",color:"#64748b",width:44,flexShrink:0}}>{fw.f}</span>
-                        <div style={{flex:1,height:4,background:"#f1f5f9",borderRadius:99}}>
-                          <div style={{height:"100%",width:`${fw.v}%`,background:fw.v>=85?"#16a34a":fw.v>=70?"#d97706":"#dc2626",borderRadius:99}}/>
-                        </div>
-                        <span style={{fontSize:"0.54rem",fontWeight:700,color:fw.v>=85?"#16a34a":fw.v>=70?"#d97706":"#dc2626",width:24,textAlign:"right"}}>{fw.v}%</span>
+                      {/* 3-KPI strip */}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.35rem" }}>
+                        {reportData.kpis.map(k => (
+                          <div key={k.l} style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 7, padding: "0.35rem 0.5rem" }}>
+                            <div style={{ fontSize: "0.45rem", color: "rgba(255,255,255,0.45)", marginBottom: 1, textTransform: "uppercase", fontWeight: 700 }}>{k.l}</div>
+                            <div style={{ fontSize: "0.92rem", fontWeight: 900, color: "#fff", lineHeight: 1 }}>{k.v}</div>
+                            <div style={{ fontSize: "0.42rem", color: "rgba(255,255,255,0.4)", marginTop: 1 }}>{k.sub}</div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
+
+                    {/* PDF Body */}
+                    <div style={{ padding: "0.85rem 1rem", flex: 1 }}>
+                      {reportData.body}
+                    </div>
+
+                    {/* PDF Footer / Locked CTA */}
+                    <div style={{ background: "#f8fafc", borderTop: "1px solid #e2e8f0", padding: "0.6rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontSize: "0.52rem", color: "#94a3b8" }}>Generated: May 2026</span>
+                      {reportCompileFinished ? (
+                        <button
+                          onClick={() => setShowReportLockModal(true)}
+                          style={{
+                            background: "none", border: "none", color: reportData.kpiColor, fontWeight: 900, fontSize: "0.68rem",
+                            cursor: "pointer", display: "flex", alignItems: "center", gap: 3
+                          }}
+                        >
+                          <span>🔒 Download PDF</span>
+                        </button>
+                      ) : (
+                        <span style={{ fontSize: "0.52rem", color: "#cbd5e1" }}>Pending staging</span>
+                      )}
+                    </div>
+
                   </div>
-                </div>
-                <div style={{background:"#f8fafc",borderTop:"1px solid #e2e8f0",padding:"0.45rem 1rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                  <span style={{fontSize:"0.5rem",color:"#94a3b8"}}>PosturePilot · posturepilot.io</span>
-                  <span style={{fontSize:"0.5rem",color:"#7c3aed",fontWeight:700}}>⬇ Download PDF</span>
-                </div>
+                )}
+
               </div>
             </div>
           </div>
@@ -1190,10 +1667,106 @@ export default function Page() {
             </span>
           </div>
 
+          {/* Live Simulator Control Bar */}
+          <div style={{
+            background: cisoThreatActive ? "rgba(220, 38, 38, 0.05)" : "rgba(255, 255, 255, 0.6)",
+            border: cisoThreatActive ? "1px solid rgba(220, 38, 38, 0.25)" : "1px solid #e0e7ff",
+            borderRadius: 16,
+            padding: "1.25rem 1.5rem",
+            marginBottom: "1.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "1.5rem",
+            boxShadow: cisoThreatActive ? "0 8px 30px rgba(220, 38, 38, 0.1)" : "0 4px 15px rgba(0,0,0,0.02)",
+            transition: "all 0.3s ease"
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <div style={{
+                width: 10, height: 10, borderRadius: "50%",
+                background: cisoThreatActive ? "#dc2626" : "#10b981",
+                boxShadow: cisoThreatActive ? "0 0 10px #dc2626" : "0 0 10px #10b981",
+                animation: cisoThreatActive ? "twinkle-star-glow 1s infinite" : "none"
+              }}/>
+              <div>
+                <div style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0f172a" }}>
+                  {cisoThreatActive ? "🔥 Active Group Attack Wave Simulation" : "🟢 All Systems Nominal"}
+                </div>
+                <div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: 2 }}>
+                  {cisoThreatActive ? "Multi-tenant ledger is registering widespread CVSS spikes." : "No active tenant compromises detected."}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              {/* Threat Wave Toggle */}
+              <button
+                onClick={() => {
+                  if (cisoMitigating) return;
+                  setCisoThreatActive(!cisoThreatActive);
+                }}
+                disabled={cisoMitigating}
+                style={{
+                  background: cisoThreatActive ? "#4b5563" : "#dc2626",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "0.55rem 1.25rem",
+                  fontSize: "0.78rem",
+                  fontWeight: 800,
+                  cursor: cisoMitigating ? "not-allowed" : "pointer",
+                  boxShadow: cisoThreatActive ? "none" : "0 4px 12px rgba(220, 38, 38, 0.25)",
+                  transition: "all 0.2s"
+                }}
+              >
+                {cisoThreatActive ? "🛑 Stop Threat Wave" : "🔥 Simulate Threat Wave"}
+              </button>
+
+              {/* Deploy Playbook Mitigation Button */}
+              {cisoThreatActive && (
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  {cisoMitigating ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4, width: 140 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.6rem", fontWeight: 700, color: "#7c3aed" }}>
+                        <span>⚡ Mitigating...</span>
+                        <span>{cisoMitigationProgress}%</span>
+                      </div>
+                      <div style={{ height: 6, background: "#e2e8f0", borderRadius: 99, overflow: "hidden", width: "100%" }}>
+                        <div style={{ height: "100%", width: `${cisoMitigationProgress}%`, background: "#7c3aed", borderRadius: 99, transition: "width 0.15s ease" }} />
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={startCisoMitigation}
+                      style={{
+                        background: "linear-gradient(135deg, #7c3aed, #4f46e5)",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: 10,
+                        padding: "0.55rem 1.25rem",
+                        fontSize: "0.78rem",
+                        fontWeight: 800,
+                        cursor: "pointer",
+                        boxShadow: "0 4px 12px rgba(124, 58, 237, 0.25)",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      ⚡ Deploy Playbook Mitigation
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
           <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "1rem", marginBottom: "2rem"}}>
             
             {/* Card 1: Assets */}
-            <div style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)"}}>
+            <div 
+              className={cisoThreatActive ? "ciso-flash-active" : ""}
+              style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)", transition: "all 0.3s ease"}}
+            >
               <div>
                 <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: "#7c3aed", borderRadius: "16px 0 0 16px"}}/>
                 <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>Combined Assets Count</div>
@@ -1203,8 +1776,14 @@ export default function Page() {
                 {["WF: 14.2K", "TY: 9.4K", "UR: 5.1K", "CS: 28.4K", "WD: 12.6K"].map((t, idx) => {
                   const colors = ["#dc2626", "#ea580c", "#10b981", "#06b6d4", "#a855f7"];
                   return (
-                    <span key={idx} style={{background: "#f1f5f9", padding: "2px 6px", borderRadius: 4, color: colors[idx]}}>
+                    <span 
+                      key={idx} 
+                      className="tenant-pill-wrap" 
+                      onClick={() => setShowCisoLockModal(true)}
+                      style={{background: "#f1f5f9", padding: "2px 6px", borderRadius: 4, color: colors[idx], position: "relative", cursor: "pointer"}}
+                    >
                       {t}
+                      <span className="tenant-lock-overlay">🔒 Locked</span>
                     </span>
                   );
                 })}
@@ -1212,30 +1791,56 @@ export default function Page() {
             </div>
 
             {/* Card 2: Compliance */}
-            <div style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)"}}>
+            <div 
+              className={cisoThreatActive ? "ciso-flash-active" : ""}
+              style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)", transition: "all 0.3s ease"}}
+            >
               <div>
-                <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: "#10b981", borderRadius: "16px 0 0 16px"}}/>
+                <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: cisoThreatActive ? "#dc2626" : "#10b981", borderRadius: "16px 0 0 16px", transition: "background 0.3s"}}/>
                 <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>Unified Compliance Score</div>
-                <div style={{fontSize: "2rem", fontWeight: 900, color: "#10b981", marginTop: "0.5rem", fontFamily: "monospace"}}>85.8%</div>
+                <div style={{fontSize: "2rem", fontWeight: 900, color: cisoThreatActive ? "#dc2626" : "#10b981", marginTop: "0.5rem", fontFamily: "monospace", transition: "color 0.3s"}}>
+                  {cisoThreatActive ? "42.6%" : "85.8%"}
+                </div>
               </div>
-              <div style={{fontSize: "0.68rem", fontWeight: 700, color: "#10b981", marginTop: "0.75rem", borderTop: "1px solid #f1f5f9", paddingTop: "0.5rem"}}>
-                🟢 Meets target SLA threshold
+              <div style={{fontSize: "0.68rem", fontWeight: 700, color: cisoThreatActive ? "#dc2626" : "#10b981", marginTop: "0.75rem", borderTop: "1px solid #f1f5f9", paddingTop: "0.5rem", transition: "color 0.3s"}}>
+                {cisoThreatActive ? "🔴 CRITICAL SLA BREACH" : "🟢 Meets target SLA threshold"}
               </div>
             </div>
 
             {/* Card 3: Risks */}
-            <div style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)"}}>
+            <div 
+              className={cisoThreatActive ? "ciso-flash-active" : ""}
+              style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)", transition: "all 0.3s ease"}}
+            >
               <div>
                 <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: "#dc2626", borderRadius: "16px 0 0 16px"}}/>
-                <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>Total Open Critical Risks</div>
-                <div style={{fontSize: "2rem", fontWeight: 900, color: "#dc2626", marginTop: "0.5rem", fontFamily: "monospace"}}>30</div>
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                  <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>Total Open Critical Risks</div>
+                  {cisoThreatActive && (
+                    <span style={{background: "#fee2e2", color: "#ef4444", fontSize: "0.55rem", fontWeight: 900, padding: "2px 6px", borderRadius: 6, animation: "twinkle-star-glow 1s infinite"}}>
+                      ▲ +148 SPIKE
+                    </span>
+                  )}
+                </div>
+                <div style={{fontSize: "2rem", fontWeight: 900, color: "#dc2626", marginTop: "0.5rem", fontFamily: "monospace"}}>
+                  {cisoThreatActive ? "178" : "30"}
+                </div>
               </div>
               <div style={{display: "flex", flexWrap: "wrap", gap: "4px", fontSize: "0.58rem", fontWeight: 800, color: "#94a3b8", borderTop: "1px solid #f1f5f9", paddingTop: "0.5rem", marginTop: "0.75rem"}}>
-                {["WF: 12", "TY: 6", "UR: 3", "CS: 1", "WD: 8"].map((t, idx) => {
+                {(cisoThreatActive 
+                  ? ["WF: 68", "TY: 42", "UR: 25", "CS: 18", "WD: 25"] 
+                  : ["WF: 12", "TY: 6", "UR: 3", "CS: 1", "WD: 8"]
+                ).map((t, idx) => {
                   const colors = ["#dc2626", "#ea580c", "#10b981", "#06b6d4", "#a855f7"];
                   return (
-                    <span key={idx} style={{background: "#f1f5f9", padding: "2px 6px", borderRadius: 4, color: colors[idx]}}>
-                      {t} Critical
+                    <span 
+                      key={idx} 
+                      className="tenant-pill-wrap" 
+                      onClick={() => setShowCisoLockModal(true)}
+                      style={{background: "#f1f5f9", padding: "2px 6px", borderRadius: 4, color: colors[idx], position: "relative", cursor: "pointer"}}
+                    >
+                      {t} {cisoThreatActive ? "Critical" : "Critical"}
+                      <span className="tenant-lock-overlay">🔒 Locked</span>
                     </span>
                   );
                 })}
@@ -1243,14 +1848,19 @@ export default function Page() {
             </div>
 
             {/* Card 4: SLA status */}
-            <div style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)"}}>
+            <div 
+              className={cisoThreatActive ? "ciso-flash-active" : ""}
+              style={{background: "#fff", border: "1px solid #e0e7ff", borderRadius: 16, padding: "1.25rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: "0 4px 15px rgba(0,0,0,0.02)", transition: "all 0.3s ease"}}
+            >
               <div>
-                <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: "#ea580c", borderRadius: "16px 0 0 16px"}}/>
+                <div style={{position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: cisoThreatActive ? "#dc2626" : "#ea580c", borderRadius: "16px 0 0 16px", transition: "background 0.3s"}}/>
                 <div style={{fontSize: "0.72rem", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em"}}>SLA Conformance Status</div>
-                <div style={{fontSize: "1.35rem", fontWeight: 900, color: "#ea580c", marginTop: "0.75rem", textTransform: "uppercase"}}>CONFORMANCE</div>
+                <div style={{fontSize: "1.35rem", fontWeight: 900, color: cisoThreatActive ? "#dc2626" : "#ea580c", marginTop: "0.75rem", textTransform: "uppercase", transition: "color 0.3s"}}>
+                  {cisoThreatActive ? "CRITICAL BREACH" : "CONFORMANCE"}
+                </div>
               </div>
               <div style={{fontSize: "0.68rem", fontWeight: 600, color: "#475569", marginTop: "0.75rem", borderTop: "1px solid #f1f5f9", paddingTop: "0.5rem"}}>
-                434 total issues in queue
+                {cisoThreatActive ? "1,248 total issues in queue" : "434 total issues in queue"}
               </div>
             </div>
 
@@ -1268,7 +1878,7 @@ export default function Page() {
               border: "1px solid rgba(124,58,237,0.2)",
               boxShadow: "0 2px 10px rgba(124,58,237,0.04)"
             }}>
-              <span style={{width: 6,height: 6,borderRadius: "50%",background: "#7c3aed",display: "inline-block",boxShadow: "0 0 8px rgba(124,58,237,0.5)",animation: "pulse 2s infinite"}} />
+              <span style={{width: 6,height: 6,borderRadius: "50%",background: "#7c3aed",display: "inline-block",boxShadow: "0 0 8px rgba(124,58,237,0.5)",animation: "twinkle-star-glow 1s infinite"}} />
               <span style={{fontSize: "0.75rem",fontWeight: 700,color: "#7c3aed",letterSpacing: "0.01em"}}>
                 📡 Real-time multi-tenant posture intelligence — built for the CISO chair
               </span>
@@ -1311,7 +1921,7 @@ export default function Page() {
 
       <footer style={{background:"#0f172a",padding:"2rem 2.5rem",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"1rem"}}>
         <div style={{display:"flex",flexDirection:"column",gap:"0.25rem"}}>
-          <Image src="/hlogotag_v2.jpg" alt="PosturePilot" width={180} height={44} style={{objectFit:"contain",objectPosition:"left",mixBlendMode:"screen"}} onError={e=>{(e.target as HTMLImageElement).style.display="none";}}/>
+          <Image src="/hlogotag_v2.jpg" alt="PosturePilot" width={180} height={44} style={{objectFit:"contain",objectPosition:"left",mixBlendMode:"screen"} } onError={e=>{e.currentTarget.style.display="none";}}/>
           <span style={{color:"#94a3b8",fontWeight:400,fontSize:"0.72rem"}}>Configure · Monitor · Report · Secure</span>
         </div>
         <span style={{fontSize:"0.7rem",color:"#f1f5f9"}}>© 2026 PosturePilot · posturepilot.io</span>
@@ -1319,6 +1929,7 @@ export default function Page() {
       <button
         onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}
         aria-label="Back to top"
+        className="back-to-top-btn"
         style={{
           position:"fixed",bottom:"2rem",right:"2rem",zIndex:200,
           width:44,height:44,borderRadius:"50%",border:"none",cursor:"pointer",
@@ -1331,9 +1942,111 @@ export default function Page() {
           transform:showTop?"translateY(0)":"translateY(12px)",
           transition:"opacity 0.3s ease,transform 0.3s ease,box-shadow 0.2s",
         }}
-        onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.transform="scale(1.12)";(e.currentTarget as HTMLButtonElement).style.boxShadow="0 8px 28px rgba(79,70,229,0.55)";}}
-        onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.transform="scale(1)";(e.currentTarget as HTMLButtonElement).style.boxShadow="0 4px 20px rgba(79,70,229,0.45)";}}
-      >↑</button>
+      >
+        ↑
+      </button>
+
+      {/* Sign-Up / Gating CTA Modal */}
+      {(showSecureLockModal || showReportLockModal || showCisoLockModal) && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          zIndex: 10000, display: "flex", alignItems: "center", justifyContent: "center"
+        }}>
+          {/* Glass backdrop */}
+          <div 
+            style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(15, 23, 42, 0.45)", backdropFilter: "blur(6px)" }} 
+            onClick={() => {
+              setShowSecureLockModal(false);
+              setShowReportLockModal(false);
+              setShowCisoLockModal(false);
+            }}
+          />
+          {/* Modal box */}
+          <div style={{
+            background: "#ffffff",
+            color: "#0f172a",
+            width: "95%",
+            maxWidth: "460px",
+            borderRadius: "20px",
+            padding: "2rem",
+            position: "relative",
+            zIndex: 10010,
+            boxShadow: "0 25px 60px -15px rgba(15, 23, 42, 0.35)",
+            border: "1px solid #cbd5e1",
+            textAlign: "center",
+            fontFamily: "Inter, sans-serif"
+          }}>
+            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔒</div>
+            <h3 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#0f172a", margin: "0 0 0.75rem 0", letterSpacing: "-0.02em" }}>
+              {showSecureLockModal && "Access Risk Radar Details"}
+              {showReportLockModal && "Download Full PDF Briefs"}
+              {showCisoLockModal && "Configure Tenant Gates"}
+            </h3>
+            <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5, margin: "0 0 2rem 0" }}>
+              {showSecureLockModal && "Deep Triage Explorer is restricted to authenticated users. Create a free account to search and inspect specific CVEs on your assets."}
+              {showReportLockModal && "Board-ready PDF briefing downloads are encrypted. Sign up to unlock white-labeled compliance and risk reports for your stakeholders."}
+              {showCisoLockModal && "Multi-tenant ledger settings and live control gates are restricted. Authenticate to manage cross-tenant client security policies."}
+            </p>
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <Link 
+                href="/login"
+                style={{
+                  background: "linear-gradient(135deg, #7c3aed, #4f46e5)",
+                  color: "#fff",
+                  border: "none",
+                  padding: "0.75rem",
+                  borderRadius: "10px",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  boxShadow: "0 4px 12px rgba(124, 58, 237, 0.25)",
+                  transition: "transform 0.15s ease",
+                  display: "block"
+                }}
+              >
+                ✨ Create Free Account
+              </Link>
+              <Link 
+                href="/login"
+                style={{
+                  background: "#f1f5f9",
+                  color: "#475569",
+                  border: "1px solid #cbd5e1",
+                  padding: "0.75rem",
+                  borderRadius: "10px",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  transition: "background 0.2s",
+                  display: "block"
+                }}
+              >
+                Sign In to Existing Account
+              </Link>
+              <button 
+                onClick={() => {
+                  setShowSecureLockModal(false);
+                  setShowReportLockModal(false);
+                  setShowCisoLockModal(false);
+                }}
+                style={{
+                  background: "transparent",
+                  color: "#94a3b8",
+                  border: "none",
+                  padding: "0.5rem",
+                  fontSize: "0.78rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontFamily: "inherit"
+                }}
+              >
+                Back to Preview
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
