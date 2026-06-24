@@ -278,6 +278,14 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
+        @keyframes mcRotateClockwise {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes mcRotateCounterClockwise {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
       `}</style>
 
       {/* ── Header ── */}
@@ -788,30 +796,70 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
           )}
 
           {config.indexLabel === 'TELEMETRY' && (
-            <svg viewBox="0 0 260 200" preserveAspectRatio="xMidYMid meet"
+            <svg viewBox="0 0 280 200" preserveAspectRatio="xMidYMid meet"
               style={{ width:'100%', height:'100%', position:'absolute', top:0, left:0, overflow:'visible', zIndex:1 }}>
-              <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">REMEDIATION MTTR VELOCITY CURVE</text>
-              <line x1="24" y1="140" x2="242" y2="140" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8" />
-              <line x1="24" y1="24" x2="24" y2="140" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8" />
-              <path d="M 24 42 L 64 62 L 104 52 L 144 98 L 184 102 L 224 132" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3 2" />
-              <path d="M 24 122 L 64 102 L 104 82 L 144 58 L 184 42 L 224 28" fill="none" stroke="#10b981" strokeWidth="2.2" style={{ filter: "drop-shadow(0 0 4px rgba(16,185,129,0.5))" }} />
-              {[
-                { x: 24, label: "W1", y: 122, oldY: 42 },
-                { x: 64, label: "W2", y: 102, oldY: 62 },
-                { x: 104, label: "W3", y: 82, oldY: 52 },
-                { x: 144, label: "W4", y: 58, oldY: 98 },
-                { x: 184, label: "W5", y: 42, oldY: 102 },
-                { x: 224, label: "W6", y: 28, oldY: 132 },
-              ].map((pt, i) => (
-                <g key={i}>
-                  <line x1={pt.x} y1="24" x2={pt.x} y2="140" stroke="rgba(255,255,255,0.02)" strokeWidth="0.5" />
-                  <circle cx={pt.x} cy={pt.y} r="3" fill="#10b981" />
-                  <circle cx={pt.x} cy={pt.oldY} r="2.5" fill="#ef4444" opacity="0.6" />
-                  <text x={pt.x} y="152" textAnchor="middle" fill="#64748b" fontSize="5.5" fontFamily="monospace">{pt.label}</text>
-                </g>
-              ))}
-              <circle cx="28" cy="174" r="3.5" fill="#10b981" />
-              <text x="36" y="177.5" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">Acme resolution time: -74%</text>
+              <defs>
+                <radialGradient id="hudGlowCyan" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.25" />
+                  <stop offset="70%" stopColor="#10b981" stopOpacity="0.06" />
+                  <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                </radialGradient>
+                <filter id="neonGlowCyan" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+
+              <text x="130" y="14" textAnchor="middle" fill="#64748b" fontSize="6.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.06em">FLIGHT TELEMETRY HUD</text>
+
+              <g opacity="0.08">
+                <circle cx="130" cy="105" r="85" fill="none" stroke="#fff" strokeWidth="0.5" />
+                <circle cx="130" cy="105" r="65" fill="none" stroke="#fff" strokeWidth="0.5" />
+                <line x1="45" y1="105" x2="215" y2="105" stroke="#fff" strokeWidth="0.5" />
+                <line x1="130" y1="20" x2="130" y2="190" stroke="#fff" strokeWidth="0.5" />
+              </g>
+
+              <g transform="translate(130, 105)">
+                <circle cx="0" cy="0" r="65" fill="url(#hudGlowCyan)" />
+                <circle cx="0" cy="0" r="58" fill="none" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="3" strokeDasharray="1 5" style={{ transformOrigin: "0 0", animation: "mcRotateClockwise 40s linear infinite" }} />
+                <circle cx="0" cy="0" r="50" fill="none" stroke="rgba(6, 182, 212, 0.15)" strokeWidth="1" strokeDasharray="8 4" style={{ transformOrigin: "0 0", animation: "mcRotateCounterClockwise 25s linear infinite" }} />
+                <circle cx="0" cy="0" r="44" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
+                <path d="M 0 -44 A 44 44 0 1 1 -41.8 13.6" fill="none" stroke="#10b981" strokeWidth="4.5" strokeLinecap="round" filter="url(#neonGlowCyan)" />
+                <line x1="0" y1="0" x2="0" y2="-56" stroke="#06b6d4" strokeWidth="1.2" opacity="0.8" style={{ transformOrigin: "0 0", animation: "mcRadarSweep 5s linear infinite" }} />
+                <text x="0" y="-8" textAnchor="middle" fill="#10b981" fontSize="19" fontWeight="950" fontFamily="monospace" filter="url(#neonGlowCyan)">1.8h</text>
+                <text x="0" y="6" textAnchor="middle" fill="#ffffff" fontSize="5.5" fontFamily="monospace" fontWeight="800" letterSpacing="0.12em">MTTR COCKPIT</text>
+                <text x="0" y="16" textAnchor="middle" fill="#06b6d4" fontSize="4.5" fontFamily="monospace" fontWeight="bold">▲ 98% AUTOPILOT</text>
+                <text x="0" y="24" textAnchor="middle" fill="#10b981" fontSize="4" fontFamily="monospace" fontWeight="800">STATUS: OPTIMAL</text>
+              </g>
+
+              <g transform="translate(20, 50)">
+                <rect x="0" y="0" width="60" height="25" rx="3" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                <text x="6" y="8" fill="#64748b" fontSize="4.5" fontFamily="monospace">SLA TARGET</text>
+                <text x="6" y="19" fill="#3b82f6" fontSize="9" fontWeight="900" fontFamily="monospace">4.0h</text>
+                
+                <rect x="0" y="32" width="60" height="25" rx="3" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                <text x="6" y="40" fill="#64748b" fontSize="4.5" fontFamily="monospace">LEGACY AVG</text>
+                <text x="6" y="51" fill="#ef4444" fontSize="9" fontWeight="900" fontFamily="monospace">48.2h</text>
+              </g>
+
+              <g transform="translate(200, 50)">
+                <rect x="0" y="0" width="60" height="25" rx="3" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                <text x="6" y="8" fill="#64748b" fontSize="4.5" fontFamily="monospace">MEAN MTTA</text>
+                <text x="6" y="19" fill="#10b981" fontSize="9" fontWeight="900" fontFamily="monospace">12.4m</text>
+                
+                <rect x="0" y="32" width="60" height="25" rx="3" fill="rgba(15,23,42,0.6)" stroke="rgba(255,255,255,0.06)" strokeWidth="0.8" />
+                <text x="6" y="40" fill="#64748b" fontSize="4.5" fontFamily="monospace">SLA FAILURES</text>
+                <text x="6" y="51" fill="#10b981" fontSize="9" fontWeight="900" fontFamily="monospace">0.00%</text>
+              </g>
+
+              <path d="M 25 175 L 50 170 L 75 178 L 100 165 L 125 172 L 150 155 L 175 168 L 200 160 L 225 174 L 255 170" fill="none" stroke="rgba(16, 185, 129, 0.35)" strokeWidth="1.2" strokeDasharray="3 1" />
+              <circle cx="255" cy="170" r="2.5" fill="#10b981" style={{ filter: "drop-shadow(0 0 3px #10b981)" }} />
+              
+              <line x1="18" y1="182" x2="242" y2="182" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+              <circle cx="28" cy="191" r="2.5" fill="#10b981" />
+              <text x="35" y="194" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">SLA Compliant state</text>
+              <circle cx="140" cy="191" r="2.5" fill="#06b6d4" />
+              <text x="147" y="194" fill="#cbd5e1" fontSize="5.5" fontFamily="monospace">Autopilot remediation loops active</text>
             </svg>
           )}
 
