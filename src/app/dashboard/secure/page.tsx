@@ -255,38 +255,29 @@ export default function SecureTriagePage() {
   return (
     <div className="page-content animate-in" style={{ paddingBottom: '2.5rem' }}>
       
-      {/* Page Header */}
-      <div style={{
-        background: 'linear-gradient(135deg, #15803d 0%, #16a34a 100%)',
-        borderRadius: '16px',
-        padding: '1.25rem 1.5rem',
-        color: '#fff',
-        marginBottom: '1rem',
-        boxShadow: '0 4px 16px rgba(22, 163, 74, 0.15)'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+      {/* Dynamic Sticky Banner */}
+      <div className="sticky-alert-banner">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-              <span style={{ fontSize: '1.5rem' }}>📡</span>
-              <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.02em' }}>
-                Risk Radar
-              </h2>
+            <div style={{ fontWeight: 800, color: '#6d28d9', fontSize: '0.9rem' }}>
+              PosturePilot Risk Radar Command Center
             </div>
-            <p style={{ margin: 0, fontSize: '0.8rem', color: '#dcfce7', fontWeight: 500 }}>
-              Vulnerability Triage & Prioritized Exposure Engine
-            </p>
+            <div style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 600 }}>
+              Hyper-prioritized exposure and triage engine · Active filtering of active exploit vectors
+            </div>
           </div>
-          <button 
-            onClick={handleReset} 
-            style={{ 
-              fontSize: '0.78rem', fontWeight: 800, color: '#16a34a', background: '#fff', 
-              border: 'none', padding: '0.5rem 1rem', borderRadius: 8, cursor: 'pointer',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.05)', transition: 'all 0.15s'
-            }}
-          >
-            🔄 Reset Filters
-          </button>
         </div>
+        <button 
+          onClick={handleReset} 
+          style={{ 
+            fontSize: '0.78rem', fontWeight: 700, color: '#6d28d9', background: 'rgba(255, 255, 255, 0.4)', 
+            border: '1px solid #c084fc', padding: '0.375rem 0.875rem', borderRadius: 8, cursor: 'pointer',
+            transition: 'all 0.15s'
+          }}
+        >
+          🔄 Reset Filters
+        </button>
       </div>
 
       {/* Cockpit telemetry card */}

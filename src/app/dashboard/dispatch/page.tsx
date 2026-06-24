@@ -410,30 +410,17 @@ export default function DispatchCenterPage() {
   return (
     <div className="page-content animate-in" style={{ paddingBottom: '3rem' }}>
       
-      {/* Top Banner Alert */}
-      <div style={{
-        background: 'linear-gradient(135deg, #1e1b4b 0%, #311042 100%)',
-        borderRadius: '16px',
-        padding: '1.25rem 1.5rem',
-        color: '#fff',
-        marginBottom: '1rem',
-        border: '1px solid #4c1d95',
-        boxShadow: '0 8px 32px rgba(76, 29, 149, 0.15)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1rem'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-          <span style={{ fontSize: '2rem' }}>🚨</span>
+      {/* Dynamic Sticky Banner */}
+      <div className="sticky-alert-banner">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#7c3aed', display: 'inline-block', boxShadow: '0 0 8px #7c3aed' }} />
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 900, letterSpacing: '-0.02em', color: '#f3e8ff' }}>
-              SOAR Automated Dispatch Center
-            </h3>
-            <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.78rem', color: '#d8b4fe', fontWeight: 500 }}>
-              Operational gateway. Auto-maps parsed scan CVE findings to developer ticketing backends with 1-click active triage override.
-            </p>
+            <div style={{ fontWeight: 800, color: '#6d28d9', fontSize: '0.9rem' }}>
+              SOAR Automated Dispatch Command Center
+            </div>
+            <div style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 600 }}>
+              Auto-mapping parsed scan CVE findings to developer ticketing backends · Active triage override enabled
+            </div>
           </div>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -445,7 +432,7 @@ export default function DispatchCenterPage() {
               color: '#fff',
               fontSize: '0.75rem',
               fontWeight: 800,
-              padding: '0.55rem 1.125rem',
+              padding: '0.375rem 0.875rem',
               borderRadius: '8px',
               border: 'none',
               cursor: simulationState === 'idle' ? 'pointer' : 'not-allowed',
@@ -453,7 +440,7 @@ export default function DispatchCenterPage() {
               transition: 'all 0.15s ease'
             }}
           >
-            {simulationState === 'idle' ? '⚡ Simulate Scanner Ingest' : 'Processing alert pipeline...'}
+            {simulationState === 'idle' ? '⚡ Ingest Alert' : 'Processing...'}
           </button>
           
           <button 
@@ -469,13 +456,13 @@ export default function DispatchCenterPage() {
               }
             }}
             style={{
-              background: '#1e293b',
-              color: '#94a3b8',
+              background: 'rgba(255, 255, 255, 0.4)',
+              color: '#6d28d9',
               fontSize: '0.72rem',
               fontWeight: 700,
-              padding: '0.55rem 0.875rem',
+              padding: '0.375rem 0.875rem',
               borderRadius: '8px',
-              border: '1px solid #334155',
+              border: '1px solid #c084fc',
               cursor: 'pointer'
             }}
           >
