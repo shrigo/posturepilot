@@ -344,26 +344,18 @@ const PostureClearanceSVG = ({
   postureScore: number; 
   isUnderAttack: boolean; 
 }) => {
-  const [animProgress, setAnimProgress] = useState(0);
+  const [animTime, setAnimTime] = useState(0);
 
   useEffect(() => {
-    setAnimProgress(0);
+    setAnimTime(0);
     let start: number | null = null;
-    const duration = 1800; // 1.8 seconds for smooth premium presentation
     let animationFrameId: number;
 
     const animate = (timestamp: number) => {
       if (!start) start = timestamp;
       const elapsed = timestamp - start;
-      const progressVal = Math.min(elapsed / duration, 1);
-      
-      // Easing function: easeOutQuart
-      const easeOutQuart = 1 - Math.pow(1 - progressVal, 4);
-      setAnimProgress(easeOutQuart);
-
-      if (progressVal < 1) {
-        animationFrameId = requestAnimationFrame(animate);
-      }
+      setAnimTime(elapsed);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
     const timeoutId = setTimeout(() => {
@@ -378,14 +370,41 @@ const PostureClearanceSVG = ({
     };
   }, [hostsPct, cloudPct, codePct, postureScore]);
 
-  const currentCodePct = Math.round(codePct * animProgress);
-  const currentCloudPct = Math.round(cloudPct * animProgress);
-  const currentHostsPct = Math.round(hostsPct * animProgress);
-  const currentScore = Math.round(postureScore * animProgress);
+  const progressVal = Math.min(animTime / 1800, 1);
+  const easedProgress = 1 - Math.pow(1 - progressVal, 4); // easeOutQuart
 
-  const currentCodePctFloat = codePct * animProgress;
-  const currentCloudPctFloat = cloudPct * animProgress;
-  const currentHostsPctFloat = hostsPct * animProgress;
+  const currentCodePct = Math.round(codePct * easedProgress);
+  const currentCloudPct = Math.round(cloudPct * easedProgress);
+  const currentHostsPct = Math.round(hostsPct * easedProgress);
+  const currentScore = Math.round(postureScore * easedProgress);
+
+  const currentCodePctFloat = codePct * easedProgress;
+  const currentCloudPctFloat = cloudPct * easedProgress;
+  const currentHostsPctFloat = hostsPct * easedProgress;
+
+  // Sync orbiting dots to follow the ring tips perfectly during creation
+  // and continue orbiting infinitely afterwards.
+  const getDotCoords = (center: number, radius: number, targetPct: number, time: number, orbitDuration: number) => {
+    const duration = 1800;
+    let angle = -90;
+    if (time < duration) {
+      const progress = Math.min(time / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4); // easeOutQuart
+      angle = -90 + (targetPct * eased * 3.6);
+    } else {
+      const extraTime = time - duration;
+      angle = -90 + (targetPct * 3.6) + (extraTime / orbitDuration) * 360;
+    }
+    const rad = (angle * Math.PI) / 180;
+    return {
+      cx: center + radius * Math.cos(rad),
+      cy: center + radius * Math.sin(rad)
+    };
+  };
+
+  const outerDot = getDotCoords(100, 72, hostsPct, animTime, 8000);
+  const middleDot = getDotCoords(100, 56, cloudPct, animTime, 6000);
+  const innerDot = getDotCoords(100, 40, codePct, animTime, 4000);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -405,10 +424,10 @@ const PostureClearanceSVG = ({
         <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
         <circle cx="100" cy="100" r="56" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
         <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-        {/* Rotating orbit dots for 3 rings */}
-        <circle cx="100" cy="28" r="2.2" fill="#3b82f6" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 8s linear infinite" }} />
-        <circle cx="100" cy="44" r="2.2" fill="#a78bfa" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 6s linear infinite" }} />
-        <circle cx="100" cy="60" r="2.2" fill="#10b981" opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "rotateClockwise 4s linear infinite" }} />
+        {/* Sync-moving orbit dots for 3 rings */}
+        <circle cx={outerDot.cx} cy={outerDot.cy} r="2.2" fill="#3b82f6" opacity="0.9" style={{ filter: "drop-shadow(0 0 2px rgba(59,130,246,0.6))" }} />
+        <circle cx={middleDot.cx} cy={middleDot.cy} r="2.2" fill="#a78bfa" opacity="0.9" style={{ filter: "drop-shadow(0 0 2px rgba(167,139,250,0.6))" }} />
+        <circle cx={innerDot.cx} cy={innerDot.cy} r="2.2" fill="#10b981" opacity="0.9" style={{ filter: "drop-shadow(0 0 2px rgba(16,185,129,0.7))" }} />
 
         {/* ── Outer ring: Host Posture ── */}
         <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />

@@ -74,7 +74,7 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
   const { currentClient, isEnterpriseMode, isUnderAttack } = useClient();
 
   // ── Animation state ────────────────────────────────────────────────────────
-  const [animProgress, setAnimProgress] = useState(0);
+  const [animTime, setAnimTime] = useState(0);
 
   const hasLive = !!live && (live.hasLiveData === true || (live.total ?? 0) > 0);
 
@@ -105,23 +105,15 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
 
   // ── Animation: requestAnimationFrame counting up smoothly over 1.8 seconds ──
   useEffect(() => {
-    setAnimProgress(0);
+    setAnimTime(0);
     let start: number | null = null;
-    const duration = 1800; // 1.8 seconds for smooth premium presentation
     let animationFrameId: number;
 
     const animate = (timestamp: number) => {
       if (!start) start = timestamp;
       const elapsed = timestamp - start;
-      const progressVal = Math.min(elapsed / duration, 1);
-      
-      // Easing function: easeOutQuart
-      const easeOutQuart = 1 - Math.pow(1 - progressVal, 4);
-      setAnimProgress(easeOutQuart);
-
-      if (progressVal < 1) {
-        animationFrameId = requestAnimationFrame(animate);
-      }
+      setAnimTime(elapsed);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
     const timeoutId = setTimeout(() => {
@@ -136,14 +128,41 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
     };
   }, [currentClient.key, score]);
 
-  const currentInnerPct = Math.round(innerPct * animProgress);
-  const currentMiddlePct = Math.round(middlePct * animProgress);
-  const currentOuterPct = Math.round(outerPct * animProgress);
-  const displayScore = Math.round(score * animProgress);
+  const progressVal = Math.min(animTime / 1800, 1);
+  const easedProgress = 1 - Math.pow(1 - progressVal, 4); // easeOutQuart
 
-  const currentInnerPctFloat = innerPct * animProgress;
-  const currentMiddlePctFloat = middlePct * animProgress;
-  const currentOuterPctFloat = outerPct * animProgress;
+  const currentInnerPct = Math.round(innerPct * easedProgress);
+  const currentMiddlePct = Math.round(middlePct * easedProgress);
+  const currentOuterPct = Math.round(outerPct * easedProgress);
+  const displayScore = Math.round(score * easedProgress);
+
+  const currentInnerPctFloat = innerPct * easedProgress;
+  const currentMiddlePctFloat = middlePct * easedProgress;
+  const currentOuterPctFloat = outerPct * easedProgress;
+
+  // Sync orbiting dots to follow the ring tips perfectly during creation
+  // and continue orbiting infinitely afterwards.
+  const getDotCoords = (center: number, radius: number, targetPct: number, time: number, orbitDuration: number) => {
+    const duration = 1800;
+    let angle = -90;
+    if (time < duration) {
+      const progress = Math.min(time / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4); // easeOutQuart
+      angle = -90 + (targetPct * eased * 3.6);
+    } else {
+      const extraTime = time - duration;
+      angle = -90 + (targetPct * 3.6) + (extraTime / orbitDuration) * 360;
+    }
+    const rad = (angle * Math.PI) / 180;
+    return {
+      cx: center + radius * Math.cos(rad),
+      cy: center + radius * Math.sin(rad)
+    };
+  };
+
+  const outerDot = getDotCoords(100, 72, outerPct, animTime, 8000);
+  const middleDot = getDotCoords(100, 56, middlePct, animTime, 6000);
+  const innerDot = getDotCoords(100, 40, innerPct, animTime, 4000);
 
   const dashOuter  = (currentOuterPctFloat / 100) * circOuter;
   const dashMiddle = (currentMiddlePctFloat / 100) * circMiddle;
@@ -301,10 +320,10 @@ export default function ModuleCockpitCard({ config, live, overrideScore }: Modul
               <circle key={i} cx="100" cy="100" r={r} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
             ))}
 
-            {/* Rotating orbit dots for 3 rings */}
-            <circle cx="100" cy="28" r="2.2" fill={ro.color} opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "mcRotate 8s linear infinite" }} />
-            <circle cx="100" cy="44" r="2.2" fill={rm.color} opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "mcRotate 6s linear infinite" }} />
-            <circle cx="100" cy="60" r="2.2" fill={ri.color} opacity="0.8" style={{ transformOrigin: "100px 100px", animation: "mcRotate 4s linear infinite" }} />
+            {/* Sync-moving orbit dots for 3 rings */}
+            <circle cx={outerDot.cx} cy={outerDot.cy} r="2.2" fill={ro.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${ro.glowColor})` }} />
+            <circle cx={middleDot.cx} cy={middleDot.cy} r="2.2" fill={rm.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${rm.glowColor})` }} />
+            <circle cx={innerDot.cx} cy={innerDot.cy} r="2.2" fill={ri.color} opacity="0.9" style={{ filter: `drop-shadow(0 0 2px ${ri.glowColor})` }} />
 
             {/* Outer ring */}
             <circle cx="100" cy="100" r={rOuter} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5.5" />
