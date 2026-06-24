@@ -7,17 +7,17 @@ import { useClient } from '@/context/ClientContext';
 const navItems = [
   { href: '/dashboard',          icon: '🏢', label: 'Main Terminal' },
   { href: '/dashboard/posture',  icon: '🛡️', label: 'Posture Clearance', badge: '3' },
-  { href: '/dashboard/cloud',    icon: '☁️', label: 'Cloud Altitude' },
-  { href: '/dashboard/network',  icon: '🌐', label: 'Network Runway',    badge: '34' },
-  { href: '/dashboard/infosec',  icon: '📋', label: 'Compliance Checkpoint' },
-  { href: '/dashboard/kpi',      icon: '📊', label: 'Flight Telemetry (KPIs)' },
-  { href: '/dashboard/appsec',   icon: '🔐', label: 'App Security Check', badge: '14' },
-  { href: '/dashboard/traffic',  icon: '🎛️', label: 'Traffic Control' },
-  { href: '/dashboard/server',   icon: '🖥️', label: 'Fleet Health',       badge: '3' },
   { href: '/dashboard/ai-risk',  icon: '🤖', label: 'AI Risk',           badge: 'NEW' },
-  { href: '/dashboard/identity', icon: '🔑', label: 'Identity PreCheck',  badge: 'NEW' },
-  { href: '/dashboard/secure',   icon: '📡', label: 'Risk Radar',         badge: 'NEW' },
+  { href: '/dashboard/appsec',   icon: '🔐', label: 'App Security Check', badge: '14' },
+  { href: '/dashboard/cloud',    icon: '☁️', label: 'Cloud Altitude' },
+  { href: '/dashboard/infosec',  icon: '📋', label: 'Compliance Checkpoint' },
   { href: '/dashboard/dispatch', icon: '🚨', label: 'Dispatch Center',    badge: 'SOAR' },
+  { href: '/dashboard/server',   icon: '🖥️', label: 'Fleet Health',       badge: '3' },
+  { href: '/dashboard/kpi',      icon: '📊', label: 'Flight Telemetry (KPIs)' },
+  { href: '/dashboard/identity', icon: '🔑', label: 'Identity PreCheck',  badge: 'NEW' },
+  { href: '/dashboard/network',  icon: '🌐', label: 'Network Runway',    badge: '34' },
+  { href: '/dashboard/secure',   icon: '📡', label: 'Risk Radar',         badge: 'NEW' },
+  { href: '/dashboard/traffic',  icon: '🎛️', label: 'Traffic Control' },
 ];
 
 export default function Sidebar() {

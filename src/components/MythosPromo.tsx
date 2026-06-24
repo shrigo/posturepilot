@@ -55,54 +55,29 @@ const MODULES_DATA: FeatureModule[] = [
     terminalDesc: "Real-time telemetry showing gate validation and pass/fail states across active clusters."
   },
   {
-    id: "cloud",
-    title: "Cloud Altitude",
-    icon: "☁️",
-    desc: "Multicloud asset drift & exposed buckets.",
-    tagline: "Map multicloud assets, detect policy drifts, and secure exposed storage.",
+    id: "ai-risk",
+    title: "AI Risk",
+    icon: "🤖",
+    desc: "Shadow AI models & unvetted LLM usage.",
+    tagline: "Discover shadow LLM usage and block data leaks via prompts.",
     coreFeatures: [
-      { name: "Unified Cloud Inventory", desc: "Map AWS, Azure, GCP, and SaaS assets in a single pane with real-time dependency relations." },
-      { name: "IAM Privilege Drift Scanner", desc: "Discover over-privileged IAM keys, orphaned credentials, and temporary admin permissions." },
-      { name: "Public Storage Bucket Auditor", desc: "Scan and detect exposed S3 buckets, public databases, and unencrypted file structures." }
+      { name: "Shadow AI Discovery", desc: "Track unapproved developer usage of external LLM tools, ChatGPT, and unapproved API keys." },
+      { name: "LLM Vulnerability Auditing", desc: "Spot vulnerabilities, security cracks, and license compliance flaws in local AI models." },
+      { name: "Active Prompt Redaction", desc: "Redact customer emails, API credentials, and internal source code from LLM prompts." }
     ],
     funnelMetrics: [
-      { val: "850.4K", label: "Cloud Resources", desc: ["Monitored VM/serverless nodes", "Active database instances"] },
-      { val: "42.1K", label: "IAM & Bucket Drifts", desc: ["Policy baseline deviations", "Over-privileged credentials"] },
-      { val: "3.88K", label: "Critical Exposures", desc: ["Public storage databases", "Unencrypted VM volumes"] },
-      { val: "810", label: "Auto-Quarantined Keys", desc: ["Revoked cloud secrets", "Restricted storage buckets"] }
+      { val: "250.8K", label: "GenAI Prompts", desc: ["Outbound prompts scanned", "Developer and admin requests"] },
+      { val: "14.2K", label: "Unvetted API Calls", desc: ["Shadow AI model usage", "Local unapproved web portals"] },
+      { val: "2.84K", label: "DLP Prompts Flagged", desc: ["Prompts containing secrets", "Exposed keys intercepted"] },
+      { val: "2,840", label: "PII Prompts Redacted", desc: ["Redacted prompts with tokens", "Zero model data leakage"] }
     ],
-    funnelStages: ["Cloud Resources", "Drift Flags", "Exposures", "Quarantined"],
+    funnelStages: ["Total Prompts", "Shadow Models", "Flagged Data", "Auto-Redacted"],
     enterpriseFeatures: [
-      { name: "Secret Leakage Alerting", desc: "Revoke exposed cloud credentials and API keys in under 2 seconds upon repository commit." },
-      { name: "Continuous CSPM Auditing", desc: "Continuous mapping of cloud configuration states against CIS benchmarks and custom policies." }
+      { name: "AI Policy Firewall", desc: "Apply dynamic DLP rules to intercept and block proprietary data exfiltration to public AI platforms." },
+      { name: "AI Agent Sandboxing", desc: "Enforce runtime permission blocks on active AI agents to prevent unapproved system actions." }
     ],
-    terminalTitle: "Multicloud Altitude Topology",
-    terminalDesc: "Live mapping of active cloud workloads, VM server instances, and public bucket triggers."
-  },
-  {
-    id: "network",
-    title: "Network Runway",
-    icon: "🌐",
-    desc: "Perimeter log analysis & VPN health.",
-    tagline: "Defend perimeter endpoints and monitor firewall log telemetry.",
-    coreFeatures: [
-      { name: "Perimeter Log Ingestion", desc: "Audit millions of network packet requests at border firewalls and security gateways." },
-      { name: "IDS/IPS Threat Signatures", desc: "Block rogue port scans, brute force attempts, and IP probing waves automatically." },
-      { name: "VPN Gateway Inspector", desc: "Audit active VPN tunnel health, track user sessions, and map login geo-locations." }
-    ],
-    funnelMetrics: [
-      { val: "142.6M", label: "Inbound Packets", desc: ["Traffic processed at edge", "Raw traffic log volume"] },
-      { val: "3.12M", label: "Boundary Hits", desc: ["Connection requests to nodes", "Filtered border logs"] },
-      { val: "182.4K", label: "Rogue Port Probes", desc: ["Probing alerts from botnets", "High risk source IPs"] },
-      { val: "4,210", label: "IP Ranges Geo-blocked", desc: ["Dynamic firewall bans", "Zero-Trust network blocks"] }
-    ],
-    funnelStages: ["Traffic Logs", "Boundary Hits", "Port Scans", "Banned IPs"],
-    enterpriseFeatures: [
-      { name: "Autonomous Segregation", desc: "Isolate compromised server instances from the network runway to stop lateral threat movement." },
-      { name: "Banned IP Geo-blocking", desc: "Ban entire malicious IP ranges dynamically based on threat reputation scores." }
-    ],
-    terminalTitle: "Edge Firewall Gateway Logs",
-    terminalDesc: "Real-time border traffic monitoring showing blocked inbound packets and IP ranges."
+    terminalTitle: "AI Prompt DLP Firewall",
+    terminalDesc: "Active inspection of LLM requests with real-time redaction of sensitive credentials."
   },
   {
     id: "appsec",
@@ -130,79 +105,29 @@ const MODULES_DATA: FeatureModule[] = [
     terminalDesc: "Continuous code analysis funnel monitoring commits and failing builds with unpatched CVEs."
   },
   {
-    id: "ai-risk",
-    title: "AI Risk",
-    icon: "🤖",
-    desc: "Shadow AI models & unvetted LLM usage.",
-    tagline: "Discover shadow LLM usage and block data leaks via prompts.",
+    id: "cloud",
+    title: "Cloud Altitude",
+    icon: "☁️",
+    desc: "Multicloud asset drift & exposed buckets.",
+    tagline: "Map multicloud assets, detect policy drifts, and secure exposed storage.",
     coreFeatures: [
-      { name: "Shadow AI Discovery", desc: "Track unapproved developer usage of external LLM tools, ChatGPT, and unapproved API keys." },
-      { name: "LLM Vulnerability Auditing", desc: "Spot vulnerabilities, security cracks, and license compliance flaws in local AI models." },
-      { name: "Active Prompt Redaction", desc: "Redact customer emails, API credentials, and internal source code from LLM prompts." }
+      { name: "Unified Cloud Inventory", desc: "Map AWS, Azure, GCP, and SaaS assets in a single pane with real-time dependency relations." },
+      { name: "IAM Privilege Drift Scanner", desc: "Discover over-privileged IAM keys, orphaned credentials, and temporary admin permissions." },
+      { name: "Public Storage Bucket Auditor", desc: "Scan and detect exposed S3 buckets, public databases, and unencrypted file structures." }
     ],
     funnelMetrics: [
-      { val: "250.8K", label: "GenAI Prompts", desc: ["Outbound prompts scanned", "Developer and admin requests"] },
-      { val: "14.2K", label: "Unvetted API Calls", desc: ["Shadow AI model usage", "Local unapproved web portals"] },
-      { val: "2.84K", label: "DLP Prompts Flagged", desc: ["Prompts containing secrets", "Exposed keys intercepted"] },
-      { val: "2,840", label: "PII Prompts Redacted", desc: ["Redacted prompts with tokens", "Zero model data leakage"] }
+      { val: "850.4K", label: "Cloud Resources", desc: ["Monitored VM/serverless nodes", "Active database instances"] },
+      { val: "42.1K", label: "IAM & Bucket Drifts", desc: ["Policy baseline deviations", "Over-privileged credentials"] },
+      { val: "3.88K", label: "Critical Exposures", desc: ["Public storage databases", "Unencrypted VM volumes"] },
+      { val: "810", label: "Auto-Quarantined Keys", desc: ["Revoked cloud secrets", "Restricted storage buckets"] }
     ],
-    funnelStages: ["Total Prompts", "Shadow Models", "Flagged Data", "Auto-Redacted"],
+    funnelStages: ["Cloud Resources", "Drift Flags", "Exposures", "Quarantined"],
     enterpriseFeatures: [
-      { name: "AI Policy Firewall", desc: "Apply dynamic DLP rules to intercept and block proprietary data exfiltration to public AI platforms." },
-      { name: "AI Agent Sandboxing", desc: "Enforce runtime permission blocks on active AI agents to prevent unapproved system actions." }
+      { name: "Secret Leakage Alerting", desc: "Revoke exposed cloud credentials and API keys in under 2 seconds upon repository commit." },
+      { name: "Continuous CSPM Auditing", desc: "Continuous mapping of cloud configuration states against CIS benchmarks and custom policies." }
     ],
-    terminalTitle: "AI Prompt DLP Firewall",
-    terminalDesc: "Active inspection of LLM requests with real-time redaction of sensitive credentials."
-  },
-  {
-    id: "secure",
-    title: "Risk Radar",
-    icon: "📡",
-    desc: "Hyper-prioritization & noise reduction.",
-    tagline: "Hyper-prioritize vulnerability fixing by predicting exploitation.",
-    coreFeatures: [
-      { name: "CISA KEV & EPSS Triage", desc: "Filter out 95% of harmless noise by focusing only on vulnerabilities with active exploits." },
-      { name: "Asset-Context Modifiers", desc: "Adjust severity scores based on environment characteristics like public internet exposure." },
-      { name: "Noise Suppression Filter", desc: "De-duplicate scanner reports across Qualys, Tenable, Nessus, and Wiz into single targets." }
-    ],
-    funnelMetrics: [
-      { val: "3.84M", label: "CVE Records", desc: ["Total database vulnerabilities", "Consolidated scanner findings"] },
-      { val: "180.2K", label: "Asset Exposures", desc: ["Exposures on running systems", "Filters out offline targets"] },
-      { val: "8,510", label: "Exploitable CVEs", desc: ["CVEs with known exploit scripts", "EPSS > 0.6 and CISA KEV"] },
-      { val: "420", label: "Actionable Triaged Risks", desc: ["Top priority exposures", "Suppresses harmless noise"] }
-    ],
-    funnelStages: ["Raw Findings", "Asset Exposures", "Exploitable", "Actionable Risks"],
-    enterpriseFeatures: [
-      { name: "Remediation Velocity Trends", desc: "Forecast time-to-remediate trends using historical team fix speeds and SLAs." },
-      { name: "Automated Triage Queues", desc: "Automatically group critical exposures and send them to patch deployment queues." }
-    ],
-    terminalTitle: "Risk Radar Scanning Coordinates",
-    terminalDesc: "Scanning active vulnerabilities, displaying exploitable blips, and CVSS parameters."
-  },
-  {
-    id: "identity",
-    title: "Identity PreCheck",
-    icon: "🔑",
-    desc: "MFA gaps & privileged access drift.",
-    tagline: "Stop privilege access drifts and audit SSO directory directories.",
-    coreFeatures: [
-      { name: "SSO Directory Audits", desc: "Sync Okta, Entra ID, and Google directories to audit user and machine permissions." },
-      { name: "Zero-Trust MFA Enforcer", desc: "Instantly detect accounts with disabled MFA, bypass policies, or weak authentication." },
-      { name: "Orphan Account Deprovisioner", desc: "Auto-expire and disable inactive accounts, stale SSH keys, and dormant admin roles." }
-    ],
-    funnelMetrics: [
-      { val: "15.4K", label: "SSO Identities", desc: ["User and machine credentials", "Directory accounts tracked"] },
-      { val: "1.82K", label: "Privilege Drifts", desc: ["Accounts with elevated access", "Permissive IAM roles"] },
-      { val: "640", label: "MFA Policy Gaps", desc: ["Accounts with weak MFA", "SMS bypass conditions"] },
-      { val: "48", label: "Orphan Accounts Disabled", desc: ["Stale admin roles deprovisioned", "Rotated active credentials"] }
-    ],
-    funnelStages: ["Active Identities", "Elevated Roles", "MFA Gaps", "Orphans Disabled"],
-    enterpriseFeatures: [
-      { name: "Privileged Access Drift Tracker", desc: "Detect accounts with permanent admin status and enforce temporary permission baselines." },
-      { name: "Session Hijack Alerts", desc: "Flag suspicious logins, fast travel anomalies, and sessions drifting across remote locations." }
-    ],
-    terminalTitle: "Identity Authentication PreCheck",
-    terminalDesc: "Zero-Trust SSO validation checks, credential state telemetry, and privilege escalation audits."
+    terminalTitle: "Multicloud Altitude Topology",
+    terminalDesc: "Live mapping of active cloud workloads, VM server instances, and public bucket triggers."
   },
   {
     id: "infosec",
@@ -280,31 +205,6 @@ const MODULES_DATA: FeatureModule[] = [
     terminalDesc: "Blinking LED blade grid showing server patch states, EDR coverage, and update progress."
   },
   {
-    id: "traffic",
-    title: "Traffic Control",
-    icon: "🎛️",
-    desc: "Flow anomaly, bandwidth & ports.",
-    tagline: "Inspect flow anomalies, geo-fencing, and port exposures.",
-    coreFeatures: [
-      { name: "Flow Anomaly Detection", desc: "Detect unexpected data transfers between secure subnets and unauthorized locations." },
-      { name: "Bandwidth Peak Analyzer", desc: "Track high volume transfers and network bandwidth spikes to block data exfiltration attempts." },
-      { name: "Port Exposure Matrix", desc: "Verify network perimeters and warn when unauthorized service ports (like SSH or RDP) open." }
-    ],
-    funnelMetrics: [
-      { val: "2.44B", label: "Packets Logged", desc: ["DNS queries and flows monitored", "Raw packet session count"] },
-      { val: "12.1M", label: "Protocol Anomalies", desc: ["Packets violating standards", "Unexpected SSH connections"] },
-      { val: "852K", label: "Geo-Fence Hits", desc: ["Banned ASN connections", "Geo-location packet checks"] },
-      { val: "4,510", label: "Blocked Payloads", desc: ["Outbound payloads terminated", "Suspicious source ports closed"] }
-    ],
-    funnelStages: ["Packets Monitored", "Anomalous flows", "Geo-Fenced Hits", "Blocked Payloads"],
-    enterpriseFeatures: [
-      { name: "Deep Packet Inspection", desc: "Analyze network packet payloads and protocol headers for advanced threat profiling." },
-      { name: "Dynamic Bandwidth Limiting", desc: "Throttle bandwidth automatically on suspicious transfers to mitigate data theft." }
-    ],
-    terminalTitle: "Bandwidth Flow Wave Anomaly Tracker",
-    terminalDesc: "Live bezier curve traffic monitoring showing throughput peaks, port matrix checks, and geo-alerts."
-  },
-  {
     id: "kpi",
     title: "Flight Telemetry (KPIs)",
     icon: "📊",
@@ -328,6 +228,106 @@ const MODULES_DATA: FeatureModule[] = [
     ],
     terminalTitle: "Remediation MTTR Velocity Curve",
     terminalDesc: "SLA trend line tracking Mean Time to Remediate drop-offs over weekly iterations."
+  },
+  {
+    id: "identity",
+    title: "Identity PreCheck",
+    icon: "🔑",
+    desc: "MFA gaps & privileged access drift.",
+    tagline: "Stop privilege access drifts and audit SSO directory directories.",
+    coreFeatures: [
+      { name: "SSO Directory Audits", desc: "Sync Okta, Entra ID, and Google directories to audit user and machine permissions." },
+      { name: "Zero-Trust MFA Enforcer", desc: "Instantly detect accounts with disabled MFA, bypass policies, or weak authentication." },
+      { name: "Orphan Account Deprovisioner", desc: "Auto-expire and disable inactive accounts, stale SSH keys, and dormant admin roles." }
+    ],
+    funnelMetrics: [
+      { val: "15.4K", label: "SSO Identities", desc: ["User and machine credentials", "Directory accounts tracked"] },
+      { val: "1.82K", label: "Privilege Drifts", desc: ["Accounts with elevated access", "Permissive IAM roles"] },
+      { val: "640", label: "MFA Policy Gaps", desc: ["Accounts with weak MFA", "SMS bypass conditions"] },
+      { val: "48", label: "Orphan Accounts Disabled", desc: ["Stale admin roles deprovisioned", "Rotated active credentials"] }
+    ],
+    funnelStages: ["Active Identities", "Elevated Roles", "MFA Gaps", "Orphans Disabled"],
+    enterpriseFeatures: [
+      { name: "Privileged Access Drift Tracker", desc: "Detect accounts with permanent admin status and enforce temporary permission baselines." },
+      { name: "Session Hijack Alerts", desc: "Flag suspicious logins, fast travel anomalies, and sessions drifting across remote locations." }
+    ],
+    terminalTitle: "Identity Authentication PreCheck",
+    terminalDesc: "Zero-Trust SSO validation checks, credential state telemetry, and privilege escalation audits."
+  },
+  {
+    id: "network",
+    title: "Network Runway",
+    icon: "🌐",
+    desc: "Perimeter log analysis & VPN health.",
+    tagline: "Defend perimeter endpoints and monitor firewall log telemetry.",
+    coreFeatures: [
+      { name: "Perimeter Log Ingestion", desc: "Audit millions of network packet requests at border firewalls and security gateways." },
+      { name: "IDS/IPS Threat Signatures", desc: "Block rogue port scans, brute force attempts, and IP probing waves automatically." },
+      { name: "VPN Gateway Inspector", desc: "Audit active VPN tunnel health, track user sessions, and map login geo-locations." }
+    ],
+    funnelMetrics: [
+      { val: "142.6M", label: "Inbound Packets", desc: ["Traffic processed at edge", "Raw traffic log volume"] },
+      { val: "3.12M", label: "Boundary Hits", desc: ["Connection requests to nodes", "Filtered border logs"] },
+      { val: "182.4K", label: "Rogue Port Probes", desc: ["Probing alerts from botnets", "High risk source IPs"] },
+      { val: "4,210", label: "IP Ranges Geo-blocked", desc: ["Dynamic firewall bans", "Zero-Trust network blocks"] }
+    ],
+    funnelStages: ["Traffic Logs", "Boundary Hits", "Port Scans", "Banned IPs"],
+    enterpriseFeatures: [
+      { name: "Autonomous Segregation", desc: "Isolate compromised server instances from the network runway to stop lateral threat movement." },
+      { name: "Banned IP Geo-blocking", desc: "Ban entire malicious IP ranges dynamically based on threat reputation scores." }
+    ],
+    terminalTitle: "Edge Firewall Gateway Logs",
+    terminalDesc: "Real-time border traffic monitoring showing blocked inbound packets and IP ranges."
+  },
+  {
+    id: "secure",
+    title: "Risk Radar",
+    icon: "📡",
+    desc: "Hyper-prioritization & noise reduction.",
+    tagline: "Hyper-prioritize vulnerability fixing by predicting exploitation.",
+    coreFeatures: [
+      { name: "CISA KEV & EPSS Triage", desc: "Filter out 95% of harmless noise by focusing only on vulnerabilities with active exploits." },
+      { name: "Asset-Context Modifiers", desc: "Adjust severity scores based on environment characteristics like public internet exposure." },
+      { name: "Noise Suppression Filter", desc: "De-duplicate scanner reports across Qualys, Tenable, Nessus, and Wiz into single targets." }
+    ],
+    funnelMetrics: [
+      { val: "3.84M", label: "CVE Records", desc: ["Total database vulnerabilities", "Consolidated scanner findings"] },
+      { val: "180.2K", label: "Asset Exposures", desc: ["Exposures on running systems", "Filters out offline targets"] },
+      { val: "8,510", label: "Exploitable CVEs", desc: ["CVEs with known exploit scripts", "EPSS > 0.6 and CISA KEV"] },
+      { val: "420", label: "Actionable Triaged Risks", desc: ["Top priority exposures", "Suppresses harmless noise"] }
+    ],
+    funnelStages: ["Raw Findings", "Asset Exposures", "Exploitable", "Actionable Risks"],
+    enterpriseFeatures: [
+      { name: "Remediation Velocity Trends", desc: "Forecast time-to-remediate trends using historical team fix speeds and SLAs." },
+      { name: "Automated Triage Queues", desc: "Automatically group critical exposures and send them to patch deployment queues." }
+    ],
+    terminalTitle: "Risk Radar Scanning Coordinates",
+    terminalDesc: "Scanning active vulnerabilities, displaying exploitable blips, and CVSS parameters."
+  },
+  {
+    id: "traffic",
+    title: "Traffic Control",
+    icon: "🎛️",
+    desc: "Flow anomaly, bandwidth & ports.",
+    tagline: "Inspect flow anomalies, geo-fencing, and port exposures.",
+    coreFeatures: [
+      { name: "Flow Anomaly Detection", desc: "Detect unexpected data transfers between secure subnets and unauthorized locations." },
+      { name: "Bandwidth Peak Analyzer", desc: "Track high volume transfers and network bandwidth spikes to block data exfiltration attempts." },
+      { name: "Port Exposure Matrix", desc: "Verify network perimeters and warn when unauthorized service ports (like SSH or RDP) open." }
+    ],
+    funnelMetrics: [
+      { val: "2.44B", label: "Packets Logged", desc: ["DNS queries and flows monitored", "Raw packet session count"] },
+      { val: "12.1M", label: "Protocol Anomalies", desc: ["Packets violating standards", "Unexpected SSH connections"] },
+      { val: "852K", label: "Geo-Fence Hits", desc: ["Banned ASN connections", "Geo-location packet checks"] },
+      { val: "4,510", label: "Blocked Payloads", desc: ["Outbound payloads terminated", "Suspicious source ports closed"] }
+    ],
+    funnelStages: ["Packets Monitored", "Anomalous flows", "Geo-Fenced Hits", "Blocked Payloads"],
+    enterpriseFeatures: [
+      { name: "Deep Packet Inspection", desc: "Analyze network packet payloads and protocol headers for advanced threat profiling." },
+      { name: "Dynamic Bandwidth Limiting", desc: "Throttle bandwidth automatically on suspicious transfers to mitigate data theft." }
+    ],
+    terminalTitle: "Bandwidth Flow Wave Anomaly Tracker",
+    terminalDesc: "Live bezier curve traffic monitoring showing throughput peaks, port matrix checks, and geo-alerts."
   }
 ];
 
