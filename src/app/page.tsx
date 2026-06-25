@@ -1156,7 +1156,7 @@ export default function Page() {
               ))}
             </div>
 
-            <div className="monitor-inner" style={{minHeight:580, background:"#f8fafc"}}>
+            <div className="monitor-inner" style={{background:"#f8fafc"}}>
               {monitorCategory === "KPIs" && (
                 <div className="monitor-grid-3col">
                   {/* Column 1: Core Telemetry (KPIs & Findings) */}
@@ -1277,6 +1277,7 @@ export default function Page() {
                         {[
                           {cloud:"AWS Amazon Web Services",assets:"104 active VMs, 4 RDS instances",pct:96,c:"#ff9900"},
                           {cloud:"Microsoft Azure Cloud",assets:"67 active VMs, 2 SQL containers",pct:99,c:"#0078d4"},
+                          {cloud:"GCP Google Cloud Platform",assets:"12 active projects, 3 GKE clusters",pct:94,c:"#ea4335"},
                         ].map((item,i)=>(
                           <div key={i} style={{background:"#f8fafc",padding:"0.65rem",borderRadius:8,border:"1px solid #e2e8f0",borderLeft:`3px solid ${item.c}`}}>
                             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.68rem",fontWeight:700,color:"#0f172a"}}>
@@ -1307,6 +1308,14 @@ export default function Page() {
                             <span style={{fontSize:"0.52rem",fontWeight:800,color:"#dc2626",background:"#fee2e2",padding:"1px 4px",borderRadius:3}}>PUBLIC</span>
                           </div>
                         ))}
+                      </div>
+                      <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"0.75rem",marginTop:"0.5rem"}}>
+                        <div style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.35rem"}}>🛡️ Active Remediation Logs</div>
+                        <div style={{fontSize:"0.55rem",fontFamily:"monospace",background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:6,padding:"0.4rem",color:"#1e293b"}}>
+                          <div style={{color:"#16a34a"}}>✓ lambda-encrypt-bucket: SUCCESS</div>
+                          <div style={{color:"#16a34a"}}>✓ policy-s3-public-block: APPLIED</div>
+                          <div style={{color:"#ea580c"}}>! bucket-quarantine: WAITING_AUTH</div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1370,6 +1379,17 @@ export default function Page() {
                           </div>
                         ))}
                       </div>
+                      <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"0.75rem",marginTop:"0.5rem"}}>
+                        <div style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.35rem"}}>📦 Dependency Health (SCA)</div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem"}}>
+                          <span style={{color:"#475569"}}>Packages scanned</span>
+                          <span style={{fontWeight:700,color:"#0f172a"}}>412 libs</span>
+                        </div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem",marginTop:2}}>
+                          <span style={{color:"#475569"}}>Vulnerable packages</span>
+                          <span style={{fontWeight:700,color:"#dc2626"}}>12 auto-patched</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -1391,6 +1411,17 @@ export default function Page() {
                           </div>
                         ))}
                       </div>
+                      <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"0.75rem",marginTop:"0.5rem"}}>
+                        <div style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.35rem"}}>🤖 OpenAI Gateway Logs</div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem"}}>
+                          <span style={{color:"#475569"}}>Tokens scanned</span>
+                          <span style={{fontWeight:700,color:"#2563eb"}}>1.2M Today</span>
+                        </div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem",marginTop:2}}>
+                          <span style={{color:"#475569"}}>Sensitive leaks blocked</span>
+                          <span style={{fontWeight:700,color:"#16a34a"}}>4 block events</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -1398,21 +1429,31 @@ export default function Page() {
                   <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
                     <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
                       <div>
-                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem"}}>🖥️ Host Server Health Radar</div>
-                        <p style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.75rem"}}>Live host utilization & agent heartbeat.</p>
-                      </div>
-                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"0.5rem",flex:1}}>
-                        <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>
-                          {[["CPU Load","44%","#10b981"],["Memory","68%","#eab308"]].map(([lbl,val,c])=>(
-                            <div key={lbl} style={{fontSize:"0.62rem"}}>
-                              <span style={{color:"#64748b"}}>{lbl}: </span>
-                              <span style={{fontWeight:800,color:c}}>{val}</span>
-                            </div>
-                          ))}
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem"}}>🖥️ Host Server Health</div>
+                        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"0.5rem",marginBottom:"0.5rem"}}>
+                          <div style={{display:"flex",flexDirection:"column",gap:"0.3rem"}}>
+                            {[["CPU Load","44%","#10b981"],["Memory","68%","#eab308"]].map(([lbl,val,c])=>(
+                              <div key={lbl} style={{fontSize:"0.62rem"}}>
+                                <span style={{color:"#64748b"}}>{lbl}: </span>
+                                <span style={{fontWeight:800,color:c}}>{val}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <div style={{textAlign:"center",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:10,padding:"0.6rem 1rem"}}>
+                            <div style={{fontSize:"1.3rem",fontWeight:900,color:"#16a34a",lineHeight:1}}>98.9%</div>
+                            <div style={{fontSize:"0.55rem",color:"#15803d",fontWeight:700,marginTop:4}}>Uptime</div>
+                          </div>
                         </div>
-                        <div style={{textAlign:"center",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:10,padding:"0.6rem 1rem"}}>
-                          <div style={{fontSize:"1.3rem",fontWeight:900,color:"#16a34a",lineHeight:1}}>98.9%</div>
-                          <div style={{fontSize:"0.55rem",color:"#15803d",fontWeight:700,marginTop:4}}>Uptime</div>
+                      </div>
+                      <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"0.5rem",marginTop:"0.5rem"}}>
+                        <div style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.35rem"}}>🛡️ EDR Agent Health</div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem"}}>
+                          <span style={{color:"#475569"}}>Active agents</span>
+                          <span style={{fontWeight:700,color:"#16a34a"}}>124 online</span>
+                        </div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem",marginTop:2}}>
+                          <span style={{color:"#475569"}}>OS patches pending</span>
+                          <span style={{fontWeight:700,color:"#ea580c"}}>2 servers</span>
                         </div>
                       </div>
                     </div>
@@ -1433,6 +1474,7 @@ export default function Page() {
                         {[
                           {id:"PP-104",title:"Critical CVE-2024-3400 Inbound",owner:"Sarah Connor",sla:"3.2h",c:"#dc2626"},
                           {id:"PP-102",title:"High CVE-2024-21762 Bypass",owner:"Devon Vance",sla:"2.4d",c:"#ea580c"},
+                          {id:"PP-101",title:"MFA brute-force alert user",owner:"IAM Bot",sla:"4m",c:"#2563eb"},
                         ].map((t)=>(
                           <div key={t.id} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,padding:"0.5rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                             <div>
@@ -1454,6 +1496,9 @@ export default function Page() {
                         <div>[12:04:10] Ingesting scan telemetry...</div>
                         <div style={{color:"#eab308"}}>[12:04:15 WARN] Overdue SLA on asset "db-02".</div>
                         <div>[12:04:18] Dispatched PP-104 to Sarah C.</div>
+                        <div style={{color:"#e2e8f0"}}>[12:04:22] Auto-triaged 14 false positives.</div>
+                        <div style={{color:"#ef4444"}}>[12:04:25] Blocked IP 185.220.101.4 at firewall.</div>
+                        <div style={{color:"#eab308"}}>[12:04:30] Revoked user session (anomalous loc).</div>
                       </div>
                     </div>
                   </div>
@@ -1492,6 +1537,19 @@ export default function Page() {
                             <div style={{fontSize:"1.1rem",fontWeight:900,color:"#16a34a",lineHeight:1}}>99.6%</div>
                             <div style={{fontSize:"0.52rem",color:"#15803d",marginTop:2}}>Noise Cut</div>
                           </div>
+                        </div>
+                      </div>
+
+                      {/* Privileged Access */}
+                      <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"0.5rem",marginTop:"0.5rem"}}>
+                        <div style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.35rem"}}>🔑 Privileged Access (PAM)</div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem"}}>
+                          <span style={{color:"#475569"}}>Active admin sessions</span>
+                          <span style={{fontWeight:700,color:"#0f172a"}}>0 sessions</span>
+                        </div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem",marginTop:2}}>
+                          <span style={{color:"#475569"}}>JIT access requests</span>
+                          <span style={{fontWeight:700,color:"#16a34a"}}>2 approved</span>
                         </div>
                       </div>
                     </div>
