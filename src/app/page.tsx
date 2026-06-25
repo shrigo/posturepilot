@@ -492,6 +492,24 @@ export default function Page() {
             box-shadow: 0 4px 25px rgba(124, 58, 237, 0.65), 0 0 12px rgba(124, 58, 237, 0.3);
           }
         }
+        .monitor-grid-3col {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.25rem;
+          padding: 1.25rem;
+        }
+        @media (max-width: 1024px) {
+          .monitor-grid-3col {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 768px) {
+          .monitor-grid-3col {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
+          }
+        }
       `}</style>
 
       {/* NAV */}
@@ -1063,7 +1081,7 @@ export default function Page() {
 
       {/* ── MONITOR ── */}
       <section id="monitor" style={{scrollMarginTop:"64px",padding:"25px 2rem 14rem",background:"linear-gradient(135deg,#1e2d6e 0%,#2d1b69 50%,#3b0764 100%)",color:"#fff",minHeight:"100vh",display:"flex",alignItems:"flex-start"}}>
-        <div style={{maxWidth:1100,margin:"0 auto",width:"100%"}}>
+        <div style={{maxWidth:1200,margin:"0 auto",width:"100%"}}>
           <div style={{textAlign:"center",marginBottom:"2.5rem"}}>
             <div style={{fontSize:"0.68rem",fontWeight:700,color:"#a5b4fc",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>📡 Monitor</div>
             <h2 style={{fontSize:"clamp(1.75rem,3vw,2.25rem)",fontWeight:800,letterSpacing:"-0.03em"}}>12 live dashboards. Everything in one place.</h2>
@@ -1140,8 +1158,8 @@ export default function Page() {
 
             <div className="monitor-inner" style={{minHeight:580, background:"#f8fafc"}}>
               {monitorCategory === "KPIs" && (
-                <div style={{display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:"1.25rem", padding:"1.25rem"}}>
-                  {/* Left Column: KPIs and findings */}
+                <div className="monitor-grid-3col">
+                  {/* Column 1: Core Telemetry (KPIs & Findings) */}
                   <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
                     {/* KPI row */}
                     <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"0.875rem"}}>
@@ -1160,7 +1178,7 @@ export default function Page() {
                     </div>
 
                     {/* Findings breakdown */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",flex:1}}>
                       <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"0.4rem"}}>📊 Findings by Severity</div>
                       {[["Critical",14,"#dc2626",312],["High",67,"#ea580c",312],["Medium",148,"#d97706",312],["Low",83,"#16a34a",312],["Info",22,"#2563eb",312]].map(([s,n,c,max])=>(
                         <div key={String(s)} style={{marginBottom:"0.55rem"}}>
@@ -1176,61 +1194,63 @@ export default function Page() {
                     </div>
                   </div>
 
-                  {/* Right Column: Posture & compliance */}
+                  {/* Column 2: Posture & Trend Line */}
                   <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
-                    {/* Cyber Posture */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem"}}>🛡️ Cyber Posture Clearance</div>
-                      <div style={{display:"grid",gridTemplateColumns:"1fr 1.3fr",gap:"0.875rem"}}>
-                        <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
-                          <div style={{position:"relative",width:95,height:95,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",height:"100%",justifyContent:"space-between"}}>
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"1rem"}}>🛡️ Cyber Posture Clearance</div>
+                        <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"1rem 0"}}>
+                          <div style={{position:"relative",width:110,height:110,display:"flex",alignItems:"center",justifyContent:"center"}}>
                             <svg viewBox="0 0 100 100" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",transform:"rotate(-90deg)"}}>
                               <circle cx="50" cy="50" r="40" fill="none" stroke="#f1f5f9" strokeWidth="8"/>
                               <circle cx="50" cy="50" r="40" fill="none" stroke="#7c3aed" strokeWidth="8" strokeDasharray="185 251" strokeLinecap="round"/>
                             </svg>
                             <div>
-                              <div style={{fontSize:"1.35rem",fontWeight:900,color:"#0f172a",lineHeight:1}}>74%</div>
-                              <div style={{fontSize:"0.48rem",color:"#16a34a",fontWeight:800,marginTop:2}}>APPROVED</div>
+                              <div style={{fontSize:"1.6rem",fontWeight:900,color:"#0f172a",lineHeight:1}}>74%</div>
+                              <div style={{fontSize:"0.52rem",color:"#16a34a",fontWeight:800,marginTop:3}}>APPROVED</div>
                             </div>
                           </div>
-                          <div style={{fontSize:"0.6rem",color:"#64748b",marginTop:6}}>Posture Index Score</div>
+                          <div style={{fontSize:"0.65rem",color:"#64748b",marginTop:8}}>Posture Index Score</div>
                         </div>
-                        <div style={{display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-                          <div style={{fontSize:"0.58rem",color:"#64748b"}}>📈 Historical Trend</div>
-                          <div style={{height:55,width:"100%"}}>
-                            <svg viewBox="0 0 200 100" style={{width:"100%",height:"100%",overflow:"visible"}}>
-                              <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34 L 200,100 L 0,100 Z" fill="rgba(124,58,237,0.1)"/>
-                              <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34" fill="none" stroke="#7c3aed" strokeWidth="3"/>
-                              <circle cx="200" cy="34" r="4" fill="#fff" stroke="#7c3aed" strokeWidth="2"/>
-                            </svg>
-                          </div>
-                          <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.52rem",color:"#64748b"}}>
-                            <span>Feb</span>
-                            <span>Mar</span>
-                            <span>Apr</span>
-                            <span style={{fontWeight:700,color:"#16a34a"}}>May</span>
-                          </div>
+                      </div>
+
+                      <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"1rem"}}>
+                        <div style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.5rem"}}>📈 Historical Trend</div>
+                        <div style={{height:80,width:"100%"}}>
+                          <svg viewBox="0 0 200 100" style={{width:"100%",height:"100%",overflow:"visible"}}>
+                            <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34 L 200,100 L 0,100 Z" fill="rgba(124,58,237,0.1)"/>
+                            <path d="M 0,82 C 30,79 60,85 90,71 C 120,62 150,45 200,34" fill="none" stroke="#7c3aed" strokeWidth="3"/>
+                            <circle cx="200" cy="34" r="4" fill="#fff" stroke="#7c3aed" strokeWidth="2"/>
+                          </svg>
+                        </div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.55rem",color:"#64748b",marginTop:4}}>
+                          <span>Feb</span>
+                          <span>Mar</span>
+                          <span>Apr</span>
+                          <span style={{fontWeight:700,color:"#16a34a"}}>May</span>
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* InfoSec GRC Checklist */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
+                  {/* Column 3: Compliance Checklist */}
+                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column"}}>
                       <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem"}}>📋 Regulatory Compliance Registry</div>
-                      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"0.5rem"}}>
+                      <div style={{display:"flex",flexDirection:"column",gap:"0.75rem",flex:1,justifyContent:"center"}}>
                         {[
                           {title:"SOC2 Type II",cov:"87%",c:"#7c3aed",checks:[{l:"IAM Rules",v:true},{l:"MFA Enforce",v:true}]},
                           {title:"ISO 27001",cov:"79%",c:"#4f46e5",checks:[{l:"Risk Pass",v:true},{l:"Audit Log",v:false}]},
                           {title:"NIST CSF",cov:"92%",c:"#059669",checks:[{l:"Triage Pass",v:true},{l:"Fleet Patch",v:true}]},
                         ].map((fw,i)=>(
-                          <div key={i} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,padding:"0.55rem",borderTop:`3px solid ${fw.c}`}}>
-                            <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",fontWeight:800,marginBottom:3}}>
+                          <div key={i} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,padding:"0.65rem",borderTop:`3px solid ${fw.c}`}}>
+                            <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.6rem",fontWeight:800,marginBottom:3}}>
                               <span style={{color:"#0f172a"}}>{fw.title}</span>
                               <span style={{color:fw.c}}>{fw.cov}</span>
                             </div>
-                            <div style={{display:"flex",flexDirection:"column",gap:"0.25rem",marginTop:6}}>
+                            <div style={{display:"flex",flexDirection:"column",gap:"0.3rem",marginTop:6}}>
                               {fw.checks.map((ch,idx)=>(
-                                <div key={idx} style={{display:"flex",alignItems:"center",gap:"0.25rem",fontSize:"0.52rem",whiteSpace:"nowrap",overflow:"hidden"}}>
+                                <div key={idx} style={{display:"flex",alignItems:"center",gap:"0.3rem",fontSize:"0.55rem",whiteSpace:"nowrap",overflow:"hidden"}}>
                                   <span style={{color:ch.v?"#16a34a":"#dc2626"}}>{ch.v?"✓":"✗"}</span>
                                   <span style={{color:"#475569"}}>{ch.l}</span>
                                 </div>
@@ -1245,67 +1265,81 @@ export default function Page() {
               )}
 
               {monitorCategory === "Infra" && (
-                <div style={{display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:"1.25rem", padding:"1.25rem"}}>
-                  {/* Left Column: Cloud Security */}
-                  <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",gap:"1rem"}}>
-                    <div>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>☁️ Multicloud Asset Altitude Tracker</div>
-                      <div style={{fontSize:"0.68rem",fontWeight:800,color:"#dc2626",marginBottom:"0.5rem"}}>⚠️ 3 EXPOSED STORAGE OBJECTS FOUND</div>
-                      <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
-                        {["acme-financial-audit-logs","hr-employee-passports","retail-pos-backups"].map((bucket)=>(
-                          <div key={bucket} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"#fef2f2",border:"1px solid #fecaca",padding:"0.35rem 0.5rem",borderRadius:6}}>
-                            <span style={{fontSize:"0.62rem",fontFamily:"monospace",color:"#0f172a"}}>{bucket}</span>
-                            <span style={{fontSize:"0.52rem",fontWeight:800,color:"#dc2626"}}>PUBLIC READ</span>
-                          </div>
-                        ))}
+                <div className="monitor-grid-3col">
+                  {/* Column 1: Cloud Security environments */}
+                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem"}}>☁️ Ingested Multicloud Environments</div>
+                        <p style={{fontSize:"0.65rem",color:"#64748b",marginBottom:"1rem"}}>Continuous compliance monitoring of active cloud instances.</p>
                       </div>
-                    </div>
-                    <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>
-                      <div style={{fontSize:"0.68rem",fontWeight:800,color:"#0f172a"}}>☁️ Ingested Multicloud Environments</div>
-                      {[
-                        {cloud:"AWS Amazon Web Services",assets:"104 active VMs, 4 RDS instances",pct:96,c:"#ff9900",img:"/logos/aws.svg"},
-                        {cloud:"Microsoft Azure Cloud",assets:"67 active VMs, 2 SQL containers",pct:99,c:"#0078d4",img:"/logos/azure.png"},
-                      ].map((item,i)=>(
-                        <div key={i} style={{display:"flex",alignItems:"center",gap:"0.75rem",background:"#f8fafc",padding:"0.5rem",borderRadius:8,border:"1px solid #e2e8f0"}}>
-                          <div style={{flex:1}}>
-                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.65rem",fontWeight:700,color:"#0f172a"}}>
+                      <div style={{display:"flex",flexDirection:"column",gap:"0.75rem",flex:1,justifyContent:"center"}}>
+                        {[
+                          {cloud:"AWS Amazon Web Services",assets:"104 active VMs, 4 RDS instances",pct:96,c:"#ff9900"},
+                          {cloud:"Microsoft Azure Cloud",assets:"67 active VMs, 2 SQL containers",pct:99,c:"#0078d4"},
+                        ].map((item,i)=>(
+                          <div key={i} style={{background:"#f8fafc",padding:"0.65rem",borderRadius:8,border:"1px solid #e2e8f0",borderLeft:`3px solid ${item.c}`}}>
+                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.68rem",fontWeight:700,color:"#0f172a"}}>
                               <span>{item.cloud}</span>
                               <span style={{color:item.pct>95?"#16a34a":"#d97706"}}>{item.pct}% Secure</span>
                             </div>
-                            <div style={{fontSize:"0.55rem",color:"#64748b",marginTop:2}}>{item.assets}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Right Column: Network Ports & Traffic Monitor */}
-                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
-                    {/* Network Ports */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🌐 Open Port Telemetry</div>
-                      <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"0.5rem"}}>
-                        {[["Port 22 (SSH)","Blocked","#16a34a"],["Port 80 (HTTP)","Redirected","#2563eb"],["Port 443 (HTTPS)","Active","#16a34a"],["Port 3389 (RDP)","Alert Triggered","#dc2626"]].map(([p,s,c])=>(
-                          <div key={p} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,padding:"0.45rem",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-                            <span style={{fontSize:"0.58rem",fontWeight:700,color:"#0f172a"}}>{p}</span>
-                            <span style={{color:c,fontWeight:800,fontSize:"0.52rem",marginTop:4}}>{s}</span>
+                            <div style={{fontSize:"0.58rem",color:"#64748b",marginTop:4}}>{item.assets}</div>
                           </div>
                         ))}
                       </div>
                     </div>
+                  </div>
 
-                    {/* Traffic Monitor */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>📡 Global Traffic Monitor</div>
-                      <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.62rem",marginBottom:8}}>
-                        <span style={{color:"#64748b"}}>Peak: 2.4 Gbps</span>
-                        <span style={{fontWeight:700,color:"#0f172a"}}>1.8 TB Today</span>
+                  {/* Column 2: Exposed Assets */}
+                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>☁️ Cloud Storage Security</div>
+                        <div style={{fontSize:"0.62rem",fontWeight:800,color:"#dc2626",marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"3px"}}>
+                          <span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:"#dc2626",animation:"twinkle-star-glow 1s infinite"}}/>
+                          ⚠️ 3 EXPOSED STORAGE OBJECTS FOUND
+                        </div>
                       </div>
-                      <div style={{height:45,width:"100%"}}>
-                        <svg viewBox="0 0 200 60" style={{width:"100%",height:"100%"}}>
-                          <path d="M 0,50 Q 50,20 100,45 T 200,15 L 200,60 L 0,60 Z" fill="rgba(8, 145, 178, 0.1)"/>
-                          <path d="M 0,50 Q 50,20 100,45 T 200,15" fill="none" stroke="#0891b2" strokeWidth="2.5"/>
-                        </svg>
+                      <div style={{display:"flex",flexDirection:"column",gap:"0.5rem",flex:1,justifyContent:"center"}}>
+                        {["acme-financial-audit-logs","hr-employee-passports","retail-pos-backups"].map((bucket)=>(
+                          <div key={bucket} style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:"#fef2f2",border:"1px solid #fecaca",padding:"0.45rem 0.6rem",borderRadius:6}}>
+                            <span style={{fontSize:"0.58rem",fontFamily:"monospace",color:"#9f1239",fontWeight:700}}>{bucket}</span>
+                            <span style={{fontSize:"0.52rem",fontWeight:800,color:"#dc2626",background:"#fee2e2",padding:"1px 4px",borderRadius:3}}>PUBLIC</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Column 3: Network & Traffic */}
+                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      {/* Network Ports */}
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🌐 Open Port Telemetry</div>
+                        <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"0.5rem"}}>
+                          {[["Port 22 (SSH)","Blocked","#16a34a"],["Port 80 (HTTP)","Redirected","#2563eb"],["Port 443 (HTTPS)","Active","#16a34a"],["Port 3389 (RDP)","Alert Triggered","#dc2626"]].map(([p,s,c])=>(
+                            <div key={p} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,padding:"0.45rem",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                              <span style={{fontSize:"0.55rem",fontWeight:700,color:"#0f172a"}}>{p}</span>
+                              <span style={{color:c,fontWeight:800,fontSize:"0.52rem",marginTop:4}}>{s}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Traffic Monitor */}
+                      <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"0.75rem",marginTop:"0.5rem"}}>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.35rem"}}>📡 Traffic Monitor</div>
+                        <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",marginBottom:4}}>
+                          <span style={{color:"#64748b"}}>Peak: 2.4 Gbps</span>
+                          <span style={{fontWeight:700,color:"#0f172a"}}>1.8 TB Today</span>
+                        </div>
+                        <div style={{height:45,width:"100%"}}>
+                          <svg viewBox="0 0 200 60" style={{width:"100%",height:"100%"}}>
+                            <path d="M 0,50 Q 50,20 100,45 T 200,15 L 200,60 L 0,60 Z" fill="rgba(8, 145, 178, 0.1)"/>
+                            <path d="M 0,50 Q 50,20 100,45 T 200,15" fill="none" stroke="#0891b2" strokeWidth="2.5"/>
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1313,45 +1347,62 @@ export default function Page() {
               )}
 
               {monitorCategory === "Apps" && (
-                <div style={{display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:"1.25rem", padding:"1.25rem"}}>
-                  {/* Left Column: App Security */}
-                  <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",display:"flex",flexDirection:"column",gap:"0.75rem"}}>
-                    <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.25rem"}}>🔐 Application Security Cockpit</div>
-                    <div style={{display:"flex",alignItems:"center",gap:"1rem",background:"#f8fafc",padding:"0.75rem",borderRadius:8,border:"1px solid #e2e8f0"}}>
-                      <div style={{fontSize:"1.5rem",fontWeight:900,color:"#dc2626"}}>23</div>
-                      <div style={{fontSize:"0.62rem",color:"#64748b"}}>Critical Code Flaws Detected <div style={{color:"#16a34a",fontWeight:700,marginTop:2}}>22 Auto-Resolved</div></div>
-                    </div>
-                    <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
-                      <div style={{fontSize:"0.65rem",fontWeight:800,color:"#0f172a"}}>🚀 Live Scan Ticker</div>
-                      {[["api-gateway-router","SAST: Passed","#16a34a"],["auth-service-v3","DAST: 1 High Dev","#ea580c"],["payment-processor","SCA: Outdated Lib","#dc2626"]].map(([repo,status,c])=>(
-                        <div key={repo} style={{display:"flex",justifyContent:"space-between",fontSize:"0.62rem",padding:"0.3rem 0.5rem",background:"#fafafa",borderRadius:6,border:"1px solid #f1f5f9"}}>
-                          <span style={{fontWeight:700,color:"#0f172a"}}>{repo}</span>
-                          <span style={{color:c,fontWeight:600}}>{status}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Right Column: AI Risk & Server Health */}
+                <div className="monitor-grid-3col">
+                  {/* Column 1: Application Security Cockpit */}
                   <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
-                    {/* AI Risk */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🤖 Shadow AI Risk Radar</div>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🔐 App Security Cockpit</div>
+                        <div style={{display:"flex",alignItems:"center",gap:"0.75rem",background:"#fef2f2",padding:"0.65rem",borderRadius:8,border:"1px solid #fecaca",marginBottom:"0.75rem"}}>
+                          <div style={{fontSize:"1.5rem",fontWeight:900,color:"#dc2626"}}>23</div>
+                          <div style={{fontSize:"0.58rem",color:"#64748b"}}>
+                            Critical Code Flaws Detected 
+                            <div style={{color:"#16a34a",fontWeight:700,marginTop:2}}>22 Auto-Resolved</div>
+                          </div>
+                        </div>
+                      </div>
                       <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
-                        {[["ChatGPT Prompt","SSN Data Blocked","#dc2626"],["Claude Upload","Proprietary Code Warning","#ea580c"]].map(([lbl,status,c])=>(
-                          <div key={lbl} style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.62rem",padding:"0.25rem 0.4rem",background:"#fff7ed",border:"1px solid #ffedd5",borderRadius:6}}>
-                            <span style={{fontWeight:700,color:"#0f172a"}}>{lbl}</span>
-                            <span style={{color:c,fontWeight:800}}>{status}</span>
+                        <div style={{fontSize:"0.62rem",fontWeight:800,color:"#0f172a"}}>🚀 Live Scan Ticker</div>
+                        {[["api-gateway-router","SAST: Passed","#16a34a"],["auth-service-v3","DAST: 1 High Dev","#ea580c"],["payment-processor","SCA: Outdated Lib","#dc2626"]].map(([repo,status,c])=>(
+                          <div key={repo} style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",padding:"0.3rem 0.5rem",background:"#fafafa",borderRadius:6,border:"1px solid #f1f5f9"}}>
+                            <span style={{fontWeight:700,color:"#0f172a"}}>{repo}</span>
+                            <span style={{color:c,fontWeight:600}}>{status}</span>
                           </div>
                         ))}
                       </div>
                     </div>
+                  </div>
 
-                    {/* Server Health */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🖥️ Host Server Health Radar</div>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                        <div style={{display:"flex",flexDirection:"column",gap:"0.35rem"}}>
+                  {/* Column 2: Shadow AI Risks */}
+                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🤖 Shadow AI Risk Radar</div>
+                        <p style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.75rem"}}>Intercepting unauthorized enterprise AI queries.</p>
+                      </div>
+                      <div style={{display:"flex",flexDirection:"column",gap:"0.5rem",flex:1,justifyContent:"center"}}>
+                        {[["ChatGPT Prompt","SSN Data Blocked","#dc2626"],["Claude Upload","Proprietary Code Warning","#ea580c"]].map(([lbl,status,c])=>(
+                          <div key={lbl} style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.58rem",padding:"0.45rem 0.6rem",background:"#fff7ed",border:"1px solid #ffedd5",borderRadius:6}}>
+                            <div>
+                              <span style={{fontWeight:700,color:"#0f172a",display:"block"}}>{lbl}</span>
+                              <span style={{fontSize:"0.52rem",color:"#9a3412"}}>{status}</span>
+                            </div>
+                            <span style={{fontSize:"0.52rem",fontWeight:800,color:c,background:c === "#dc2626" ? "#fef2f2" : "#fff7ed",padding:"2px 6px",borderRadius:4}}>BLOCKED</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Column 3: Host Infrastructure */}
+                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.75rem"}}>🖥️ Host Server Health Radar</div>
+                        <p style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.75rem"}}>Live host utilization & agent heartbeat.</p>
+                      </div>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"0.5rem",flex:1}}>
+                        <div style={{display:"flex",flexDirection:"column",gap:"0.5rem"}}>
                           {[["CPU Load","44%","#10b981"],["Memory","68%","#eab308"]].map(([lbl,val,c])=>(
                             <div key={lbl} style={{fontSize:"0.62rem"}}>
                               <span style={{color:"#64748b"}}>{lbl}: </span>
@@ -1359,9 +1410,9 @@ export default function Page() {
                             </div>
                           ))}
                         </div>
-                        <div style={{textAlign:"center",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:10,padding:"0.5rem 0.8rem"}}>
-                          <div style={{fontSize:"1.1rem",fontWeight:900,color:"#16a34a"}}>98.9%</div>
-                          <div style={{fontSize:"0.52rem",color:"#15803d",fontWeight:700}}>Uptime</div>
+                        <div style={{textAlign:"center",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:10,padding:"0.6rem 1rem"}}>
+                          <div style={{fontSize:"1.3rem",fontWeight:900,color:"#16a34a",lineHeight:1}}>98.9%</div>
+                          <div style={{fontSize:"0.55rem",color:"#15803d",fontWeight:700,marginTop:4}}>Uptime</div>
                         </div>
                       </div>
                     </div>
@@ -1370,30 +1421,36 @@ export default function Page() {
               )}
 
               {monitorCategory === "SecOps" && (
-                <div style={{display:"grid", gridTemplateColumns:"1.2fr 1fr", gap:"1.25rem", padding:"1.25rem"}}>
-                  {/* Left Column: SOAR tickets */}
-                  <div style={{display:"flex", flexDirection:"column", gap:"1rem"}}>
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🎟️ Active Incident Queue</div>
-                      <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
+                <div className="monitor-grid-3col">
+                  {/* Column 1: Incident Queue */}
+                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🎟️ Active Incident Queue</div>
+                        <p style={{fontSize:"0.62rem",color:"#64748b",marginBottom:"0.75rem"}}>Real-time SOAR playbook response state.</p>
+                      </div>
+                      <div style={{display:"flex",flexDirection:"column",gap:"0.5rem",flex:1,justifyContent:"center"}}>
                         {[
                           {id:"PP-104",title:"Critical CVE-2024-3400 Inbound",owner:"Sarah Connor",sla:"3.2h",c:"#dc2626"},
                           {id:"PP-102",title:"High CVE-2024-21762 Bypass",owner:"Devon Vance",sla:"2.4d",c:"#ea580c"},
                         ].map((t)=>(
-                          <div key={t.id} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,padding:"0.45rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <div key={t.id} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:8,padding:"0.5rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                             <div>
-                              <div style={{fontSize:"0.65rem",fontWeight:800,color:"#0f172a"}}><span style={{color:t.c}}>{t.id}</span> | {t.title}</div>
-                              <div style={{fontSize:"0.55rem",color:"#64748b",marginTop:2}}>Assignee: {t.owner}</div>
+                              <div style={{fontSize:"0.62rem",fontWeight:800,color:"#0f172a"}}><span style={{color:t.c}}>{t.id}</span> | {t.title}</div>
+                              <div style={{fontSize:"0.52rem",color:"#64748b",marginTop:2}}>Assignee: {t.owner}</div>
                             </div>
-                            <div style={{fontSize:"0.62rem",fontWeight:800,color:t.c}}>⚡ {t.sla}</div>
+                            <div style={{fontSize:"0.58rem",fontWeight:800,color:t.c,whiteSpace:"nowrap"}}>⚡ {t.sla}</div>
                           </div>
                         ))}
                       </div>
                     </div>
+                  </div>
 
-                    <div style={{background:"#0f172a",border:"1px solid #1e293b",borderRadius:12,padding:"0.875rem",fontFamily:"monospace"}}>
-                      <div style={{fontSize:"0.55rem",color:"#818cf8",textTransform:"uppercase",letterSpacing:"0.08em",borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.3rem",marginBottom:"0.4rem"}}>📟 Orchestration Logs</div>
-                      <div style={{fontSize:"0.55rem",color:"#22c55e",lineHeight:1.4,display:"flex",flexDirection:"column",gap:"0.2rem"}}>
+                  {/* Column 2: Orchestration logs terminal */}
+                  <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
+                    <div style={{background:"#0f172a",border:"1px solid #1e293b",borderRadius:12,padding:"1rem",height:"100%",fontFamily:"monospace",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      <div style={{fontSize:"0.55rem",color:"#818cf8",textTransform:"uppercase",letterSpacing:"0.08em",borderBottom:"1px solid rgba(255,255,255,0.08)",paddingBottom:"0.4rem",marginBottom:"0.5rem"}}>📟 Orchestration Logs</div>
+                      <div style={{fontSize:"0.58rem",color:"#22c55e",lineHeight:1.5,display:"flex",flexDirection:"column",gap:"0.3rem",flex:1,justifyContent:"center"}}>
                         <div>[12:04:10] Ingesting scan telemetry...</div>
                         <div style={{color:"#eab308"}}>[12:04:15 WARN] Overdue SLA on asset "db-02".</div>
                         <div>[12:04:18] Dispatched PP-104 to Sarah C.</div>
@@ -1401,38 +1458,40 @@ export default function Page() {
                     </div>
                   </div>
 
-                  {/* Right Column: Identity & Risk Radar */}
+                  {/* Column 3: Identity & Access / Radar */}
                   <div style={{display:"flex", flexDirection:"column", gap:"1.1rem"}}>
-                    {/* Identity */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🔑 Identity & Access PreCheck</div>
-                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"0.5rem"}}>
-                        <div style={{display:"flex",flexDirection:"column",gap:"0.3rem",flex:1}}>
-                          {[["MFA Enforced","100%","#16a34a"],["Inactive Keys","4 Dead","#ea580c"]].map(([lbl,desc,c])=>(
-                            <div key={lbl} style={{display:"flex",justifyContent:"space-between",fontSize:"0.62rem"}}>
-                              <span style={{color:"#64748b"}}>{lbl}</span>
-                              <span style={{color:c,fontWeight:800}}>{desc}</span>
-                            </div>
-                          ))}
-                        </div>
-                        <div style={{textAlign:"center",background:"#faf5ff",border:"1px solid #e9d5ff",borderRadius:8,padding:"0.4rem 0.6rem"}}>
-                          <div style={{fontSize:"1.1rem",fontWeight:900,color:"#a855f7"}}>98%</div>
-                          <div style={{fontSize:"0.52rem",color:"#7e22ce"}}>SSO</div>
+                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem",height:"100%",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                      {/* Identity */}
+                      <div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🔑 Identity & Access PreCheck</div>
+                        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"0.5rem"}}>
+                          <div style={{display:"flex",flexDirection:"column",gap:"0.3rem",flex:1}}>
+                            {[["MFA Enforced","100%","#16a34a"],["Inactive Keys","4 Dead","#ea580c"]].map(([lbl,desc,c])=>(
+                              <div key={lbl} style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem"}}>
+                                <span style={{color:"#64748b"}}>{lbl}</span>
+                                <span style={{color:c,fontWeight:800}}>{desc}</span>
+                              </div>
+                            ))}
+                          </div>
+                          <div style={{textAlign:"center",background:"#faf5ff",border:"1px solid #e9d5ff",borderRadius:8,padding:"0.4rem 0.6rem"}}>
+                            <div style={{fontSize:"1.1rem",fontWeight:900,color:"#a855f7",lineHeight:1}}>98%</div>
+                            <div style={{fontSize:"0.52rem",color:"#7e22ce",marginTop:2}}>SSO</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Risk Radar */}
-                    <div style={{background:"#ffffff",border:"1px solid #e2e8f0",borderRadius:12,padding:"1rem"}}>
-                      <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.5rem"}}>🎯 Severity Risk Radar</div>
-                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                        <div style={{fontSize:"0.58rem",color:"#64748b"}}>
-                          <div>Critical focus CVE lists</div>
-                          <div style={{color:"#dc2626",fontWeight:700,marginTop:2}}>CVE-2024-3400 (Firewall)</div>
-                        </div>
-                        <div style={{background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:8,padding:"0.4rem 0.6rem",textAlign:"center"}}>
-                          <div style={{fontSize:"1.1rem",fontWeight:900,color:"#16a34a"}}>99.6%</div>
-                          <div style={{fontSize:"0.52rem",color:"#15803d"}}>Noise Cut</div>
+                      {/* Risk Radar */}
+                      <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"0.5rem",marginTop:"0.5rem"}}>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.35rem"}}>🎯 Severity Risk Radar</div>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <div style={{fontSize:"0.55rem",color:"#64748b"}}>
+                            <div>Critical focus lists</div>
+                            <div style={{color:"#dc2626",fontWeight:700,marginTop:1}}>CVE-2024-3400</div>
+                          </div>
+                          <div style={{background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:8,padding:"0.4rem 0.6rem",textAlign:"center"}}>
+                            <div style={{fontSize:"1.1rem",fontWeight:900,color:"#16a34a",lineHeight:1}}>99.6%</div>
+                            <div style={{fontSize:"0.52rem",color:"#15803d",marginTop:2}}>Noise Cut</div>
+                          </div>
                         </div>
                       </div>
                     </div>
