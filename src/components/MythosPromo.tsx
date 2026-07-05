@@ -1069,6 +1069,13 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             width: 100%;
             margin-top: 0.2rem;
           }
+          /* Ensure pricing grid is vertical on tablets and below */
+          @media (max-width: 900px) {
+            .mythos-pricing-grid {
+              grid-template-columns: 1fr !important;
+              gap: 1rem !important;
+            }
+          }
         `}</style>
 
         {/* Left Tabs Sidebar */}
@@ -2575,29 +2582,31 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                   </div>
 
                   {/* Back to Cockpit aligned bottom right */}
-                  <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "0.75rem" }}>
-                    <button
-                      onClick={() => handleManualSlideSelect(0)}
-                      style={{
-                        background: "rgba(124, 58, 237, 0.08)",
-                        border: "1px solid rgba(124, 58, 237, 0.2)",
-                        color: "#7c3aed",
-                        padding: "0.35rem 0.75rem",
-                        borderRadius: "6px",
-                        fontSize: "0.65rem",
-                        fontWeight: 700,
-                        cursor: "pointer",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "0.3rem",
-                        transition: "all 0.15s ease"
-                      }}
-                      onMouseEnter={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.15)"}
-                      onMouseLeave={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.08)"}
-                    >
-                      ← Back to {activeModule.title} Cockpit
-                    </button>
-                  </div>
+                  {initialSlide !== 3 && (
+                    <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "0.75rem" }}>
+                      <button
+                        onClick={() => handleManualSlideSelect(0)}
+                        style={{
+                          background: "rgba(124, 58, 237, 0.08)",
+                          border: "1px solid rgba(124, 58, 237, 0.2)",
+                          color: "#7c3aed",
+                          padding: "0.35rem 0.75rem",
+                          borderRadius: "6px",
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                          cursor: "pointer",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.3rem",
+                          transition: "all 0.15s ease"
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.15)"}
+                        onMouseLeave={e => e.currentTarget.style.background = "rgba(124, 58, 237, 0.08)"}
+                      >
+                        ← Back to {activeModule.title} Cockpit
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 
