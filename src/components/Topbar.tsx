@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { useClient, clients, ClientKey } from '@/context/ClientContext';
+import { useSession, signOut } from 'next-auth/react';
 
 interface TopbarProps {
   title: string;
@@ -16,7 +17,8 @@ const clientMeta: Record<ClientKey, { industry: string; icon: string; color: str
 };
 
 export default function Topbar({ title, subtitle }: TopbarProps) {
-  const { currentClient, setClient, isEnterpriseMode, setIsEnterpriseMode } = useClient();
+  const { data: session } = useSession();
+  const { currentClient, allowedClients, setClient, isEnterpriseMode, setIsEnterpriseMode } = useClient();
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredKey, setHoveredKey] = useState<ClientKey | null>(null);
   const [switching, setSwitching] = useState(false);
@@ -111,7 +113,8 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
           </div>
 
           {/* ── CLIENT SWITCHER ── */}
-          <div ref={menuRef} style={{ position: 'relative', zIndex: 1000 }}>
+          {allowedClients.length > 1 && (
+            <div ref={menuRef} style={{ position: 'relative', zIndex: 1000 }}>
 
             {/* Big visible trigger button */}
             <button
@@ -195,15 +198,16 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
                 </div>
 
                 {/* Client rows */}
-                {Object.values(clients).map((c) => {
-                  const cm = clientMeta[c.key];
-                  const isActive = c.key === currentClient.key;
-                  const isHov = hoveredKey === c.key;
+                {allowedClients.map((key) => {
+                  const c = clients[key];
+                  const cm = clientMeta[key];
+                  const isActive = key === currentClient.key;
+                  const isHov = hoveredKey === key;
                   return (
                     <div
-                      key={c.key}
-                      onClick={() => handleSwitch(c.key)}
-                      onMouseEnter={() => setHoveredKey(c.key)}
+                      key={key}
+                      onClick={() => handleSwitch(key)}
+                      onMouseEnter={() => setHoveredKey(key)}
                       onMouseLeave={() => setHoveredKey(null)}
                       style={{
                         padding: '10px 14px',
@@ -311,6 +315,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
               </div>
             )}
           </div>
+          )}
 
           {/* Last scan */}
           <div style={{
@@ -330,16 +335,28 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
                 : 'linear-gradient(135deg, #3b82f6, #0891b2)',
               transition: 'all 0.3s ease',
               boxShadow: `0 2px 8px ${meta.color}44`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
             }}
           >
-            {currentClient.avatar}
+            {session?.user?.image ? (
+              <img
+                src={session.user.image}
+                alt={session.user.name || 'User'}
+                style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+              />
+            ) : (
+              currentClient.avatar
+            )}
           </div>
 
           <button 
             className="logout-btn" 
             onClick={() => {
               sessionStorage.removeItem('posturepilot_demo_mode');
-              window.location.href = '/';
+              signOut({ callbackUrl: '/' });
             }}
           >
             Sign out

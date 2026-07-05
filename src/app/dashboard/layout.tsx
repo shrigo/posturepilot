@@ -4,75 +4,76 @@ import { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
 import { ClientProvider, useClient } from '@/context/ClientContext';
+import { useSession } from 'next-auth/react';
 import MythosPromo from '@/components/MythosPromo';
 
 const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
   '/dashboard': {
-    title: '🏢 Main Terminal',
+    title: 'Command Center',
     subtitle: 'All Dashboards · Acme Financial Corp',
   },
   '/dashboard/posture': {
-    title: '🛡️ Posture Clearance',
+    title: 'Security Posture',
     subtitle: 'Overall risk score, threat level & threat intelligence feed',
   },
   '/dashboard/cloud': {
-    title: '☁️ Cloud Altitude',
+    title: 'Cloud Security',
     subtitle: 'Misconfigurations, IAM risk & storage exposure across cloud assets',
   },
   '/dashboard/network': {
-    title: '🌐 Network Runway',
+    title: 'Network Security',
     subtitle: 'Firewall events, IDS alerts, blocked IPs & VPN sessions',
   },
   '/dashboard/infosec': {
-    title: '📋 Compliance Checkpoint',
+    title: 'Compliance Center',
     subtitle: 'Policy violations, access control audits & data classification',
   },
   '/dashboard/kpi': {
-    title: '📊 Flight Telemetry (KPIs)',
+    title: 'KPI Metrics',
     subtitle: 'MTTA, MTTR, Patch SLA compliance & team performance',
   },
   '/dashboard/appsec': {
-    title: '🔐 App Security Check',
+    title: 'AppSec',
     subtitle: 'OWASP findings, SAST/DAST results & dependency vulnerabilities',
   },
   '/dashboard/traffic': {
-    title: '🎛️ Traffic Control',
+    title: 'Traffic & Threats',
     subtitle: 'Network traffic analysis, anomaly detection & bandwidth usage',
   },
   '/dashboard/server': {
-    title: '🖥️ Fleet Health',
+    title: 'Server Health',
     subtitle: 'Patch status, EDR coverage & endpoint health monitoring',
   },
   '/dashboard/ai-risk': {
-    title: '🤖 AI Risk',
+    title: 'AI Risk',
     subtitle: 'Shadow AI detection, model vulnerabilities & data exposure risks',
   },
   '/dashboard/ciso': {
-    title: '👨‍✈️ CISO Executive Cockpit',
+    title: 'CISO Cockpit',
     subtitle: 'Combined multi-tenant executive reporting and customizable security telemetry cockpit',
   },
   '/dashboard/findings': {
-    title: '🔍 Customs Check',
+    title: 'Findings',
     subtitle: 'All parsed CVEs & vulnerabilities from uploaded scans',
   },
   '/dashboard/upload': {
-    title: '📤 Scan Check-In',
+    title: 'Upload Scans',
     subtitle: 'Import findings from Qualys, Tenable, Nessus or CSV — results go live instantly',
   },
   '/dashboard/settings': {
-    title: '⚙️ Self-Service Kiosk',
+    title: 'Settings',
     subtitle: 'Tenant configuration, API keys & integrations',
   },
   '/dashboard/secure': {
-    title: '📡 Risk Radar',
+    title: 'Risk Radar',
     subtitle: 'Vulnerability Triage & Prioritized Exposure Engine',
   },
   '/dashboard/identity': {
-    title: '🔑 Identity PreCheck',
+    title: 'Identity & Access',
     subtitle: 'SSO directory auditing, privilege drift scanning & Zero-Trust MFA',
   },
   '/dashboard/dispatch': {
-    title: '🚨 Dispatch Center',
+    title: 'Incident Response',
     subtitle: 'SOAR automated routing, Jira & ServiceNow ticketing integrations & active owner gates',
   },
 };
@@ -92,13 +93,26 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   const [showPromoModal, setShowPromoModal] = useState(false);
 
   // Check demo mode initial state
+  const { status } = useSession();
+
   useEffect(() => {
+    // Wait for session to finish loading before deciding
+    if (status === 'loading') return;
+
+    // If the user is authenticated, ensure demo mode is disabled so they have full access.
+    if (status === 'authenticated') {
+      setIsDemoMode(false);
+      setShowLockModal(false);
+      sessionStorage.removeItem('posturepilot_demo_mode');
+      return;
+    }
+
     const params = new URLSearchParams(window.location.search);
     if (params.get('demo') === 'true' || sessionStorage.getItem('posturepilot_demo_mode') === 'true') {
       setIsDemoMode(true);
       sessionStorage.setItem('posturepilot_demo_mode', 'true');
     }
-  }, []);
+  }, [status]);
 
   // Scroll to top whenever the route changes (window is the actual scroll host, but content-scroll-container may also scroll)
   useEffect(() => {
@@ -191,7 +205,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
               Demo Workspace Locked
             </h3>
             <p style={{ fontSize: "0.88rem", color: "#64748b", lineHeight: 1.5, margin: "0 0 2rem 0" }}>
-              You are currently viewing the live command center in **Read-Only Demo Mode**. To explore other panels, configure integrations, or configure custom SLA gates, upgrade to a professional cockpit plan.
+              You are currently viewing the live command center in <strong>Read-Only Demo Mode</strong>. To explore other panels, configure integrations, or configure custom SLA gates, upgrade to a professional cockpit plan.
             </p>
             
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>

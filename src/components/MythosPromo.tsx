@@ -798,18 +798,34 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             gap: 1.2rem;
           }
           .mythos-feature-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            padding: 0.8rem;
             display: flex;
             align-items: flex-start;
-            gap: 0.65rem;
-            transition: all 0.2s ease;
+            gap: 0.75rem;
+            transition: all 0.22s ease-in-out;
           }
-          .mythos-feature-item:hover {
-            border-color: #cbd5e1;
-            background: #f1f5f9;
+          .mythos-feature-item.purple-theme {
+            background: linear-gradient(135deg, #f5f3ff, #ffffff);
+            border: 1px solid #ddd6fe;
+            box-shadow: 0 4px 10px -2px rgba(124,58,237,0.1);
+          }
+          .mythos-feature-item.purple-theme:hover {
+            background: linear-gradient(135deg, #ede9fe, #ffffff);
+            border-color: #c4b5fd;
+            box-shadow: 0 6px 14px -2px rgba(124,58,237,0.15);
+            transform: translateY(-1.5px);
+          }
+          .mythos-feature-item.green-theme {
+            background: linear-gradient(135deg, #ecfdf5, #ffffff);
+            border: 1px solid #a7f3d0;
+            box-shadow: 0 4px 10px -2px rgba(16,185,129,0.1);
+          }
+          .mythos-feature-item.green-theme:hover {
+            background: linear-gradient(135deg, #d1fae5, #ffffff);
+            border-color: #6ee7b7;
+            box-shadow: 0 6px 14px -2px rgba(16,185,129,0.15);
+            transform: translateY(-1.5px);
           }
           .mythos-metric-grid {
             display: grid;
@@ -1022,6 +1038,15 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
             .mythos-terminal {
               height: 180px;
             }
+            .mythos-sidebar.mythos-pricing-mode {
+              display: none !important;
+            }
+            .mythos-pricing-grid {
+              grid-template-columns: 1fr;
+            }
+            .mythos-split-grid {
+              flex-direction: column;
+            }
             .mythos-metric-grid {
               grid-template-columns: repeat(2, 1fr);
               gap: 0.75rem;
@@ -1035,10 +1060,19 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
               display: none;
             }
           }
+          
+          /* Global class for pricing grid outside media query */
+          .mythos-pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            width: 100%;
+            margin-top: 0.2rem;
+          }
         `}</style>
 
         {/* Left Tabs Sidebar */}
-        <div className="mythos-sidebar">
+        <div className={`mythos-sidebar ${activeSlide === 3 ? 'mythos-pricing-mode' : ''}`}>
           {/* Logo at top */}
           <div className="mythos-sidebar-logo">
             <img 
@@ -1911,20 +1945,22 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     </div>
                     
                     {/* Right Features List */}
-                    <div className="mythos-split-right">
+                    <div className="mythos-split-right" style={{ height: "390px", justifyContent: "flex-start" }}>
                       <div style={{ display: "flex", flexDirection: "column" }}>
                         <div style={{ fontSize: "0.66rem", fontWeight: 800, color: "#7c3aed", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.5rem" }}>
                           CORE CAPABILITIES
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
                         {activeModule.coreFeatures.map((feat, idx) => (
-                          <div className="mythos-feature-item" key={idx}>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
+                          <div className="mythos-feature-item purple-theme" key={idx}>
+                            <div style={{ background: "#7c3aed", borderRadius: "50%", padding: "4px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            </div>
                             <div>
-                              <div style={{ fontSize: "0.75rem", fontWeight: 800, color: "#0f172a" }}>{feat.name}</div>
-                              <div style={{ fontSize: "0.65rem", color: "#64748b", marginTop: "0.02rem", lineHeight: 1.2 }}>{feat.desc}</div>
+                              <div style={{ fontSize: "0.95rem", fontWeight: 900, color: "#0f172a" }}>{feat.name}</div>
+                              <div style={{ fontSize: "0.8rem", color: "#475569", marginTop: "0.15rem", lineHeight: 1.4 }}>{feat.desc}</div>
                             </div>
                           </div>
                         ))}
@@ -2356,23 +2392,14 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     </div>
 
                     {/* Right Features Checklist */}
-                    <div className="mythos-split-right">
+                    <div className="mythos-split-right" style={{ height: "390px", justifyContent: "space-between" }}>
                       <div style={{ display: "flex", flexDirection: "column" }}>
                         <div style={{ fontSize: "0.66rem", fontWeight: 800, color: "#10b981", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: "0.5rem" }}>
                           ENTERPRISE CAPABILITIES
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
                         {activeModule.enterpriseFeatures.map((feat, idx) => (
-                          <div className="mythos-feature-item" key={idx} style={{ 
-                            background: "linear-gradient(135deg, #ecfdf5, #ffffff)", 
-                            border: "1px solid #a7f3d0",
-                            borderRadius: "10px",
-                            padding: "0.8rem",
-                            boxShadow: "0 4px 10px -2px rgba(16,185,129,0.1)",
-                            display: "flex",
-                            alignItems: "flex-start",
-                            gap: "0.75rem"
-                          }}>
+                          <div className="mythos-feature-item green-theme" key={idx}>
                             <div style={{ background: "#10b981", borderRadius: "50%", padding: "4px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="20 6 9 17 4 12" />
@@ -2388,24 +2415,57 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                     </div>
 
                       {/* CTA Upgrade Banner */}
-                      <div style={{ padding: "0.5rem 0.75rem", background: "rgba(124, 58, 237, 0.06)", border: "1px solid rgba(124, 58, 237, 0.15)", borderRadius: "8px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.5rem" }}>
-                          <div>
-                            <div style={{ fontSize: "0.58rem", fontWeight: 800, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.05em" }}>UPGRADE TO ACCESS</div>
-                            <div style={{ fontSize: "0.65rem", color: "#475569", marginTop: "0.01rem" }}>Unlock complete ROC features.</div>
+                      <div style={{ 
+                        padding: "0.75rem 1rem", 
+                        background: "linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(79, 70, 229, 0.04) 100%)", 
+                        border: "1px solid rgba(124, 58, 237, 0.25)", 
+                        borderRadius: "12px",
+                        boxShadow: "0 8px 24px -6px rgba(124, 58, 237, 0.12), inset 0 1px 0 0 rgba(255, 255, 255, 0.6)",
+                        backdropFilter: "blur(4px)",
+                        transition: "all 0.3s ease"
+                      }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.75rem" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                            <div style={{ 
+                              background: "linear-gradient(135deg, #7c3aed, #4f46e5)",
+                              borderRadius: "30%",
+                              padding: "6px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "#ffffff",
+                              boxShadow: "0 4px 12px rgba(124, 58, 237, 0.25)",
+                              fontSize: "0.8rem",
+                              fontWeight: 900
+                            }}>
+                              🔐
+                            </div>
+                            <div>
+                              <div style={{ fontSize: "0.65rem", fontWeight: 900, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.08em" }}>UPGRADE TO ACCESS</div>
+                              <div style={{ fontSize: "0.75rem", color: "#475569", marginTop: "0.05rem", fontWeight: 600 }}>Unlock Full Autonomous Security Playbooks & More</div>
+                            </div>
                           </div>
                           <button 
                             style={{ 
                               background: "linear-gradient(135deg, #7c3aed, #4f46e5)", 
                               border: "none", 
                               color: "#fff", 
-                              padding: "0.25rem 0.5rem", 
-                              borderRadius: "6px", 
-                              fontSize: "0.65rem", 
-                              fontWeight: 700, 
+                              padding: "0.45rem 1rem", 
+                              borderRadius: "8px", 
+                              fontSize: "0.7rem", 
+                              fontWeight: 800, 
                               cursor: "pointer", 
-                              boxShadow: "0 2px 6px rgba(124, 58, 237, 0.2)"
+                              boxShadow: "0 4px 12px rgba(124, 58, 237, 0.3)",
+                              transition: "all 0.2s ease"
                             }} 
+                            onMouseEnter={e => {
+                              e.currentTarget.style.transform = "translateY(-1px)";
+                              e.currentTarget.style.boxShadow = "0 6px 16px rgba(124, 58, 237, 0.4)";
+                            }}
+                            onMouseLeave={e => {
+                              e.currentTarget.style.transform = "translateY(0)";
+                              e.currentTarget.style.boxShadow = "0 4px 12px rgba(124, 58, 237, 0.3)";
+                            }}
                             onClick={() => handleManualSlideSelect(3)}
                           >
                             Upgrade
@@ -2432,7 +2492,7 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
                   </div>
 
                   {/* Pricing Cards Grid */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem", width: "100%", marginTop: "0.2rem" }}>
+                  <div className="mythos-pricing-grid">
                     {[
                       {
                         name: "Starter",

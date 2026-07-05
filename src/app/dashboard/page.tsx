@@ -163,7 +163,8 @@ export default function OverviewPage() {
       ]);
       setIsMitigating(false);
       setIsUnderAttack(false);
-      setSimulatedScore(currentClient.key === 'UR' ? 98 : 95); // climbs to fully secured state
+      // Restore to baseline + small improvement bonus (max +5), not above-baseline
+      setSimulatedScore(currentClient.key === 'UR' ? 82 : 79); // realistic: incident resolved, minor gains
     }, 2000);
   };
 
@@ -174,7 +175,7 @@ export default function OverviewPage() {
   const activePostScore = isUnderAttack 
     ? 42 
     : Math.max(30, Math.min(100, simulatedScore - Math.round(slaBreachPenalty)));
-  const activeGrade = activePostScore > 85 ? 'A' : activePostScore > 70 ? 'C+' : 'D-';
+  const activeGrade = activePostScore > 85 ? 'A' : activePostScore > 75 ? 'B' : activePostScore > 65 ? 'C+' : 'D-';
   
   const mttrSpeed = isUnderAttack 
     ? (isMitigating ? '12.4 hrs (Mitigating)' : '48.5 hrs (Delayed)')
@@ -339,8 +340,8 @@ export default function OverviewPage() {
     },
     { 
       href: '/dashboard/dispatch', 
-      icon: '📨', 
-      label: 'Dispatch & SOAR', 
+      icon: '🚨', 
+      label: 'Dispatch Center', 
       color: '#0f766e', 
       stat: isUnderAttack ? '9 tickets breached' : '4 open tickets', 
       sub: isUnderAttack ? 'SLA breach — escalating' : 'Jira · ServiceNow sync', 

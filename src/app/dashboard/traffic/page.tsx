@@ -62,7 +62,7 @@ const regionsData = [
   { key: 'Russia', flag: '🇷🇺', name: 'Russia & CIS Subnets', threat: 'Tor nodes & credential brute-force', cvss: 9.0 },
   { key: 'China', flag: '🇨🇳', name: 'China Telecom Edge', threat: 'IDS sweeps & IoT exploit attempts', cvss: 8.8 },
   { key: 'Netherlands', flag: '🇳🇱', name: 'Netherlands VPS Pools', threat: 'Malware server relays', cvss: 7.8 },
-  { key: 'Germany', flag: '🇩🇪', name: 'Germany Hosting Nodes', threat: 'Port scanners & scanners', cvss: 7.2 }
+  { key: 'Germany', flag: '🇩🇪', name: 'Germany Hosting Nodes', threat: 'Port scanners & network enumeration bots', cvss: 7.2 }
 ];
 
 export default function TrafficPage() {

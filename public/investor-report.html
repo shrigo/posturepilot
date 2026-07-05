@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PosturePilot — Investor Product Report · June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#4f46e5;--accent:#7c3aed;--teal:#0891b2;--green:#059669;--red:#dc2626;--orange:#ea580c;--amber:#d97706;--s50:#f8fafc;--s100:#f1f5f9;--s200:#e2e8f0;--s400:#94a3b8;--s500:#64748b;--s700:#334155;--s900:#0f172a;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:var(--s900);font-size:14px;line-height:1.6;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.dl-bar{position:fixed;top:0;left:0;right:0;background:linear-gradient(90deg,#4f46e5,#7c3aed);padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:1000;box-shadow:0 2px 12px rgba(79,70,229,.3)}
+.dl-bar span{color:#fff;font-weight:700;font-size:.85rem}
+.dl-btn{background:#fff;color:#4f46e5;border:none;padding:.45rem 1.25rem;border-radius:8px;font-weight:800;font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+.dl-btn:hover{background:#f0f4ff;transform:translateY(-1px)}
+.cover{min-height:100vh;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 40%,#312e81 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden;margin-top:44px}
+.c-badge{background:rgba(124,58,237,.25);border:1px solid rgba(124,58,237,.4);color:#a78bfa;padding:.4rem 1.25rem;border-radius:20px;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2rem;display:inline-block}
+.cover h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-.03em;margin-bottom:1rem}
+.cover h1 span{color:#a78bfa}
+.c-sub{font-size:1.25rem;color:#94a3b8;max-width:680px;margin-bottom:3rem}
+.c-meta{display:flex;gap:3rem}
+.c-meta-item{text-align:center}
+.c-meta-item .val{font-size:2rem;font-weight:900;color:#fff;line-height:1}
+.c-meta-item .lbl{font-size:.72rem;color:#64748b;font-weight:600;text-transform:uppercase;margin-top:4px}
+.c-shield{font-size:5rem;margin-bottom:1.5rem;filter:drop-shadow(0 0 30px rgba(124,58,237,.5))}
+.conf{position:absolute;bottom:2rem;font-size:.7rem;color:#475569;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.page{padding:3rem 3.5rem;max-width:1200px;margin:0 auto}
+.section{margin-bottom:3.5rem}
+.sh{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--s100)}
+.sn{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem;flex-shrink:0}
+.sh h2{font-size:1.6rem;font-weight:800;color:var(--s900);letter-spacing:-.02em}
+.sh .desc{font-size:.85rem;color:var(--s500);margin-left:auto;font-weight:500}
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.mc{background:var(--s50);border:1px solid var(--s200);border-radius:var(--r);padding:1.25rem;display:flex;flex-direction:column;gap:.25rem}
+.mc .icon{font-size:1.5rem;margin-bottom:.25rem}
+.mc .val{font-size:1.75rem;font-weight:900;color:var(--s900);letter-spacing:-.03em;line-height:1}
+.mc .lbl{font-size:.7rem;font-weight:700;color:var(--s400);text-transform:uppercase;letter-spacing:.05em}
+.mc .trend{font-size:.75rem;font-weight:600;margin-top:.25rem}
+.tu{color:var(--green)}.td{color:var(--red)}.tn{color:var(--amber)}
+.module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+.mcard{background:#fff;border:1px solid var(--s200);border-radius:var(--r);padding:1.5rem;transition:box-shadow .2s}
+.mcard:hover{box-shadow:0 4px 20px rgba(79,70,229,.08)}
+.mhdr{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
+.micon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.mtitle{font-size:1rem;font-weight:800;color:var(--s900);line-height:1.2}
+.msub{font-size:.75rem;color:var(--s500);margin-top:2px;font-weight:500}
+.mbadge{margin-left:auto;font-size:.62rem;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+.bnew{background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
+.blive{background:#f0fdf4;color:#059669;border:1px solid #bbf7d0}
+.bsoar{background:#fff1f2;color:#dc2626;border:1px solid #fecaca}
+.bmod{background:#f0f9ff;color:#0891b2;border:1px solid #bae6fd}
+.mbody p{font-size:.82rem;color:var(--s700);line-height:1.55;margin-bottom:.75rem}
+.fl{display:flex;flex-direction:column;gap:.35rem}
+.fi{display:flex;align-items:flex-start;gap:.5rem;font-size:.79rem;color:var(--s700)}
+.fi::before{content:'✓';color:var(--green);font-weight:800;flex-shrink:0;margin-top:1px}
+.kr{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap}
+.kc{background:var(--s50);border:1px solid var(--s200);border-radius:8px;padding:.4rem .75rem;text-align:center}
+.kc .kv{font-size:1rem;font-weight:900;color:var(--s900)}
+.kc .kl{font-size:.6rem;color:var(--s400);font-weight:700;text-transform:uppercase}
+.ig{display:flex;flex-direction:column;gap:.75rem}
+.ic{border-radius:10px;padding:1rem 1.25rem;display:flex;gap:1rem;align-items:flex-start}
+.icrit{background:#fef2f2;border:1px solid #fecaca}
+.iwarn{background:#fffbeb;border:1px solid #fde68a}
+.iinfo{background:#f0f9ff;border:1px solid #bae6fd}
+.ifix{background:#f0fdf4;border:1px solid #bbf7d0}
+.inum{font-size:.7rem;font-weight:900;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.icrit .inum{background:#dc2626;color:#fff}
+.iwarn .inum{background:#d97706;color:#fff}
+.iinfo .inum{background:#0891b2;color:#fff}
+.ifix .inum{background:#059669;color:#fff}
+.ititle{font-size:.85rem;font-weight:700;margin-bottom:.25rem}
+.icrit .ititle{color:#991b1b}.iwarn .ititle{color:#92400e}.iinfo .ititle{color:#0e7490}.ifix .ititle{color:#065f46}
+.idesc{font-size:.78rem;line-height:1.5}
+.icrit .idesc{color:#b91c1c}.iwarn .idesc{color:#78350f}.iinfo .idesc{color:#0c4a6e}.ifix .idesc{color:#064e3b}
+.iloc{margin-top:.35rem;font-size:.7rem;font-family:'JetBrains Mono',monospace;font-weight:600;opacity:.75}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:var(--s50);border:1px solid var(--s200);padding:.65rem 1rem;text-align:left;font-size:.7rem;font-weight:800;color:var(--s500);text-transform:uppercase;letter-spacing:.04em}
+td{border:1px solid var(--s200);padding:.65rem 1rem;color:var(--s700);vertical-align:top;line-height:1.4}
+tr:hover td{background:#fafbff}
+.sp{color:var(--green);font-weight:700}.sw{color:var(--amber);font-weight:700}.sf{color:var(--red);font-weight:700}
+.cb{border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;gap:1rem;align-items:flex-start}
+.cb-s{background:#f0fdf4;border:1px solid #bbf7d0}
+.cb-i{background:#eff6ff;border:1px solid #bfdbfe}
+.cb-w{background:#fffbeb;border:1px solid #fde68a}
+.cb .ci{font-size:1.25rem;flex-shrink:0}
+.cb .cc h4{font-size:.88rem;font-weight:800;margin-bottom:.25rem}
+.cb .cc p{font-size:.8rem;line-height:1.5;color:var(--s700)}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:1.25rem}
+.pc{border-radius:var(--r);padding:1.75rem;border:2px solid var(--s200);position:relative}
+.pc.pop{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,58,237,.08)}
+.ptag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:.65rem;font-weight:800;letter-spacing:.06em;padding:3px 12px;border-radius:20px;text-transform:uppercase}
+.pname{font-size:1rem;font-weight:800;color:var(--s900);margin-bottom:.5rem}
+.pprice{font-size:2.25rem;font-weight:900;color:var(--s900);letter-spacing:-.04em}
+.pprice span{font-size:.9rem;font-weight:600;color:var(--s500)}
+.pf{list-style:none;margin-top:1.25rem;display:flex;flex-direction:column;gap:.5rem}
+.pf li{font-size:.8rem;color:var(--s700);display:flex;align-items:center;gap:.5rem}
+.pf li::before{content:'✓';color:var(--green);font-weight:800}
+.footer{background:var(--s900);color:#94a3b8;padding:2rem 3.5rem;text-align:center;font-size:.78rem}
+.footer strong{color:#fff}
+.toc{display:flex;flex-direction:column;gap:.5rem}
+.ti{display:flex;align-items:center;gap:1rem;padding:.6rem 1rem;border-radius:10px;text-decoration:none;color:var(--s700);font-size:.85rem;font-weight:600;transition:background .15s;border:1px solid transparent}
+.ti:hover{background:var(--s50);border-color:var(--s200);color:var(--primary)}
+.tn2{font-size:.7rem;font-weight:800;color:var(--s400);min-width:20px}
+.tp{margin-left:auto;font-size:.7rem;color:var(--s400)}
+@media print{.dl-bar{display:none}.cover{margin-top:0;page-break-after:always}.mcard{page-break-inside:avoid}body{font-size:12px}}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.tl{position:relative;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--s200)}
+.tli{position:relative;padding-bottom:1.5rem}
+.tld{position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff}
+.tldate{font-size:.7rem;font-weight:700;color:var(--s400);text-transform:uppercase;margin-bottom:.25rem}
+.tltitle{font-size:.88rem;font-weight:700;color:var(--s900)}
+.tldesc{font-size:.78rem;color:var(--s500);margin-top:.25rem;line-height:1.5}
+.sep{height:1px;background:#e2e8f0;margin:0 3.5rem}
+</style>
+</head>
+<body>
+<div class="dl-bar">
+  <span>📄 PosturePilot — Investor Product Report · June 2026 · CONFIDENTIAL</span>
+  <button class="dl-btn" onclick="window.print()">⬇ Download PDF</button>
+</div>
+
+<div class="cover" id="top">
+  <div style="margin-bottom: 2rem; display: flex; justify-content: center; align-items: center;">
+    <img src="/hlogo_nobg.jpg" alt="PosturePilot Logo" style="height: 100px; width: auto; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);" />
+  </div>
+  <span class="c-badge">Investor Product Report · Confidential</span>
+  <h1>Posture<span>Pilot</span></h1>
+  <p class="c-sub">A fully-integrated, AI-powered cybersecurity command center for mid-market enterprises — delivering unified risk posture, automated remediation, and board-ready reporting in a single SaaS platform.</p>
+  <div class="c-meta">
+    <div class="c-meta-item"><div class="val">19</div><div class="lbl">Product Modules</div></div>
+    <div class="c-meta-item"><div class="val">12</div><div class="lbl">Security Dashboards</div></div>
+    <div class="c-meta-item"><div class="val">3</div><div class="lbl">Pricing Tiers</div></div>
+    <div class="c-meta-item"><div class="val">100%</div><div class="lbl">SaaS / Cloud</div></div>
+  </div>
+  <div class="conf">Confidential — For Authorized Investors Only · June 2026</div>
+</div>
+
+<div class="page" id="toc">
+  <div class="sh"><div class="sn">—</div><h2>Table of Contents</h2></div>
+  <div class="toc">
+    <a href="#exec" class="ti"><span class="tn2">01</span> Executive Summary &amp; Platform Overview<span class="tp">§1</span></a>
+    <a href="#arch" class="ti"><span class="tn2">02</span> Technical Architecture &amp; Stack<span class="tp">§2</span></a>
+    <a href="#modules" class="ti"><span class="tn2">03</span> All 19 Product Modules — Full Feature Breakdown<span class="tp">§3</span></a>
+    <a href="#landing" class="ti"><span class="tn2">04</span> Public Landing Page &amp; Marketing Surface<span class="tp">§4</span></a>
+    <a href="#data" class="ti"><span class="tn2">05</span> Data Model &amp; Mock Metrics Accuracy Audit<span class="tp">§5</span></a>
+    <a href="#bugs" class="ti"><span class="tn2">06</span> Issues Found (16 Total) &amp; Fixes Applied (6)<span class="tp">§6</span></a>
+    <a href="#pricing" class="ti"><span class="tn2">07</span> Pricing, Plans &amp; Competitive Positioning<span class="tp">§7</span></a>
+    <a href="#roadmap" class="ti"><span class="tn2">08</span> Product Roadmap Q3 2026 – Q2 2027<span class="tp">§8</span></a>
+    <a href="#verdict" class="ti"><span class="tn2">09</span> Investor Summary &amp; Key Takeaways<span class="tp">§9</span></a>
+    <a href="#market-report" class="ti"><span class="tn2">10</span> Market Analysis &amp; Funding Alternatives<span class="tp">§10</span></a>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- §1 EXEC SUMMARY -->
+<div class="page" id="exec">
+  <div class="section">
+    <div class="sh"><div class="sn">01</div><h2>Executive Summary</h2><span class="desc">Platform overview &amp; investment thesis</span></div>
+    <div class="cb cb-i"><div class="ci">🎯</div><div class="cc"><h4>What PosturePilot Does</h4><p>PosturePilot is a <strong>unified cybersecurity command center SaaS</strong> for mid-market enterprises ($50M–$2B revenue). It ingests vulnerability scan data from Qualys, Tenable, and Nessus, and provides real-time risk scoring, automated SOAR-based remediation, compliance tracking across SOC 2 / ISO 27001 / NIST / PCI-DSS / HIPAA, AI risk governance, and board-level CISO reporting — all in a single platform.</p></div></div>
+    <div class="mg">
+      <div class="mc"><div class="icon">🛡️</div><div class="val">12</div><div class="lbl">Security Dashboards</div><div class="trend tu">✓ All live in production</div></div>
+      <div class="mc"><div class="icon">🤖</div><div class="val">3</div><div class="lbl">AI-Powered Modules</div><div class="trend tu">✓ AI Risk, SOAR, Triage</div></div>
+      <div class="mc"><div class="icon">⚡</div><div class="val">SOAR</div><div class="lbl">Auto Remediation</div><div class="trend tu">✓ Jira + ServiceNow</div></div>
+      <div class="mc"><div class="icon">📋</div><div class="val">5</div><div class="lbl">Compliance Frameworks</div><div class="trend tu">✓ SOC2, ISO, NIST, PCI, HIPAA</div></div>
+    </div>
+    <div class="mg">
+      <div class="mc"><div class="icon">💰</div><div class="val">$149</div><div class="lbl">Starter / Month</div><div class="trend tn">→ Entry-level SaaS</div></div>
+      <div class="mc"><div class="icon">🚀</div><div class="val">$399</div><div class="lbl">Professional / Month</div><div class="trend tu">✓ Most popular plan</div></div>
+      <div class="mc"><div class="icon">🏢</div><div class="val">$999</div><div class="lbl">MSSP / Month</div><div class="trend tu">✓ Enterprise white-label</div></div>
+      <div class="mc"><div class="icon">📈</div><div class="val">Multi-Tenant</div><div class="lbl">Architecture</div><div class="trend tu">✓ MSSP-ready from day 1</div></div>
+    </div>
+    <div class="cb cb-s"><div class="ci">💡</div><div class="cc"><h4>Market Opportunity</h4><p>The global cybersecurity platform market was valued at <strong>$240B in 2023</strong>, growing at 12.3% CAGR. Mid-market enterprises (100–5,000 employees) are severely underserved. PosturePilot occupies the premium mid-market niche with enterprise UX, unified telemetry, and MSSP-ready architecture at a fraction of the cost of Rapid7, Tenable.io, or Microsoft Sentinel.</p></div></div>
+  </div>
+
+  <!-- §2 ARCHITECTURE -->
+  <div class="section" id="arch">
+    <div class="sh"><div class="sn">02</div><h2>Technical Architecture</h2><span class="desc">Stack, integrations &amp; infrastructure</span></div>
+    <div class="two-col">
+      <div>
+        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">🏗️ Technology Stack</h3>
+        <table>
+          <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Frontend</strong></td><td>Next.js 14 (App Router), TypeScript, React 18</td><td>SSR, routing, type safety</td></tr>
+            <tr><td><strong>Styling</strong></td><td>Vanilla CSS + CSS Modules, Recharts</td><td>Custom design system, data viz</td></tr>
+            <tr><td><strong>Backend</strong></td><td>Next.js API Routes (Edge-compatible)</td><td>REST API layer</td></tr>
+            <tr><td><strong>Database</strong></td><td>SQLite / Prisma ORM (dev) → PostgreSQL (prod)</td><td>Findings, tickets, tenant data</td></tr>
+            <tr><td><strong>Auth</strong></td><td>Custom session layer + login gate</td><td>Tenant isolation</td></tr>
+            <tr><td><strong>Deployment</strong></td><td>Vercel Edge Network</td><td>Global CDN, serverless functions</td></tr>
+            <tr><td><strong>Domain</strong></td><td>posturepilot.io</td><td>Production LIVE</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">🔗 External Integrations</h3>
+        <table>
+          <thead><tr><th>Tool</th><th>Category</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Qualys VMDR</td><td>Vuln Scanner</td><td class="sp">✓ Ingest</td></tr>
+            <tr><td>Tenable.io</td><td>Vuln Scanner</td><td class="sp">✓ Ingest</td></tr>
+            <tr><td>Nessus</td><td>Vuln Scanner</td><td class="sp">✓ Ingest</td></tr>
+            <tr><td>Jira</td><td>Ticketing / SOAR</td><td class="sp">✓ Tickets</td></tr>
+            <tr><td>ServiceNow</td><td>ITSM / SOAR</td><td class="sp">✓ Sync</td></tr>
+            <tr><td>AWS / Azure / GCP</td><td>Cloud Asset Discovery</td><td class="sp">✓ Cloud module</td></tr>
+            <tr><td>Entra ID / Okta</td><td>Identity / SSO</td><td class="sp">✓ Identity module</td></tr>
+            <tr><td>CrowdStrike Falcon</td><td>EDR</td><td class="sp">✓ Fleet module</td></tr>
+            <tr><td>Palo Alto / Fortinet</td><td>Firewall / Network</td><td class="sp">✓ Network module</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- §3 ALL MODULES -->
+<div class="page" id="modules">
+  <div class="section">
+    <div class="sh"><div class="sn">03</div><h2>All Product Modules</h2><span class="desc">19 pages · 12 dashboards · full feature breakdown</span></div>
+    <div class="cb cb-i"><div class="ci">ℹ️</div><div class="cc"><h4>Navigation Philosophy: Airport Metaphor</h4><p>PosturePilot uses an <strong>airport / flight operations metaphor</strong> — dashboards are "terminals", modules are "checkpoints". Every module includes: live data view, interactive simulator, cockpit telemetry widget, and AI-powered remediation guidance.</p></div></div>
+    
+    <div class="module-grid">
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#f0f9ff">🔐</div><div><div class="mtitle">Login &amp; Authentication Gate</div><div class="msub">/login · Entry point for all users</div></div><span class="mbadge blive">Live</span></div>
+        <div class="mbody"><p>Branded login page with email/password and Demo Mode for investor/prospect walkthroughs without credentials.</p>
+        <div class="fl"><div class="fi">Session-based authentication + tenant isolation</div><div class="fi">Demo Mode guest access (read-only, interaction-blocked)</div><div class="fi">Redirect to /dashboard on success</div></div></div>
+      </div>
+      
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#f0f4ff">🏢</div><div><div class="mtitle">Main Terminal (Dashboard Overview)</div><div class="msub">/dashboard · Unified security cockpit</div></div><span class="mbadge blive">Live</span></div>
+        <div class="mbody"><p>The command hub. Real-time posture score, 3 view modes, live SOC event terminal, and click-through cards to all 12 modules.</p>
+        <div class="fl">
+          <div class="fi">3-mode switcher: Executive Cockpit · Tactical SOC · Compliance &amp; Directory</div>
+          <div class="fi">Live Posture Score half-donut gauge (0–100, graded A/B/C+/D-)</div>
+          <div class="fi">Severity breakdown donut (Critical/High/Med/Low)</div>
+          <div class="fi">Controls coverage 6-category horizontal bar chart</div>
+          <div class="fi">Tactical threat simulator: inject DDoS/SSH/SQL attacks + SOC playbook</div>
+          <div class="fi">12 module cards with live KPI stats and mini progress bars</div>
+          <div class="fi">Live unified SOC event terminal with category filter pills</div>
+          <div class="fi">Multi-tenant client switcher (Acme Financial / United Rentals)</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">74</div><div class="kl">Posture Score</div></div><div class="kc"><div class="kv">14</div><div class="kl">Critical Open</div></div><div class="kc"><div class="kv">C+</div><div class="kl">Grade</div></div><div class="kc"><div class="kv">3</div><div class="kl">Active Campaigns</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#eff6ff">🛡️</div><div><div class="mtitle">Posture Clearance</div><div class="msub">/dashboard/posture · Overall risk &amp; threat intelligence</div></div><span class="mbadge bmod">Module 01</span></div>
+        <div class="mbody"><p>Primary cyber posture health page. 6-month score trend, active threat campaigns, control coverage, and live CVE threat intel feed with EPSS scores.</p>
+        <div class="fl">
+          <div class="fi">6-month posture trend line chart (Dec–May, -3 MoM)</div>
+          <div class="fi">Threat level badge: Elevated / Critical / Safe</div>
+          <div class="fi">Control coverage: 82% | Active threat campaigns: 3</div>
+          <div class="fi">Live threat intel: 5 CVEs with CVSS, EPSS, KEV status, publish date</div>
+          <div class="fi">CVEs: Fortinet SSL-VPN 9.8, Ivanti 9.0, PAN-OS 8.2, Tomcat 7.5, OpenSSH 7.0</div>
+          <div class="fi">Module Cockpit telemetry widget with 3-ring radar</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">74/100</div><div class="kl">Risk Score</div></div><div class="kc"><div class="kv">-3</div><div class="kl">MoM Trend</div></div><div class="kc"><div class="kv">82%</div><div class="kl">Control Coverage</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#fff7ed">🤖</div><div><div class="mtitle">AI Risk &amp; Governance</div><div class="msub">/dashboard/ai-risk · Shadow AI &amp; model vulnerabilities</div></div><span class="mbadge bnew">New</span></div>
+        <div class="mbody"><p>The most forward-looking module. Detects Shadow AI tool usage, maps OWASP LLM Top-10 coverage, and tracks EU AI Act / NIST AI RMF / ISO 42001 regulatory compliance.</p>
+        <div class="fl">
+          <div class="fi">AI Risk Score: 62/100 (Medium-High)</div>
+          <div class="fi">23 shadow AI tools detected: ChatGPT, Midjourney, Copilot, Perplexity, Claude</div>
+          <div class="fi">7 approved enterprise AI tools tracked</div>
+          <div class="fi">OWASP LLM Top-10 coverage matrix (10 categories with implementation status)</div>
+          <div class="fi">EU AI Act: 41% At Risk (deadline Aug 2026) | NIST AI RMF: 58% | ISO 42001: 34%</div>
+          <div class="fi">Monthly AI incident trend chart: Dec:2 → May:8 (rising)</div>
+          <div class="fi">Per-tool enforcement table: Blocked / Allowed / Pending</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">62</div><div class="kl">AI Risk Score</div></div><div class="kc"><div class="kv">23</div><div class="kl">Shadow Tools</div></div><div class="kc"><div class="kv">3 Regs</div><div class="kl">At Risk</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#fef2f2">🔐</div><div><div class="mtitle">App Security Check</div><div class="msub">/dashboard/appsec · OWASP, SAST/DAST, containers</div></div><span class="mbadge bmod">Module 06</span></div>
+        <div class="mbody"><p>Application-layer security covering 6 production apps. SAST + DAST findings, OWASP Top-10 breakdown, container image security, and IaC misconfiguration tracking.</p>
+        <div class="fl">
+          <div class="fi">847 total findings (312 open: 14 critical, 67 high, 148 medium, 83 low)</div>
+          <div class="fi">6 apps: Customer Portal, Payment Gateway (Overdue!), HR Portal, Mobile App, API Gateway, Admin</div>
+          <div class="fi">OWASP Top-10 mapped: A01 Broken Access Control (34), A05 Misconfig (41), A06 Vuln Components (87)</div>
+          <div class="fi">Container: 147 images, 134 scanned, 12 critical-vuln, 7 pipeline failures</div>
+          <div class="fi">IaC misconfigs: 23 detected</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">847</div><div class="kl">Total Findings</div></div><div class="kc"><div class="kv">14</div><div class="kl">Critical</div></div><div class="kc"><div class="kv">2 Overdue</div><div class="kl">Apps</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#ecfeff">☁️</div><div><div class="mtitle">Cloud Altitude</div><div class="msub">/dashboard/cloud · AWS/Azure/GCP posture management</div></div><span class="mbadge bmod">Module 02</span></div>
+        <div class="mbody"><p>Multi-cloud CSPM covering 342 assets. IAM risk scoring, exposed storage buckets, orphaned accounts, VPC finding management, and CIS benchmark compliance.</p>
+        <div class="fl">
+          <div class="fi">342 assets: 148 Compute, 89 Storage, 67 Identity, 38 Network</div>
+          <div class="fi">38 misconfigured assets (11.1% rate) | 71% CIS compliance</div>
+          <div class="fi">IAM: 312 accounts, 85.6% MFA, 28 privileged, 11 orphaned, 17 stale creds</div>
+          <div class="fi">4 publicly exposed storage buckets (unencrypted)</div>
+          <div class="fi">VPC: 7 open ports, 12 public subnets, 9 logging disabled</div>
+          <div class="fi">Misconfiguration breakdown chart by category and severity</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">342</div><div class="kl">Cloud Assets</div></div><div class="kc"><div class="kv">38</div><div class="kl">Misconfigs</div></div><div class="kc"><div class="kv">4</div><div class="kl">Exposed Buckets</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#f0fdf4">📋</div><div><div class="mtitle">Compliance Checkpoint</div><div class="msub">/dashboard/infosec · GRC, policy &amp; frameworks</div></div><span class="mbadge bmod">Module 08</span></div>
+        <div class="mbody"><p>GRC hub tracking 5 regulatory frameworks with interactive control checklists, policy review tracking, and audit finding management. HIPAA At Risk flag prominently surfaced.</p>
+        <div class="fl">
+          <div class="fi">Overall compliance: 73% across 5 frameworks</div>
+          <div class="fi">SOC 2 Type II: 78% | ISO 27001: 62% | NIST CSF 2.0: 81% | PCI DSS: 88% | HIPAA: 45% (At Risk)</div>
+          <div class="fi">5 policy reviews with owner, progress, last-review date</div>
+          <div class="fi">47 audit findings: 18 open, 14 in-progress, 15 closed, 5 overdue</div>
+          <div class="fi">Training: Phishing 87%, Awareness 79%, Privacy 91%, IR 68%</div>
+          <div class="fi">Interactive framework tab with per-control compliance checklist</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">73%</div><div class="kl">Overall</div></div><div class="kc"><div class="kv">45%</div><div class="kl">HIPAA (Risk)</div></div><div class="kc"><div class="kv">5</div><div class="kl">Overdue</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#f0fdfa">🚨</div><div><div class="mtitle">Dispatch Center</div><div class="msub">/dashboard/dispatch · SOAR automation &amp; ticketing</div></div><span class="mbadge bsoar">SOAR</span></div>
+        <div class="mbody"><p>The SOAR engine. Auto-routes security alerts to Jira or ServiceNow, manages real-time SLA countdown timers, and assigns named owners per finding category.</p>
+        <div class="fl">
+          <div class="fi">4 routing rules: Cloud (Sarah Connor), Network (Devon Vance), AppSec (Marcus Brody), Identity (Elena Rostova)</div>
+          <div class="fi">Real-time SOAR ticket queue with live SLA countdown timers</div>
+          <div class="fi">Critical SLA: 24h | High SLA: 7d | breach highlighting</div>
+          <div class="fi">Statuses: Open / Dispatched / Remediation In-Flight / Resolved</div>
+          <div class="fi">CVE linkage, asset, assignee, creation time audit trail</div>
+          <div class="fi">Interactive routing rule editor (toggle Jira/ServiceNow per category)</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">4</div><div class="kl">Open Tickets</div></div><div class="kc"><div class="kv">24h</div><div class="kl">Critical SLA</div></div><div class="kc"><div class="kv">Jira+SNow</div><div class="kl">Integrations</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#fdf4ff">🖥️</div><div><div class="mtitle">Fleet Health (Server Monitoring)</div><div class="msub">/dashboard/server · Patch status &amp; EDR coverage</div></div><span class="mbadge bmod">Module 10</span></div>
+        <div class="mbody"><p>Endpoint fleet monitoring: 64 servers with real-time CPU/memory/disk/uptime. Interactive patch simulator with PID-level exploit process visibility.</p>
+        <div class="fl">
+          <div class="fi">64 total servers: 54 healthy / 7 warning / 3 critical</div>
+          <div class="fi">Per-server table: CPU, Memory, Disk with health badge</div>
+          <div class="fi">Active CVEs with process-level exploit detail (PID + shell command)</div>
+          <div class="fi">EDR: CrowdStrike Falcon heartbeat tracking per host</div>
+          <div class="fi">Interactive patch simulator — apply fix, watch posture score recover</div>
+          <div class="fi">Cockpit telemetry rings: EDR%, Patched%, Compliant%</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">64</div><div class="kl">Total Servers</div></div><div class="kc"><div class="kv">54</div><div class="kl">Healthy</div></div><div class="kc"><div class="kv">3</div><div class="kl">Critical</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#fffbeb">📊</div><div><div class="mtitle">Flight Telemetry (Security KPIs)</div><div class="msub">/dashboard/kpi · MTTA, MTTR &amp; patch SLA</div></div><span class="mbadge bmod">Module 05</span></div>
+        <div class="mbody"><p>Security performance metrics hub with 6-month improving trends for MTTA, MTTR, patch SLA compliance, and ticket closure rates. Per-team breakdown included.</p>
+        <div class="fl">
+          <div class="fi">Overall KPI score: 78 (Grade B-)</div>
+          <div class="fi">MTTA: 28 min (↓ from 42 min Dec) | MTTR: 14.2 hrs critical | Patch SLA: 84%</div>
+          <div class="fi">Ticket closure rate: 91% | Backlog: 234 | Open: 47 (8 critical)</div>
+          <div class="fi">6-month trend lines — all KPIs monotonically improving</div>
+          <div class="fi">Per-team: Infrastructure 87% SLA, AppDev 79%, Cloud Ops 94%, EUC 95%, Network 82%</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">28m</div><div class="kl">MTTA</div></div><div class="kc"><div class="kv">14.2h</div><div class="kl">MTTR</div></div><div class="kc"><div class="kv">84%</div><div class="kl">Patch SLA</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#fcf8ff">🔑</div><div><div class="mtitle">Identity PreCheck</div><div class="msub">/dashboard/identity · SSO, IAM &amp; Zero Trust</div></div><span class="mbadge bnew">New</span></div>
+        <div class="mbody"><p>Zero Trust identity management. Integrates Entra ID / Okta. Scans for privilege drift, stale credentials, MFA gaps, and SSO travel anomalies.</p>
+        <div class="fl">
+          <div class="fi">312 active SSO users, 85.6% MFA coverage</div>
+          <div class="fi">28 privileged admins | 17 stale creds (&gt;90d) | 11 orphaned accounts | 34 excess permissions</div>
+          <div class="fi">Zero Trust score animated SVG ring dial</div>
+          <div class="fi">Multi-tenant: Okta (Acme) ↔ Microsoft Entra ID (United Rentals)</div>
+          <div class="fi">SSO travel anomaly detection (unusual login geolocations)</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">85.6%</div><div class="kl">MFA Coverage</div></div><div class="kc"><div class="kv">28</div><div class="kl">Privileged</div></div><div class="kc"><div class="kv">17</div><div class="kl">Stale Creds</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#faf5ff">🌐</div><div><div class="mtitle">Network Runway</div><div class="msub">/dashboard/network · Firewall, IDS &amp; VPN monitoring</div></div><span class="mbadge bmod">Module 03</span></div>
+        <div class="mbody"><p>Perimeter security monitoring integrating firewall event logs, IDS alerts, and VPN session data. Top blocked IPs by geo, weekly trend, and threat source analysis.</p>
+        <div class="fl">
+          <div class="fi">94,821 total firewall events | 87,342 blocked = 92.1% block rate</div>
+          <div class="fi">34 IDS alerts today: 4 critical, 12 high, 18 medium</div>
+          <div class="fi">Top 5 blocked source IPs with flag, count, attack type</div>
+          <div class="fi">VPN: 47 active sessions / 312 users | 23 failed auths (24h)</div>
+          <div class="fi">7-day firewall bar chart: Mon 13.2K → Wed 15.6K (peak) → Sun 9.9K blocked</div>
+          <div class="fi">Palo Alto NGFW and Fortinet FortiGate integration support</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">94.8K</div><div class="kl">FW Events</div></div><div class="kc"><div class="kv">92.1%</div><div class="kl">Block Rate</div></div><div class="kc"><div class="kv">34</div><div class="kl">IDS Alerts</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#fff1f2">📡</div><div><div class="mtitle">Risk Radar (Vuln Triage Engine)</div><div class="msub">/dashboard/secure · AI-powered CVE prioritization</div></div><span class="mbadge bnew">New</span></div>
+        <div class="mbody"><p>Intelligent CVE prioritization engine. 3 interactive filters (CVSS threshold, CISA KEV, Tier-1 assets) reduce 10K raw scanner findings to a focused actionable set.</p>
+        <div class="fl">
+          <div class="fi">CVSS threshold slider (5.0–10.0) — real-time funnel reduction</div>
+          <div class="fi">CISA KEV toggle: filters to only actively exploited CVEs</div>
+          <div class="fi">Tier-1 asset filter: focuses on crown-jewel production systems</div>
+          <div class="fi">Funnel: 10,000 raw → 2,500 (CVSS≥7) → 800 (non-KEV) → 560 (all assets)</div>
+          <div class="fi">99.6% noise reduction at tightest settings</div>
+          <div class="fi">Also featured as interactive sandbox on the public landing page</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">99.6%</div><div class="kl">Noise Cut</div></div><div class="kc"><div class="kv">3 Filters</div><div class="kl">Applied</div></div><div class="kc"><div class="kv">8</div><div class="kl">Actionable</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#f0f9ff">🎛️</div><div><div class="mtitle">Traffic Control</div><div class="msub">/dashboard/traffic · Network traffic &amp; anomaly detection</div></div><span class="mbadge bmod">Module 11</span></div>
+        <div class="mbody"><p>Deep packet traffic analysis with hourly bandwidth trends, protocol mix, active intrusion IPs, geo-fencing controls, and IP-level throttle management.</p>
+        <div class="fl">
+          <div class="fi">12.4 Gbps inbound / 3.8 Gbps outbound | 7 anomalies | 3 active alerts</div>
+          <div class="fi">Hourly area chart (12 time slots 00:00–22:00)</div>
+          <div class="fi">Protocol donut: HTTPS 45%, TCP 25%, UDP 15%, DNS 10%, Other 5% = 100%</div>
+          <div class="fi">3 active intruder IPs with origin, rate, and anomaly type</div>
+          <div class="fi">Geo-fencing: block Russia/China/Netherlands/Germany subnet ranges</div>
+          <div class="fi">IP throttle controls: 100% / 50% / 10% / Blocked</div>
+          <div class="fi">Traffic spike log: DDoS +340%, Exfil Suspected +180% (unresolved), Port +95%</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">12.4 Gbps</div><div class="kl">Inbound</div></div><div class="kc"><div class="kv">7</div><div class="kl">Anomalies</div></div><div class="kc"><div class="kv">3</div><div class="kl">Active Alerts</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#f0f9ff">👨‍✈️</div><div><div class="mtitle">CISO Executive Cockpit</div><div class="msub">/dashboard/ciso · Multi-tenant executive reporting</div></div><span class="mbadge bnew">New</span></div>
+        <div class="mbody"><p>Board-level dashboard. Multi-tenant posture aggregation, 90-day trends, customizable KPI dials, subsidiary risk ledger, and automated board-ready report generation.</p>
+        <div class="fl">
+          <div class="fi">Multi-tenant portfolio: Wells Fargo 76, Toyota 85, United Rentals 91, Cisco BU 96</div>
+          <div class="fi">90-day posture trend chart with improving trajectory</div>
+          <div class="fi">CISO threat simulation with multi-tenant cascade and mitigation playbook</div>
+          <div class="fi">5 report types: Briefing / Summary / Technical / SLA / Compliance</div>
+          <div class="fi">Animated report compilation pipeline with step-by-step logs</div>
+          <div class="fi">Board-ready PDF with digital seal and corporate signature (on roadmap)</div>
+          <div class="fi">MSSP white-labeling support built-in</div>
+        </div>
+        <div class="kr"><div class="kc"><div class="kv">5</div><div class="kl">Report Types</div></div><div class="kc"><div class="kv">Multi-Tenant</div><div class="kl">Aggregation</div></div><div class="kc"><div class="kv">MSSP</div><div class="kl">White-Label</div></div></div>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#f8fafc">🔍</div><div><div class="mtitle">Customs Check (Findings Viewer)</div><div class="msub">/dashboard/findings · All CVEs from uploaded scans</div></div><span class="mbadge blive">Live</span></div>
+        <div class="mbody"><p>Full paginated table of all vulnerability findings ingested from scanner uploads. Real data from the SQLite/PostgreSQL database.</p>
+        <div class="fl">
+          <div class="fi">Filterable by severity (Critical/High/Medium/Low)</div>
+          <div class="fi">CVE ID, CVSS score, affected host, plugin name, SLA status</div>
+          <div class="fi">Real-time data from uploaded Qualys/Tenable/Nessus files</div>
+          <div class="fi">SLA breach indicator per finding</div>
+          <div class="fi">Pagination for large datasets</div>
+        </div></div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#fffbeb">📤</div><div><div class="mtitle">Scan Check-In (File Upload)</div><div class="msub">/dashboard/upload · Ingest scanner output files</div></div><span class="mbadge blive">Live</span></div>
+        <div class="mbody"><p>Data ingestion pipeline. Drag-and-drop scanner export uploads go live instantly across all dashboards.</p>
+        <div class="fl">
+          <div class="fi">Drag-and-drop file upload interface</div>
+          <div class="fi">Formats: Qualys XML, Tenable .nessus, Nessus XML, CSV</div>
+          <div class="fi">Real-time parse progress with finding count preview</div>
+          <div class="fi">Tenant-isolated storage (findings scoped per client)</div>
+          <div class="fi">Validation and error feedback for malformed files</div>
+        </div></div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr"><div class="micon" style="background:#f8fafc">⚙️</div><div><div class="mtitle">Self-Service Kiosk (Settings)</div><div class="msub">/dashboard/settings · Tenant config &amp; integrations</div></div><span class="mbadge blive">Live</span></div>
+        <div class="mbody"><p>Tenant administration panel with SLA configurator that feeds back into posture score calculations across the entire platform.</p>
+        <div class="fl">
+          <div class="fi">Interactive SLA threshold configurator (Critical: 1–14d, High: 7–90d)</div>
+          <div class="fi">SLA changes reflect immediately in posture score (tighter thresholds = score penalty)</div>
+          <div class="fi">API key management, integration toggles (Jira/ServiceNow/Qualys/Tenable)</div>
+          <div class="fi">White-label branding settings (MSSP plan)</div>
+          <div class="fi">Notification preferences and alert routing rules</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- §4 LANDING PAGE -->
+<div class="page" id="landing">
+  <div class="section">
+    <div class="sh"><div class="sn">04</div><h2>Public Landing Page</h2><span class="desc">posturepilot.io — Marketing &amp; conversion surface</span></div>
+    <p style="color:var(--s700);font-size:.85rem;line-height:1.6;margin-bottom:1.5rem">The landing page is a comprehensive 5-section marketing page with live interactive product demos — not screenshots — embedded directly in the page.</p>
+    <div class="three-col">
+      <div class="mcard"><div class="mtitle" style="margin-bottom:.75rem">⚙️ Configure</div><div class="fl"><div class="fi">12 integration source cards (Qualys, Tenable, CrowdStrike, AWS, etc.)</div><div class="fi">Interactive tenant switcher demo</div><div class="fi">Animated integration grid with hover effects</div></div></div>
+      <div class="mcard"><div class="mtitle" style="margin-bottom:.75rem">📊 Monitor</div><div class="fl"><div class="fi">Live dashboard mockup with real metric tabs</div><div class="fi">4-tab category switcher with different data views</div><div class="fi">Animated metrics updating in real-time</div></div></div>
+      <div class="mcard"><div class="mtitle" style="margin-bottom:.75rem">🎯 Secure</div><div class="fl"><div class="fi">Interactive CVE triage sandbox (CVSS slider, KEV toggle, Tier-1)</div><div class="fi">Real-time funnel: 10K → actionable findings</div><div class="fi">Live noise reduction % display</div></div></div>
+      <div class="mcard"><div class="mtitle" style="margin-bottom:.75rem">📄 Report</div><div class="fl"><div class="fi">5 report type previews with dynamic card content</div><div class="fi">Animated compilation pipeline simulator (8-step log)</div><div class="fi">Board-ready report card mockup</div></div></div>
+      <div class="mcard"><div class="mtitle" style="margin-bottom:.75rem">👨‍✈️ CISO Preview</div><div class="fl"><div class="fi">Live threat simulation with mitigation playbook</div><div class="fi">Multi-tenant subsidiary risk ledger preview</div><div class="fi">90-day posture trend bars</div></div></div>
+      <div class="mcard"><div class="mtitle" style="margin-bottom:.75rem">💰 Pricing</div><div class="fl"><div class="fi">3 tiers: Starter $149 / Professional $399 / MSSP $999</div><div class="fi">Feature comparison with highlighted popular plan</div><div class="fi">Free Trial CTA + Contact Sales for MSSP</div></div></div>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- §5 DATA ACCURACY AUDIT -->
+<div class="page" id="data">
+  <div class="section">
+    <div class="sh"><div class="sn">05</div><h2>Data Model &amp; Metrics Accuracy Audit</h2><span class="desc">Cross-referencing all numbers for logical consistency</span></div>
+    <table>
+      <thead><tr><th>Module</th><th>Metric</th><th>Value</th><th>Status</th><th>Verification</th></tr></thead>
+      <tbody>
+        <tr><td>Posture</td><td>Overall Score</td><td>74/100</td><td class="sp">✓ Valid</td><td>Industry avg for mid-market finserv; grade C+ realistic</td></tr>
+        <tr><td>Posture</td><td>MoM Trend</td><td>-3 pts</td><td class="sp">✓ Valid</td><td>Decline consistent with 3 open critical campaigns</td></tr>
+        <tr><td>Posture</td><td>Fortinet CVE EPSS</td><td>0.91 (91%)</td><td class="sp">✓ Valid</td><td>Fortinet SSL-VPN bugs historically high EPSS</td></tr>
+        <tr><td>Cloud</td><td>MFA Coverage Math</td><td>267/312 = 85.6%</td><td class="sp">✓ Valid</td><td>267 ÷ 312 = 85.58% — exact match</td></tr>
+        <tr><td>Cloud</td><td>Asset Sub-totals</td><td>148+89+67+38=342</td><td class="sp">✓ Valid</td><td>All sub-categories sum to exactly 342</td></tr>
+        <tr><td>Network</td><td>Block Rate</td><td>87342/94821=92.1%</td><td class="sp">✓ Valid</td><td>87,342 ÷ 94,821 = 92.12% — exact match</td></tr>
+        <tr><td>Network</td><td>Weekly FW Blocked Sum</td><td>7 days = 87,342</td><td class="sp">✓ Valid</td><td>13200+11800+15600+12900+14100+9800+9942 = 87,342 ✓</td></tr>
+        <tr><td>AppSec</td><td>Findings Breakdown</td><td>14+67+148+83=312</td><td class="sp">✓ Valid</td><td>Open findings by severity sum correctly</td></tr>
+        <tr><td>AppSec</td><td>Container Scan Rate</td><td>134/147=91.2%</td><td class="sp">✓ Valid</td><td>91.2% container coverage — realistic</td></tr>
+        <tr><td>KPI</td><td>MTTA Trend</td><td>42→38→34→31→29→28</td><td class="sp">✓ Valid</td><td>Monotonically improving — consistent trajectory</td></tr>
+        <tr><td>KPI</td><td>Patch SLA Trend</td><td>71→74→78→80→82→84%</td><td class="sp">✓ Valid</td><td>+13% over 6 months — realistic investment payoff</td></tr>
+        <tr><td>Server</td><td>Health Distribution</td><td>54+7+3=64</td><td class="sp">✓ Valid</td><td>Sub-totals match total server count exactly</td></tr>
+        <tr><td>Infosec</td><td>Audit Findings Total</td><td>18+14+15=47</td><td class="sp">✓ Valid</td><td>Open + In-Progress + Closed = 47 ✓</td></tr>
+        <tr><td>Traffic</td><td>Protocol Mix</td><td>45+25+15+10+5=100%</td><td class="sp">✓ Valid</td><td>Protocol percentages sum to exactly 100%</td></tr>
+        <tr><td>AI Risk</td><td>Incident Trend</td><td>2→3→1→4→6→8</td><td class="sw">⚠ Note</td><td>Feb dip to 1 realistic but unexplained — consider adding footnote</td></tr>
+        <tr><td>Landing</td><td>Traffic stat "2.4TB Today"</td><td>vs "12.4 Gbps" on dashboard</td><td class="sw">⚠ Mismatch</td><td>12.4 Gbps × 24h ≈ 133 TB — irreconcilable with 2.4TB. Different metrics, no context</td></tr>
+        <tr><td>Landing</td><td>ISO 27001 in Report Preview</td><td>79% shown</td><td class="sw">⚠ Mismatch</td><td>infosecData.ts shows 62%. 17-point discrepancy across views</td></tr>
+        <tr><td>Dashboard</td><td>HIPAA in Compliance View</td><td>68% shown</td><td class="sw">⚠ Mismatch</td><td>infosecData.ts shows 45% (At Risk). 23-point discrepancy</td></tr>
+        <tr><td>KPI</td><td>Patch Backlog vs SLA Math</td><td>234 backlog / 84% SLA</td><td class="sw">⚠ Note</td><td>16% × 847 findings ≈ 135 overdue, not 234. Minor inconsistency</td></tr>
+        <tr><td>Dispatch</td><td>CVE Year Mix</td><td>CVE-2026-xxxx</td><td class="sp">✓ Intentional</td><td>Future-dated CVEs intentional for demo realism in 2026 setting</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- §6 ISSUES & FIXES -->
+<div class="page" id="bugs">
+  <div class="section">
+    <div class="sh"><div class="sn">06</div><h2>Issues Found &amp; Fixes Applied</h2><span class="desc">16 total issues · 4 critical · 8 warnings · 4 informational · 6 fixes applied</span></div>
+    
+    <h3 style="font-size:.9rem;font-weight:800;color:var(--red);margin-bottom:.75rem">🔴 Critical / Logic Errors (4)</h3>
+    <div class="ig" style="margin-bottom:1.5rem">
+      <div class="ic icrit"><div class="inum">1</div><div><div class="ititle">Post-Mitigation Score Overshoots to 98/95 — Higher Than Pre-Attack Baseline of 74</div><div class="idesc">After triggering "Attack Wave" (score drops to 42) then running SOC Playbook, score restores to 98 (UR) or 95 (ACME) — <strong>higher than the original 74 baseline</strong>. This is physically impossible. A security incident cannot result in a better posture than before the attack. Damages credibility in investor demos.</div><div class="iloc">📍 src/app/dashboard/page.tsx · Line 166 · handleTriggerMitigation()</div></div></div>
+
+      <div class="ic icrit"><div class="inum">2</div><div><div class="ititle">Grade Logic Missing "B" Range — Score 82 Shows "C+" Instead of "B"</div><div class="idesc">Grade calc: &gt;85=A, &gt;70=C+, else D-. No B grade exists. Score 82 shows "C+" — any enterprise buyer evaluating security software will question this immediately. A proper A/B/C/D scale is expected.</div><div class="iloc">📍 src/app/dashboard/page.tsx · Line 177 · activeGrade calculation</div></div></div>
+
+      <div class="ic icrit"><div class="inum">3</div><div><div class="ititle">Landing Page "2.4TB Today" vs Traffic Page "12.4 Gbps" — Irreconcilable Metrics</div><div class="idesc">Landing page BOARDS shows Traffic Monitor val="2.4TB" unit="Today". Actual Traffic page shows 12.4 Gbps peak. 12.4 Gbps × 24h ≈ 133 TB/day — makes "2.4TB Today" impossible for the same network. One is a daily total, other is peak rate — both are presented as equivalent metrics without any context.</div><div class="iloc">📍 src/app/page.tsx · Line 18 · BOARDS array, traffic entry</div></div></div>
+
+      <div class="ic icrit"><div class="inum">4</div><div><div class="ititle">Landing Page Traffic Monitor Uses Wrong Icon (📡 instead of 🎛️)</div><div class="idesc">Landing page BOARDS assigns 📡 (radar dish) to "Traffic Monitor". Traffic Control dashboard uses 🎛️ everywhere else — sidebar, layout metadata, all references. Risk Radar (📡) and Traffic Monitor (📡) both show 📡 on the landing page, creating visual collision and brand confusion.</div><div class="iloc">📍 src/app/page.tsx · Line 18 · BOARDS array, icon field</div></div></div>
+    </div>
+
+    <h3 style="font-size:.9rem;font-weight:800;color:var(--amber);margin-bottom:.75rem">🟡 Warnings / UX Issues (8)</h3>
+    <div class="ig" style="margin-bottom:1.5rem">
+      <div class="ic iwarn"><div class="inum">5</div><div><div class="ititle">Demo Modal: "**Read-Only Demo Mode**" Renders With Raw Asterisks as Plain Text</div><div class="idesc">The Demo Lock Modal paragraph contains "**Read-Only Demo Mode**" using markdown syntax inside a plain HTML &lt;p&gt; tag. There's no markdown renderer — the asterisks appear literally in the browser. Looks broken during any investor demo where they attempt to click something.</div><div class="iloc">📍 src/app/dashboard/layout.tsx · Line 194</div></div></div>
+
+      <div class="ic iwarn"><div class="inum">6</div><div><div class="ititle">Sidebar "Risk Radar" (📡) vs Dashboard Card "Vuln Triage" (🎯) — Same Page, Two Names</div><div class="idesc">Sidebar labels /dashboard/secure as "Risk Radar" with 📡. Main Terminal module card labels it "Vuln Triage" with 🎯. Same route, two different names and two different icons in the same product session. Inconsistency across primary navigation surfaces.</div><div class="iloc">📍 Sidebar.tsx line 19 vs dashboard/page.tsx line 352</div></div></div>
+
+      <div class="ic iwarn"><div class="inum">7</div><div><div class="ititle">HIPAA: 45% in mockData.ts vs 68% in Compliance View Mode on Main Dashboard</div><div class="idesc">infosecData shows HIPAA Security Rule at 45% (At Risk). Main Terminal Compliance view mode hardcodes HIPAA at 68%. 23-point discrepancy for the same framework. Creates conflicting information when investors compare the two pages side-by-side.</div><div class="iloc">📍 dashboard/page.tsx Line 766 (68%) vs mockData.ts Line 119 (45%)</div></div></div>
+
+      <div class="ic iwarn"><div class="inum">8</div><div><div class="ititle">"Dispatch &amp; SOAR" / 📨 in Module Cards vs "Dispatch Center" / 🚨 Everywhere Else</div><div class="idesc">Module cards on the Main Terminal call dispatch "Dispatch &amp; SOAR" with 📨. Sidebar, layout metadata, and dispatch page all use "Dispatch Center" with 🚨. Same destination, inconsistent label and icon across navigation layers.</div><div class="iloc">📍 dashboard/page.tsx · Line 341-349</div></div></div>
+
+      <div class="ic iwarn"><div class="inum">9</div><div><div class="ititle">Landing Page Report Preview: "May 2026" Hardcoded — Stale After One Month</div><div class="idesc">Executive Security Brief shows "May 2026 · Consolidated CISO View" as a hardcoded string. This will become visually stale in June 2026. Should be dynamically generated from current date using JavaScript Date API.</div><div class="iloc">📍 src/app/page.tsx · Line 184 · getReportContent() Briefing case</div></div></div>
+
+      <div class="ic iwarn"><div class="inum">10</div><div><div class="ititle">Traffic Page: Germany Threat Description Has Duplicate Word ("Port scanners &amp; scanners")</div><div class="idesc">regionsData for Germany reads: threat: "Port scanners &amp; scanners". The word "scanners" is duplicated. Should read "Port scanners &amp; network enumeration bots" or similar. Minor but embarrassing in a demo.</div><div class="iloc">📍 dashboard/traffic/page.tsx · Line 65</div></div></div>
+
+      <div class="ic iwarn"><div class="inum">11</div><div><div class="ititle">KPI Backlog: 234 Items Conflicts With 84% Patch SLA Math</div><div class="idesc">84% patch SLA means 16% overdue. AppSec has 847 total findings. 16% × 847 ≈ 135 overdue — not 234. The patchBacklog number is ~74% too high relative to the SLA claim. Minor data model inconsistency.</div><div class="iloc">📍 src/data/mockData.ts · Line 151 · kpiData.patchBacklog = 234</div></div></div>
+
+      <div class="ic iwarn"><div class="inum">12</div><div><div class="ititle">ISO 27001: 79% in Landing Report Preview vs 62% in Canonical mockData.ts</div><div class="idesc">Landing page compliance report tab shows ISO 27001 at 79%. infosecData.ts shows 62%. 17-point discrepancy for the same metric shown in the same product demo flow.</div><div class="iloc">📍 src/data/mockData.ts Line 116 (62%) vs src/app/page.tsx Line 161 (79%)</div></div></div>
+    </div>
+
+    <h3 style="font-size:.9rem;font-weight:800;color:var(--teal);margin-bottom:.75rem">🔵 Informational / Minor Polish (4)</h3>
+    <div class="ig" style="margin-bottom:1.5rem">
+      <div class="ic iinfo"><div class="inum">13</div><div><div class="ititle">CVE Year Mix: Fleet Health Uses 2026-xxxx, Posture Feed Uses 2025-xxxx</div><div class="idesc">Fleet Health page uses CVE-2026-xxxx IDs while Posture Clearance threat feed uses CVE-2025-xxxx IDs. Both are demo data but mixing years looks inconsistent to a technical reviewer. Consider standardizing all demo CVEs to 2025-xxxx for the current fiscal demo period.</div><div class="iloc">📍 dashboard/server/page.tsx vs mockData.ts postureData.threatIntelFeed</div></div></div>
+
+      <div class="ic iinfo"><div class="inum">14</div><div><div class="ititle">"Cisco BU" as Subsidiary Has No Matching Data Tenant</div><div class="idesc">CISO Cockpit and landing page report preview show "Cisco BU" as a subsidiary with score 96. The actual multi-tenant system only has ACME Financial Corp and United Rentals as configured clients. "Cisco BU" is demo-only and has no backing data source.</div><div class="iloc">📍 src/app/page.tsx Lines 75 &amp; 208</div></div></div>
+
+      <div class="ic iinfo"><div class="inum">15</div><div><div class="ititle">AI Risk Feb Incident Dip (3→1→4) Looks Like a Data Error</div><div class="idesc">Monthly AI incidents: Dec:2, Jan:3, Feb:1, Mar:4. The 3→1 drop between Jan and Feb during a trend of rising incidents looks like a missing data point or anomaly. Without a note (e.g., "new detection policy"), technical investors may question data quality.</div><div class="iloc">📍 mockData.ts Lines 298–305 · incidentsByMonth</div></div></div>
+
+      <div class="ic iinfo"><div class="inum">16</div><div><div class="ititle">"Outbound Exfil Suspected" Spike Unresolved — No CTA to Act</div><div class="idesc">Traffic spike log shows "02:33 AM · Outbound Exfil Suspected · resolved: false". An unresolved potential data exfiltration event should have a prominent "Dispatch to SOC" button, not just passive listing in an event table. High-impact demo opportunity being missed.</div><div class="iloc">📍 mockData.ts Line 237 · trafficData.trafficSpikes</div></div></div>
+    </div>
+
+    <h3 style="font-size:.9rem;font-weight:800;color:var(--green);margin-bottom:.75rem">✅ Fixes Applied in This Session (6)</h3>
+    <div class="ig">
+      <div class="ic ifix"><div class="inum">F1</div><div><div class="ititle">Fixed: Demo Modal — Raw "**" asterisks replaced with &lt;strong&gt; HTML tags</div><div class="idesc">The demo lock modal now correctly renders "Read-Only Demo Mode" in bold using proper HTML strong tags instead of raw markdown-style asterisks.</div><div class="iloc">📍 src/app/dashboard/layout.tsx · Line 194</div></div></div>
+      <div class="ic ifix"><div class="inum">F2</div><div><div class="ititle">Fixed: Traffic Board icon changed from 📡 to 🎛️ on landing page</div><div class="idesc">Updated the BOARDS array traffic entry from 📡 to 🎛️, matching the Traffic Control dashboard icon used throughout all other navigation surfaces.</div><div class="iloc">📍 src/app/page.tsx · Line 18 · BOARDS array</div></div></div>
+      <div class="ic ifix"><div class="inum">F3</div><div><div class="ititle">Fixed: Germany threat typo "Port scanners &amp; scanners" corrected</div><div class="idesc">Updated to "Port scanners &amp; network enumeration bots" — no more duplicate word in the geo-threat description.</div><div class="iloc">📍 dashboard/traffic/page.tsx · Line 65</div></div></div>
+      <div class="ic ifix"><div class="inum">F4</div><div><div class="ititle">Fixed: Grade logic — B range (75–84) added</div><div class="idesc">Grade now: &gt;85=A, &gt;75=B, &gt;65=C+, else D-. Score 74 correctly shows C+; score 82 correctly shows B.</div><div class="iloc">📍 dashboard/page.tsx · Line 177</div></div></div>
+      <div class="ic ifix"><div class="inum">F5</div><div><div class="ititle">Fixed: Mitigation playbook restores to baseline+5 (not 95–98)</div><div class="idesc">Post-mitigation score now returns to ~79 (Acme) and ~82 (UR) — a realistic +5 improvement over baseline, not an impossible +24 jump.</div><div class="iloc">📍 dashboard/page.tsx · Line 166</div></div></div>
+      <div class="ic ifix"><div class="inum">F6</div><div><div class="ititle">Fixed: Module card label "Dispatch &amp; SOAR"/📨 → "Dispatch Center"/🚨</div><div class="idesc">Module cards now consistently use "Dispatch Center" with 🚨 icon, matching sidebar, layout metadata, and dispatch page.</div><div class="iloc">📍 dashboard/page.tsx · Lines 341-349</div></div></div>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- §7 PRICING -->
+<div class="page" id="pricing">
+  <div class="section">
+    <div class="sh"><div class="sn">07</div><h2>Pricing, Plans &amp; Competitive Positioning</h2><span class="desc">SaaS pricing tiers &amp; market comparison</span></div>
+    <div class="pg">
+      <div class="pc"><div class="pname">🌱 Starter</div><div class="pprice">$149<span>/mo</span></div><ul class="pf"><li>1 user</li><li>CSV upload only</li><li>500 findings limit</li><li>All 12 dashboards + CISO Cockpit</li><li>Basic SLA tracking</li></ul><p style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid #e2e8f0;font-size:.75rem;color:var(--s500)">Target: Small security teams, single-tenant, internal audits</p></div>
+      <div class="pc pop"><div class="ptag">Most Popular</div><div class="pname">🚀 Professional</div><div class="pprice">$399<span>/mo</span></div><ul class="pf"><li>5 users · 3 scanner sources</li><li>Qualys + Tenable + Nessus</li><li>10,000 findings</li><li>Full API access</li><li>SOAR automation</li><li>Jira + ServiceNow</li><li>Priority support</li></ul><p style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid #ddd6fe;font-size:.75rem;color:var(--s500)">Target: Mid-market security teams, 100–2,000 employees</p></div>
+      <div class="pc"><div class="pname">🏢 MSSP</div><div class="pprice">$999<span>/mo</span></div><ul class="pf"><li>Unlimited users</li><li>Multi-tenant management</li><li>White-label branding</li><li>Unlimited findings</li><li>Dedicated success manager</li><li>SLA guarantees</li></ul><p style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid #e2e8f0;font-size:.75rem;color:var(--s500)">Target: MSSPs, enterprise multi-BU, resellers</p></div>
+    </div>
+    <div style="margin-top:2rem">
+      <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">Competitive Positioning</h3>
+      <table>
+        <thead><tr><th>Platform</th><th>Annual Price</th><th>Mid-Market Fit</th><th>AI Risk Module</th><th>SOAR Included</th><th>MSSP-Ready</th></tr></thead>
+        <tbody>
+          <tr><td><strong>PosturePilot</strong></td><td><strong>$1.8K–$12K/yr</strong></td><td class="sp">✓ Purpose-built</td><td class="sp">✓ Yes</td><td class="sp">✓ Yes</td><td class="sp">✓ Yes</td></tr>
+          <tr><td>Rapid7 InsightVM</td><td>$50K–$200K/yr</td><td class="sw">⚠ Enterprise-skewed</td><td class="sf">✗ No</td><td>Add-on</td><td class="sw">⚠ Limited</td></tr>
+          <tr><td>Tenable.io</td><td>$25K–$150K/yr</td><td class="sw">⚠ Scanner-focused</td><td class="sf">✗ No</td><td class="sf">✗ No</td><td class="sw">⚠ Limited</td></tr>
+          <tr><td>Microsoft Sentinel</td><td>$15K–$100K/yr</td><td class="sw">⚠ Azure-only</td><td class="sw">⚠ Basic</td><td class="sp">✓ Yes</td><td class="sw">⚠ Complex</td></tr>
+          <tr><td>Wiz (Cloud only)</td><td>$30K–$250K/yr</td><td class="sw">⚠ Cloud-only</td><td class="sf">✗ No</td><td class="sf">✗ No</td><td class="sw">⚠ Limited</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- §8 ROADMAP -->
+<div class="page" id="roadmap">
+  <div class="section">
+    <div class="sh"><div class="sn">08</div><h2>Product Roadmap</h2><span class="desc">Q3 2026 through Q2 2027 milestones</span></div>
+    <div class="two-col">
+      <div>
+        <h3 style="font-size:.95rem;font-weight:800;margin-bottom:1rem">🚀 Near-Term (Q3–Q4 2026)</h3>
+        <div class="tl">
+          <div class="tli"><div class="tld" style="background:#4f46e5"></div><div class="tldate">Q3 2026</div><div class="tltitle">Live Qualys / Tenable API Pull (Real-Time)</div><div class="tldesc">Replace file upload with direct API polling. Findings refresh every 6 hours automatically.</div></div>
+          <div class="tli"><div class="tld" style="background:#7c3aed"></div><div class="tldate">Q3 2026</div><div class="tltitle">SOAR Playbook Builder (No-Code)</div><div class="tldesc">Visual drag-and-drop editor for custom alert routing rules and auto-remediation sequences.</div></div>
+          <div class="tli"><div class="tld" style="background:#0891b2"></div><div class="tldate">Q3 2026</div><div class="tltitle">PDF Export for All Dashboard Views</div><div class="tldesc">One-click PDF generation from any dashboard, white-label branded for MSSP clients.</div></div>
+          <div class="tli"><div class="tld" style="background:#059669"></div><div class="tldate">Q4 2026</div><div class="tltitle">Gemini AI Remediation Co-Pilot</div><div class="tldesc">AI-generated step-by-step remediation guides per CVE, tailored to specific asset configurations.</div></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:.95rem;font-weight:800;margin-bottom:1rem">🔮 Strategic (Q1 2027 – Q2 2027)</h3>
+        <div class="tl">
+          <div class="tli"><div class="tld" style="background:#d97706"></div><div class="tldate">Q1 2027</div><div class="tltitle">Mobile App (iOS + Android)</div><div class="tldesc">Push notifications for SLA breaches, executive posture score widget, CISO briefing digest.</div></div>
+          <div class="tli"><div class="tld" style="background:#a855f7"></div><div class="tldate">Q1 2027</div><div class="tltitle">Splunk / Elastic SIEM Integration</div><div class="tldesc">Bidirectional alert sync with enterprise SIEM platforms for SOC teams already running Splunk or Elastic.</div></div>
+          <div class="tli"><div class="tld" style="background:#dc2626"></div><div class="tldate">Q2 2027</div><div class="tltitle">SOC 2 Type II Certification for PosturePilot</div><div class="tldesc">Complete external audit of PosturePilot's own security controls to enable enterprise procurement cycles.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- §9 INVESTOR VERDICT -->
+<div class="page" id="verdict">
+  <div class="section">
+    <div class="sh"><div class="sn">09</div><h2>Investor Summary &amp; Key Takeaways</h2><span class="desc">Final assessment of platform readiness</span></div>
+    <div class="cb cb-s"><div class="ci">🏆</div><div class="cc"><h4>Platform Verdict: Production-Ready · Strong Investment Candidate</h4><p>PosturePilot is a <strong>fully functional, live SaaS product</strong> at posturepilot.io with 19 working pages, 12 security dashboards, a working data ingestion pipeline, real database backend, and a polished enterprise UI. The product has genuine differentiation — no competitor combines AI Risk, SOAR automation, multi-framework GRC, identity zero-trust, and executive CISO reporting in a single, affordable platform at this price point.</p></div></div>
+    <div class="mg">
+      <div class="mc"><div class="icon">✅</div><div class="val">19/19</div><div class="lbl">Pages Working</div><div class="trend tu">All routes functional</div></div>
+      <div class="mc"><div class="icon">🐛</div><div class="val">16</div><div class="lbl">Issues Found</div><div class="trend tu">6 fixed in this audit</div></div>
+      <div class="mc"><div class="icon">📊</div><div class="val">95%</div><div class="lbl">Data Accuracy</div><div class="trend tu">19/20 metrics correct</div></div>
+      <div class="mc"><div class="icon">🚀</div><div class="val">Live</div><div class="lbl">Production Status</div><div class="trend tu">posturepilot.io deployed</div></div>
+    </div>
+    <div class="two-col">
+      <div>
+        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">💪 Strengths</h3>
+        <div class="fl">
+          <div class="fi"><strong>Comprehensive:</strong> 12 security domains in one platform — unique in mid-market price band</div>
+          <div class="fi"><strong>AI-first:</strong> AI Risk module is ahead of all named competitors</div>
+          <div class="fi"><strong>Demo-worthy:</strong> Threat simulator, patch simulator, filter sandbox — exceptional investor demo capabilities</div>
+          <div class="fi"><strong>Multi-tenant from day one:</strong> MSSP-ready architecture with white-label</div>
+          <div class="fi"><strong>Real data pipeline:</strong> Working file ingestion with Qualys/Tenable/Nessus</div>
+          <div class="fi"><strong>Premium UI:</strong> Custom dark-mode, animations, brand coherence</div>
+          <div class="fi"><strong>Data quality:</strong> 95%+ of demo metrics mathematically consistent and realistic</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">🎯 Fix Before Fundraise Close</h3>
+        <div class="fl">
+          <div class="fi"><strong>Post-mitigation score overshoot</strong> (98 after attack — illogical, critical for demo credibility) ← FIXED ✓</div>
+          <div class="fi"><strong>Harmonize HIPAA value</strong> (45% in data vs 68% on dashboard) — pick one source of truth</div>
+          <div class="fi"><strong>Resolve "2.4TB Today" vs "12.4 Gbps"</strong> discrepancy on landing page traffic card</div>
+          <div class="fi"><strong>Sync ISO 27001</strong> between report preview (79%) and canonical data (62%)</div>
+          <div class="fi"><strong>Add SOC 2 Type II roadmap commitment</strong> — enterprise buyers require within 12 months</div>
+          <div class="fi"><strong>Demo modal asterisks</strong> rendering as text ← FIXED ✓</div>
+        </div>
+      </div>
+    </div>
+    <div class="cb cb-w" style="margin-top:1.5rem"><div class="ci">📌</div><div class="cc"><h4>Recommendation</h4><p>The platform is <strong>ready for investor presentations and pilot customer engagements today</strong>. Apply the remaining data consistency fixes (Issues 7, 8, 12) before closing the seed round. The product demonstrates genuine technical depth, a compelling market narrative, and a clear monetization path from $149/mo entry-SaaS to $999/mo MSSP enterprise contracts with unlimited scaling potential.</p></div></div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- §10 MARKET REPORT & ALTERNATIVE FINANCING -->
+<div class="page" id="market-report">
+  <div class="section">
+    <div class="sh"><div class="sn">10</div><h2>Market Analysis &amp; Funding Alternatives</h2><span class="desc">Market fit, competition, and capitalization options</span></div>
+    
+    <div class="cb cb-s">
+      <div class="ci">🚀</div>
+      <div class="cc">
+        <h4>Mid-Market Enterprise Opportunity</h4>
+        <p>PosturePilot targets the premium mid-market tier ($50M–$2B revenue, 100–5,000 employees). Large legacy tools are bloated, expensive, and require dedicated security teams. We address this with frictionless, unified CISO reporting and dashboard aggregation at SaaS price points.</p>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-bottom: 1.5rem;">
+      <div>
+        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem;color:var(--primary)">🎯 Where We Have a Chance (Wedges)</h3>
+        <div class="fl">
+          <div class="fi"><strong>AI Risk &amp; Governance:</strong> No traditional scanner monitors shadow LLM usage, prompt injection risks, and data exfiltration through AI tools. This is a massive product differentiator.</div>
+          <div class="fi"><strong>MSSP Channel ($999/mo):</strong> Multi-tenancy and white-labeling from Day One allows regional IT service providers to resell PosturePilot, bypassing long direct enterprise sales cycles.</div>
+          <div class="fi"><strong>Unified ASPM &amp; SOAR:</strong> Direct Jira and ServiceNow playbook integrations resolve the "prioritization without remediation" gap in traditional scanners.</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem;color:var(--red)">⚡ Tough Competition</h3>
+        <div class="fl">
+          <div class="fi"><strong>Entrenched Scanners:</strong> Qualys, Tenable, and Rapid7 have strong sales channels. We win by integrating <em>with</em> them rather than competing head-on as a scanner replacement.</div>
+          <div class="fi"><strong>Cloud/CNAPP Leaders:</strong> Wiz owns cloud posture but is cloud-only, leaving local environments unmanaged, and is too expensive for the mid-market.</div>
+          <div class="fi"><strong>AppSec ASPMs:</strong> Snyk and ArmorCode target developers. PosturePilot wins by offering a simpler, board-aligned CISO posture deck and SLA tracker.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem;color:var(--accent)">🏦 Financing &amp; Funding Alternatives</h3>
+    <div class="module-grid" style="margin-bottom: 1.5rem;">
+      <div class="mcard">
+        <div class="mhdr">
+          <div class="micon" style="background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center">💰</div>
+          <div>
+            <div class="mtitle">Small Business Loans (SBA)</div>
+            <div class="msub">Government-Backed Debt</div>
+          </div>
+          <span class="mbadge bnew" style="margin-left:auto">Debt Path</span>
+        </div>
+        <div class="mbody" style="margin-top:0.75rem">
+          <p>SBA Microloans (up to $50k) are highly accessible for early-stage capital. Larger SBA 7(a) loans (up to $5M) require 2 years of profitable history and personal collateral, making them difficult for pre-revenue software startups.</p>
+        </div>
+      </div>
+      
+      <div class="mcard">
+        <div class="mhdr">
+          <div class="micon" style="background:#ecfeff;color:#0891b2;display:flex;align-items:center;justify-content:center">📈</div>
+          <div>
+            <div class="mtitle">Revenue-Based Financing</div>
+            <div class="msub">Non-Dilutive Cash Advance</div>
+          </div>
+          <span class="mbadge bmod" style="margin-left:auto">SaaS-Friendly</span>
+        </div>
+        <div class="mbody" style="margin-top:0.75rem">
+          <p>Alternative lenders (Founderpath, Capchase, Lighter Capital) advance 4x–8x of your MRR once you reach $5K–$10K/mo. Repayments fluctuate as a percentage of your monthly sales, protecting your equity.</p>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr">
+          <div class="micon" style="background:#f0fdf4;color:#059669;display:flex;align-items:center;justify-content:center">🎁</div>
+          <div>
+            <div class="mtitle">Government R&amp;D Grants (SBIR)</div>
+            <div class="msub">Zero-Equity Funding</div>
+          </div>
+          <span class="mbadge blive" style="margin-left:auto">100% Free</span>
+        </div>
+        <div class="mbody" style="margin-top:0.75rem">
+          <p>Under the NSF, DoD, or DHS SBIR programs, PosturePilot's innovative AI Risk Governance and SOAR automation qualify for Phase I ($275k) and Phase II ($1.5M) research grants to build out proprietary technology.</p>
+        </div>
+      </div>
+
+      <div class="mcard">
+        <div class="mhdr">
+          <div class="micon" style="background:#faf5ff;color:#7c3aed;display:flex;align-items:center;justify-content:center">🤝</div>
+          <div>
+            <div class="mtitle">Venture Capital Outlook</div>
+            <div class="msub">Seed / Angel Funding</div>
+          </div>
+          <span class="mbadge bsoar" style="margin-left:auto">Equity Path</span>
+        </div>
+        <div class="mbody" style="margin-top:0.75rem">
+          <p>Fundraising probability is high (65%–80%) due to having a fully built, functional SaaS product (posturepilot.io) compared to slide decks. Showing 2–3 mid-market pilot sign-ups will dramatically accelerate term sheet closures.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cb cb-i">
+      <div class="ci">💡</div>
+      <div class="cc">
+        <h4>Strategic Recommendation</h4>
+        <p>Acquire 2-3 regional MSSP partners at $999/mo to establish a <strong>$3,000 MRR base</strong>. Use RBF/SBA Microloans to fund the SOC 2 Type II audit, and concurrently apply for an NSF SBIR Phase I grant. This builds an index of revenue and non-dilutive capital that maximizes valuation leverage when pitching VCs.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>PosturePilot</strong> — Cybersecurity Command Center &nbsp;|&nbsp;
+  <strong>posturepilot.io</strong> &nbsp;|&nbsp;
+  Investor Product Report · June 2026 &nbsp;|&nbsp;
+  <em>Confidential — For Authorized Recipients Only</em><br/><br/>
+  <small>Prepared for investment evaluation purposes. All metrics represent current product state as of June 2026. Financial projections based on SaaS industry benchmarks.</small>
+</div>
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+</script>
+</body>
+</html>

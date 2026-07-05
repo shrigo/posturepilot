@@ -121,3 +121,30 @@ model SoarLog {
 
   @@index([orgId])
 }
+
+// ─── Login Attempts Tracker ───────────────────────────────────────────────────
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  firstName String?
+  lastName  String?
+  provider  String   // "google" | "credentials"
+  status    String   // "success" | "failed"
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+// ─── SaaS Upgrade Requests Logger ─────────────────────────────────────────────
+model UpgradeRequest {
+  id         String   @id @default(cuid())
+  clientName String
+  userEmail  String
+  moduleName String
+  createdAt  DateTime @default(now())
+
+  @@index([userEmail])
+}
+

@@ -163,7 +163,7 @@ html, body {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0;
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
   cursor: pointer;
@@ -199,19 +199,6 @@ html, body {
 .app-layout.bg-settings .sidebar .nav-item.active { background: #eef2ff; box-shadow: none; }
 
 
-.nav-item.active .nav-icon {
-  color: var(--sidebar-accent);
-  filter: drop-shadow(0 0 4px rgba(249,115,22,0.3));
-}
-
-.nav-icon {
-  font-size: 1rem;
-  width: 20px;
-  text-align: center;
-  flex-shrink: 0;
-  color: var(--sidebar-text);
-  transition: color 0.15s;
-}
 
 .nav-label {
   font-size: 0.8125rem;
@@ -221,8 +208,7 @@ html, body {
   transition: color 0.15s;
 }
 
-.nav-item:hover .nav-label,
-.nav-item:hover .nav-icon { color: var(--sidebar-text-active); }
+.nav-item:hover .nav-label { color: var(--sidebar-text-active); }
 
 .nav-item.active .nav-label {
   color: var(--sidebar-text-active);
@@ -699,6 +685,7 @@ html, body {
   justify-content: center;
   position: relative;
   overflow: hidden;
+  padding: 1.5rem;
 }
 
 .login-bg-grid {
@@ -715,7 +702,8 @@ html, body {
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 20px;
   padding: 2.5rem;
-  width: 420px;
+  width: 100%;
+  max-width: 420px;
   box-shadow: 
     0 25px 50px -12px rgba(0, 0, 0, 0.25),
     0 0 0 1px rgba(15, 23, 42, 0.05);
@@ -877,7 +865,7 @@ html, body {
     transform: translateX(-100%);
     top: 0;
     left: 0;
-    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     border: none;
     border-right: 1px solid var(--sidebar-border);
@@ -913,11 +901,13 @@ html, body {
   .topbar {
     margin: 0;
     height: auto !important;
-    min-height: 70px !important;
+    min-height: 60px !important;
     border-radius: 12px;
-    padding: 0.75rem 1rem !important;
-    flex-wrap: wrap !important;
+    padding: 0.5rem 0.75rem !important;
+    flex-wrap: nowrap !important;
     gap: 0.5rem !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
 
   .mobile-sidebar-toggle {
@@ -936,13 +926,51 @@ html, body {
   }
   
   .topbar-right {
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
     gap: 0.5rem !important;
     margin-left: auto !important;
+    align-items: center !important;
+  }
+
+  /* Shrink topbar title/subtitle on mobile */
+  .topbar-title {
+    font-size: 0.95rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+
+  .topbar-subtitle {
+    display: none !important;
+  }
+
+  /* Hide enterprise mode toggle on mobile — too wide */
+  .topbar-right > div[title*="White-Label"],
+  .topbar-right > div[title*="Enterprise"] {
+    display: none !important;
+  }
+
+  /* Prevent client switcher dropdown from going off-screen */
+  .topbar-right > div > div[style*="position: absolute"] {
+    right: 0 !important;
+    left: auto !important;
+    min-width: min(280px, 90vw) !important;
   }
 
   .page-content {
     padding: 0.75rem;
+  }
+
+  /* Prevent main content from causing horizontal scroll */
+  .main-content {
+    overflow-x: hidden;
+    min-width: 0;
+  }
+
+  /* Reduce large stat number font size on mobile */
+  .stat-value {
+    font-size: 1.6rem !important;
   }
   
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
@@ -977,6 +1005,41 @@ html, body {
     grid-template-columns: 1fr !important;
     height: auto !important;
     gap: 1.25rem !important;
+  }
+
+  /* Login card reduced padding on narrow phones */
+  .login-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: 16px;
+  }
+
+  /* Hide data tables on mobile and show a helpful prompt */
+  .data-table {
+    display: none !important;
+  }
+
+  .card:has(.data-table)::after {
+    content: "💻 For detailed data grids and full CSV exports, please access the Command Center on a desktop browser.";
+    display: block;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* Dark mode variant for dark cards */
+  .app-layout.bg-ciso .card:has(.data-table)::after,
+  .card[style*="15, 23, 42"]:has(.data-table)::after,
+  .card[style*="#0f172a"]:has(.data-table)::after {
+    background: #1e293b;
+    border-color: #334155;
+    color: #94a3b8;
   }
 }
 
@@ -1077,3 +1140,19 @@ html, body {
     display: none !important;
   }
 }
+
+.google-login-btn {
+  transition: all 0.15s ease-in-out;
+}
+
+.google-login-btn:hover {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.google-login-btn:active {
+  transform: translateY(0);
+}
+

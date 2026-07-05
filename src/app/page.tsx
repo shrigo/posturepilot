@@ -6,6 +6,7 @@ import ShieldViz from "@/components/ShieldViz";
 import MythosPromo from "@/components/MythosPromo";
 import { useState, useEffect } from "react";
 import { useClient } from "@/context/ClientContext";
+import { useSession, signOut } from "next-auth/react";
 
 const TABS = ["Configure","Monitor","Secure","Report"];
 const BOARDS = [
@@ -15,7 +16,7 @@ const BOARDS = [
   {id:"infosec",icon:"📋",label:"Info Security",val:"SOC2",unit:"Compliant",c:"#059669"},
   {id:"kpi",icon:"📊",label:"Security KPIs",val:"91%",unit:"SLA",c:"#d97706"},
   {id:"appsec",icon:"🔐",label:"App Security",val:"23",unit:"Critical",c:"#dc2626"},
-  {id:"traffic",icon:"📡",label:"Traffic Monitor",val:"2.4TB",unit:"Today",c:"#0891b2"},
+  {id:"traffic",icon:"🎛️",label:"Traffic Monitor",val:"12.4 Gbps",unit:"Peak Rate",c:"#0891b2"},
   {id:"server",icon:"🖥️",label:"Server Health",val:"98%",unit:"Uptime",c:"#7c3aed"},
   {id:"ai-risk",icon:"🤖",label:"AI Risk",val:"3",unit:"Shadow AI",c:"#ea580c",isNew:true},
   {id:"secure",icon:"📡",label:"Risk Radar",val:"99.6%",unit:"Noise Cut",c:"#16a34a",isNew:true},
@@ -29,8 +30,9 @@ const PLANS = [
 ];
 
 export default function Page() {
+  const { data: session, status } = useSession();
   const { isEnterpriseMode } = useClient();
-  const [tab,setTab]=useState("Monitor");
+  const [tab,setTab]=useState("Configure");
   const [menuOpen,setMenuOpen]=useState(false);
   const [showTop,setShowTop]=useState(false);
   const [activeMockupTab, setActiveMockupTab] = useState("Security KPIs");
@@ -234,7 +236,7 @@ export default function Page() {
       const navHeight = navElement ? navElement.offsetHeight : 64;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
-        top: elementPosition - navHeight + 1,
+        top: elementPosition - navHeight,
         behavior: "auto"
       });
     }
@@ -248,6 +250,10 @@ export default function Page() {
   },[]);
 
   useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     if (window.location.hash) {
       const id = window.location.hash.substring(1);
       setTimeout(() => {
@@ -257,11 +263,13 @@ export default function Page() {
           const navHeight = navElement ? navElement.offsetHeight : 64;
           const elementPosition = element.getBoundingClientRect().top + window.scrollY;
           window.scrollTo({
-            top: elementPosition - navHeight + 1,
+            top: elementPosition - navHeight,
             behavior: "auto"
           });
         }
       }, 150);
+    } else {
+      window.scrollTo(0, 0);
     }
   }, []);
 
@@ -354,7 +362,7 @@ export default function Page() {
     <div id="top" style={{fontFamily:"Inter,sans-serif",background:"#fff",color:"#0f172a",minHeight:"100vh",maxWidth:"100%"}}>
       <style>{`
         *{box-sizing:border-box;margin:0;padding:0}
-        #configure, #ciso, #monitor, #secure, #report, #features { scroll-margin-top: 120px; }
+        #configure, #ciso, #monitor, #secure, #report, #features { scroll-margin-top: 64px !important; }
         html,body{max-width:100%;overflow-x:hidden;width:100%;position:relative;}
         .hcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(79,70,229,0.15)!important}
         .hcard{transition:all 0.2s}
@@ -400,7 +408,7 @@ export default function Page() {
         .nav-report:hover{background:#fd590b;color:#fff!important;}
         .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
         .hamburger span{display:block;width:22px;height:2px;background:#0f172a;border-radius:2px;transition:all 0.2s;}
-        .mobile-menu{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e7ff;padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+        .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid #e0e7ff;padding:1rem 1.5rem;flex-direction:column;gap:0.5rem;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,0.08);}
         .mobile-menu.open{display:flex;}
         .mobile-menu a{font-size:1rem;font-weight:700;padding:0.6rem 0;border-bottom:1px solid #f1f5f9;text-decoration:none;}
         .nav-ciso-btn { display: inline-flex; }
@@ -449,6 +457,14 @@ export default function Page() {
         }
         @media(max-width:768px){
           .desktop-br { display: none !important; }
+          .hero-badge { display: none !important; }
+          .desktop-only-text { display: none !important; }
+          .hero-section { padding-top: 0.25rem !important; min-height: auto !important; }
+          .hero-grid { grid-template-columns: 1fr !important; text-align: center; gap: 0.5rem !important; }
+          .hero-h1 { font-size: 1.65rem !important; margin-bottom: 0.4rem !important; line-height: 1.15 !important; }
+          .hero-desc { font-size: 0.8rem !important; line-height: 1.35 !important; margin-bottom: 0.5rem !important; }
+          .hero-btns { margin-bottom: 0.75rem !important; gap: 0.5rem !important; }
+          .hero-btns a { padding: 0.65rem 1.1rem !important; font-size: 0.88rem !important; }
         }
         
         /* Twinkling Star AI sparkle animation (No rotation, flashes scale/brightness) */
@@ -513,7 +529,7 @@ export default function Page() {
       `}</style>
 
       {/* NAV */}
-      <nav style={{position:"sticky",top:0,zIndex:100,background:"#fff",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
+      <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:1000,background:"#fff",backdropFilter:"blur(16px)",borderBottom:"1px solid #e0e7ff",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 1.5rem",height:64}}>
         <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="logo-container" style={{display:"flex",alignItems:"center",textDecoration:"none"}}>
           <Image src="/hlogotag_v2.jpg" alt="PosturePilot" width={270} height={62} style={{objectFit:"contain",objectPosition:"left"}} onError={e=>{e.currentTarget.style.display="none";}}/>
         </a>
@@ -565,7 +581,16 @@ export default function Page() {
           >
             👨‍✈️ CISO Cockpit
           </a>
-          <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
+          {status === 'loading' ? (
+            <span style={{color:"transparent",fontSize:"0.875rem",padding:"0.5rem 1rem"}}>Loading</span>
+          ) : status === 'authenticated' ? (
+            <div className="nav-signin" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Link href="/dashboard" style={{color:"#4f46e5",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem",fontWeight:700}}>Dashboard</Link>
+              <a href="#" onClick={(e) => { e.preventDefault(); signOut({ callbackUrl: '/' }); }} style={{color:"#ef4444",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem",fontWeight:600}}>Sign out</a>
+            </div>
+          ) : (
+            <Link href="/login" className="nav-signin" style={{color:"#64748b",fontSize:"0.875rem",textDecoration:"none",padding:"0.5rem 1rem",fontWeight:600}}>Sign in</Link>
+          )}
           <button 
             onClick={() => setIsPromoOpen(true)} 
             className="nav-try-free nav-try-free-pulse" 
@@ -606,6 +631,7 @@ export default function Page() {
           </button>
         </div>
       </nav>
+      <div style={{height:64}}/>
       {/* Mobile menu */}
       <div className={`mobile-menu${menuOpen?" open":""}`}>
         <a href="#ciso" onClick={(e)=>scrollToSection(e,"ciso")} style={{color:"#7c3aed", fontWeight:800, borderBottom:"2px solid #e0e7ff", paddingBottom:"0.8rem", marginBottom:"0.25rem"}}>👨‍✈️ CISO Cockpit</a>
@@ -613,7 +639,22 @@ export default function Page() {
           <a key={t} href={"#"+t.toLowerCase()} onClick={(e)=>scrollToSection(e,t.toLowerCase())}
             style={{color:i===0?"#1e2d6e":i===1?"#4f46e5":i===2?"#16a34a":"#7c3aed"}}>{t}</a>
         ))}
-        <Link href="/login" onClick={()=>setMenuOpen(false)} style={{color:"#64748b"}}>Sign in</Link>
+        {status === 'loading' ? (
+          <span style={{color:"transparent", padding:"0.5rem 0"}}>Loading</span>
+        ) : status === 'authenticated' ? (
+          <>
+            <Link href="/dashboard" onClick={()=>setMenuOpen(false)} style={{color:"#4f46e5", fontWeight:700}}>Dashboard</Link>
+            <a 
+              href="#"
+              onClick={(e) => { e.preventDefault(); setMenuOpen(false); signOut({ callbackUrl: '/' }); }}
+              style={{color: "#ef4444", fontWeight: 700}}
+            >
+              Sign out
+            </a>
+          </>
+        ) : (
+          <Link href="/login" onClick={()=>setMenuOpen(false)} style={{color:"#64748b"}}>Sign in</Link>
+        )}
         <button 
           onClick={() => { setIsPromoOpen(true); setMenuOpen(false); }} 
           className="nav-try-free-pulse"
@@ -663,26 +704,30 @@ export default function Page() {
 
           {/* LEFT */}
           <div className="hero-left">
-            <div style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
+            <div className="hero-badge" style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
               <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Active AI-ASPM · 12 Security Posture Cockpits
             </div>
 
-            <h1 style={{fontSize:"clamp(2.2rem,3.6vw,3.2rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.1,color:"#0f172a",marginBottom:"1.25rem"}}>
+            <h1 className="hero-h1" style={{fontSize:"clamp(2.2rem,3.6vw,3.2rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.1,color:"#0f172a",marginBottom:"1.25rem"}}>
               <span style={{color:"#010859"}}>Command Your Security</span><br/>
               <span style={{color:"#4103d9"}}>with Next-Gen AI-ASPM</span>
             </h1>
 
-            <p style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:570}}>
-              Stop auditing the past. Ingest live code, cloud, and host<span className="desktop-br"><br/></span>
-              telemetry to orchestrate real-time clearance gates and<span className="desktop-br"><br/></span>
-              auto-dispatch playbooks. Manage active threat waves,<span className="desktop-br"><br/></span>
-              verify compliance guardrails, and transform fragmented<span className="desktop-br"><br/></span>
-              vulnerability noise into a unified Posture Flight Deck.
+            <p className="hero-desc" style={{fontSize:"1.05rem",color:"#475569",lineHeight:1.8,marginBottom:"2rem",maxWidth:570}}>
+              <span className="desktop-only-text">Stop auditing the past. </span>Ingest live code, cloud, and host <span className="desktop-br"><br/></span>
+              telemetry to orchestrate real-time clearance gates and <span className="desktop-br"><br/></span>
+              auto-dispatch playbooks. Manage active threat waves, <span className="desktop-br"><br/></span>
+              verify compliance guardrails, and transform fragmented <span className="desktop-br"><br/></span>
+              vulnerability noise into a unified Posture Command Center.
             </p>
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
-              <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Start Free Trial →</Link>
-              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} style={{background:"#fff",color:"#4f46e5",fontWeight:600,fontSize:"1rem",padding:"0.875rem 1.5rem",borderRadius:10,textDecoration:"none",border:"1px solid #c4b5fd"}}>View Demo</Link>
+              {status === 'authenticated' ? (
+                <Link href="/dashboard" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Go to Command Center →</Link>
+              ) : (
+                <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Start Free Trial →</Link>
+              )}
+              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} style={{background:"linear-gradient(135deg,#1e40af,#010859)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(30,64,175,0.25)"}}>View Demo</Link>
             </div>
 
             <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
@@ -1338,7 +1383,7 @@ export default function Page() {
 
                       {/* Traffic Monitor */}
                       <div style={{borderTop:"1px solid #f1f5f9",paddingTop:"0.75rem",marginTop:"0.5rem"}}>
-                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.35rem"}}>📡 Traffic Monitor</div>
+                        <div style={{fontSize:"0.72rem",fontWeight:800,color:"#0f172a",marginBottom:"0.35rem"}}>🎛️ Traffic Monitor</div>
                         <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.58rem",marginBottom:4}}>
                           <span style={{color:"#64748b"}}>Peak: 2.4 Gbps</span>
                           <span style={{fontWeight:700,color:"#0f172a"}}>1.8 TB Today</span>
@@ -2013,7 +2058,7 @@ export default function Page() {
                 <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:"0.5rem",marginBottom:"1.5rem"}}>
                   {p.features.map(f=><li key={f} style={{fontSize:"0.8rem",color:"#475569",display:"flex",gap:"0.4rem"}}><span style={{color:p.c,fontWeight:700}}>✓</span>{f}</li>)}
                 </ul>
-                <Link href="/login" style={{display:"block",textAlign:"center",padding:"0.7rem",background:p.pop?"linear-gradient(135deg,#4f46e5,#7c3aed)":p.c+"12",border:p.pop?"none":"1px solid "+p.c+"30",borderRadius:10,color:p.pop?"#fff":p.c,fontWeight:700,fontSize:"0.82rem",textDecoration:"none"}}>{p.cta}</Link>
+                <Link href={status === 'authenticated' ? "/dashboard" : "/login"} style={{display:"block",textAlign:"center",padding:"0.7rem",background:p.pop?"linear-gradient(135deg,#4f46e5,#7c3aed)":p.c+"12",border:p.pop?"none":"1px solid "+p.c+"30",borderRadius:10,color:p.pop?"#fff":p.c,fontWeight:700,fontSize:"0.82rem",textDecoration:"none"}}>{status === 'authenticated' ? "Go to Dashboard" : p.cta}</Link>
               </div>
             ))}
           </div>
@@ -2024,7 +2069,11 @@ export default function Page() {
       <section style={{background:"linear-gradient(135deg,#1e1b4b,#4f46e5)",padding:"5rem 2rem",textAlign:"center"}}>
         <h2 style={{fontSize:"2.25rem",fontWeight:800,color:"#fff",marginBottom:"1rem",letterSpacing:"-0.03em"}}>Ready to pilot your security posture?</h2>
         <p style={{color:"rgba(255,255,255,0.7)",marginBottom:"2rem"}}>Upload your first scan in minutes. No credit card required.</p>
-        <Link href="/login" style={{display:"inline-block",background:"#fff",color:"#4f46e5",fontWeight:700,fontSize:"1rem",padding:"1rem 2.5rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>Start Your Free Trial →</Link>
+        {status === 'authenticated' ? (
+          <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#4f46e5",fontWeight:700,fontSize:"1rem",padding:"1rem 2.5rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>Go to Command Center →</Link>
+        ) : (
+          <Link href="/login" style={{display:"inline-block",background:"#fff",color:"#4f46e5",fontWeight:700,fontSize:"1rem",padding:"1rem 2.5rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>Start Your Free Trial →</Link>
+        )}
       </section>
 
       <footer style={{background:"#0f172a",padding:"2rem 2.5rem",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"1rem"}}>

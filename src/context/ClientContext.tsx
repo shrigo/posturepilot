@@ -1,5 +1,6 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 export type ClientKey = 'WELLS' | 'TOYOTA' | 'UR' | 'CISCO' | 'DISNEY';
 
@@ -14,7 +15,29 @@ export interface Client {
   threats: string;
   backlog: string;
   assets: string;
+  tier: 'Basic' | 'Professional' | 'Enterprise';
+  allowedModules: string[]; // URLs of modules they have license for
 }
+
+export const GUEST_CLIENT: Client = {
+  key: 'UR',
+  name: 'Self-Service Sandbox',
+  avatar: 'SS',
+  scanDate: 'Real-time',
+  score: 75,
+  grade: 'C',
+  criticals: '0',
+  threats: '0',
+  backlog: '0',
+  assets: '0',
+  tier: 'Basic',
+  allowedModules: [
+    '/dashboard', '/dashboard/posture', '/dashboard/settings',
+    '/dashboard/findings', '/dashboard/upload'
+  ]
+};
+
+const AUTHORIZED_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com', 'demo@posturepilot.io'];
 
 export const clients: Record<ClientKey, Client> = {
   WELLS: {
@@ -28,6 +51,14 @@ export const clients: Record<ClientKey, Client> = {
     threats: '2',
     backlog: '184',
     assets: '14,240',
+    tier: 'Enterprise',
+    allowedModules: [
+      '/dashboard', '/dashboard/posture', '/dashboard/ai-risk', '/dashboard/appsec',
+      '/dashboard/cloud', '/dashboard/infosec', '/dashboard/dispatch', '/dashboard/server',
+      '/dashboard/kpi', '/dashboard/identity', '/dashboard/network', '/dashboard/secure',
+      '/dashboard/traffic', '/dashboard/ciso', '/dashboard/findings', '/dashboard/upload',
+      '/dashboard/settings'
+    ]
   },
   TOYOTA: {
     key: 'TOYOTA',
@@ -40,6 +71,13 @@ export const clients: Record<ClientKey, Client> = {
     threats: '1',
     backlog: '78',
     assets: '9,450',
+    tier: 'Professional',
+    allowedModules: [
+      '/dashboard', '/dashboard/posture', '/dashboard/appsec', '/dashboard/cloud',
+      '/dashboard/infosec', '/dashboard/server', '/dashboard/kpi', '/dashboard/identity',
+      '/dashboard/network', '/dashboard/secure', '/dashboard/traffic', '/dashboard/ciso',
+      '/dashboard/findings', '/dashboard/upload', '/dashboard/settings'
+    ] // lacks ai-risk and dispatch
   },
   UR: {
     key: 'UR',
@@ -52,6 +90,11 @@ export const clients: Record<ClientKey, Client> = {
     threats: '0',
     backlog: '45',
     assets: '5,120',
+    tier: 'Basic',
+    allowedModules: [
+      '/dashboard', '/dashboard/posture', '/dashboard/cloud', '/dashboard/server',
+      '/dashboard/findings', '/dashboard/upload', '/dashboard/settings'
+    ] // highly restricted basic plan
   },
   CISCO: {
     key: 'CISCO',
@@ -64,6 +107,14 @@ export const clients: Record<ClientKey, Client> = {
     threats: '0',
     backlog: '12',
     assets: '28,400',
+    tier: 'Enterprise',
+    allowedModules: [
+      '/dashboard', '/dashboard/posture', '/dashboard/ai-risk', '/dashboard/appsec',
+      '/dashboard/cloud', '/dashboard/infosec', '/dashboard/dispatch', '/dashboard/server',
+      '/dashboard/kpi', '/dashboard/identity', '/dashboard/network', '/dashboard/secure',
+      '/dashboard/traffic', '/dashboard/ciso', '/dashboard/findings', '/dashboard/upload',
+      '/dashboard/settings'
+    ]
   },
   DISNEY: {
     key: 'DISNEY',
@@ -76,11 +127,27 @@ export const clients: Record<ClientKey, Client> = {
     threats: '3',
     backlog: '115',
     assets: '12,650',
+    tier: 'Professional',
+    allowedModules: [
+      '/dashboard', '/dashboard/posture', '/dashboard/appsec', '/dashboard/cloud',
+      '/dashboard/infosec', '/dashboard/dispatch', '/dashboard/server', '/dashboard/kpi',
+      '/dashboard/identity', '/dashboard/network', '/dashboard/secure', '/dashboard/traffic',
+      '/dashboard/ciso', '/dashboard/findings', '/dashboard/upload', '/dashboard/settings'
+    ] // lacks ai-risk
   }
+};
+
+export const CLIENT_MAPPING: Record<string, ClientKey[]> = {
+  'shrigo.now@gmail.com': ['WELLS', 'TOYOTA', 'UR', 'CISCO', 'DISNEY'],
+  'shrigonow@gmail.com': ['WELLS', 'TOYOTA', 'UR', 'CISCO', 'DISNEY'],
+  'demo@posturepilot.io': ['WELLS', 'TOYOTA', 'UR', 'CISCO', 'DISNEY'],
+  // Future clients can be added here, e.g.:
+  // 'user@toyota.com': ['TOYOTA'],
 };
 
 interface ClientContextType {
   currentClient: Client;
+  allowedClients: ClientKey[];
   setClient: (key: ClientKey) => void;
   isEnterpriseMode: boolean;
   setIsEnterpriseMode: (val: boolean) => void;
@@ -95,6 +162,7 @@ interface ClientContextType {
 const ClientContext = createContext<ClientContextType | undefined>(undefined);
 
 export function ClientProvider({ children }: { children: React.ReactNode }) {
+  const { data: session } = useSession();
   const [currentKey, setCurrentKey] = useState<ClientKey>('WELLS');
   const [isEnterpriseMode, setIsEnterpriseMode] = useState<boolean>(false);
   const [isUnderAttack, setIsUnderAttack] = useState<boolean>(false);
@@ -104,6 +172,12 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
     high: 30,
     med: 90
   });
+
+  const email = session?.user?.email;
+  const allowedClients = email ? (CLIENT_MAPPING[email] || []) : [];
+  const isAuthorized = allowedClients.length > 0;
+  const safeKey = allowedClients.includes(currentKey) ? currentKey : allowedClients[0];
+  const activeClient = isAuthorized ? clients[safeKey] : GUEST_CLIENT;
 
   useEffect(() => {
     const saved = localStorage.getItem('posturepilot_client') as ClientKey;
@@ -127,6 +201,7 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const setClient = (key: ClientKey) => {
+    if (!isAuthorized || !allowedClients.includes(key)) return; // Only allow permitted switches
     if (clients[key]) {
       setCurrentKey(key);
       localStorage.setItem('posturepilot_client', key);
@@ -150,7 +225,8 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ClientContext.Provider value={{ 
-      currentClient: clients[currentKey], 
+      currentClient: activeClient, 
+      allowedClients,
       setClient, 
       isEnterpriseMode, 
       setIsEnterpriseMode: toggleEnterpriseMode,
