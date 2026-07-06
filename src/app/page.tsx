@@ -723,11 +723,11 @@ export default function Page() {
 
             <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
               {status === 'authenticated' ? (
-                <Link href="/dashboard" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Go to Command Center →</Link>
+                <Link href="/dashboard" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)",display:"inline-block",minWidth:"220px",textAlign:"center"}}>Go to Command Center →</Link>
               ) : (
-                <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)"}}>Start Free Trial →</Link>
+                <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)",display:"inline-block",minWidth:"220px",textAlign:"center"}}>Start Free Trial →</Link>
               )}
-              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} style={{background:"linear-gradient(135deg,#1e40af,#010859)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(30,64,175,0.25)"}}>View Demo</Link>
+              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} style={{background:"linear-gradient(135deg,#1e40af,#010859)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(30,64,175,0.25)",display:"inline-block",minWidth:"220px",textAlign:"center"}}>View Demo</Link>
             </div>
 
             <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
