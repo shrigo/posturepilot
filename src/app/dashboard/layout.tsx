@@ -80,7 +80,19 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <DashboardLayoutContent>{children}</DashboardLayoutContent>
+    <>
+      {/* Mobile Blocker - Only visible on small screens */}
+      <div className="mobile-dashboard-blocker">
+        <div className="mobile-blocker-content">
+          <div className="mobile-blocker-icon">⚠️</div>
+          <h2>Desktop Required</h2>
+          <p>The PosturePilot Risk Operations Center features highly dense data grids and terminal visualizations that are currently optimized for desktop displays.</p>
+          <a href="/" className="mobile-blocker-btn">Return to Homepage</a>
+        </div>
+      </div>
+      
+      <DashboardLayoutContent>{children}</DashboardLayoutContent>
+    </>
   );
 }
 
