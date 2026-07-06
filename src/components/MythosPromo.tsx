@@ -992,33 +992,10 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
               overflow-y: auto;
             }
             .mythos-sidebar {
-              border-right: none;
-              border-bottom: 1px solid #e2e8f0;
-              height: auto;
-              flex-direction: column;
-              padding: 0;
+              display: none !important;
             }
-            .mythos-sidebar-logo {
-              padding: 0.5rem;
-              border-bottom: 1px solid #e2e8f0;
-            }
-            .mythos-sidebar-modules {
-              flex-direction: row;
-              overflow-x: auto;
-              overflow-y: hidden;
-              padding: 0.5rem;
-              scroll-snap-type: x mandatory;
-              gap: 0.5rem;
-            }
-            .mythos-tab {
-              min-width: 185px;
-              scroll-snap-align: start;
-              border-left: none;
-              border-bottom: 3px solid transparent;
-            }
-            .mythos-tab.active {
-              border-left: none;
-              border-bottom: 3px solid #7c3aed;
+            .mythos-mobile-module-header {
+              display: flex !important;
             }
             .mythos-right-canvas {
               height: auto;
@@ -1107,6 +1084,23 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Mobile-only: Active module name header */}
+        <div className="mythos-mobile-module-header" style={{
+          display: "none",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.6rem 1rem",
+          borderBottom: "1px solid #e2e8f0",
+          background: "#fafbff",
+          flexShrink: 0
+        }}>
+          <span style={{ fontSize: "1.1rem" }}>{activeModule.icon}</span>
+          <span style={{ fontSize: "0.9rem", fontWeight: 800, color: "#0f172a" }}>{activeModule.title}</span>
+          <span style={{ marginLeft: "auto", fontSize: "0.72rem", color: "#7c3aed", fontWeight: 700, background: "rgba(124,58,237,0.08)", padding: "0.2rem 0.6rem", borderRadius: "20px" }}>
+            Slide {activeSlide + 1} / 3
+          </span>
         </div>
 
         {/* Right Slideshow Canvas */}
