@@ -1096,8 +1096,15 @@ export default function MythosPromo({ onClose, initialSlide = 0 }: { onClose: ()
           background: "#fafbff",
           flexShrink: 0
         }}>
-          <span style={{ fontSize: "1.1rem" }}>{activeModule.icon}</span>
-          <span style={{ fontSize: "0.9rem", fontWeight: 800, color: "#0f172a" }}>{activeModule.title}</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <span style={{ fontSize: "1rem", lineHeight: 1 }}>{activeModule.icon}</span>
+              <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "#0f172a", lineHeight: 1 }}>{activeModule.title}</span>
+            </div>
+            <span style={{ fontSize: "0.55rem", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.05em", paddingLeft: "1.4rem" }}>
+              Module {MODULES_DATA.findIndex(m => m.id === activeModuleId) + 1} of 12
+            </span>
+          </div>
           <span style={{ marginLeft: "auto", fontSize: "0.72rem", color: "#7c3aed", fontWeight: 700, background: "rgba(124,58,237,0.08)", padding: "0.2rem 0.6rem", borderRadius: "20px" }}>
             Slide {activeSlide + 1} / 3
           </span>
