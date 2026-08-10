@@ -109,7 +109,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
             }}
             title="Toggle White-Label / Enterprise mode"
           >
-            <span>{isEnterpriseMode ? '💼 Enterprise Mode' : '🛡️ White-Label'}</span>
+            <span>{isEnterpriseMode ? 'Enterprise Mode' : 'White-Label'}</span>
           </div>
 
           {/* ── CLIENT SWITCHER ── */}
@@ -146,7 +146,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
               {/* Text */}
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: '0.62rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', lineHeight: 1 }}>
-                  {meta.icon} {meta.industry} Client
+                  {meta.industry} Client
                 </div>
                 <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.3 }}>
                   {currentClient.name}
@@ -237,7 +237,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
                           {c.name}
                         </div>
                         <div style={{ fontSize: '0.65rem', color: '#94a3b8', fontWeight: 600 }}>
-                          {cm.icon} {cm.industry}
+                          {cm.industry}
                         </div>
                       </div>
 
@@ -277,7 +277,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
                           animation: 'fadeIn 0.1s ease',
                         }}>
                           <div style={{ fontSize: '0.62rem', fontWeight: 800, color: hoveredMeta.color, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 8 }}>
-                            {hoveredMeta.icon} {hoveredMeta.industry} · {hovered.name}
+                            {hoveredMeta.industry} · {hovered.name}
                           </div>
                           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                             {[
@@ -293,7 +293,7 @@ export default function Topbar({ title, subtitle }: TopbarProps) {
                             ))}
                           </div>
                           <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid #1e293b', fontSize: '0.62rem', color: '#64748b', fontWeight: 600 }}>
-                            🕐 Last scan: {hovered.scanDate}
+                            Last scan: {hovered.scanDate}
                           </div>
                           <div style={{ marginTop: 6, fontSize: '0.62rem', color: hoveredMeta.color, fontWeight: 700 }}>
                             Click to switch →
