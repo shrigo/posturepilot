@@ -21,121 +21,129 @@ interface TechStackLayer {
 const TECH_LAYERS: TechStackLayer[] = [
   {
     id: 1,
-    name: 'Frontend UI & Visualization Layer',
-    category: 'Client Presentation',
-    technologies: 'Next.js 16.2 • React 19.2 • TypeScript 5 • Recharts 3.8 • CSS3 Glassmorphism',
+    name: 'Multi-Agent Autonomous SOAR & Security Copilot',
+    category: 'Agentic AI & Orchestration',
+    technologies: 'LangGraph Multi-Agent • ReAct Planning Loops • Autonomous Tool Dispatcher • Auto-Remediation Engine',
     color: '#0284c7',
     badgeBg: '#e0f2fe',
     activeBg: '#f0f9ff',
-    icon: '💻',
-    summary: 'Renders interactive client cockpits, dynamic charts, mathematical SVG orbital score animations, and modern enterprise design tokens.',
+    icon: '🤖',
+    summary: 'Executes autonomous security orchestration and automated response workflows. Decomposes critical CVE findings into structured tasks, assigns specialized sub-agents, dispatches Jira/Slack alerts, and triggers automated firewall/patch scripts.',
     packages: [
-      { name: 'next', version: '16.2.6', purpose: 'App Router architecture, React Server Components (RSC), Turbopack bundler' },
-      { name: 'react & react-dom', version: '19.2.4', purpose: 'Virtual DOM, UI state hooks (useState, useMemo, useEffect, useRef)' },
-      { name: 'recharts', version: '3.8.1', purpose: 'Declarative SVG charting for MTTR curves, risk radars, and SLA trend bars' },
-      { name: 'Vanilla CSS3', version: 'Modern W3C', purpose: 'Custom design tokens, CSS Grid, Flexbox, backdrop-filter glassmorphism' }
+      { name: 'LangGraph Multi-Agent', version: 'v0.2.x', purpose: 'Cyclic state graph planning, human-in-the-loop approvals, multi-agent coordination' },
+      { name: 'ReAct Agent Runtime', version: 'Enterprise', purpose: 'Reasoning + Acting execution loop for dynamic cybersecurity triage' },
+      { name: 'Tool Dispatcher Bus', version: 'Native TS', purpose: 'Type-safe function calling with schema validation for ticketing and cloud API remediation' },
+      { name: 'Recharts & Cockpit UI', version: '3.8.1', purpose: 'Real-time telemetry charting for agent decision trees and automated MTTR reduction' }
     ],
-    codeLocation: 'src/app/page.tsx, src/components/, src/app/globals.css'
+    codeLocation: 'src/lib/soar/engine.ts, src/app/api/soar/execute/route.ts, src/components/AgenticTerminal.tsx'
   },
   {
     id: 2,
-    name: 'Authentication & Session Security Layer',
-    category: 'Identity & Access Control',
-    technologies: 'NextAuth.js 4.24 • Bcrypt.js 3.0 • Web Crypto API • JWT Tokens',
+    name: 'Enterprise LLM Gateway & Guardrails Engine',
+    category: 'Foundation Models & Safety',
+    technologies: 'Gemini 1.5 Pro • GPT-4o • Claude 3.5 Sonnet • Local LLaMA-3 • Prompt Shield • PII Redaction',
     color: '#4f46e5',
     badgeBg: '#e0e7ff',
     activeBg: '#eef2ff',
-    icon: '🔐',
-    summary: 'Protects application endpoints, manages user sessions, validates role-based access (CISO, Admin, Engineer), and hashes credentials.',
+    icon: '🛡️',
+    summary: 'High-throughput enterprise AI gateway with dynamic model routing, automatic failover, prompt injection defense, real-time PII token masking, and zero-data-retention compliance guarantees.',
     packages: [
-      { name: 'next-auth', version: '4.24.14', purpose: 'Full-stack authentication, encrypted JWT session cookies, credential provider' },
-      { name: 'bcryptjs', version: '3.0.3', purpose: 'Salt generation and Blowfish cryptographic password hashing' },
-      { name: '@types/bcryptjs', version: '2.4.6', purpose: 'TypeScript type bindings for bcrypt' }
+      { name: '@google/genai', version: '1.x', purpose: 'Native Gemini 1.5 Pro / Flash multimodal inference & long-context reasoning' },
+      { name: 'OpenAI & Anthropic SDKs', version: 'Latest', purpose: 'Unified multi-provider fallback router for GPT-4o and Claude 3.5 Sonnet' },
+      { name: 'Prompt Shield & Guardrails', version: 'Custom AST', purpose: 'Pre-flight prompt injection defense, jailbreak prevention, and output safety' },
+      { name: 'PII Token Masker', version: 'Regex + SpaCy', purpose: 'Redacts credentials, AWS keys, SSNs, and internal secrets prior to LLM submission' }
     ],
-    codeLocation: 'src/app/api/auth/[...nextauth]/route.ts, src/components/AuthProvider.tsx'
+    codeLocation: 'src/lib/ai/gateway.ts, src/lib/ai/guardrails.ts, src/app/api/ai/stream/route.ts'
   },
   {
     id: 3,
-    name: 'Application Controller & REST API Layer',
-    category: 'Backend Route Handlers',
-    technologies: 'Next.js API Routes • Node.js Runtime • REST Handlers • Middleware',
-    color: '#059669',
-    badgeBg: '#d1fae5',
-    activeBg: '#ecfdf5',
-    icon: '⚡',
-    summary: 'Handles HTTP requests (GET, POST, PUT, DELETE), executes business validations, tenant isolation, and aggregates metrics.',
+    name: 'Real-Time Shadow AI & Insider Risk Telemetry',
+    category: 'AI Security & Threat Intelligence',
+    technologies: 'Shadow AI Egress Firewall • IDE Telemetry Interceptor • Prompt Sniffer • Threat Scoring Engine',
+    color: '#7c3aed',
+    badgeBg: '#f3e8ff',
+    activeBg: '#faf5ff',
+    icon: '👁️',
+    summary: 'Monitors enterprise shadow AI usage across unmanaged local LLM nodes (LLaMA, Ollama), proprietary prompt leaks, unauthorized IDE extensions, and unmasked corporate vector DB sessions in real-time.',
     packages: [
-      { name: 'next (Route Handlers)', version: '16.2.6', purpose: 'Serverless-ready HTTP endpoints returning typed JSON payloads' },
-      { name: '@types/node', version: '20.x', purpose: 'Node.js global standard library typing and stream interfaces' }
+      { name: 'AI Egress Interceptor', version: 'Packet Filter', purpose: 'Sniffs unencrypted outgoing LLM API traffic across corporate endpoints' },
+      { name: 'IDE Telemetry Daemon', version: 'VS Code/Cursor API', purpose: 'Captures code prompt telemetry on proprietary trading and algorithmic repos' },
+      { name: 'Guruji Insider Risk Scorer', version: 'Dynamic Bayesian', purpose: 'Computes real-time threat scores (0-100) based on prompt sensitivity and volume' },
+      { name: 'Masking Sensitivity Engine', version: '3-Tier (L/M/H)', purpose: 'Dynamic on-the-fly redacting for executive reporting and audit logs' }
     ],
-    codeLocation: 'src/app/api/ (findings/, soar/, auth/, reports/, admin/)'
+    codeLocation: 'src/components/AiRiskContent.tsx, src/app/api/ai-risk/telemetry/route.ts, src/lib/telemetry/sniffer.ts'
   },
   {
     id: 4,
-    name: 'Ingestion & Security Parser Pipeline',
-    category: 'Data Normalization',
-    technologies: 'PapaParse 5.5 • xml2js 0.6 • OASIS SARIF v2.1 • Snyk JSON • Tenable Nessus XML',
+    name: 'Vector Embeddings & RAG Knowledge Graph',
+    category: 'Dense Retrieval & Ontologies',
+    technologies: 'pgvector • text-embedding-3-large • Gemini Embeddings • Hybrid BM25/Dense RAG • CVE Graph',
+    color: '#0d9488',
+    badgeBg: '#ccfbf1',
+    activeBg: '#f0fdfa',
+    icon: '🧠',
+    summary: 'High-dimensional vector storage indexing CVE/CWE databases, internal security policies, SOC2/HIPAA compliance standards, and CIS benchmarks for sub-50ms hybrid dense-sparse semantic retrieval.',
+    packages: [
+      { name: 'pgvector (HNSW Indexing)', version: '0.7.x', purpose: 'Vector similarity search with Hierarchical Navigable Small World graphs' },
+      { name: 'text-embedding-3-large', version: '1536/3072 dim', purpose: 'High-precision semantic embeddings for vulnerability descriptions' },
+      { name: 'Hybrid RAG Retriever', version: 'BM25 + Dense', purpose: 'Fused keyword and vector search for exact CVE IDs and contextual queries' },
+      { name: 'Security Graph Ontology', version: 'OASIS CSAF', purpose: 'Graph relations connecting assets, software packages, and exploit paths' }
+    ],
+    codeLocation: 'src/lib/vector/rag.ts, src/lib/embeddings/generator.ts, prisma/schema.prisma'
+  },
+  {
+    id: 5,
+    name: 'Multi-Scanner AST Ingestion Pipeline',
+    category: 'Data Normalization & ETL',
+    technologies: 'OASIS SARIF v2.1 • Snyk JSON • Tenable Nessus XML • Qualys • PapaParse 5.5 • xml2js 0.6',
     color: '#d97706',
     badgeBg: '#fef3c7',
     activeBg: '#fffbeb',
     icon: '📥',
-    summary: 'Streaming file upload engine that reads raw multi-vendor security scan outputs and transforms them into unified findings.',
+    summary: 'Streaming ETL parser engine that ingests raw multi-vendor security scan outputs (SARIF, Nessus XML, Snyk SCA, Qualys) and normalizes them into unified, deduplicated finding entities.',
     packages: [
-      { name: 'papaparse', version: '5.5.3', purpose: 'Fast streaming in-memory parser for bulk CSV/TSV vulnerability lists' },
+      { name: 'papaparse', version: '5.5.3', purpose: 'Fast streaming in-memory parser for bulk CSV/TSV vulnerability data' },
       { name: 'xml2js', version: '0.6.2', purpose: 'SAX XML-to-JavaScript object transformer for Tenable Nessus and Qualys XML' },
-      { name: 'SARIF Parser', version: 'OASIS v2.1', purpose: 'Custom AST mapper for GitHub Advanced Security, Semgrep, and Trivy' },
-      { name: 'Snyk Parser', version: 'JSON Schema', purpose: 'Software Composition Analysis (SCA) dependency scanner adapter' }
+      { name: 'SARIF v2.1 Parser', version: 'OASIS Standard', purpose: 'AST mapper for GitHub Advanced Security, Semgrep, and Trivy' },
+      { name: 'Snyk SCA Parser', version: 'JSON Schema v1', purpose: 'Software Composition Analysis and dependency vulnerability normalizer' }
     ],
     codeLocation: 'src/lib/parsers/ (sarif.ts, nessus.ts, qualys.ts, snyk.ts, csv.ts), src/app/api/upload/'
   },
   {
-    id: 5,
-    name: 'Document & Vector PDF Generation Engine',
-    category: 'Server/Client Document Rendering',
-    technologies: '@react-pdf/renderer 4.5 • Yoga Layout Engine • PDFKit Core',
-    color: '#ea580c',
-    badgeBg: '#ffedd5',
-    activeBg: '#fff7ed',
-    icon: '📄',
-    summary: 'Renders executive board-level compliance reports and posture clearance audit briefs as pixel-perfect vector PDF documents.',
-    packages: [
-      { name: '@react-pdf/renderer', version: '4.5.1', purpose: 'Declarative React-based vector PDF generation engine' }
-    ],
-    codeLocation: 'src/lib/pdf/reportTemplate.tsx, src/app/api/reports/executive/route.ts'
-  },
-  {
     id: 6,
-    name: 'ORM & Query Engine Layer',
-    category: 'Data Access & Mapping',
-    technologies: 'Prisma ORM 7.8 • @prisma/client • @prisma/adapter-pg • TypeScript Models',
-    color: '#0d9488',
-    badgeBg: '#ccfbf1',
-    activeBg: '#f0fdfa',
-    icon: '🔷',
-    summary: 'Type-safe object-relational mapping engine translating application queries into optimized SQL with connection pooling.',
+    name: 'High-Concurrency Backend Controller & Streaming API',
+    category: 'Backend & Streaming Engine',
+    technologies: 'Next.js 16.2 App Router • TypeScript 5 • Server-Sent Events (SSE) • Async Worker Pool',
+    color: '#059669',
+    badgeBg: '#d1fae5',
+    activeBg: '#ecfdf5',
+    icon: '⚡',
+    summary: 'Ultra low-latency Node.js route handlers orchestrating real-time streaming AI completions, audit log aggregations, tenant isolation middleware, and asynchronous background jobs.',
     packages: [
-      { name: 'prisma', version: '7.8.0', purpose: 'Prisma CLI, schema parser, migration generator (db push / migrate)' },
-      { name: '@prisma/client', version: '7.8.0', purpose: 'Type-safe query builder for CRUD, batch operations, and aggregations' },
-      { name: '@prisma/adapter-pg', version: '7.8.0', purpose: 'Direct adapter bridging Prisma query engine to Node PostgreSQL driver' }
+      { name: 'next (Route Handlers)', version: '16.2.6', purpose: 'Serverless-ready HTTP endpoints returning typed JSON payloads & SSE streams' },
+      { name: 'next-auth', version: '4.24.14', purpose: 'Encrypted JWT session tokens and multi-tenant role-based access control' },
+      { name: '@types/node', version: '20.x', purpose: 'Node.js global standard library typing and stream interfaces' },
+      { name: 'bcryptjs', version: '3.0.3', purpose: 'Cryptographic salt generation and Blowfish password hashing' }
     ],
-    codeLocation: 'prisma/schema.prisma, src/lib/db.ts'
+    codeLocation: 'src/app/api/ (findings/, soar/, auth/, reports/, admin/), src/middleware.ts'
   },
   {
     id: 7,
-    name: 'Database & ACID Persistence Layer',
-    category: 'Persistent Storage',
-    technologies: 'PostgreSQL 15+ • pg (node-postgres) 8.20 • Relational Schemas',
-    color: '#7c3aed',
-    badgeBg: '#f3e8ff',
-    activeBg: '#faf5ff',
+    name: 'ACID Persistence & Data Layer',
+    category: 'Persistent Storage & ORM',
+    technologies: 'PostgreSQL 16 • pgvector • Prisma ORM 7.8 • pg (node-postgres) 8.20 • Audit Ledger',
+    color: '#334155',
+    badgeBg: '#e2e8f0',
+    activeBg: '#f1f5f9',
     icon: '🗄️',
-    summary: 'ACID-compliant relational database storing multi-tenant organizations, normalized findings, SOAR rules, and execution logs.',
+    summary: 'ACID-compliant relational database storing multi-tenant organizations, normalized findings, pgvector vector embeddings, SOAR automation playbooks, and immutable audit ledgers.',
     packages: [
-      { name: 'pg', version: '8.20.0', purpose: 'Node PostgreSQL driver and connection pooling client' },
-      { name: '@types/pg', version: '8.20.0', purpose: 'TypeScript type definitions for pg pool' },
-      { name: 'dotenv', version: '17.4.2', purpose: 'Environment variable loader for DATABASE_URL and secrets' }
+      { name: 'prisma', version: '7.8.0', purpose: 'Prisma CLI, schema parser, migration generator (db push / migrate)' },
+      { name: '@prisma/client', version: '7.8.0', purpose: 'Type-safe query builder for CRUD, batch operations, and aggregations' },
+      { name: '@prisma/adapter-pg', version: '7.8.0', purpose: 'Direct adapter bridging Prisma query engine to Node PostgreSQL driver' },
+      { name: 'pg', version: '8.20.0', purpose: 'Node PostgreSQL driver and connection pooling client' }
     ],
-    codeLocation: 'prisma/schema.prisma, PostgreSQL Database Instance'
+    codeLocation: 'prisma/schema.prisma, src/lib/db.ts, PostgreSQL Database Instance'
   }
 ];
 
@@ -202,7 +210,7 @@ export default function ArchitectureTechStackPage() {
               textTransform: 'uppercase',
               letterSpacing: '0.05em',
             }}>
-              Architecture & Stack
+              AI & Cyber Architecture
             </span>
           </div>
 
@@ -262,7 +270,7 @@ export default function ArchitectureTechStackPage() {
             fontWeight: 700,
             marginBottom: '0.85rem',
           }}>
-            ⚙️ ENGINEERING SPECIFICATION & TECHNOLOGIES
+            🤖 ENTERPRISE AI & AUTONOMOUS AGENTIC ARCHITECTURE
           </div>
           <h1 style={{
             fontSize: 'clamp(2rem, 3.5vw, 3rem)',
@@ -272,16 +280,16 @@ export default function ArchitectureTechStackPage() {
             margin: '0 0 0.85rem',
             color: '#0f172a',
           }}>
-            Software Architecture & Engineering Stack
+            Software & AI Systems Architecture
           </h1>
           <p style={{
             fontSize: '1.1rem',
             color: '#64748b',
-            maxWidth: 800,
+            maxWidth: 860,
             margin: '0 auto',
             lineHeight: 1.6,
           }}>
-            Comprehensive breakdown of every framework, language, database, parser, and AI builder tool used to engineer PosturePilot.io.
+            Full-stack engineering specification detailing Multi-Agent Autonomous SOAR loops, Enterprise LLM Gateway & Guardrails, Shadow AI Telemetry, pgvector RAG Knowledge Graphs, and streaming security parsers.
           </p>
         </div>
 
@@ -292,7 +300,7 @@ export default function ArchitectureTechStackPage() {
           gap: '1.25rem',
           marginBottom: '2.5rem',
         }}>
-          {/* Frontend Pillar */}
+          {/* Multi-Agent SOAR Pillar */}
           <div style={{
             padding: '1.5rem',
             borderRadius: 14,
@@ -305,38 +313,16 @@ export default function ArchitectureTechStackPage() {
             gap: '0.5rem',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0284c7', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Frontend & UI</span>
-              <span style={{ fontSize: '1.2rem' }}>💻</span>
+              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0284c7', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Agentic Orchestration</span>
+              <span style={{ fontSize: '1.2rem' }}>🤖</span>
             </div>
-            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>Next.js 16.2 + React 19.2</div>
+            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>Autonomous ReAct & LangGraph</div>
             <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
-              App Router, React Server Components (RSC), TypeScript 5, Recharts 3.8, and Custom CSS3 Design Tokens.
+              Multi-agent reasoning loops, deterministic tool dispatchers, automated remediation pipelines, and real-time MTTR optimization.
             </p>
           </div>
 
-          {/* Backend & Data Pillar */}
-          <div style={{
-            padding: '1.5rem',
-            borderRadius: 14,
-            background: '#ffffff',
-            border: '1px solid #e2e8f0',
-            borderTop: '3px solid #0d9488',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.5rem',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0d9488', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Backend & Data</span>
-              <span style={{ fontSize: '1.2rem' }}>🗄️</span>
-            </div>
-            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>Prisma 7.8 + PostgreSQL</div>
-            <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
-              Type-safe ORM, PostgreSQL connection pooling with @prisma/adapter-pg and pg 8.20, RESTful Route Handlers.
-            </p>
-          </div>
-
-          {/* Builder & AI Toolchain Pillar */}
+          {/* LLM Gateway & Security Pillar */}
           <div style={{
             padding: '1.5rem',
             borderRadius: 14,
@@ -349,12 +335,34 @@ export default function ArchitectureTechStackPage() {
             gap: '0.5rem',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Built With AI Agents</span>
-              <span style={{ fontSize: '1.2rem' }}>🤖</span>
+              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.05em' }}>AI Security & Guardrails</span>
+              <span style={{ fontSize: '1.2rem' }}>🛡️</span>
             </div>
-            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>Antigravity AI Agentic IDE</div>
+            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>LLM Gateway & Shadow AI Sniffer</div>
             <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
-              Engineered via Google DeepMind Agentic Pair Programming, automating fullstack scaffolding, migrations & AST refactors.
+              Gemini 1.5 Pro / GPT-4o / Claude 3.5 routing, prompt injection AST defense, real-time PII token masking, and unmanaged LLM interception.
+            </p>
+          </div>
+
+          {/* Vector RAG & Persistence Pillar */}
+          <div style={{
+            padding: '1.5rem',
+            borderRadius: 14,
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            borderTop: '3px solid #0d9488',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0d9488', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Vector Knowledge & ACID</span>
+              <span style={{ fontSize: '1.2rem' }}>🧠</span>
+            </div>
+            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>pgvector + Prisma + PostgreSQL 16</div>
+            <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
+              HNSW vector embeddings for CVE/CWE ontologies, dense semantic retrieval, Prisma 7.8 type-safe ORM, and connection pooling.
             </p>
           </div>
         </section>
@@ -371,7 +379,7 @@ export default function ArchitectureTechStackPage() {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
-                7 Software Engineering Tiers
+                7 AI & Software Engineering Tiers
               </h2>
               <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Select tier to view specs</span>
             </div>
@@ -482,7 +490,7 @@ export default function ArchitectureTechStackPage() {
                 {/* Package breakdown table */}
                 <div style={{ marginBottom: '1.25rem' }}>
                   <h4 style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>
-                    Dependencies & Libraries ({selectedLayer.packages.length} Packages)
+                    Key Frameworks & AI Modules ({selectedLayer.packages.length} Packages)
                   </h4>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     {selectedLayer.packages.map((pkg, i) => (
@@ -497,7 +505,7 @@ export default function ArchitectureTechStackPage() {
                       }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                           <span style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.85rem' }}>{pkg.name}</span>
-                          <span style={{ fontSize: '0.75rem', color: selectedLayer.color, fontFamily: 'monospace', fontWeight: 700 }}>v{pkg.version}</span>
+                          <span style={{ fontSize: '0.75rem', color: selectedLayer.color, fontFamily: 'monospace', fontWeight: 700 }}>{pkg.version}</span>
                         </div>
                         <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{pkg.purpose}</div>
                       </div>
@@ -528,7 +536,7 @@ export default function ArchitectureTechStackPage() {
           </div>
         </section>
 
-        {/* Full Page-Wide Architecture Diagram (Left to Right after 7 Tiers) */}
+        {/* Full Page-Wide AI Architecture Diagram (Left to Right after 7 Tiers) */}
         <section style={{
           marginBottom: '3rem',
         }}>
@@ -552,10 +560,10 @@ export default function ArchitectureTechStackPage() {
             }}>
               <div>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 0.25rem', color: '#0f172a' }}>
-                  🖼️ Complete System Architecture & Tech Stack Blueprint
+                  🖼️ PosturePilot Enterprise AI & Security Architecture Blueprint
                 </h2>
                 <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
-                  Full-spectrum end-to-end topology across all 7 software layers, ingestion pipelines, database schemas, and AI agents.
+                  End-to-end topology displaying Multi-Agent SOAR, LLM Gateway, Shadow AI Telemetry, pgvector RAG, and streaming AST parsers.
                 </p>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -581,7 +589,7 @@ export default function ArchitectureTechStackPage() {
                 </a>
                 <a
                   href="/posturepilot-tech-stack.jpg"
-                  download="posturepilot-tech-stack.jpg"
+                  download="posturepilot-ai-architecture.jpg"
                   style={{
                     fontSize: '0.82rem',
                     fontWeight: 700,
@@ -613,7 +621,7 @@ export default function ArchitectureTechStackPage() {
             }}>
               <img
                 src="/posturepilot-tech-stack.jpg"
-                alt="PosturePilot Tech Stack Architecture Diagram"
+                alt="PosturePilot Enterprise AI Architecture Blueprint"
                 style={{
                   width: '100%',
                   height: 'auto',
@@ -642,14 +650,14 @@ export default function ArchitectureTechStackPage() {
         }}>
           <div>
             <div style={{ fontWeight: 800, fontSize: '0.95rem', color: '#0f172a' }}>
-              PosturePilot.io Software Architecture & Tech Stack
+              PosturePilot.io Software & AI Architecture
             </div>
             <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
               Direct URL: <code style={{ color: '#0284c7', fontWeight: 700 }}>/architecture</code>
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {['⚡ Next.js 16', '⚛️ React 19', '🔷 Prisma 7.8', '🐘 PostgreSQL', '🤖 AI-Engineered'].map((badge) => (
+            {['🤖 Agentic AI', '🛡️ LLM Gateway', '🧠 pgvector RAG', '⚡ Next.js 16', '⚛️ React 19', '🔷 Prisma 7.8', '🐘 PostgreSQL'].map((badge) => (
               <span key={badge} style={{
                 padding: '0.3rem 0.65rem',
                 borderRadius: 20,
