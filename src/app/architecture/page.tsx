@@ -28,7 +28,7 @@ const TECH_LAYERS: TechStackLayer[] = [
     badgeBg: '#e0f2fe',
     activeBg: '#f0f9ff',
     icon: '💻',
-    summary: 'Renders the interactive client cockpits, dynamic charts, mathematical SVG orbital score animations, and modern enterprise design system.',
+    summary: 'Renders interactive client cockpits, dynamic charts, mathematical SVG orbital score animations, and modern enterprise design tokens.',
     packages: [
       { name: 'next', version: '16.2.6', purpose: 'App Router architecture, React Server Components (RSC), Turbopack bundler' },
       { name: 'react & react-dom', version: '19.2.4', purpose: 'Virtual DOM, UI state hooks (useState, useMemo, useEffect, useRef)' },
@@ -359,23 +359,24 @@ export default function ArchitectureTechStackPage() {
           </div>
         </section>
 
-        {/* 7-Tier Interactive Stack + Poster View */}
+        {/* 7-Tier Interactive Stack: Equal 50/50 Columns */}
         <section style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))',
-          gap: '2rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(480px, 1fr))',
+          gap: '1.75rem',
           marginBottom: '3rem',
+          alignItems: 'stretch',
         }}>
-          {/* Left Column: Stack Layers List */}
-          <div>
+          {/* Left Column: 7 Stack Layers List */}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
                 7 Software Engineering Tiers
               </h2>
-              <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Click tier to inspect packages</span>
+              <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Select tier to view specs</span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', flex: 1, justifyContent: 'space-between' }}>
               {TECH_LAYERS.map((layer) => {
                 const isSelected = selectedLayer.id === layer.id;
                 return (
@@ -383,7 +384,7 @@ export default function ArchitectureTechStackPage() {
                     key={layer.id}
                     onClick={() => setSelectedLayer(layer)}
                     style={{
-                      padding: '1.1rem 1.3rem',
+                      padding: '0.95rem 1.2rem',
                       borderRadius: 12,
                       background: isSelected ? layer.activeBg : '#ffffff',
                       border: isSelected ? `2px solid ${layer.color}` : '1px solid #e2e8f0',
@@ -391,109 +392,117 @@ export default function ArchitectureTechStackPage() {
                       transition: 'all 0.2s ease',
                       boxShadow: isSelected ? `0 6px 18px -4px ${layer.color}25` : '0 1px 3px rgba(0,0,0,0.02)',
                       transform: isSelected ? 'translateX(6px)' : 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
-                        <span style={{
-                          width: 38,
-                          height: 38,
-                          borderRadius: 8,
-                          background: layer.badgeBg,
-                          border: `1px solid ${layer.color}40`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '1.2rem',
-                          flexShrink: 0,
-                        }}>
-                          {layer.icon}
-                        </span>
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: layer.color }}>
-                              TIER {layer.id}
-                            </span>
-                            <span style={{ fontWeight: 700, fontSize: '0.96rem', color: '#0f172a' }}>
-                              {layer.name}
-                            </span>
-                          </div>
-                          <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: 3 }}>
-                            {layer.technologies}
-                          </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                      <span style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 8,
+                        background: layer.badgeBg,
+                        border: `1px solid ${layer.color}40`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.15rem',
+                        flexShrink: 0,
+                      }}>
+                        {layer.icon}
+                      </span>
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: layer.color }}>
+                            TIER {layer.id}
+                          </span>
+                          <span style={{ fontWeight: 700, fontSize: '0.92rem', color: '#0f172a' }}>
+                            {layer.name}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 2 }}>
+                          {layer.technologies}
                         </div>
                       </div>
-                      <span style={{
-                        fontSize: '0.8rem',
-                        color: isSelected ? layer.color : '#94a3b8',
-                        fontWeight: 800,
-                        flexShrink: 0,
-                        marginLeft: '0.5rem',
-                      }}>
-                        {isSelected ? '● ACTIVE' : '○'}
-                      </span>
                     </div>
+                    <span style={{
+                      fontSize: '0.8rem',
+                      color: isSelected ? layer.color : '#94a3b8',
+                      fontWeight: 800,
+                      flexShrink: 0,
+                      marginLeft: '0.5rem',
+                    }}>
+                      {isSelected ? '● ACTIVE' : '○'}
+                    </span>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          {/* Right Column: Selected Tier Deep Dive & Poster */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {/* Deep Dive Box */}
+          {/* Right Column: Selected Tier Deep Dive (Equal Height & Width) */}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
+                Tier {selectedLayer.id} Technical Specification
+              </h2>
+              <span style={{
+                padding: '0.2rem 0.65rem',
+                borderRadius: 20,
+                background: selectedLayer.badgeBg,
+                color: selectedLayer.color,
+                fontSize: '0.72rem',
+                fontWeight: 800,
+                border: `1px solid ${selectedLayer.color}40`,
+              }}>
+                {selectedLayer.category}
+              </span>
+            </div>
+
             <div style={{
               padding: '1.75rem',
               borderRadius: 16,
               background: '#ffffff',
               border: `1.5px solid ${selectedLayer.color}80`,
               boxShadow: `0 10px 25px -5px ${selectedLayer.color}15`,
-              position: 'relative',
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                <span style={{
-                  padding: '0.25rem 0.75rem',
-                  borderRadius: 20,
-                  background: selectedLayer.badgeBg,
-                  color: selectedLayer.color,
-                  fontSize: '0.75rem',
-                  fontWeight: 800,
-                  border: `1px solid ${selectedLayer.color}40`,
-                }}>
-                  TIER {selectedLayer.id} • {selectedLayer.category}
-                </span>
-              </div>
+              <div>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, margin: '0 0 0.5rem', color: '#0f172a' }}>
+                  {selectedLayer.icon} {selectedLayer.name}
+                </h3>
+                <p style={{ fontSize: '0.9rem', color: '#475569', lineHeight: 1.6, margin: '0 0 1.25rem' }}>
+                  {selectedLayer.summary}
+                </p>
 
-              <h3 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '0 0 0.5rem', color: '#0f172a' }}>
-                {selectedLayer.icon} {selectedLayer.name}
-              </h3>
-              <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: 1.6, margin: '0 0 1.25rem' }}>
-                {selectedLayer.summary}
-              </p>
-
-              {/* Package breakdown table */}
-              <div style={{ marginBottom: '1.25rem' }}>
-                <h4 style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>
-                  Dependencies & Libraries
-                </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {selectedLayer.packages.map((pkg, i) => (
-                    <div key={i} style={{
-                      padding: '0.65rem 0.85rem',
-                      borderRadius: 8,
-                      background: '#f8fafc',
-                      border: '1px solid #e2e8f0',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 2,
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.85rem' }}>{pkg.name}</span>
-                        <span style={{ fontSize: '0.75rem', color: selectedLayer.color, fontFamily: 'monospace', fontWeight: 700 }}>v{pkg.version}</span>
+                {/* Package breakdown table */}
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <h4 style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>
+                    Dependencies & Libraries ({selectedLayer.packages.length} Packages)
+                  </h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    {selectedLayer.packages.map((pkg, i) => (
+                      <div key={i} style={{
+                        padding: '0.65rem 0.85rem',
+                        borderRadius: 8,
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2,
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.85rem' }}>{pkg.name}</span>
+                          <span style={{ fontSize: '0.75rem', color: selectedLayer.color, fontFamily: 'monospace', fontWeight: 700 }}>v{pkg.version}</span>
+                        </div>
+                        <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{pkg.purpose}</div>
                       </div>
-                      <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{pkg.purpose}</div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -503,7 +512,7 @@ export default function ArchitectureTechStackPage() {
                 </h4>
                 <code style={{
                   display: 'block',
-                  padding: '0.6rem 0.9rem',
+                  padding: '0.65rem 0.9rem',
                   borderRadius: 8,
                   background: '#f1f5f9',
                   border: '1px solid #e2e8f0',
@@ -516,58 +525,104 @@ export default function ArchitectureTechStackPage() {
                 </code>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Poster Preview */}
+        {/* Full Page-Wide Architecture Diagram (Left to Right after 7 Tiers) */}
+        <section style={{
+          marginBottom: '3rem',
+        }}>
+          <div style={{
+            borderRadius: 16,
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            boxShadow: '0 4px 20px -2px rgba(0,0,0,0.05)',
+            overflow: 'hidden',
+          }}>
+            {/* Header Toolbar */}
             <div style={{
-              borderRadius: 16,
+              padding: '1.2rem 1.75rem',
               background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-              overflow: 'hidden',
+              borderBottom: '1px solid #e2e8f0',
               display: 'flex',
-              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1rem',
             }}>
-              <div style={{
-                padding: '0.85rem 1.25rem',
-                background: '#f8fafc',
-                borderBottom: '1px solid #e2e8f0',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>
-                  🖼️ Tech Stack Architecture Infographic
-                </span>
+              <div>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 0.25rem', color: '#0f172a' }}>
+                  🖼️ Complete System Architecture & Tech Stack Blueprint
+                </h2>
+                <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
+                  Full-spectrum end-to-end topology across all 7 software layers, ingestion pipelines, database schemas, and AI agents.
+                </p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <a
+                  href="/posturepilot-tech-stack.jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    color: '#475569',
+                    textDecoration: 'none',
+                    padding: '0.45rem 0.85rem',
+                    borderRadius: 8,
+                    background: '#f1f5f9',
+                    border: '1px solid #cbd5e1',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                  }}
+                >
+                  🔍 Open Fullscreen
+                </a>
                 <a
                   href="/posturepilot-tech-stack.jpg"
                   download="posturepilot-tech-stack.jpg"
                   style={{
-                    fontSize: '0.78rem',
+                    fontSize: '0.82rem',
                     fontWeight: 700,
                     color: '#0284c7',
                     textDecoration: 'none',
-                    padding: '0.3rem 0.75rem',
-                    borderRadius: 6,
+                    padding: '0.45rem 1rem',
+                    borderRadius: 8,
                     background: '#e0f2fe',
                     border: '1px solid #bae6fd',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
                   }}
                 >
-                  Download HD Poster ↓
+                  📥 Download HD Poster
                 </a>
               </div>
-              <div style={{ padding: '1rem', display: 'flex', justifyContent: 'center', background: '#f8fafc' }}>
-                <img
-                  src="/posturepilot-tech-stack.jpg"
-                  alt="PosturePilot Tech Stack Architecture"
-                  style={{
-                    width: '100%',
-                    maxHeight: 380,
-                    objectFit: 'contain',
-                    borderRadius: 8,
-                    border: '1px solid #e2e8f0',
-                  }}
-                />
-              </div>
+            </div>
+
+            {/* Page-Wide Diagram Showcase */}
+            <div style={{
+              padding: '1.5rem',
+              background: '#f8fafc',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              boxSizing: 'border-box',
+            }}>
+              <img
+                src="/posturepilot-tech-stack.jpg"
+                alt="PosturePilot Tech Stack Architecture Diagram"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: 12,
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.04)',
+                  display: 'block',
+                }}
+              />
             </div>
           </div>
         </section>
