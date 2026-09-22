@@ -46,4 +46,6 @@ dev.db
 *.psd
 public/*.JPG
 public/*.jpg
+!public/posturepilot-tech-stack.jpg
+!public/posturepilot-architecture.jpg
 public/*.pdf

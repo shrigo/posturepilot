@@ -171,20 +171,40 @@ export default function Sidebar() {
           { href: '/dashboard/ciso', label: 'CISO Cockpit' },
           { href: '/dashboard/findings', label: 'Findings' },
           { href: '/dashboard/upload', label: 'Upload Scans' },
-          { href: '/dashboard/settings', label: 'Settings' }
+          { href: '/dashboard/settings', label: 'Settings' },
+          { href: '/architecture', label: 'Tech Stack Blueprint', badge: 'STACK' }
         ].map(dataItem => {
-          const isAllowed = currentClient.allowedModules?.includes(dataItem.href);
+          const isAllowed = dataItem.href === '/architecture' ? true : currentClient.allowedModules?.includes(dataItem.href);
           const isActive = pathname === dataItem.href;
           return (
             <Link 
               key={dataItem.href}
               href={dataItem.href} 
               className={`nav-item${isActive ? ' active' : ''}`} 
-              onClick={(e) => handleNavClick(e, dataItem.href, dataItem.label)}
-              style={!isAllowed ? { opacity: 0.5, cursor: 'pointer' } : {}}
+              onClick={(e) => {
+                if (dataItem.href === '/architecture') {
+                  handleLinkClick();
+                } else {
+                  handleNavClick(e, dataItem.href, dataItem.label);
+                }
+              }}
+              style={!isAllowed ? { opacity: 0.5, cursor: 'pointer' } : dataItem.href === '/architecture' ? { borderLeft: '3px solid #38bdf8', background: 'rgba(56,189,248,0.05)' } : {}}
             >
               <span className="nav-label" style={{ display: 'flex', alignItems: 'center', width: '100%', gap: '4px' }}>
                 {dataItem.label}
+                {dataItem.badge && (
+                  <span style={{ 
+                    fontSize: '0.62rem', 
+                    padding: '1px 6px', 
+                    borderRadius: '4px', 
+                    background: 'rgba(56,189,248,0.2)', 
+                    color: '#38bdf8', 
+                    fontWeight: 800,
+                    marginLeft: 'auto' 
+                  }}>
+                    {dataItem.badge}
+                  </span>
+                )}
                 {!isAllowed && <span style={{ fontSize: '0.65rem', color: '#f59e0b', marginLeft: 'auto' }}>🔒</span>}
               </span>
             </Link>
