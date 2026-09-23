@@ -8,9 +8,13 @@ export const metadata: Metadata = {
   description: 'Unified cybersecurity posture dashboard. Upload scan results from Qualys, Tenable, or Nessus and get board-ready dashboards in minutes.',
   keywords: 'cybersecurity dashboard, vulnerability management, CISO dashboard, Qualys, Tenable, security posture',
   icons: {
-    icon: '/pp_icon.gif',
-    shortcut: '/pp_icon.gif',
-    apple: '/pp_icon.gif',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png' },
+      { url: '/pp_icon.gif', type: 'image/gif' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
 };
 
@@ -18,8 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/pp_icon.gif" type="image/gif" />
-        <link rel="shortcut icon" href="/pp_icon.gif" type="image/gif" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
         <link
