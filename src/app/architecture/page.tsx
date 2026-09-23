@@ -88,6 +88,7 @@ const TECH_LAYERS: TechStackLayer[] = [
       { name: 'pgvector (HNSW Indexing)', version: '0.7.x', purpose: 'Vector similarity search with Hierarchical Navigable Small World graphs' },
       { name: 'text-embedding-3-large', version: '1536/3072 dim', purpose: 'High-precision semantic embeddings for vulnerability descriptions' },
       { name: 'Hybrid RAG Retriever', version: 'BM25 + Dense', purpose: 'Fused keyword and vector search for exact CVE IDs and contextual queries' },
+      { name: 'MCP Resource Provider', version: 'RFC-MCP', purpose: 'Exposes CVE/CWE ontology graphs & vector knowledge as MCP Resources to LLMs' },
       { name: 'Security Graph Ontology', version: 'OASIS CSAF', purpose: 'Graph relations connecting assets, software packages, and exploit paths' }
     ],
     codeLocation: 'src/lib/vector/rag.ts, src/lib/embeddings/generator.ts, prisma/schema.prisma'
@@ -96,13 +97,14 @@ const TECH_LAYERS: TechStackLayer[] = [
     id: 5,
     name: 'Multi-Scanner AST Ingestion Pipeline',
     category: 'Data Normalization & ETL',
-    technologies: 'OASIS SARIF v2.1 • Snyk JSON • Tenable Nessus XML • Qualys • PapaParse 5.5 • xml2js 0.6',
+    technologies: 'OASIS SARIF v2.1 • Snyk JSON • Tenable Nessus XML • Qualys • MCP Tool Adapters • PapaParse 5.5',
     color: '#d97706',
     badgeBg: '#fef3c7',
     activeBg: '#fffbeb',
     icon: '📥',
-    summary: 'Streaming ETL parser engine that ingests raw multi-vendor security scan outputs (SARIF, Nessus XML, Snyk SCA, Qualys) and normalizes them into unified, deduplicated finding entities.',
+    summary: 'Streaming ETL parser engine that ingests raw multi-vendor security scan outputs (SARIF, Nessus XML, Snyk SCA, Qualys) and normalizes them into unified, deduplicated finding entities, exposed to AI agents via MCP Tools.',
     packages: [
+      { name: 'MCP Tool Scanner Adapters', version: 'v1.4.0', purpose: 'Standardized Model Context Protocol tool endpoints allowing AI agents to trigger & query AST parsers' },
       { name: 'papaparse', version: '5.5.3', purpose: 'Fast streaming in-memory parser for bulk CSV/TSV vulnerability data' },
       { name: 'xml2js', version: '0.6.2', purpose: 'SAX XML-to-JavaScript object transformer for Tenable Nessus and Qualys XML' },
       { name: 'SARIF v2.1 Parser', version: 'OASIS Standard', purpose: 'AST mapper for GitHub Advanced Security, Semgrep, and Trivy' },
