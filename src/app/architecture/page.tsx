@@ -21,21 +21,22 @@ interface TechStackLayer {
 const TECH_LAYERS: TechStackLayer[] = [
   {
     id: 1,
-    name: 'Multi-Agent Autonomous SOAR & Security Copilot',
+    name: 'Multi-Agent Autonomous SOAR & MCP Security Copilot',
     category: 'Agentic AI & Orchestration',
-    technologies: 'LangGraph Multi-Agent • ReAct Planning Loops • Autonomous Tool Dispatcher • Auto-Remediation Engine',
+    technologies: 'LangGraph Multi-Agent • Model Context Protocol (MCP) Server • ReAct Planning Loops • Autonomous Tool Dispatcher',
     color: '#0284c7',
     badgeBg: '#e0f2fe',
     activeBg: '#f0f9ff',
     icon: '🤖',
-    summary: 'Executes autonomous security orchestration and automated response workflows. Decomposes critical CVE findings into structured tasks, assigns specialized sub-agents, dispatches Jira/Slack alerts, and triggers automated firewall/patch scripts.',
+    summary: 'Executes autonomous security orchestration via Anthropic/OpenAI Model Context Protocol (MCP) server endpoints and LangGraph cyclic agents. Standardizes context exchange across SIEM, vulnerability scanners, Jira, and cloud infrastructure through typed MCP tool dispatchers.',
     packages: [
+      { name: '@modelcontextprotocol/sdk', version: 'v1.x', purpose: 'Model Context Protocol (MCP) standard server runtime for tool discovery, resource sharing, and secure prompt execution' },
+      { name: 'Security MCP Tool Hub', version: 'Native TS', purpose: 'Standardized MCP tools for Tenable, Qualys, Jira, AWS IAM, and Kubernetes automated remediation' },
       { name: 'LangGraph Multi-Agent', version: 'v0.2.x', purpose: 'Cyclic state graph planning, human-in-the-loop approvals, multi-agent coordination' },
       { name: 'ReAct Agent Runtime', version: 'Enterprise', purpose: 'Reasoning + Acting execution loop for dynamic cybersecurity triage' },
-      { name: 'Tool Dispatcher Bus', version: 'Native TS', purpose: 'Type-safe function calling with schema validation for ticketing and cloud API remediation' },
       { name: 'Recharts & Cockpit UI', version: '3.8.1', purpose: 'Real-time telemetry charting for agent decision trees and automated MTTR reduction' }
     ],
-    codeLocation: 'src/lib/soar/engine.ts, src/app/api/soar/execute/route.ts, src/components/AgenticTerminal.tsx'
+    codeLocation: 'src/lib/soar/engine.ts, src/lib/mcp/server.ts, src/app/api/soar/execute/route.ts, src/components/AgenticTerminal.tsx'
   },
   {
     id: 2,
@@ -313,12 +314,12 @@ export default function ArchitectureTechStackPage() {
             gap: '0.5rem',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0284c7', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Agentic Orchestration</span>
+              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0284c7', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Agentic Orchestration & MCP</span>
               <span style={{ fontSize: '1.2rem' }}>🤖</span>
             </div>
-            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>Autonomous ReAct & LangGraph</div>
+            <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>Autonomous ReAct & Model Context Protocol (MCP)</div>
             <p style={{ fontSize: '0.875rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
-              Multi-agent reasoning loops, deterministic tool dispatchers, automated remediation pipelines, and real-time MTTR optimization.
+              LangGraph planning loops, Model Context Protocol (MCP) server endpoints, deterministic tool dispatchers, automated remediation pipelines, and real-time MTTR optimization.
             </p>
           </div>
 
@@ -563,7 +564,7 @@ export default function ArchitectureTechStackPage() {
                   🖼️ PosturePilot Enterprise AI & Security Architecture Blueprint
                 </h2>
                 <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
-                  End-to-end topology displaying Multi-Agent SOAR, LLM Gateway, Shadow AI Telemetry, pgvector RAG, and streaming AST parsers.
+                  End-to-end topology displaying Model Context Protocol (MCP) Server, Multi-Agent SOAR, LLM Gateway, Shadow AI Telemetry, pgvector RAG, and streaming AST parsers.
                 </p>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -614,14 +615,69 @@ export default function ArchitectureTechStackPage() {
               padding: '1.5rem',
               background: '#f8fafc',
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              flexDirection: 'column',
+              gap: '1rem',
               width: '100%',
               boxSizing: 'border-box',
             }}>
+              {/* Diagram Branding & Protocol Bar */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.85rem 1.25rem',
+                background: '#ffffff',
+                borderRadius: 10,
+                border: '1px solid #e2e8f0',
+                flexWrap: 'wrap',
+                gap: '0.75rem',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <Image
+                    src="/hlogotag_v2.jpg"
+                    alt="PosturePilot Logo"
+                    width={180}
+                    height={42}
+                    style={{ objectFit: 'contain' }}
+                  />
+                  <div style={{ height: 24, width: 1, background: '#e2e8f0' }} />
+                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0f172a', letterSpacing: '0.02em' }}>
+                    OFFICIAL AI & CYBERSECURITY SYSTEM TOPOLOGY
+                  </span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                    padding: '0.3rem 0.75rem',
+                    borderRadius: 20,
+                    background: '#e0f2fe',
+                    color: '#0284c7',
+                    border: '1px solid #bae6fd',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                  }}>
+                    🔌 MODEL CONTEXT PROTOCOL (MCP) SERVER
+                  </span>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                    padding: '0.3rem 0.75rem',
+                    borderRadius: 20,
+                    background: '#f0fdf4',
+                    color: '#16a34a',
+                    border: '1px solid #bbf7d0',
+                  }}>
+                    ● 7-TIER AUTONOMOUS ARCHITECTURE
+                  </span>
+                </div>
+              </div>
+
               <img
                 src="/posturepilot-tech-stack.jpg"
-                alt="PosturePilot Enterprise AI Architecture Blueprint"
+                alt="PosturePilot Enterprise AI Architecture Blueprint with MCP Server and Official Logo"
                 style={{
                   width: '100%',
                   height: 'auto',
@@ -657,7 +713,7 @@ export default function ArchitectureTechStackPage() {
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {['🤖 Agentic AI', '🛡️ LLM Gateway', '🧠 pgvector RAG', '⚡ Next.js 16', '⚛️ React 19', '🔷 Prisma 7.8', '🐘 PostgreSQL'].map((badge) => (
+            {['🤖 Agentic AI', '🔌 Model Context Protocol (MCP)', '🛡️ LLM Gateway', '🧠 pgvector RAG', '⚡ Next.js 16', '⚛️ React 19', '🔷 Prisma 7.8', '🐘 PostgreSQL'].map((badge) => (
               <span key={badge} style={{
                 padding: '0.3rem 0.65rem',
                 borderRadius: 20,
