@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import McpArchitectureDiagram from '@/components/McpArchitectureDiagram';
+import AgenticRoadmapSection from '@/components/AgenticRoadmapSection';
 
 interface TechStackLayer {
   id: number;
@@ -306,6 +307,26 @@ export default function ArchitectureTechStackPage() {
             flexWrap: 'wrap',
           }}>
             <a
+              href="#agentic-roadmap"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.5rem 1.1rem',
+                borderRadius: 20,
+                background: '#fef3c7',
+                color: '#b45309',
+                textDecoration: 'none',
+                fontSize: '0.84rem',
+                fontWeight: 800,
+                border: '1px solid #fde68a',
+                boxShadow: '0 2px 8px rgba(217,119,6,0.15)',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              🪜 6-Stage AI Roadmap ➜
+            </a>
+            <a
               href="#mcp"
               style={{
                 display: 'inline-flex',
@@ -607,6 +628,11 @@ export default function ArchitectureTechStackPage() {
             </div>
           </div>
         </section>
+
+        {/* ========================================================================= */}
+        {/* AGENTIC AI ROADMAP: 6-Stage Maturity Ladder */}
+        {/* ========================================================================= */}
+        <AgenticRoadmapSection />
 
         {/* ========================================================================= */}
         {/* DIAGRAM 1: PosturePilot Enterprise AI & MCP Architecture Blueprint */}
