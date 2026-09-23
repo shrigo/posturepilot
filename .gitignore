@@ -48,4 +48,5 @@ public/*.JPG
 public/*.jpg
 !public/posturepilot-tech-stack.jpg
 !public/posturepilot-architecture.jpg
+!public/posturepilot-ai-stack-poster.jpg
 public/*.pdf

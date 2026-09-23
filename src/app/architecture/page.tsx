@@ -152,6 +152,7 @@ const TECH_LAYERS: TechStackLayer[] = [
 
 export default function ArchitectureTechStackPage() {
   const [selectedLayer, setSelectedLayer] = useState<TechStackLayer>(TECH_LAYERS[0]);
+  const [activeDiagram, setActiveDiagram] = useState<'mcp' | 'poster'>('mcp');
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -539,7 +540,7 @@ export default function ArchitectureTechStackPage() {
           </div>
         </section>
 
-        {/* Full Page-Wide AI Architecture Diagram (Left to Right after 7 Tiers) */}
+        {/* Full Page-Wide AI Architecture Diagram & Stack Poster */}
         <section style={{
           marginBottom: '3rem',
         }}>
@@ -550,7 +551,7 @@ export default function ArchitectureTechStackPage() {
             boxShadow: '0 4px 20px -2px rgba(0,0,0,0.05)',
             overflow: 'hidden',
           }}>
-            {/* Header Toolbar */}
+            {/* Header Toolbar with Diagram Switcher Tabs */}
             <div style={{
               padding: '1.2rem 1.75rem',
               background: '#ffffff',
@@ -563,15 +564,75 @@ export default function ArchitectureTechStackPage() {
             }}>
               <div>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 0.25rem', color: '#0f172a' }}>
-                  🖼️ PosturePilot Enterprise AI & Security Architecture Blueprint
+                  {activeDiagram === 'mcp'
+                    ? '🔌 PosturePilot Enterprise AI & MCP Architecture Blueprint'
+                    : '🖼️ PosturePilot Complete 7-Tier AI Stack System Poster'}
                 </h2>
                 <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
-                  End-to-end topology displaying Model Context Protocol (MCP) Server, Multi-Agent SOAR, LLM Gateway, Shadow AI Telemetry, pgvector RAG, and streaming AST parsers.
+                  {activeDiagram === 'mcp'
+                    ? 'Topology showcasing Model Context Protocol (MCP) Server, SOAR Agents, pgvector RAG, and AST tool execution.'
+                    : 'Complete 7-tier fullstack software engineering poster across all data layers, APIs, parsers, and AI models.'}
                 </p>
               </div>
+
+              {/* View Switcher Tabs */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                background: '#f1f5f9',
+                padding: '4px',
+                borderRadius: 10,
+                border: '1px solid #e2e8f0',
+                gap: '4px',
+              }}>
+                <button
+                  type="button"
+                  onClick={() => setActiveDiagram('mcp')}
+                  style={{
+                    padding: '0.45rem 0.9rem',
+                    borderRadius: 7,
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    border: 'none',
+                    background: activeDiagram === 'mcp' ? '#ffffff' : 'transparent',
+                    color: activeDiagram === 'mcp' ? '#0f172a' : '#64748b',
+                    boxShadow: activeDiagram === 'mcp' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <span>🔌</span> MCP Architecture Blueprint
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveDiagram('poster')}
+                  style={{
+                    padding: '0.45rem 0.9rem',
+                    borderRadius: 7,
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    border: 'none',
+                    background: activeDiagram === 'poster' ? '#ffffff' : 'transparent',
+                    color: activeDiagram === 'poster' ? '#0f172a' : '#64748b',
+                    boxShadow: activeDiagram === 'poster' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <span>🖼️</span> 7-Tier AI Stack Poster
+                </button>
+              </div>
+
+              {/* Action Buttons */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <a
-                  href="/posturepilot-tech-stack.jpg"
+                  href={activeDiagram === 'mcp' ? '/posturepilot-tech-stack.jpg' : '/posturepilot-ai-stack-poster.jpg'}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -591,8 +652,8 @@ export default function ArchitectureTechStackPage() {
                   🔍 Open Fullscreen
                 </a>
                 <a
-                  href="/posturepilot-tech-stack.jpg"
-                  download="posturepilot-ai-architecture.jpg"
+                  href={activeDiagram === 'mcp' ? '/posturepilot-tech-stack.jpg' : '/posturepilot-ai-stack-poster.jpg'}
+                  download={activeDiagram === 'mcp' ? 'posturepilot-mcp-architecture.jpg' : 'posturepilot-ai-stack-poster.jpg'}
                   style={{
                     fontSize: '0.82rem',
                     fontWeight: 700,
@@ -645,7 +706,7 @@ export default function ArchitectureTechStackPage() {
                   />
                   <div style={{ height: 24, width: 1, background: '#e2e8f0' }} />
                   <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#0f172a', letterSpacing: '0.02em' }}>
-                    OFFICIAL AI & CYBERSECURITY SYSTEM TOPOLOGY
+                    {activeDiagram === 'mcp' ? 'ENTERPRISE AI ARCHITECTURE & MCP SERVER' : '7-TIER AUTONOMOUS SOFTWARE & AI STACK'}
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -672,14 +733,17 @@ export default function ArchitectureTechStackPage() {
                     color: '#16a34a',
                     border: '1px solid #bbf7d0',
                   }}>
-                    ● 7-TIER AUTONOMOUS ARCHITECTURE
+                    ● 7-TIER AUTONOMOUS TOPOLOGY
                   </span>
                 </div>
               </div>
 
+              {/* Active Diagram Display */}
               <img
-                src="/posturepilot-tech-stack.jpg"
-                alt="PosturePilot Enterprise AI Architecture Blueprint with MCP Server and Official Logo"
+                src={activeDiagram === 'mcp' ? '/posturepilot-tech-stack.jpg' : '/posturepilot-ai-stack-poster.jpg'}
+                alt={activeDiagram === 'mcp'
+                  ? 'PosturePilot Enterprise AI Architecture Blueprint with MCP Server and Official Logo'
+                  : 'PosturePilot Complete 7-Tier AI Stack System Poster'}
                 style={{
                   width: '100%',
                   height: 'auto',
@@ -689,6 +753,41 @@ export default function ArchitectureTechStackPage() {
                   display: 'block',
                 }}
               />
+
+              {/* Quick Switch Callout */}
+              <div style={{
+                padding: '0.75rem 1.25rem',
+                borderRadius: 8,
+                background: '#f1f5f9',
+                border: '1px solid #e2e8f0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '0.5rem',
+              }}>
+                <span style={{ fontSize: '0.8rem', color: '#475569' }}>
+                  {activeDiagram === 'mcp'
+                    ? '💡 Want to see the full software engineering poster? Click "7-Tier AI Stack Poster" tab above or switch below.'
+                    : '💡 Viewing the 7-Tier AI Stack Poster. Click "MCP Architecture Blueprint" above to view the MCP-native topology.'}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setActiveDiagram(activeDiagram === 'mcp' ? 'poster' : 'mcp')}
+                  style={{
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    color: '#0284c7',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    padding: 0,
+                  }}
+                >
+                  {activeDiagram === 'mcp' ? 'Switch to 7-Tier AI Stack Poster →' : 'Switch to MCP Blueprint →'}
+                </button>
+              </div>
             </div>
           </div>
         </section>
