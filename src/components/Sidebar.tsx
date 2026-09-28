@@ -29,7 +29,7 @@ export default function Sidebar() {
   const [submittingUpgrade, setSubmittingUpgrade] = useState(false);
   const [sortOrder, setSortOrder] = useState<'default' | 'alpha'>('default');
 
-  const adminEmails = ['shrigo.now@gmail.com', 'shrigonow@gmail.com', 'demo@posturepilot.io'];
+  const adminEmails = ['shrigo.now@gmail.com', 'shrigonow@gmail.com'];
   const userEmail = session?.user?.email?.toLowerCase().trim();
   const isAdmin = !!(userEmail && adminEmails.includes(userEmail));
 

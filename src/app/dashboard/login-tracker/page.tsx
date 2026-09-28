@@ -28,8 +28,8 @@ export default function LoginTrackerPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'trial' | 'enterprise' | 'google'>('all');
 
-  const adminEmails = ['shrigo.now@gmail.com', 'shrigonow@gmail.com', 'demo@posturepilot.io'];
-  const isAdmin = session?.user?.email && adminEmails.includes(session.user.email);
+  const adminEmails = ['shrigo.now@gmail.com', 'shrigonow@gmail.com'];
+  const isAdmin = session?.user?.email && adminEmails.includes(session.user.email.toLowerCase().trim());
 
   useEffect(() => {
     if (status === 'authenticated' && isAdmin) {

@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { prisma } from '@/lib/db';
 
-const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com', 'demo@posturepilot.io'];
+const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com'];
 
 // ── GET: List all upgrade requests (Admin Whitelist only) ──────────────────────
 export async function GET() {

@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { prisma } from '@/lib/db';
 
-const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com', 'demo@posturepilot.io'];
+const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com'];
 
 export async function GET() {
   try {
@@ -12,7 +12,7 @@ export async function GET() {
     if (!email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const isAuthorized = ADMIN_EMAILS.includes(email) || email.endsWith('@posturepilot.io') || process.env.NODE_ENV === 'development';
+    const isAuthorized = ADMIN_EMAILS.includes(email);
     if (!isAuthorized) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }

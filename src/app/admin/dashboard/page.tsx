@@ -52,8 +52,8 @@ export default function AdminDashboardPage() {
   const [search,   setSearch]   = useState('');
   const [filter,   setFilter]   = useState<'all' | 'google' | 'success' | 'failed'>('all');
 
-  const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com', 'demo@posturepilot.io'];
-  const isAdmin = session?.user?.email && ADMIN_EMAILS.includes(session.user.email);
+  const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com'];
+  const isAdmin = session?.user?.email && ADMIN_EMAILS.includes(session.user.email.toLowerCase().trim());
 
   const fetchAttempts = useCallback(async () => {
     setLoading(true);
