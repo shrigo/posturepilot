@@ -13,6 +13,7 @@ function LoginFormContent() {
   const oauthError = searchParams.get('error');
 
   const [email, setEmail] = useState('');
+  const [trialError, setTrialError] = useState('');
   const [loading, setLoading] = useState(false);
   const [trialLoading, setTrialLoading] = useState(false);
   const [isSafari, setIsSafari] = useState(false);
@@ -34,11 +35,40 @@ function LoginFormContent() {
       .catch(() => {});
   }, [status, router]);
 
-  // Instant 14-Day Free Trial via CredentialsProvider
+  // Instant 14-Day Free Trial via CredentialsProvider with mandatory lead capture
   const handleInstantTrial = async (e: React.FormEvent) => {
     e.preventDefault();
+    setTrialError('');
+    const targetEmail = email.trim().toLowerCase();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!targetEmail || !emailRegex.test(targetEmail)) {
+      setTrialError('Please enter a valid work email address (e.g. name@company.com).');
+      return;
+    }
+
     setTrialLoading(true);
-    const targetEmail = email.trim() || 'trial@posturepilot.io';
+
+    // 1. Immediately log lead attempt to database (recording email, company domain, IP, user-agent)
+    try {
+      const [userPart, domainPart] = targetEmail.split('@');
+      const cleanUser = userPart.replace(/[._+-]/g, ' ');
+      await fetch('/api/auth/log-attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: targetEmail,
+          firstName: cleanUser.charAt(0).toUpperCase() + cleanUser.slice(1),
+          lastName: domainPart,
+          provider: 'free_trial',
+          status: 'success',
+        }),
+      });
+    } catch (err) {
+      console.warn('Logging lead attempt fallback:', err);
+    }
+
+    // 2. Sign in via CredentialsProvider
     try {
       const res = await signIn('credentials', {
         email: targetEmail,
@@ -49,28 +79,10 @@ function LoginFormContent() {
       if (res?.ok) {
         router.push('/dashboard');
       } else {
-        // Fallback: direct router navigation to dashboard
         router.push('/dashboard');
       }
     } catch (err) {
       console.error('Trial login error:', err);
-      router.push('/dashboard');
-    } finally {
-      setTrialLoading(false);
-    }
-  };
-
-  // Instant Demo Sandbox Login
-  const handleDemoLogin = async () => {
-    setTrialLoading(true);
-    try {
-      await signIn('credentials', {
-        email: 'demo@posturepilot.io',
-        callbackUrl: '/dashboard',
-        redirect: false,
-      });
-      router.push('/dashboard');
-    } catch {
       router.push('/dashboard');
     } finally {
       setTrialLoading(false);
@@ -137,26 +149,35 @@ function LoginFormContent() {
       <form onSubmit={handleInstantTrial} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
         <div>
           <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#334155', marginBottom: '0.35rem' }}>
-            Work Email Address
+            Work Email Address <span style={{ color: '#ef4444' }}>*</span>
           </label>
           <input
             type="email"
-            placeholder="you@company.com (or leave blank for instant trial)"
+            required
+            placeholder="name@company.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (trialError) setTrialError('');
+            }}
             style={{
               width: '100%',
               padding: '0.75rem 0.9rem',
               borderRadius: '8px',
-              border: '1.5px solid #cbd5e1',
+              border: trialError ? '1.5px solid #ef4444' : '1.5px solid #cbd5e1',
               fontSize: '0.88rem',
               outline: 'none',
               boxSizing: 'border-box',
               transition: 'border-color 0.2s',
             }}
             onFocus={(e) => e.target.style.borderColor = '#4f46e5'}
-            onBlur={(e) => e.target.style.borderColor = '#cbd5e1'}
+            onBlur={(e) => e.target.style.borderColor = trialError ? '#ef4444' : '#cbd5e1'}
           />
+          {trialError && (
+            <div style={{ color: '#dc2626', fontSize: '0.75rem', marginTop: '0.35rem', fontWeight: 600 }}>
+              ⚠️ {trialError}
+            </div>
+          )}
         </div>
 
         <button
@@ -181,35 +202,28 @@ function LoginFormContent() {
             opacity: trialLoading ? 0.75 : 1,
           }}
         >
-          {trialLoading ? 'Launching Your Trial...' : '🚀 Start 14-Day Free Trial (Instant Access) →'}
+          {trialLoading ? 'Provisioning Sandbox...' : '🚀 Start 14-Day Free Trial (Instant Access) →'}
         </button>
-      </form>
 
-      {/* Quick 1-Click Sandbox Demo Button */}
-      <button
-        type="button"
-        onClick={handleDemoLogin}
-        disabled={trialLoading}
-        style={{
+        {/* Free trial guarantee badge */}
+        <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           gap: '0.5rem',
-          width: '100%',
-          padding: '0.65rem',
+          padding: '0.5rem 0.75rem',
+          background: '#f8fafc',
           borderRadius: '8px',
-          border: '1px solid #c7d2fe',
-          background: '#f5f3ff',
-          color: '#4338ca',
-          fontSize: '0.8rem',
-          fontWeight: 700,
-          cursor: trialLoading ? 'not-allowed' : 'pointer',
-          marginBottom: '1.5rem',
-          transition: 'all 0.15s ease',
-        }}
-      >
-        ⚡ Launch 1-Click Sandbox Demo
-      </button>
+          border: '1px solid #e2e8f0',
+          fontSize: '0.72rem',
+          color: '#475569',
+          fontWeight: 600,
+        }}>
+          <span>🛡️ No credit card required</span>
+          <span>·</span>
+          <span>⚡ All 12 Cockpits Unlocked</span>
+        </div>
+      </form>
 
       {/* Divider */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>

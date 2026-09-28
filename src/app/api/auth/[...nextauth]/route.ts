@@ -13,13 +13,16 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Work Email', type: 'email' },
       },
       async authorize(credentials) {
-        const rawEmail = (credentials?.email || 'trial@posturepilot.io').toLowerCase().trim();
-        // Fallback for valid work or trial email
-        const email = rawEmail.includes('@') ? rawEmail : `${rawEmail}@posturepilot.io`;
+        const rawEmail = (credentials?.email || '').toLowerCase().trim();
+        if (!rawEmail || !rawEmail.includes('@')) {
+          throw new Error('Please enter a valid work email address.');
+        }
+        const [username, domain] = rawEmail.split('@');
+        const company = domain ? domain.split('.')[0].toUpperCase() : 'TRIAL';
         return {
           id: 'trial-' + Date.now(),
-          name: email.split('@')[0].toUpperCase() + ' (Trial)',
-          email: email,
+          name: `${username.toUpperCase()} (${company})`,
+          email: rawEmail,
         };
       },
     }),
@@ -56,22 +59,35 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn({ user, account }) {
       try {
-        const nameParts = (user.name || '').trim().split(' ');
-        const firstName = nameParts[0] || null;
-        const lastName  = nameParts.length > 1 ? nameParts.slice(1).join(' ') : null;
+        const email = (user.email || '').toLowerCase().trim();
+        let firstName: string | null = null;
+        let lastName: string | null = null;
+
+        if (email.includes('@')) {
+          const [userPart, domainPart] = email.split('@');
+          const cleanUser = userPart.replace(/[._+-]/g, ' ');
+          firstName = cleanUser.charAt(0).toUpperCase() + cleanUser.slice(1);
+          lastName = domainPart; // stores the company domain for lead analytics
+        } else if (user.name) {
+          const nameParts = user.name.trim().split(' ');
+          firstName = nameParts[0] || null;
+          lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : null;
+        }
+
+        const providerLabel = account?.provider === 'credentials' ? 'free_trial' : (account?.provider || 'google');
 
         await prisma.loginAttempt.create({
           data: {
-            email:     user.email || 'unknown',
+            email:     email || 'unknown',
             firstName,
             lastName,
-            provider:  account?.provider || 'credentials',
+            provider:  providerLabel,
             status:    'success',
           }
         });
       } catch (err) {
         // Log but do NOT block sign-in if DB write fails
-        console.error('[NextAuth] Failed to log successful sign-in:', err);
+        console.error('[NextAuth] Failed to log sign-in event:', err);
       }
       return true;
     },

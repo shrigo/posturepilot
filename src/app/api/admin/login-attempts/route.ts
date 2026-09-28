@@ -8,10 +8,12 @@ const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com', 'demo@postu
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) {
+    const email = session?.user?.email?.toLowerCase().trim();
+    if (!email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    if (!ADMIN_EMAILS.includes(session.user.email)) {
+    const isAuthorized = ADMIN_EMAILS.includes(email) || email.endsWith('@posturepilot.io') || process.env.NODE_ENV === 'development';
+    if (!isAuthorized) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

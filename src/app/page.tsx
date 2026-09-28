@@ -43,16 +43,54 @@ export default function Page() {
   // Instant Free Trial Modal States
   const [trialModalOpen, setTrialModalOpen] = useState(false);
   const [trialEmail, setTrialEmail] = useState("");
+  const [trialError, setTrialError] = useState("");
   const [trialLoading, setTrialLoading] = useState(false);
 
-  const handleStartTrial = async (customEmail?: string) => {
+  const handleStartTrial = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setTrialError("");
+    const targetEmail = trialEmail.trim().toLowerCase();
+
+    // Enforce email validation so lead details are always recorded
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!targetEmail || !emailRegex.test(targetEmail)) {
+      setTrialError("Please enter your valid work email address (e.g. name@company.com) to start your free trial.");
+      return;
+    }
+
     setTrialLoading(true);
-    const targetEmail = (customEmail || trialEmail).trim() || 'trial@posturepilot.io';
+
+    // 1. Immediately log lead attempt to database (recording email, company domain, IP, user-agent)
     try {
-      await signIn('credentials', {
+      const [userPart, domainPart] = targetEmail.split('@');
+      const cleanUser = userPart.replace(/[._+-]/g, ' ');
+      await fetch('/api/auth/log-attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: targetEmail,
+          firstName: cleanUser.charAt(0).toUpperCase() + cleanUser.slice(1),
+          lastName: domainPart,
+          provider: 'free_trial',
+          status: 'success',
+        }),
+      });
+    } catch (err) {
+      console.warn('Logging lead attempt fallback:', err);
+    }
+
+    // 2. Authenticate session with NextAuth credentials provider
+    try {
+      const res = await signIn('credentials', {
         email: targetEmail,
         callbackUrl: '/dashboard',
+        redirect: false,
       });
+      if (res?.ok) {
+        window.location.href = '/dashboard';
+      } else {
+        window.location.href = '/dashboard';
+      }
     } catch {
       window.location.href = '/dashboard';
     }
@@ -2416,30 +2454,39 @@ export default function Page() {
             </div>
 
             {/* Form */}
-            <form onSubmit={(e) => { e.preventDefault(); handleStartTrial(); }} style={{ display: "flex", flexDirection: "column", gap: "0.85rem", marginBottom: "1rem" }}>
+            <form onSubmit={handleStartTrial} style={{ display: "flex", flexDirection: "column", gap: "0.85rem", marginBottom: "1rem" }}>
               <div>
                 <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#334155", marginBottom: "0.35rem" }}>
-                  Work Email Address
+                  Work Email Address <span style={{ color: "#ef4444" }}>*</span>
                 </label>
                 <input
                   type="email"
+                  required
                   autoFocus
-                  placeholder="you@company.com (or leave blank for instant trial)"
+                  placeholder="name@company.com"
                   value={trialEmail}
-                  onChange={(e) => setTrialEmail(e.target.value)}
+                  onChange={(e) => {
+                    setTrialEmail(e.target.value);
+                    if (trialError) setTrialError("");
+                  }}
                   style={{
                     width: "100%",
                     padding: "0.75rem 0.9rem",
                     borderRadius: "8px",
-                    border: "1.5px solid #cbd5e1",
+                    border: trialError ? "1.5px solid #ef4444" : "1.5px solid #cbd5e1",
                     fontSize: "0.88rem",
                     outline: "none",
                     boxSizing: "border-box",
                     transition: "border-color 0.2s",
                   }}
                   onFocus={(e) => e.target.style.borderColor = "#4f46e5"}
-                  onBlur={(e) => e.target.style.borderColor = "#cbd5e1"}
+                  onBlur={(e) => e.target.style.borderColor = trialError ? "#ef4444" : "#cbd5e1"}
                 />
+                {trialError && (
+                  <div style={{ color: "#dc2626", fontSize: "0.75rem", marginTop: "0.35rem", fontWeight: 600 }}>
+                    ⚠️ {trialError}
+                  </div>
+                )}
               </div>
 
               <button
@@ -2464,35 +2511,29 @@ export default function Page() {
                   opacity: trialLoading ? 0.75 : 1,
                 }}
               >
-                {trialLoading ? "Launching Command Center..." : "🚀 Launch 14-Day Free Trial →"}
+                {trialLoading ? "Provisioning Sandbox Environment..." : "🚀 Launch 14-Day Free Trial →"}
               </button>
             </form>
 
-            {/* 1-Click Sandbox Demo Button */}
-            <button
-              type="button"
-              onClick={() => handleStartTrial('demo@posturepilot.io')}
-              disabled={trialLoading}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.45rem",
-                width: "100%",
-                padding: "0.65rem",
-                borderRadius: "8px",
-                border: "1px solid #c7d2fe",
-                background: "#f5f3ff",
-                color: "#4338ca",
-                fontSize: "0.82rem",
-                fontWeight: 700,
-                cursor: trialLoading ? "not-allowed" : "pointer",
-                marginBottom: "1rem",
-                transition: "all 0.15s ease",
-              }}
-            >
-              ⚡ 1-Click Sandbox Trial (No Sign-in Needed)
-            </button>
+            {/* Trust and reassurance badges */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem",
+              padding: "0.6rem 0.75rem",
+              background: "#f8fafc",
+              borderRadius: "8px",
+              border: "1px solid #e2e8f0",
+              fontSize: "0.72rem",
+              color: "#475569",
+              marginBottom: "1rem",
+              fontWeight: 600,
+            }}>
+              <span>🛡️ No credit card required</span>
+              <span>·</span>
+              <span>⚡ All 12 Cockpits Unlocked</span>
+            </div>
 
             {/* Or continue with Google */}
             <div style={{ textAlign: "center" }}>
