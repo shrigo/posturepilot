@@ -13,10 +13,12 @@ export default function HeroTypewriterBadge() {
   const [displayedText, setDisplayedText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isEmptyPaused, setIsEmptyPaused] = useState(false);
 
   useEffect(() => {
     const currentPhrase = TYPEWRITER_PHRASES[phraseIndex];
 
+    // Paused when fully typed so user can read
     if (isPaused) {
       const pauseTimer = setTimeout(() => {
         setIsPaused(false);
@@ -25,11 +27,20 @@ export default function HeroTypewriterBadge() {
       return () => clearTimeout(pauseTimer);
     }
 
+    // Paused when fully deleted to [ 🟢 ] so closed state is visible
+    if (isEmptyPaused) {
+      const emptyTimer = setTimeout(() => {
+        setIsEmptyPaused(false);
+        setPhraseIndex((prev) => (prev + 1) % TYPEWRITER_PHRASES.length);
+      }, 700);
+      return () => clearTimeout(emptyTimer);
+    }
+
     if (!isDeleting) {
       if (displayedText.length < currentPhrase.length) {
         const typeTimer = setTimeout(() => {
           setDisplayedText(currentPhrase.slice(0, displayedText.length + 1));
-        }, 55);
+        }, 50);
         return () => clearTimeout(typeTimer);
       } else {
         setIsPaused(true);
@@ -38,16 +49,16 @@ export default function HeroTypewriterBadge() {
       if (displayedText.length > 0) {
         const deleteTimer = setTimeout(() => {
           setDisplayedText(currentPhrase.slice(0, displayedText.length - 1));
-        }, 28);
+        }, 22);
         return () => clearTimeout(deleteTimer);
       } else {
         setIsDeleting(false);
-        setPhraseIndex((prev) => (prev + 1) % TYPEWRITER_PHRASES.length);
+        setIsEmptyPaused(true);
       }
     }
-  }, [displayedText, isDeleting, isPaused, phraseIndex]);
+  }, [displayedText, isDeleting, isPaused, isEmptyPaused, phraseIndex]);
 
-  // Highlight "COMMAND YOUR SECURITY" in dark navy/indigo and the rotating descriptor in vivid violet
+  // Highlight "COMMAND YOUR SECURITY" in dark navy/indigo and rotating descriptor in vivid violet
   const renderHighlightedText = (text: string) => {
     const prefix = 'COMMAND YOUR SECURITY';
     if (text.startsWith(prefix)) {
@@ -68,7 +79,6 @@ export default function HeroTypewriterBadge() {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '0.45rem',
         background: 'transparent',
         border: 'none',
         borderRadius: 0,
@@ -88,7 +98,7 @@ export default function HeroTypewriterBadge() {
         style={{
           color: '#4f46e5',
           fontWeight: 900,
-          fontSize: '1.3em',
+          fontSize: '1.35em',
           fontFamily: 'Consolas, Monaco, "Courier New", monospace',
           lineHeight: 1,
           userSelect: 'none',
@@ -97,7 +107,7 @@ export default function HeroTypewriterBadge() {
         [
       </span>
 
-      {/* Live Glowing Radar Pulse Indicator */}
+      {/* Live Glowing Green Flashing Dot */}
       <span
         style={{
           position: 'relative',
@@ -107,7 +117,7 @@ export default function HeroTypewriterBadge() {
           width: 8,
           height: 8,
           flexShrink: 0,
-          margin: '0 2px',
+          margin: '0 4px',
         }}
       >
         <span
@@ -133,38 +143,42 @@ export default function HeroTypewriterBadge() {
         />
       </span>
 
-      {/* Typewriter Text Stream */}
-      <span
-        style={{
-          fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-          display: 'inline-flex',
-          alignItems: 'center',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}
-      >
-        {renderHighlightedText(displayedText)}
-        {/* Blinking Terminal Cursor */}
+      {/* Typewriter Text Stream: ONLY takes up space when letters exist */}
+      {displayedText.length > 0 && (
         <span
           style={{
-            display: 'inline-block',
-            width: '2px',
-            height: '1.15em',
-            background: '#4f46e5',
-            marginLeft: '3px',
-            verticalAlign: 'middle',
-            animation: 'blink 0.85s step-start infinite',
+            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+            display: 'inline-flex',
+            alignItems: 'center',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            marginLeft: '4px',
+            marginRight: '2px',
           }}
-        />
-      </span>
+        >
+          {renderHighlightedText(displayedText)}
+          {/* Blinking Terminal Cursor */}
+          <span
+            style={{
+              display: 'inline-block',
+              width: '2px',
+              height: '1.15em',
+              background: '#4f46e5',
+              marginLeft: '3px',
+              verticalAlign: 'middle',
+              animation: 'blink 0.85s step-start infinite',
+            }}
+          />
+        </span>
+      )}
 
       {/* Closing Bracket ']' */}
       <span
         style={{
           color: '#4f46e5',
           fontWeight: 900,
-          fontSize: '1.3em',
+          fontSize: '1.35em',
           fontFamily: 'Consolas, Monaco, "Courier New", monospace',
           lineHeight: 1,
           userSelect: 'none',
