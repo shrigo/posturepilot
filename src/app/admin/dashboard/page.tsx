@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter }  from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
+import Link from 'next/link';
 
 interface LoginAttempt {
   id:        string;
@@ -16,29 +17,51 @@ interface LoginAttempt {
   createdAt: string;
 }
 
-function StatCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
-  return (
-    <div style={{
-      background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.08)',
-      borderRadius: 14,
-      padding: '1.25rem 1.5rem',
-      flex: 1,
-      minWidth: 140,
-    }}>
-      <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{label}</div>
-      <div style={{ fontSize: '2rem', fontWeight: 800, color, lineHeight: 1, marginBottom: 4 }}>{value}</div>
-      {sub && <div style={{ fontSize: '0.7rem', color: '#475569', fontWeight: 500 }}>{sub}</div>}
-    </div>
-  );
-}
-
 interface UpgradeReqLog {
   id:         string;
   clientName: string;
   userEmail:  string;
   moduleName: string;
   createdAt:  string;
+}
+
+const COMMON_FREE_PROVIDERS = new Set([
+  'gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'proton.me', 'protonmail.com', 'aol.com'
+]);
+
+function StatCard({ 
+  label, 
+  value, 
+  sub, 
+  color, 
+  borderColor 
+}: { 
+  label: string; 
+  value: string | number; 
+  sub?: string; 
+  color: string;
+  borderColor: string;
+}) {
+  return (
+    <div style={{
+      background: '#ffffff',
+      border: '1px solid #e2e8f0',
+      borderLeft: `4px solid ${borderColor}`,
+      borderRadius: 14,
+      padding: '1.25rem 1.5rem',
+      flex: 1,
+      minWidth: 180,
+      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+    }}>
+      <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+        {label}
+      </div>
+      <div style={{ fontSize: '1.9rem', fontWeight: 800, color, lineHeight: 1, marginBottom: 6 }}>
+        {value}
+      </div>
+      {sub && <div style={{ fontSize: '0.72rem', color: '#475569', fontWeight: 600 }}>{sub}</div>}
+    </div>
+  );
 }
 
 export default function AdminDashboardPage() {
@@ -50,7 +73,7 @@ export default function AdminDashboardPage() {
   const [loading,  setLoading]  = useState(true);
   const [error,    setError]    = useState('');
   const [search,   setSearch]   = useState('');
-  const [filter,   setFilter]   = useState<'all' | 'google' | 'success' | 'failed'>('all');
+  const [filter,   setFilter]   = useState<'all' | 'trial' | 'enterprise' | 'google'>('all');
 
   const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com'];
   const isAdmin = session?.user?.email && ADMIN_EMAILS.includes(session.user.email.toLowerCase().trim());
@@ -68,7 +91,6 @@ export default function AdminDashboardPage() {
       setAttempts(data.attempts || []);
     } catch (e: unknown) {
       console.warn('Admin fetch warning:', e);
-      // Gracefully maintain existing records without crashing
     } finally {
       setLoading(false);
     }
@@ -78,7 +100,7 @@ export default function AdminDashboardPage() {
     try {
       const res = await fetch('/api/admin/upgrade-request');
       if (res.ok) {
-        const data = await res.json();
+        const data = await res.json().catch(() => ({ requests: [] }));
         setRequests(data.requests || []);
       }
     } catch (e) {
@@ -93,13 +115,129 @@ export default function AdminDashboardPage() {
     }
   }, [status, isAdmin, fetchAttempts, fetchRequests]);
 
+  // Lead Analytics calculations
+  const stats = useMemo(() => {
+    const total = attempts.length;
+    const trialLeads = attempts.filter(a => a.provider === 'free_trial' || a.provider === 'credentials');
+    const googleLogins = attempts.filter(a => a.provider === 'google');
+    
+    const domainMap = new Map<string, number>();
+    let enterpriseCount = 0;
+
+    attempts.forEach(a => {
+      const domain = (a.lastName || a.email.split('@')[1] || '').toLowerCase().trim();
+      if (domain) {
+        domainMap.set(domain, (domainMap.get(domain) || 0) + 1);
+        if (!COMMON_FREE_PROVIDERS.has(domain)) {
+          enterpriseCount++;
+        }
+      }
+    });
+
+    const todayCount = attempts.filter(a => {
+      const d = new Date(a.createdAt);
+      const n = new Date();
+      return d.toDateString() === n.toDateString();
+    }).length;
+
+    return {
+      total,
+      trialLeadsCount: trialLeads.length,
+      googleCount: googleLogins.length,
+      uniqueDomainsCount: domainMap.size,
+      enterpriseCount,
+      todayCount,
+    };
+  }, [attempts]);
+
+  // Filtering for logins
+  const filteredAttempts = useMemo(() => {
+    return attempts.filter(a => {
+      const term = search.toLowerCase().trim();
+      const domain = (a.lastName || a.email.split('@')[1] || '').toLowerCase().trim();
+
+      const matchSearch =
+        !term ||
+        a.email.toLowerCase().includes(term) ||
+        domain.includes(term) ||
+        (a.firstName || '').toLowerCase().includes(term) ||
+        (a.lastName  || '').toLowerCase().includes(term) ||
+        (a.ip        || '').includes(term);
+
+      if (!matchSearch) return false;
+
+      if (filter === 'trial') return a.provider === 'free_trial' || a.provider === 'credentials';
+      if (filter === 'google') return a.provider === 'google';
+      if (filter === 'enterprise') return domain && !COMMON_FREE_PROVIDERS.has(domain);
+      return true;
+    });
+  }, [attempts, search, filter]);
+
+  // Filtering for upgrade requests
+  const filteredRequests = useMemo(() => {
+    return requests.filter(r => {
+      const term = search.toLowerCase().trim();
+      return (
+        !term ||
+        r.clientName.toLowerCase().includes(term) ||
+        r.userEmail.toLowerCase().includes(term) ||
+        r.moduleName.toLowerCase().includes(term)
+      );
+    });
+  }, [requests, search]);
+
+  // CSV Export
+  const exportCSV = () => {
+    if (activeTab === 'logins') {
+      const headers = ['Timestamp', 'First Name / Lead', 'Organization Domain', 'Email', 'Provider', 'Status', 'IP Address', 'User Agent'];
+      const rows = filteredAttempts.map(a => [
+        new Date(a.createdAt).toLocaleString(),
+        a.firstName || '',
+        a.lastName || a.email.split('@')[1] || '',
+        a.email,
+        a.provider,
+        a.status,
+        a.ip || '',
+        (a.userAgent || '').replace(/,/g, ' '),
+      ]);
+      const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url  = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href     = url;
+      link.download = `posturepilot-leads-${Date.now()}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } else {
+      const headers = ['Timestamp', 'Client Name', 'User Email', 'Requested Module'];
+      const rows = filteredRequests.map(r => [
+        new Date(r.createdAt).toLocaleString(),
+        r.clientName,
+        r.userEmail,
+        r.moduleName,
+      ]);
+      const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url  = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href     = url;
+      link.download = `posturepilot-upgrade-requests-${Date.now()}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: '/admin/login' });
+  };
+
   // Loading state
   if (status === 'loading') {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#0f172a' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#f8fafc' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '3px solid rgba(255,255,255,0.08)', borderTopColor: '#6366f1', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem auto' }} />
-          <div style={{ fontSize: '0.875rem', color: '#94a3b8', fontWeight: 600 }}>Verifying credentials...</div>
+          <div style={{ width: '40px', height: '40px', border: '3px solid #e2e8f0', borderTopColor: '#4f46e5', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem auto' }} />
+          <div style={{ fontSize: '0.88rem', color: '#64748b', fontWeight: 600 }}>Verifying administrator credentials...</div>
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       </div>
@@ -109,32 +247,37 @@ export default function AdminDashboardPage() {
   // Not logged in -> redirect to login
   if (status === 'unauthenticated') {
     router.replace('/admin/login');
-    return <div style={{ minHeight: '100vh', background: '#0f172a' }} />;
+    return <div style={{ minHeight: '100vh', background: '#f8fafc' }} />;
   }
 
   // Logged in but not admin -> Access Denied screen
   if (!isAdmin) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0f172a', padding: '2rem', fontFamily: 'Inter, sans-serif' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#f8fafc', padding: '2rem', fontFamily: 'Inter, sans-serif' }}>
         <div style={{
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(239, 68, 68, 0.2)',
+          background: '#ffffff',
+          border: '1px solid #fee2e2',
           borderRadius: 20,
-          padding: '3.5rem 2.5rem',
+          padding: '3rem 2.5rem',
           maxWidth: '480px',
           textAlign: 'center',
-          boxShadow: '0 25px 60px rgba(0,0,0,0.5)',
-          color: '#e2e8f0'
+          boxShadow: '0 10px 25px rgba(0,0,0,0.05)',
         }}>
-          <div style={{ fontSize: '3.5rem', marginBottom: '1.25rem' }}>🚫</div>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fca5a5', margin: '0 0 0.75rem 0' }}>Access Denied</h2>
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.6, margin: '0 0 1.75rem 0' }}>
-            This panel is restricted to System Administrators only. Your identity <strong>({session?.user?.email})</strong> is not enrolled in the admin policy.
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚫</div>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#991b1b', margin: '0 0 0.5rem 0' }}>Access Denied</h2>
+          <p style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: 1.6, margin: '0 0 1.75rem 0' }}>
+            This terminal is strictly restricted to authorized System Administrators. Your email <strong>({session?.user?.email || 'Guest'})</strong> is not enrolled in the admin policy.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+            <Link 
+              href="/dashboard" 
+              style={{ padding: '0.625rem 1.25rem', background: '#4f46e5', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 700 }}
+            >
+              ← Return to Cockpit
+            </Link>
             <button 
-              onClick={() => signOut({ callbackUrl: '/admin/login' })} 
-              style={{ padding: '0.625rem 1.25rem', background: '#6366f1', color: '#fff', borderRadius: '8px', border: 'none', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer' }}
+              onClick={handleLogout} 
+              style={{ padding: '0.625rem 1.25rem', border: '1px solid #cbd5e1', background: '#fff', color: '#334155', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer' }}
             >
               Sign Out & Switch Account
             </button>
@@ -144,124 +287,66 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const handleLogout = async () => {
-    signOut({ callbackUrl: '/admin/login' });
-  };
-
-  // ── Stats ──────────────────────────────────────────────────────────────────
-  const total       = attempts.length;
-  const unique      = new Set(attempts.map(a => a.email)).size;
-  const googleLogins = attempts.filter(a => a.provider === 'google').length;
-  const today       = attempts.filter(a => {
-    const d = new Date(a.createdAt);
-    const n = new Date();
-    return d.toDateString() === n.toDateString();
-  }).length;
-
-  // ── Filtering ──────────────────────────────────────────────────────────────
-  const filtered = attempts.filter(a => {
-    const term = search.toLowerCase();
-    const matchSearch =
-      !term ||
-      a.email.toLowerCase().includes(term) ||
-      (a.firstName || '').toLowerCase().includes(term) ||
-      (a.lastName  || '').toLowerCase().includes(term) ||
-      (a.ip        || '').includes(term);
-
-    const matchFilter =
-      filter === 'all'     ? true :
-      filter === 'google'  ? a.provider === 'google' :
-      filter === 'success' ? a.status   === 'success' :
-                             a.status   === 'failed';
-
-    return matchSearch && matchFilter;
-  });
-
-  // ── CSV Export ─────────────────────────────────────────────────────────────
-  const exportCSV = () => {
-    const headers = ['Timestamp', 'First Name', 'Last Name', 'Email', 'Provider', 'Status', 'IP Address', 'User Agent'];
-    const rows    = filtered.map(a => [
-      new Date(a.createdAt).toLocaleString(),
-      a.firstName || '',
-      a.lastName  || '',
-      a.email,
-      a.provider,
-      a.status,
-      a.ip        || '',
-      (a.userAgent || '').replace(/,/g, ' '),
-    ]);
-    const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url  = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href     = url;
-    link.download = `posturepilot-logins-${Date.now()}.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: #0f172a; color: #e2e8f0; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #0f172a; }
 
         .admin-wrap {
           min-height: 100vh;
-          background:
-            radial-gradient(ellipse 70% 40% at 50% -10%, rgba(99,102,241,0.12) 0%, transparent 60%),
-            #0f172a;
+          background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
         }
 
         .admin-topbar {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          padding: 1rem 2rem;
-          background: rgba(255,255,255,0.03);
-          border-bottom: 1px solid rgba(255,255,255,0.07);
+          justifyContent: space-between;
+          padding: 0.9rem 2rem;
+          background: #ffffff;
+          border-bottom: 1px solid #e2e8f0;
           position: sticky;
           top: 0;
           z-index: 100;
-          backdrop-filter: blur(12px);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
         .admin-logo {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-size: 1rem;
+          font-size: 1.05rem;
           font-weight: 800;
-          color: #f1f5f9;
-          letter-spacing: -0.01em;
+          color: #0f172a;
+          letter-spacing: -0.02em;
         }
 
-        .admin-logo span {
-          font-size: 0.62rem;
-          font-weight: 700;
-          background: rgba(99,102,241,0.2);
-          border: 1px solid rgba(99,102,241,0.35);
-          color: #a5b4fc;
+        .admin-badge {
+          font-size: 0.65rem;
+          font-weight: 800;
+          background: #eef2ff;
+          border: 1px solid #c7d2fe;
+          color: #4338ca;
           padding: 2px 8px;
           border-radius: 20px;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.06em;
         }
 
         .admin-page { padding: 2rem; max-width: 1400px; margin: 0 auto; }
 
         .page-heading {
-          font-size: 1.6rem;
+          font-size: 1.55rem;
           font-weight: 800;
-          color: #f1f5f9;
+          color: #0f172a;
           letter-spacing: -0.02em;
-          margin-bottom: 0.35rem;
+          margin-bottom: 0.25rem;
         }
 
         .page-sub {
-          font-size: 0.8rem;
-          color: #475569;
+          font-size: 0.82rem;
+          color: #64748b;
           font-weight: 500;
           margin-bottom: 1.75rem;
         }
@@ -276,6 +361,7 @@ export default function AdminDashboardPage() {
         .controls-row {
           display: flex;
           align-items: center;
+          justifyContent: space-between;
           gap: 0.75rem;
           flex-wrap: wrap;
           margin-bottom: 1.25rem;
@@ -284,12 +370,12 @@ export default function AdminDashboardPage() {
         .search-input {
           flex: 1;
           min-width: 220px;
-          max-width: 360px;
-          padding: 0.65rem 1rem;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
+          max-width: 320px;
+          padding: 0.6rem 0.95rem;
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
           border-radius: 10px;
-          color: #e2e8f0;
+          color: #334155;
           font-size: 0.82rem;
           font-family: 'Inter', sans-serif;
           font-weight: 500;
@@ -297,19 +383,19 @@ export default function AdminDashboardPage() {
           transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .search-input::placeholder { color: #475569; }
+        .search-input::placeholder { color: #94a3b8; }
         .search-input:focus {
-          border-color: rgba(99,102,241,0.5);
-          box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+          border-color: #4f46e5;
+          box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
         }
 
         .filter-btn {
-          padding: 0.6rem 1rem;
+          padding: 0.45rem 0.85rem;
           border-radius: 8px;
-          border: 1px solid rgba(255,255,255,0.1);
-          background: rgba(255,255,255,0.04);
-          color: #94a3b8;
-          font-size: 0.75rem;
+          border: 1px solid #e2e8f0;
+          background: #ffffff;
+          color: #475569;
+          font-size: 0.74rem;
           font-weight: 700;
           font-family: 'Inter', sans-serif;
           cursor: pointer;
@@ -317,16 +403,16 @@ export default function AdminDashboardPage() {
           white-space: nowrap;
         }
 
-        .filter-btn:hover   { background: rgba(255,255,255,0.08); color: #e2e8f0; }
-        .filter-btn.active  {
-          background: rgba(99,102,241,0.2);
-          border-color: rgba(99,102,241,0.4);
-          color: #a5b4fc;
+        .filter-btn:hover { background: #f1f5f9; color: #0f172a; }
+        .filter-btn.active {
+          background: #ede9fe;
+          border-color: #c4b5fd;
+          color: #5b21b6;
         }
 
         .action-btn {
-          padding: 0.65rem 1.1rem;
-          background: linear-gradient(135deg, #6366f1, #4f46e5);
+          padding: 0.55rem 1.1rem;
+          background: linear-gradient(135deg, #4f46e5, #7c3aed);
           border: none;
           border-radius: 10px;
           color: #fff;
@@ -334,124 +420,107 @@ export default function AdminDashboardPage() {
           font-weight: 700;
           font-family: 'Inter', sans-serif;
           cursor: pointer;
-          transition: opacity 0.2s, transform 0.15s;
-          box-shadow: 0 2px 10px rgba(99,102,241,0.3);
+          transition: all 0.15s;
+          box-shadow: 0 2px 8px rgba(79,70,229,0.25);
           white-space: nowrap;
         }
+        .action-btn:hover { opacity: 0.92; transform: translateY(-1px); }
 
-        .action-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-
-        .logout-btn {
+        .secondary-btn {
           padding: 0.55rem 1.1rem;
-          background: rgba(239,68,68,0.1);
-          border: 1px solid rgba(239,68,68,0.25);
-          border-radius: 8px;
-          color: #fca5a5;
-          font-size: 0.75rem;
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
+          border-radius: 10px;
+          color: #334155;
+          font-size: 0.78rem;
           font-weight: 700;
           font-family: 'Inter', sans-serif;
           cursor: pointer;
           transition: all 0.15s;
+          white-space: nowrap;
         }
-        .logout-btn:hover {
-          background: rgba(239,68,68,0.18);
-          border-color: rgba(239,68,68,0.4);
-        }
+        .secondary-btn:hover { background: #f8fafc; border-color: #94a3b8; }
 
         .table-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
           border-radius: 16px;
           overflow: hidden;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .table-header {
           padding: 1.1rem 1.5rem;
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          border-bottom: 1px solid #f1f5f9;
           display: flex;
           align-items: center;
-          justify-content: space-between;
-        }
-
-        .table-title {
-          font-size: 0.9rem;
-          font-weight: 700;
-          color: #e2e8f0;
-        }
-
-        .table-count {
-          font-size: 0.65rem;
-          background: rgba(99,102,241,0.15);
-          border: 1px solid rgba(99,102,241,0.25);
-          color: #a5b4fc;
-          padding: 2px 8px;
-          border-radius: 20px;
-          font-weight: 700;
+          justifyContent: space-between;
         }
 
         table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
 
         thead tr {
-          background: rgba(255,255,255,0.03);
-          border-bottom: 1px solid rgba(255,255,255,0.07);
+          background: #f8fafc;
+          border-bottom: 1px solid #e2e8f0;
         }
 
         th {
           padding: 0.85rem 1.1rem;
           text-align: left;
-          font-size: 0.65rem;
+          font-size: 0.68rem;
           font-weight: 700;
           color: #475569;
           text-transform: uppercase;
-          letter-spacing: 0.07em;
+          letter-spacing: 0.06em;
           white-space: nowrap;
         }
 
         tbody tr {
-          border-bottom: 1px solid rgba(255,255,255,0.04);
+          border-bottom: 1px solid #f1f5f9;
           transition: background 0.12s;
         }
 
-        tbody tr:hover { background: rgba(255,255,255,0.03); }
+        tbody tr:hover { background: #f8fafc; }
         tbody tr:last-child { border-bottom: none; }
 
         td {
           padding: 0.85rem 1.1rem;
-          color: #94a3b8;
+          color: #475569;
           vertical-align: middle;
         }
 
-        .td-name  { color: #e2e8f0; font-weight: 600; }
-        .td-email { color: #cbd5e1; font-weight: 500; }
+        .td-name  { color: #0f172a; font-weight: 600; }
+        .td-email { color: #0f172a; font-weight: 700; }
 
         .badge {
           display: inline-block;
           padding: 2px 8px;
           border-radius: 6px;
-          font-size: 0.65rem;
+          font-size: 0.68rem;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
 
-        .badge-success { background: rgba(16,185,129,0.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2); }
-        .badge-failed  { background: rgba(239,68,68,0.12);  color: #fca5a5; border: 1px solid rgba(239,68,68,0.2); }
-        .badge-google  { background: rgba(59,130,246,0.12); color: #93c5fd; border: 1px solid rgba(59,130,246,0.2); }
-        .badge-cred    { background: rgba(148,163,184,0.1); color: #94a3b8; border: 1px solid rgba(148,163,184,0.15); }
+        .badge-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .badge-failed  { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .badge-trial   { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+        .badge-google  { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-cred    { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
 
         .empty-state {
           padding: 4rem 1.5rem;
           text-align: center;
-          color: #475569;
+          color: #64748b;
           font-weight: 600;
           font-size: 0.85rem;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
         .spinner {
-          width: 36px; height: 36px;
-          border: 3px solid rgba(255,255,255,0.08);
-          border-top-color: #6366f1;
+          width: 32px; height: 32px;
+          border: 3px solid #e2e8f0;
+          border-top-color: #4f46e5;
           border-radius: 50%;
           animation: spin 0.8s linear infinite;
           margin: 0 auto 1rem;
@@ -459,246 +528,397 @@ export default function AdminDashboardPage() {
       `}</style>
 
       <div className="admin-wrap">
-        {/* ── Topbar ── */}
+        
+        {/* ── Top Navigation Bar ── */}
         <div className="admin-topbar">
           <div className="admin-logo">
-            PosturePilot <span>Admin Console</span>
+            <span style={{ fontSize: '1.2rem' }}>🛡️</span>
+            <span>PosturePilot</span>
+            <span className="admin-badge">Admin Portal</span>
           </div>
-          <button className="logout-btn" onClick={handleLogout}>Sign Out</button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Link
+              href="/dashboard"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                padding: '0.45rem 0.9rem',
+                borderRadius: '8px',
+                border: '1px solid #cbd5e1',
+                background: '#ffffff',
+                color: '#334155',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                textDecoration: 'none',
+              }}
+            >
+              ← Return to Cockpit
+            </Link>
+
+            <button 
+              onClick={handleLogout}
+              style={{
+                padding: '0.45rem 0.9rem',
+                borderRadius: '8px',
+                border: '1px solid #fecaca',
+                background: '#fff1f2',
+                color: '#991b1b',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
 
-        {/* ── Main Content ── */}
+        {/* ── Main Admin Content ── */}
         <div className="admin-page">
-          <h1 className="page-heading">Login Activity Log</h1>
-          <p className="page-sub">All authentication events captured across the platform. Updates on every page load.</p>
+          
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div>
+              <h1 className="page-heading">Executive Lead & Access Console</h1>
+              <p className="page-sub">
+                Real-time tracking of visitor emails, company organizations, IP origins, and client upgrade requests.
+              </p>
+            </div>
 
-          {/* Stats */}
+            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              <button className="secondary-btn" onClick={exportCSV}>
+                📥 Export CSV
+              </button>
+              <button className="action-btn" onClick={() => { fetchAttempts(); fetchRequests(); }}>
+                🔄 Refresh Data
+              </button>
+            </div>
+          </div>
+
+          {/* KPI Stat Cards */}
           <div className="stats-row">
-            <StatCard label="Total Logins"   value={total}        sub="all time"               color="#a5b4fc" />
-            <StatCard label="Unique Users"   value={unique}       sub="distinct emails"        color="#67e8f9" />
-            <StatCard label="Google OAuth"   value={googleLogins} sub={`${Math.round(googleLogins/Math.max(total,1)*100)}% of all logins`} color="#86efac" />
-            <StatCard label="Today"          value={today}        sub={new Date().toLocaleDateString()} color="#fbbf24" />
+            <StatCard 
+              label="Total Leads Captured"   
+              value={stats.total} 
+              sub="100% email capture rate" 
+              color="#0f172a" 
+              borderColor="#4f46e5" 
+            />
+            <StatCard 
+              label="Free Trial Signups" 
+              value={stats.trialLeadsCount} 
+              sub="Sandbox trials activated" 
+              color="#6d28d9" 
+              borderColor="#7c3aed" 
+            />
+            <StatCard 
+              label="Enterprise Organizations" 
+              value={stats.enterpriseCount} 
+              sub="Corporate domains detected" 
+              color="#0369a1" 
+              borderColor="#0284c7" 
+            />
+            <StatCard 
+              label="Unique Company Domains" 
+              value={stats.uniqueDomainsCount} 
+              sub="Distinct organizations" 
+              color="#047857" 
+              borderColor="#10b981" 
+            />
+            <StatCard 
+              label="Today's Signups" 
+              value={stats.todayCount} 
+              sub={new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })} 
+              color="#c2410c" 
+              borderColor="#f97316" 
+            />
           </div>
 
-          {/* Tabs */}
-          <div style={{ display: 'flex', gap: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.07)', marginBottom: '1.75rem', paddingBottom: '0.1rem' }}>
+          {/* Navigation Tabs */}
+          <div style={{ display: 'flex', gap: '1rem', borderBottom: '2px solid #e2e8f0', marginBottom: '1.5rem' }}>
             <button
-              onClick={() => {
-                setActiveTab('logins');
-                setError('');
-              }}
+              onClick={() => { setActiveTab('logins'); setError(''); }}
               style={{
                 background: 'none',
                 border: 'none',
-                color: activeTab === 'logins' ? '#f1f5f9' : '#475569',
-                fontSize: '0.86rem',
-                fontWeight: 700,
+                color: activeTab === 'logins' ? '#4f46e5' : '#64748b',
+                fontSize: '0.88rem',
+                fontWeight: 800,
                 cursor: 'pointer',
-                padding: '0.6rem 0.25rem',
-                borderBottom: activeTab === 'logins' ? '2px solid #6366f1' : '2px solid transparent',
-                transition: 'all 0.15s'
+                padding: '0.75rem 0.5rem',
+                borderBottom: activeTab === 'logins' ? '2px solid #4f46e5' : '2px solid transparent',
+                marginBottom: '-2px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
               }}
             >
-              🔒 Authentication Audit Logs
+              <span>👥 Visitor & Trial Leads</span>
+              <span style={{
+                fontSize: '0.68rem',
+                background: activeTab === 'logins' ? '#ede9fe' : '#f1f5f9',
+                color: activeTab === 'logins' ? '#4338ca' : '#64748b',
+                padding: '2px 8px',
+                borderRadius: '12px',
+              }}>
+                {attempts.length}
+              </span>
             </button>
+
             <button
-              onClick={() => {
-                setActiveTab('requests');
-                setError('');
-              }}
+              onClick={() => { setActiveTab('requests'); setError(''); }}
               style={{
                 background: 'none',
                 border: 'none',
-                color: activeTab === 'requests' ? '#f1f5f9' : '#475569',
-                fontSize: '0.86rem',
-                fontWeight: 700,
+                color: activeTab === 'requests' ? '#4f46e5' : '#64748b',
+                fontSize: '0.88rem',
+                fontWeight: 800,
                 cursor: 'pointer',
-                padding: '0.6rem 0.25rem',
-                borderBottom: activeTab === 'requests' ? '2px solid #6366f1' : '2px solid transparent',
-                transition: 'all 0.15s'
+                padding: '0.75rem 0.5rem',
+                borderBottom: activeTab === 'requests' ? '2px solid #4f46e5' : '2px solid transparent',
+                marginBottom: '-2px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
               }}
             >
-              ⭐ License Upgrade Requests
+              <span>💼 Module Upgrade Requests</span>
+              <span style={{
+                fontSize: '0.68rem',
+                background: activeTab === 'requests' ? '#ede9fe' : '#f1f5f9',
+                color: activeTab === 'requests' ? '#4338ca' : '#64748b',
+                padding: '2px 8px',
+                borderRadius: '12px',
+              }}>
+                {requests.length}
+              </span>
             </button>
           </div>
 
-          {/* Error */}
+          {/* Controls Bar */}
+          <div className="controls-row">
+            
+            {/* Filter Buttons for Logins */}
+            {activeTab === 'logins' ? (
+              <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                <button
+                  className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+                  onClick={() => setFilter('all')}
+                >
+                  All Leads ({attempts.length})
+                </button>
+                <button
+                  className={`filter-btn ${filter === 'trial' ? 'active' : ''}`}
+                  onClick={() => setFilter('trial')}
+                >
+                  🚀 Free Trials ({stats.trialLeadsCount})
+                </button>
+                <button
+                  className={`filter-btn ${filter === 'enterprise' ? 'active' : ''}`}
+                  onClick={() => setFilter('enterprise')}
+                >
+                  🏢 Enterprise Orgs ({stats.enterpriseCount})
+                </button>
+                <button
+                  className={`filter-btn ${filter === 'google' ? 'active' : ''}`}
+                  onClick={() => setFilter('google')}
+                >
+                  🟢 Google SSO ({stats.googleCount})
+                </button>
+              </div>
+            ) : (
+              <div style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 600 }}>
+                Showing enterprise tier upgrade inquiries
+              </div>
+            )}
+
+            {/* Search Input */}
+            <input
+              type="text"
+              className="search-input"
+              placeholder={activeTab === 'logins' ? "Search email, company, IP..." : "Search client, email, module..."}
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+          </div>
+
           {error && (
-            <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 10, padding: '0.75rem 1rem', color: '#fca5a5', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1rem' }}>
-              ⚠ {error}
+            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', padding: '0.75rem 1rem', borderRadius: 8, fontSize: '0.82rem', marginBottom: '1.25rem' }}>
+              ⚠️ {error}
             </div>
           )}
 
-          {activeTab === 'logins' ? (
-            <>
-              {/* Controls */}
-              <div className="controls-row">
-                <input
-                  className="search-input"
-                  type="text"
-                  placeholder="Search name, email, IP..."
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                />
-                {(['all', 'google', 'success', 'failed'] as const).map(f => (
-                  <button
-                    key={f}
-                    className={`filter-btn${filter === f ? ' active' : ''}`}
-                    onClick={() => setFilter(f)}
-                  >
-                    {f.charAt(0).toUpperCase() + f.slice(1)}
-                  </button>
-                ))}
-                <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.5rem' }}>
-                  <button className="action-btn" onClick={exportCSV}>↓ Export CSV</button>
-                  <button className="action-btn" onClick={fetchAttempts} style={{ background: 'rgba(255,255,255,0.07)', boxShadow: 'none', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
-                    ↺ Refresh
-                  </button>
-                </div>
-              </div>
+          {/* ── Table Card ── */}
+          <div className="table-card">
+            
+            {activeTab === 'logins' ? (
+              <div style={{ overflowX: 'auto' }}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>Lead / User</th>
+                      <th>Organization / Domain</th>
+                      <th>Email Address</th>
+                      <th>Channel</th>
+                      <th>Status</th>
+                      <th>IP Origin</th>
+                      <th>Device / Browser</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={8} className="empty-state">
+                          <div className="spinner" />
+                          <div>Loading authentication records...</div>
+                        </td>
+                      </tr>
+                    ) : filteredAttempts.length === 0 ? (
+                      <tr>
+                        <td colSpan={8} className="empty-state">
+                          {attempts.length === 0 ? 'No authentication records found.' : 'No matching records found for active filter.'}
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredAttempts.map(a => {
+                        const domain = (a.lastName || a.email.split('@')[1] || '').toLowerCase().trim();
+                        const isEnterprise = domain && !COMMON_FREE_PROVIDERS.has(domain);
 
-              {/* Table */}
-              <div className="table-card">
-                <div className="table-header">
-                  <span className="table-title">Authentication Records</span>
-                  <span className="table-count">{filtered.length} records</span>
-                </div>
-
-                {loading ? (
-                  <div style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>
-                    <div className="spinner" />
-                    <div style={{ fontSize: '0.8rem', color: '#475569', fontWeight: 600 }}>Loading authentication log…</div>
-                  </div>
-                ) : (
-                  <div style={{ overflowX: 'auto' }}>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Timestamp</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Email</th>
-                          <th>Provider</th>
-                          <th>Status</th>
-                          <th>IP Address</th>
-                          <th>User Agent</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filtered.length === 0 ? (
-                          <tr><td colSpan={8} className="empty-state">No records match the current filter.</td></tr>
-                        ) : filtered.map(a => (
+                        return (
                           <tr key={a.id}>
-                            <td style={{ whiteSpace: 'nowrap', fontVariantNumeric: 'tabular-nums' }}>
-                              {new Date(a.createdAt).toLocaleString()}
+                            <td style={{ whiteSpace: 'nowrap' }}>
+                              {new Date(a.createdAt).toLocaleString(undefined, {
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
                             </td>
-                            <td className="td-name">{a.firstName || <span style={{ color: '#334155' }}>—</span>}</td>
-                            <td className="td-name">{a.lastName  || <span style={{ color: '#334155' }}>—</span>}</td>
-                            <td className="td-email">{a.email}</td>
+                            <td className="td-name">
+                              {a.firstName || '—'}
+                            </td>
                             <td>
-                              <span className={`badge ${a.provider === 'google' ? 'badge-google' : 'badge-cred'}`}>
-                                {a.provider === 'google' ? 'Google' : 'Credentials'}
-                              </span>
+                              {domain ? (
+                                <span style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '0.3rem',
+                                  padding: '2px 8px',
+                                  borderRadius: '6px',
+                                  fontSize: '0.72rem',
+                                  fontWeight: 700,
+                                  background: isEnterprise ? '#eff6ff' : '#f1f5f9',
+                                  color: isEnterprise ? '#1d4ed8' : '#475569',
+                                  border: isEnterprise ? '1px solid #bfdbfe' : '1px solid #e2e8f0',
+                                }}>
+                                  {isEnterprise ? '🏢' : '👤'} {domain}
+                                </span>
+                              ) : '—'}
+                            </td>
+                            <td className="td-email">{a.email}</td>
+                            <td style={{ whiteSpace: 'nowrap' }}>
+                              {a.provider === 'google' ? (
+                                <span className="badge badge-google">🟢 Google SSO</span>
+                              ) : a.provider === 'free_trial' ? (
+                                <span className="badge badge-trial">🚀 Free Trial</span>
+                              ) : (
+                                <span className="badge badge-cred">🔑 Direct Auth</span>
+                              )}
                             </td>
                             <td>
                               <span className={`badge ${a.status === 'success' ? 'badge-success' : 'badge-failed'}`}>
                                 {a.status}
                               </span>
                             </td>
-                            <td style={{ fontFamily: 'monospace', fontSize: '0.72rem' }}>{a.ip || '—'}</td>
-                            <td style={{ maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={a.userAgent || ''}>
+                            <td style={{ fontFamily: 'monospace', fontSize: '0.74rem' }}>{a.ip || '—'}</td>
+                            <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.72rem' }} title={a.userAgent || ''}>
                               {a.userAgent || '—'}
                             </td>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
               </div>
-            </>
-          ) : (
-            <>
-              {/* Controls */}
-              <div className="controls-row">
-                <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.5rem' }}>
-                  <button className="action-btn" onClick={fetchRequests} style={{ background: 'rgba(255,255,255,0.07)', boxShadow: 'none', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>
-                    ↺ Refresh Requests
-                  </button>
-                </div>
-              </div>
-
-              {/* Upgrade Requests Table */}
-              <div className="table-card">
-                <div className="table-header">
-                  <span className="table-title">License Expansion Inquiries</span>
-                  <span className="table-count">{requests.length} requests</span>
-                </div>
-
-                {loading ? (
-                  <div style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>
-                    <div className="spinner" />
-                    <div style={{ fontSize: '0.8rem', color: '#475569', fontWeight: 600 }}>Loading requests…</div>
-                  </div>
-                ) : (
-                  <div style={{ overflowX: 'auto' }}>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Timestamp</th>
-                          <th>Client Tenant Name</th>
-                          <th>User Email Address</th>
-                          <th>Locked Module Requested</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {requests.length === 0 ? (
-                          <tr><td colSpan={5} className="empty-state">No license expansion requests found.</td></tr>
-                        ) : requests.map(r => (
-                          <tr key={r.id}>
-                            <td style={{ whiteSpace: 'nowrap', fontVariantNumeric: 'tabular-nums' }}>
-                              {new Date(r.createdAt).toLocaleString()}
-                            </td>
-                            <td className="td-name">{r.clientName || <span style={{ color: '#64748b', fontStyle: 'italic' }}>Guest (Unassigned)</span>}</td>
-                            <td className="td-email">{r.userEmail}</td>
-                            <td>
-                              <span style={{
-                                background: 'rgba(99,102,241,0.12)',
-                                border: '1px solid rgba(99,102,241,0.2)',
-                                color: '#a5b4fc',
-                                padding: '2px 8px',
+            ) : (
+              /* Upgrade Requests Tab */
+              <div style={{ overflowX: 'auto' }}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>Client Name</th>
+                      <th>User Email</th>
+                      <th>Requested Module</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredRequests.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="empty-state">
+                          No upgrade inquiries found.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredRequests.map(r => (
+                        <tr key={r.id}>
+                          <td style={{ whiteSpace: 'nowrap' }}>
+                            {new Date(r.createdAt).toLocaleString(undefined, {
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </td>
+                          <td className="td-name">🏢 {r.clientName}</td>
+                          <td className="td-email">{r.userEmail}</td>
+                          <td>
+                            <span style={{
+                              display: 'inline-block',
+                              padding: '2px 8px',
+                              borderRadius: 6,
+                              fontSize: '0.72rem',
+                              fontWeight: 700,
+                              background: '#ede9fe',
+                              color: '#5b21b6',
+                              border: '1px solid #c4b5fd',
+                            }}>
+                              {r.moduleName}
+                            </span>
+                          </td>
+                          <td>
+                            <a
+                              href={`mailto:${r.userEmail}?subject=PosturePilot%20Module%20Upgrade%20Inquiry%20(${encodeURIComponent(r.moduleName)})`}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.3rem',
+                                padding: '3px 10px',
                                 borderRadius: '6px',
+                                background: '#f0fdf4',
+                                border: '1px solid #bbf7d0',
+                                color: '#166534',
                                 fontSize: '0.72rem',
-                                fontWeight: 600
-                              }}>
-                                {r.moduleName}
-                              </span>
-                            </td>
-                            <td>
-                              <span style={{
-                                background: 'rgba(245,158,11,0.12)',
-                                border: '1px solid rgba(245,158,11,0.2)',
-                                color: '#fbbf24',
-                                padding: '2px 8px',
-                                borderRadius: '6px',
-                                fontSize: '0.68rem',
                                 fontWeight: 700,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.04em'
-                              }}>
-                                PENDING UPGRADE
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+                                textDecoration: 'none',
+                              }}
+                            >
+                              ✉️ Contact Client
+                            </a>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
-            </>
-          )}
+            )}
+          </div>
+
         </div>
       </div>
     </>

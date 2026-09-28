@@ -211,11 +211,6 @@ export default function Sidebar() {
             </Link>
           );
         })}
-        {isAdmin && (
-          <Link href="/dashboard/login-tracker" className={`nav-item${pathname === '/dashboard/login-tracker' ? ' active' : ''}`} onClick={handleLinkClick}>
-            <span className="nav-label" style={{ color: '#a78bfa', fontWeight: 700 }}>Login Tracker</span>
-          </Link>
-        )}
       </nav>
 
       <div className="sidebar-footer">
