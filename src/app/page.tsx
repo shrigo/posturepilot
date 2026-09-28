@@ -738,9 +738,29 @@ export default function Page() {
               vulnerability noise into a unified Posture Command Center.
             </p>
 
-            <div className="hero-btns" style={{display:"flex",gap:"1rem",marginBottom:"2.5rem",flexWrap:"wrap"}}>
+            <div className="hero-btns" style={{display:"flex",flexDirection:"column",alignItems:"flex-start",gap:"0.6rem",marginBottom:"2.5rem"}}>
               {status === 'authenticated' ? (
-                <Link href="/dashboard" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)",display:"inline-block",minWidth:"220px",textAlign:"center"}}>Go to Command Center →</Link>
+                <Link 
+                  href="/dashboard" 
+                  style={{
+                    background:"linear-gradient(135deg,#4f46e5,#7c3aed)",
+                    color:"#fff",
+                    fontWeight:800,
+                    fontSize:"1.05rem",
+                    padding:"0.95rem 2.25rem",
+                    borderRadius:12,
+                    textDecoration:"none",
+                    boxShadow:"0 6px 25px rgba(79,70,229,0.4)",
+                    display:"inline-flex",
+                    alignItems:"center",
+                    justifyContent:"center",
+                    gap:"0.5rem",
+                    textAlign:"center",
+                    transition:"all 0.2s ease"
+                  }}
+                >
+                  Go to Command Center →
+                </Link>
               ) : (
                 <button
                   type="button"
@@ -748,45 +768,40 @@ export default function Page() {
                   style={{
                     background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
                     color: "#fff",
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    padding: "0.875rem 1.875rem",
-                    borderRadius: 10,
+                    fontWeight: 800,
+                    fontSize: "1.05rem",
+                    padding:"0.95rem 2.25rem",
+                    borderRadius: 12,
                     border: "none",
                     cursor: "pointer",
-                    boxShadow: "0 4px 20px rgba(79,70,229,0.35)",
-                    display: "inline-block",
-                    minWidth: "220px",
+                    boxShadow: "0 6px 25px rgba(79,70,229,0.4)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.5rem",
                     textAlign: "center",
                     fontFamily: "inherit",
-                    transition: "all 0.15s ease",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = "0 8px 30px rgba(79,70,229,0.5)";
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "0 6px 25px rgba(79,70,229,0.4)";
                   }}
                 >
-                  Start Free Trial →
+                  🚀 Start 14-Day Free Trial →
                 </button>
               )}
-              <button
-                type="button"
-                onClick={() => handleStartTrial('demo@posturepilot.io')}
-                style={{
-                  background: "linear-gradient(135deg,#1e40af,#010859)",
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  padding: "0.875rem 1.875rem",
-                  borderRadius: 10,
-                  border: "none",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 20px rgba(30,64,175,0.25)",
-                  display: "inline-block",
-                  minWidth: "220px",
-                  textAlign: "center",
-                  fontFamily: "inherit",
-                  transition: "all 0.15s ease",
-                }}
-              >
-                View Demo
-              </button>
+              <div style={{fontSize:"0.78rem",color:"#64748b",display:"flex",alignItems:"center",gap:"0.4rem",paddingLeft:"0.25rem",flexWrap:"wrap"}}>
+                <span style={{color:"#10b981",fontWeight:800}}>✓</span> Instant Access
+                <span style={{color:"#cbd5e1"}}>•</span>
+                <span style={{color:"#10b981",fontWeight:800}}>✓</span> No Credit Card Required
+                <span style={{color:"#cbd5e1"}}>•</span>
+                <span style={{color:"#10b981",fontWeight:800}}>✓</span> All 12 Cockpits Unlocked
+              </div>
             </div>
 
             <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
