@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ShieldViz from "@/components/ShieldViz";
 import MythosPromo from "@/components/MythosPromo";
+import HeroTypewriterBadge from "@/components/HeroTypewriterBadge";
 import { useState, useEffect } from "react";
 import { useClient } from "@/context/ClientContext";
 import { useSession, signOut } from "next-auth/react";
@@ -704,9 +705,7 @@ export default function Page() {
 
           {/* LEFT */}
           <div className="hero-left">
-            <div className="hero-badge" style={{display:"inline-flex",alignItems:"center",gap:"0.5rem",background:"#ede9fe",border:"1px solid #c4b5fd",borderRadius:20,padding:"0.375rem 1rem",fontSize:"0.85rem",fontWeight:700,color:"#4f46e5",marginBottom:"1.5rem",marginLeft:"-10px",letterSpacing:"0.08em",textTransform:"uppercase"}}>
-              <span style={{width:10,height:10,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 10px #22c55e"}}/> Active AI-ASPM · 12 Security Posture Cockpits
-            </div>
+            <HeroTypewriterBadge />
 
             <h1 className="hero-h1" style={{fontSize:"clamp(2.2rem,3.6vw,3.2rem)",fontWeight:900,letterSpacing:"-0.04em",lineHeight:1.1,color:"#0f172a",marginBottom:"1.25rem"}}>
               <span style={{color:"#010859"}}>Command Your Security</span><br/>
