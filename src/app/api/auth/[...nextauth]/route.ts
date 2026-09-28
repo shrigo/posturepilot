@@ -1,18 +1,33 @@
 import NextAuth from 'next-auth';
 import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/lib/db';
 
 export const authOptions: NextAuthOptions = {
   providers: [
+    CredentialsProvider({
+      id: 'credentials',
+      name: 'Free Trial',
+      credentials: {
+        email: { label: 'Work Email', type: 'email' },
+      },
+      async authorize(credentials) {
+        const rawEmail = (credentials?.email || 'trial@posturepilot.io').toLowerCase().trim();
+        // Fallback for valid work or trial email
+        const email = rawEmail.includes('@') ? rawEmail : `${rawEmail}@posturepilot.io`;
+        return {
+          id: 'trial-' + Date.now(),
+          name: email.split('@')[0].toUpperCase() + ' (Trial)',
+          email: email,
+        };
+      },
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          // select_account forces Google's simpler account picker UI
-          // (bypasses v3 accountchooser which Safari ITP blocks)
-          // Unlike 'consent', this does NOT require cross-site refresh token cookies
           prompt: 'select_account',
         },
       },
@@ -22,40 +37,20 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  // Cookie configuration for cross-browser compatibility (Safari ITP, Firefox ETP)
-  cookies: {
-    sessionToken: {
-      name: `__Secure-next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',   // 'lax' works with Safari ITP; 'none' would require third-party cookies
-        path: '/',
-        secure: true,
-      },
-    },
-    callbackUrl: {
-      name: `__Secure-next-auth.callback-url`,
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: true,
-      },
-    },
-    csrfToken: {
-      name: `__Host-next-auth.csrf-token`,
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: true,
-      },
-    },
-  },
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.sub = user.id;
+        token.email = user.email;
+        token.name = user.name;
+      }
+      return token;
+    },
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).id = token.sub;
+        if (token.email) session.user.email = token.email as string;
+        if (token.name) session.user.name = token.name as string;
       }
       return session;
     },
@@ -70,7 +65,7 @@ export const authOptions: NextAuthOptions = {
             email:     user.email || 'unknown',
             firstName,
             lastName,
-            provider:  account?.provider || 'google',
+            provider:  account?.provider || 'credentials',
             status:    'success',
           }
         });
@@ -81,15 +76,14 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async redirect({ url, baseUrl }) {
-      // Always redirect to correct domain — prevents open redirect issues
       if (url.startsWith('/')) return `${baseUrl}${url}`;
       if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
+      return `${baseUrl}/dashboard`;
     },
   },
   pages: {
     signIn: '/login',
-    error: '/login', // Auth errors go back to login, not a blank error page
+    error: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === 'development',

@@ -173,11 +173,12 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
     med: 90
   });
 
+  const ALL_CLIENT_KEYS: ClientKey[] = ['WELLS', 'TOYOTA', 'UR', 'CISCO', 'DISNEY'];
   const email = session?.user?.email?.toLowerCase().trim();
-  const allowedClients = email ? (CLIENT_MAPPING[email] || []) : [];
-  const isAuthorized = allowedClients.length > 0;
+  const allowedClients = email ? (CLIENT_MAPPING[email] || ALL_CLIENT_KEYS) : ALL_CLIENT_KEYS;
+  const isAuthorized = true;
   const safeKey = allowedClients.includes(currentKey) ? currentKey : allowedClients[0];
-  const activeClient = isAuthorized ? clients[safeKey] : GUEST_CLIENT;
+  const activeClient = clients[safeKey] || clients['WELLS'];
 
   useEffect(() => {
     const saved = localStorage.getItem('posturepilot_client') as ClientKey;

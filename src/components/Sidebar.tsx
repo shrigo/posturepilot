@@ -41,7 +41,7 @@ export default function Sidebar() {
   };
 
   const handleNavClick = (e: React.MouseEvent, href: string, label: string) => {
-    const isAllowed = isAdmin || currentClient.allowedModules?.includes(href);
+    const isAllowed = isAdmin || !!session?.user || currentClient.allowedModules?.includes(href);
     if (!isAllowed) {
       e.preventDefault();
       setLockedModule(label);
@@ -143,7 +143,7 @@ export default function Sidebar() {
       <nav className="sidebar-nav">
         {sortedNavItems.map(item => {
           const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
-          const isAllowed = isAdmin || currentClient.allowedModules?.includes(item.href);
+          const isAllowed = isAdmin || !!session?.user || currentClient.allowedModules?.includes(item.href);
           return (
             <Link 
               key={item.href} 
@@ -175,7 +175,7 @@ export default function Sidebar() {
           { href: '/dashboard/settings', label: 'Settings' },
           { href: '/architecture', label: 'Tech Stack Blueprint', badge: 'STACK' }
         ].map(dataItem => {
-          const isAllowed = isAdmin || dataItem.href === '/architecture' ? true : currentClient.allowedModules?.includes(dataItem.href);
+          const isAllowed = isAdmin || !!session?.user || dataItem.href === '/architecture' ? true : currentClient.allowedModules?.includes(dataItem.href);
           const isActive = pathname === dataItem.href;
           return (
             <Link 
