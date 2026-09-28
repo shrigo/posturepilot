@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import McpArchitectureDiagram from '@/components/McpArchitectureDiagram';
 import AgenticRoadmapSection from '@/components/AgenticRoadmapSection';
+import AntigravityDeploymentDiagram from '@/components/AntigravityDeploymentDiagram';
 
 interface TechStackLayer {
   id: number;
@@ -365,6 +366,26 @@ export default function ArchitectureTechStackPage() {
             >
               🖼️ Jump to 7-Tier Master Poster ➜
             </a>
+            <a
+              href="#antigravity-pipeline"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.5rem 1.1rem',
+                borderRadius: 20,
+                background: '#ecfdf5',
+                color: '#065f46',
+                textDecoration: 'none',
+                fontSize: '0.84rem',
+                fontWeight: 800,
+                border: '1px solid #a7f3d0',
+                boxShadow: '0 2px 8px rgba(5,150,105,0.15)',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              🚀 Antigravity Deploy Flow ➜
+            </a>
             <Link
               href="/mcp"
               style={{
@@ -669,7 +690,7 @@ export default function ArchitectureTechStackPage() {
                     color: '#db2777',
                     border: '1px solid #fbcfe8',
                   }}>
-                    DIAGRAM 1 OF 2
+                    DIAGRAM 1 OF 3
                   </span>
                   <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
                     🖼️ Master 7-Tier Enterprise Software &amp; AI Stack Poster
@@ -839,7 +860,7 @@ export default function ArchitectureTechStackPage() {
                     color: '#0284c7',
                     border: '1px solid #bae6fd',
                   }}>
-                    DIAGRAM 2 OF 2
+                    DIAGRAM 2 OF 3
                   </span>
                   <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
                     🔌 Native Model Context Protocol (MCP) Security Architecture &amp; Execution Flow
@@ -881,6 +902,94 @@ export default function ArchitectureTechStackPage() {
           </div>
         </section>
 
+        {/* ========================================================================= */}
+        {/* DIAGRAM 3: Antigravity Autonomous Engineering & Production Deployment Pipeline */}
+        {/* ========================================================================= */}
+        <section id="antigravity-pipeline" style={{
+          marginBottom: '3rem',
+        }}>
+          <div style={{
+            borderRadius: 16,
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            boxShadow: '0 4px 20px -2px rgba(0,0,0,0.05)',
+            overflow: 'hidden',
+          }}>
+            {/* Header Toolbar */}
+            <div style={{
+              padding: '1.2rem 1.75rem',
+              background: '#ffffff',
+              borderBottom: '1px solid #e2e8f0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1rem',
+            }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                  <span style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 800,
+                    padding: '0.2rem 0.6rem',
+                    borderRadius: 12,
+                    background: '#f0fdf4',
+                    color: '#16a34a',
+                    border: '1px solid #bbf7d0',
+                  }}>
+                    DIAGRAM 3 OF 3
+                  </span>
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
+                    🚀 Antigravity Autonomous Engineering &amp; Production Deployment Pipeline (Prompt ➔ posturepilot.io)
+                  </h2>
+                </div>
+                <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
+                  End-to-end interactive architecture showing prompt ingestion, cognitive ReAct loops, workspace file compilation, autonomous browser QA, CI/CD pipeline, and zero-downtime edge DNS routing.
+                </p>
+              </div>
+
+              {/* Status Badges */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <span style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 800,
+                  padding: '0.35rem 0.75rem',
+                  borderRadius: 20,
+                  background: '#ecfdf5',
+                  color: '#059669',
+                  border: '1px solid #a7f3d0',
+                }}>
+                  ● LIVE DEPLOYMENT PIPELINE
+                </span>
+                <span style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 800,
+                  padding: '0.35rem 0.75rem',
+                  borderRadius: 20,
+                  background: '#e0f2fe',
+                  color: '#0284c7',
+                  border: '1px solid #bae6fd',
+                }}>
+                  TARGET: POSTUREPILOT.IO
+                </span>
+              </div>
+            </div>
+
+            {/* Diagram 3 Component Container */}
+            <div style={{
+              padding: '1.5rem',
+              background: '#f8fafc',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              width: '100%',
+              boxSizing: 'border-box',
+            }}>
+              <AntigravityDeploymentDiagram />
+            </div>
+          </div>
+        </section>
+
         {/* Footer */}
         <footer style={{
           padding: '1.5rem 2rem',
@@ -896,14 +1005,14 @@ export default function ArchitectureTechStackPage() {
         }}>
           <div>
             <div style={{ fontWeight: 800, fontSize: '0.95rem', color: '#0f172a' }}>
-              PosturePilot.io Software & AI Architecture
+              PosturePilot.io Software &amp; AI Architecture
             </div>
             <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
               Direct URL: <code style={{ color: '#0284c7', fontWeight: 700 }}>/architecture</code>
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {['🤖 Agentic AI', '🔌 Model Context Protocol (MCP)', '🛡️ LLM Gateway', '🧠 pgvector RAG', '⚡ Next.js 16', '⚛️ React 19', '🔷 Prisma 7.8', '🐘 PostgreSQL'].map((badge) => (
+            {['🤖 Agentic AI', '🚀 Antigravity Pipeline', '🔌 Model Context Protocol (MCP)', '🛡️ LLM Gateway', '🧠 pgvector RAG', '⚡ Next.js 16', '⚛️ React 19', '🔷 Prisma 7.8', '🐘 PostgreSQL'].map((badge) => (
               <span key={badge} style={{
                 padding: '0.3rem 0.65rem',
                 borderRadius: 20,
