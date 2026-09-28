@@ -30,7 +30,8 @@ export default function Sidebar() {
   const [sortOrder, setSortOrder] = useState<'default' | 'alpha'>('default');
 
   const adminEmails = ['shrigo.now@gmail.com', 'shrigonow@gmail.com', 'demo@posturepilot.io'];
-  const isAdmin = session?.user?.email && adminEmails.includes(session.user.email);
+  const userEmail = session?.user?.email?.toLowerCase().trim();
+  const isAdmin = !!(userEmail && adminEmails.includes(userEmail));
 
   const handleLinkClick = () => {
     const layout = document.querySelector('.app-layout');
@@ -40,7 +41,7 @@ export default function Sidebar() {
   };
 
   const handleNavClick = (e: React.MouseEvent, href: string, label: string) => {
-    const isAllowed = currentClient.allowedModules?.includes(href);
+    const isAllowed = isAdmin || currentClient.allowedModules?.includes(href);
     if (!isAllowed) {
       e.preventDefault();
       setLockedModule(label);
@@ -142,7 +143,7 @@ export default function Sidebar() {
       <nav className="sidebar-nav">
         {sortedNavItems.map(item => {
           const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
-          const isAllowed = currentClient.allowedModules?.includes(item.href);
+          const isAllowed = isAdmin || currentClient.allowedModules?.includes(item.href);
           return (
             <Link 
               key={item.href} 
@@ -174,7 +175,7 @@ export default function Sidebar() {
           { href: '/dashboard/settings', label: 'Settings' },
           { href: '/architecture', label: 'Tech Stack Blueprint', badge: 'STACK' }
         ].map(dataItem => {
-          const isAllowed = dataItem.href === '/architecture' ? true : currentClient.allowedModules?.includes(dataItem.href);
+          const isAllowed = isAdmin || dataItem.href === '/architecture' ? true : currentClient.allowedModules?.includes(dataItem.href);
           const isActive = pathname === dataItem.href;
           return (
             <Link 

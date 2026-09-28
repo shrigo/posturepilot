@@ -173,7 +173,7 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
     med: 90
   });
 
-  const email = session?.user?.email;
+  const email = session?.user?.email?.toLowerCase().trim();
   const allowedClients = email ? (CLIENT_MAPPING[email] || []) : [];
   const isAuthorized = allowedClients.length > 0;
   const safeKey = allowedClients.includes(currentKey) ? currentKey : allowedClients[0];
