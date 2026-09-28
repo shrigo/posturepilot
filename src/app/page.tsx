@@ -7,7 +7,7 @@ import MythosPromo from "@/components/MythosPromo";
 import HeroTypewriterBadge from "@/components/HeroTypewriterBadge";
 import { useState, useEffect } from "react";
 import { useClient } from "@/context/ClientContext";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 
 const TABS = ["Configure","Monitor","Secure","Report"];
 const BOARDS = [
@@ -39,6 +39,24 @@ export default function Page() {
   const [activeMockupTab, setActiveMockupTab] = useState("Security KPIs");
   const [monitorCategory, setMonitorCategory] = useState("KPIs");
   const [isPromoOpen, setIsPromoOpen] = useState(false);
+
+  // Instant Free Trial Modal States
+  const [trialModalOpen, setTrialModalOpen] = useState(false);
+  const [trialEmail, setTrialEmail] = useState("");
+  const [trialLoading, setTrialLoading] = useState(false);
+
+  const handleStartTrial = async (customEmail?: string) => {
+    setTrialLoading(true);
+    const targetEmail = (customEmail || trialEmail).trim() || 'trial@posturepilot.io';
+    try {
+      await signIn('credentials', {
+        email: targetEmail,
+        callbackUrl: '/dashboard',
+      });
+    } catch {
+      window.location.href = '/dashboard';
+    }
+  };
 
   // Secure Section Sandbox States
   const [cvssThreshold, setCvssThreshold] = useState<number>(7.0);
@@ -724,9 +742,51 @@ export default function Page() {
               {status === 'authenticated' ? (
                 <Link href="/dashboard" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)",display:"inline-block",minWidth:"220px",textAlign:"center"}}>Go to Command Center →</Link>
               ) : (
-                <Link href="/login" style={{background:"linear-gradient(135deg,#4f46e5,#7c3aed)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(79,70,229,0.35)",display:"inline-block",minWidth:"220px",textAlign:"center"}}>Start Free Trial →</Link>
+                <button
+                  type="button"
+                  onClick={() => setTrialModalOpen(true)}
+                  style={{
+                    background: "linear-gradient(135deg,#4f46e5,#7c3aed)",
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    padding: "0.875rem 1.875rem",
+                    borderRadius: 10,
+                    border: "none",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 20px rgba(79,70,229,0.35)",
+                    display: "inline-block",
+                    minWidth: "220px",
+                    textAlign: "center",
+                    fontFamily: "inherit",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  Start Free Trial →
+                </button>
               )}
-              <Link href="/dashboard?demo=true" onClick={() => sessionStorage.setItem("posturepilot_demo_mode", "true")} style={{background:"linear-gradient(135deg,#1e40af,#010859)",color:"#fff",fontWeight:700,fontSize:"1rem",padding:"0.875rem 1.875rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(30,64,175,0.25)",display:"inline-block",minWidth:"220px",textAlign:"center"}}>View Demo</Link>
+              <button
+                type="button"
+                onClick={() => handleStartTrial('demo@posturepilot.io')}
+                style={{
+                  background: "linear-gradient(135deg,#1e40af,#010859)",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "1rem",
+                  padding: "0.875rem 1.875rem",
+                  borderRadius: 10,
+                  border: "none",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 20px rgba(30,64,175,0.25)",
+                  display: "inline-block",
+                  minWidth: "220px",
+                  textAlign: "center",
+                  fontFamily: "inherit",
+                  transition: "all 0.15s ease",
+                }}
+              >
+                View Demo
+              </button>
             </div>
 
             <div className="hero-stats" style={{display:"flex",gap:"2.5rem",marginBottom:"2rem"}}>
@@ -2057,7 +2117,32 @@ export default function Page() {
                 <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:"0.5rem",marginBottom:"1.5rem"}}>
                   {p.features.map(f=><li key={f} style={{fontSize:"0.8rem",color:"#475569",display:"flex",gap:"0.4rem"}}><span style={{color:p.c,fontWeight:700}}>✓</span>{f}</li>)}
                 </ul>
-                <Link href={status === 'authenticated' ? "/dashboard" : "/login"} style={{display:"block",textAlign:"center",padding:"0.7rem",background:p.pop?"linear-gradient(135deg,#4f46e5,#7c3aed)":p.c+"12",border:p.pop?"none":"1px solid "+p.c+"30",borderRadius:10,color:p.pop?"#fff":p.c,fontWeight:700,fontSize:"0.82rem",textDecoration:"none"}}>{status === 'authenticated' ? "Go to Dashboard" : p.cta}</Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (status === 'authenticated') {
+                      window.location.href = '/dashboard';
+                    } else {
+                      setTrialModalOpen(true);
+                    }
+                  }}
+                  style={{
+                    display:"block",
+                    width:"100%",
+                    textAlign:"center",
+                    padding:"0.7rem",
+                    background:p.pop?"linear-gradient(135deg,#4f46e5,#7c3aed)":p.c+"12",
+                    border:p.pop?"none":"1px solid "+p.c+"30",
+                    borderRadius:10,
+                    color:p.pop?"#fff":p.c,
+                    fontWeight:700,
+                    fontSize:"0.82rem",
+                    cursor:"pointer",
+                    fontFamily:"inherit",
+                  }}
+                >
+                  {status === 'authenticated' ? "Go to Dashboard" : p.cta}
+                </button>
               </div>
             ))}
           </div>
@@ -2071,7 +2156,25 @@ export default function Page() {
         {status === 'authenticated' ? (
           <Link href="/dashboard" style={{display:"inline-block",background:"#fff",color:"#4f46e5",fontWeight:700,fontSize:"1rem",padding:"1rem 2.5rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>Go to Command Center →</Link>
         ) : (
-          <Link href="/login" style={{display:"inline-block",background:"#fff",color:"#4f46e5",fontWeight:700,fontSize:"1rem",padding:"1rem 2.5rem",borderRadius:10,textDecoration:"none",boxShadow:"0 4px 20px rgba(0,0,0,0.2)"}}>Start Your Free Trial →</Link>
+          <button
+            type="button"
+            onClick={() => setTrialModalOpen(true)}
+            style={{
+              display:"inline-block",
+              background:"#fff",
+              color:"#4f46e5",
+              fontWeight:700,
+              fontSize:"1rem",
+              padding:"1rem 2.5rem",
+              borderRadius:10,
+              border:"none",
+              cursor:"pointer",
+              boxShadow:"0 4px 20px rgba(0,0,0,0.2)",
+              fontFamily:"inherit",
+            }}
+          >
+            Start Your Free Trial →
+          </button>
         )}
       </section>
 
@@ -2198,6 +2301,200 @@ export default function Page() {
                 }}
               >
                 Back to Preview
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Instant 14-Day Free Trial Modal */}
+      {trialModalOpen && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 10000,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "1rem",
+          boxSizing: "border-box",
+        }}>
+          {/* Backdrop */}
+          <div
+            onClick={() => setTrialModalOpen(false)}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: "rgba(15, 23, 42, 0.65)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+            }}
+          />
+
+          {/* Modal Container */}
+          <div style={{
+            position: "relative",
+            zIndex: 1,
+            background: "#ffffff",
+            borderRadius: 16,
+            maxWidth: 440,
+            width: "100%",
+            padding: "2rem",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05)",
+            boxSizing: "border-box",
+            animation: "modalFadeIn 0.2s ease-out",
+          }}>
+            {/* Close Button */}
+            <button
+              onClick={() => setTrialModalOpen(false)}
+              style={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+                width: 32,
+                height: 32,
+                borderRadius: "50%",
+                border: "1px solid #e2e8f0",
+                background: "#f8fafc",
+                color: "#64748b",
+                fontSize: "1.1rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                transition: "all 0.15s ease",
+              }}
+            >
+              ✕
+            </button>
+
+            {/* Header */}
+            <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+              <div style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                padding: "0.25rem 0.75rem",
+                borderRadius: 20,
+                background: "#e0f2fe",
+                color: "#0369a1",
+                fontSize: "0.75rem",
+                fontWeight: 800,
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                marginBottom: "0.75rem",
+              }}>
+                ⚡ Instant Access Trial
+              </div>
+              <h3 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#0f172a", margin: "0 0 0.4rem", letterSpacing: "-0.02em" }}>
+                Start Your 14-Day Free Trial
+              </h3>
+              <p style={{ fontSize: "0.84rem", color: "#64748b", margin: 0, lineHeight: 1.5 }}>
+                Unlock all 12 Security Cockpits, SOAR auto-dispatch, and live compliance mapping. No credit card required.
+              </p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={(e) => { e.preventDefault(); handleStartTrial(); }} style={{ display: "flex", flexDirection: "column", gap: "0.85rem", marginBottom: "1rem" }}>
+              <div>
+                <label style={{ display: "block", fontSize: "0.78rem", fontWeight: 700, color: "#334155", marginBottom: "0.35rem" }}>
+                  Work Email Address
+                </label>
+                <input
+                  type="email"
+                  autoFocus
+                  placeholder="you@company.com (or leave blank for instant trial)"
+                  value={trialEmail}
+                  onChange={(e) => setTrialEmail(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem 0.9rem",
+                    borderRadius: "8px",
+                    border: "1.5px solid #cbd5e1",
+                    fontSize: "0.88rem",
+                    outline: "none",
+                    boxSizing: "border-box",
+                    transition: "border-color 0.2s",
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = "#4f46e5"}
+                  onBlur={(e) => e.target.style.borderColor = "#cbd5e1"}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={trialLoading}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  width: "100%",
+                  padding: "0.85rem",
+                  borderRadius: "10px",
+                  border: "none",
+                  background: "linear-gradient(135deg, #4f46e5, #7c3aed)",
+                  color: "#ffffff",
+                  fontSize: "0.92rem",
+                  fontWeight: 800,
+                  cursor: trialLoading ? "not-allowed" : "pointer",
+                  boxShadow: "0 4px 14px rgba(79, 70, 229, 0.3)",
+                  transition: "all 0.15s ease",
+                  opacity: trialLoading ? 0.75 : 1,
+                }}
+              >
+                {trialLoading ? "Launching Command Center..." : "🚀 Launch 14-Day Free Trial →"}
+              </button>
+            </form>
+
+            {/* 1-Click Sandbox Demo Button */}
+            <button
+              type="button"
+              onClick={() => handleStartTrial('demo@posturepilot.io')}
+              disabled={trialLoading}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.45rem",
+                width: "100%",
+                padding: "0.65rem",
+                borderRadius: "8px",
+                border: "1px solid #c7d2fe",
+                background: "#f5f3ff",
+                color: "#4338ca",
+                fontSize: "0.82rem",
+                fontWeight: 700,
+                cursor: trialLoading ? "not-allowed" : "pointer",
+                marginBottom: "1rem",
+                transition: "all 0.15s ease",
+              }}
+            >
+              ⚡ 1-Click Sandbox Trial (No Sign-in Needed)
+            </button>
+
+            {/* Or continue with Google */}
+            <div style={{ textAlign: "center" }}>
+              <button
+                type="button"
+                onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#64748b",
+                  fontSize: "0.78rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+              >
+                Or sign in with Google Workspace SSO
               </button>
             </div>
           </div>
