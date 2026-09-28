@@ -47,58 +47,67 @@ export default function HeroTypewriterBadge() {
     }
   }, [displayedText, isDeleting, isPaused, phraseIndex]);
 
-  // Highlight "COMMAND YOUR SECURITY" in dark navy/indigo and the remainder in vivid violet
+  // Highlight "COMMAND YOUR SECURITY" in dark navy/indigo and the rotating descriptor in vivid violet
   const renderHighlightedText = (text: string) => {
     const prefix = 'COMMAND YOUR SECURITY';
     if (text.startsWith(prefix)) {
       const rest = text.slice(prefix.length);
       return (
         <>
-          <span style={{ color: '#010859', fontWeight: 800 }}>{prefix}</span>
-          <span style={{ color: '#6d28d9', fontWeight: 700 }}>{rest}</span>
+          <span style={{ color: '#010859', fontWeight: 900, letterSpacing: '0.04em' }}>{prefix}</span>
+          <span style={{ color: '#7c3aed', fontWeight: 700, letterSpacing: '0.03em' }}>{rest}</span>
         </>
       );
     }
-    return <span style={{ color: '#010859', fontWeight: 800 }}>{text}</span>;
+    return <span style={{ color: '#010859', fontWeight: 900 }}>{text}</span>;
   };
 
   return (
     <div
-      className="hero-badge hero-typewriter-badge"
+      className="hero-typewriter-caption"
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '0.65rem',
-        background: 'linear-gradient(135deg, rgba(245, 243, 255, 0.95), rgba(238, 242, 255, 0.9))',
-        border: '1px solid rgba(196, 181, 253, 0.75)',
-        borderRadius: 24,
-        padding: '0.42rem 1.15rem',
-        fontSize: 'clamp(0.72rem, 1.8vw, 0.84rem)',
+        gap: '0.45rem',
+        background: 'transparent',
+        border: 'none',
+        borderRadius: 0,
+        padding: '0.25rem 0',
+        fontSize: 'clamp(0.78rem, 2vw, 0.92rem)',
         fontWeight: 700,
-        color: '#4f46e5',
-        marginBottom: '1.5rem',
-        marginLeft: '-10px',
-        letterSpacing: '0.06em',
+        marginBottom: '1.25rem',
         textTransform: 'uppercase',
-        boxShadow: '0 2px 14px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
-        minHeight: '2.4rem',
+        minHeight: '2rem',
         maxWidth: '100%',
         boxSizing: 'border-box',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
       }}
-      title="PosturePilot Command Your Security Engine"
+      title="PosturePilot: Command Your Security"
     >
-      {/* Live Glowing Pulse Indicator */}
+      {/* Opening Bracket '[' */}
+      <span
+        style={{
+          color: '#4f46e5',
+          fontWeight: 900,
+          fontSize: '1.3em',
+          fontFamily: 'Consolas, Monaco, "Courier New", monospace',
+          lineHeight: 1,
+          userSelect: 'none',
+        }}
+      >
+        [
+      </span>
+
+      {/* Live Glowing Radar Pulse Indicator */}
       <span
         style={{
           position: 'relative',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 10,
-          height: 10,
+          width: 8,
+          height: 8,
           flexShrink: 0,
+          margin: '0 2px',
         }}
       >
         <span
@@ -115,8 +124,8 @@ export default function HeroTypewriterBadge() {
         <span
           style={{
             position: 'relative',
-            width: 8,
-            height: 8,
+            width: 7,
+            height: 7,
             borderRadius: '50%',
             background: '#16a34a',
             boxShadow: '0 0 8px #22c55e',
@@ -136,12 +145,12 @@ export default function HeroTypewriterBadge() {
         }}
       >
         {renderHighlightedText(displayedText)}
-        {/* Blinking Cursor */}
+        {/* Blinking Terminal Cursor */}
         <span
           style={{
             display: 'inline-block',
             width: '2px',
-            height: '1.1em',
+            height: '1.15em',
             background: '#4f46e5',
             marginLeft: '3px',
             verticalAlign: 'middle',
@@ -150,7 +159,21 @@ export default function HeroTypewriterBadge() {
         />
       </span>
 
-      {/* Subtle CSS Keyframes */}
+      {/* Closing Bracket ']' */}
+      <span
+        style={{
+          color: '#4f46e5',
+          fontWeight: 900,
+          fontSize: '1.3em',
+          fontFamily: 'Consolas, Monaco, "Courier New", monospace',
+          lineHeight: 1,
+          userSelect: 'none',
+        }}
+      >
+        ]
+      </span>
+
+      {/* Keyframes */}
       <style jsx>{`
         @keyframes blink {
           0%, 100% { opacity: 1; }
