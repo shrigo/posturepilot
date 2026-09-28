@@ -8,6 +8,8 @@ const TYPEWRITER_PHRASES = [
   'COMMAND YOUR SECURITY · UNIFIED 12-COCKPIT POSTURE',
 ];
 
+const PREFIX = 'COMMAND YOUR SECURITY';
+
 export default function HeroTypewriterBadge() {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState('');
@@ -23,16 +25,16 @@ export default function HeroTypewriterBadge() {
       const pauseTimer = setTimeout(() => {
         setIsPaused(false);
         setIsDeleting(true);
-      }, 2200);
+      }, 2400);
       return () => clearTimeout(pauseTimer);
     }
 
-    // Paused when fully deleted to [ 🟢 ] so closed state is visible
+    // Paused when fully deleted to [ 🟢 | ] so closed state is visible
     if (isEmptyPaused) {
       const emptyTimer = setTimeout(() => {
         setIsEmptyPaused(false);
         setPhraseIndex((prev) => (prev + 1) % TYPEWRITER_PHRASES.length);
-      }, 700);
+      }, 650);
       return () => clearTimeout(emptyTimer);
     }
 
@@ -40,7 +42,7 @@ export default function HeroTypewriterBadge() {
       if (displayedText.length < currentPhrase.length) {
         const typeTimer = setTimeout(() => {
           setDisplayedText(currentPhrase.slice(0, displayedText.length + 1));
-        }, 50);
+        }, 45);
         return () => clearTimeout(typeTimer);
       } else {
         setIsPaused(true);
@@ -49,7 +51,7 @@ export default function HeroTypewriterBadge() {
       if (displayedText.length > 0) {
         const deleteTimer = setTimeout(() => {
           setDisplayedText(currentPhrase.slice(0, displayedText.length - 1));
-        }, 22);
+        }, 20);
         return () => clearTimeout(deleteTimer);
       } else {
         setIsDeleting(false);
@@ -58,19 +60,25 @@ export default function HeroTypewriterBadge() {
     }
   }, [displayedText, isDeleting, isPaused, isEmptyPaused, phraseIndex]);
 
-  // Highlight "COMMAND YOUR SECURITY" in dark navy/indigo and rotating descriptor in vivid violet
+  // Highlights COMMAND YOUR SECURITY in deep navy/indigo and descriptor in vibrant violet
+  // Uses consistent letter spacing to eliminate horizontal text snapping/jumping
   const renderHighlightedText = (text: string) => {
-    const prefix = 'COMMAND YOUR SECURITY';
-    if (text.startsWith(prefix)) {
-      const rest = text.slice(prefix.length);
+    if (!text) return null;
+    if (text.length <= PREFIX.length) {
       return (
-        <>
-          <span style={{ color: '#010859', fontWeight: 900, letterSpacing: '0.04em' }}>{prefix}</span>
-          <span style={{ color: '#7c3aed', fontWeight: 700, letterSpacing: '0.03em' }}>{rest}</span>
-        </>
+        <span style={{ color: '#010859', fontWeight: 900 }}>
+          {text}
+        </span>
       );
     }
-    return <span style={{ color: '#010859', fontWeight: 900 }}>{text}</span>;
+    const prefixPart = text.slice(0, PREFIX.length);
+    const suffixPart = text.slice(PREFIX.length);
+    return (
+      <>
+        <span style={{ color: '#010859', fontWeight: 900 }}>{prefixPart}</span>
+        <span style={{ color: '#7c3aed', fontWeight: 700 }}>{suffixPart}</span>
+      </>
+    );
   };
 
   return (
@@ -79,16 +87,22 @@ export default function HeroTypewriterBadge() {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
+        height: '32px',
+        minHeight: '32px',
+        maxHeight: '32px',
+        lineHeight: '32px',
         background: 'transparent',
         border: 'none',
         borderRadius: 0,
-        padding: '0.25rem 0',
-        fontSize: 'clamp(0.78rem, 2vw, 0.92rem)',
-        fontWeight: 700,
+        padding: 0,
+        fontSize: 'clamp(0.80rem, 1.8vw, 0.92rem)',
+        fontWeight: 800,
         marginBottom: '1.25rem',
         textTransform: 'uppercase',
-        minHeight: '2rem',
-        maxWidth: '100%',
+        letterSpacing: '0.035em',
+        fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        userSelect: 'none',
+        overflow: 'hidden',
         boxSizing: 'border-box',
       }}
       title="PosturePilot: Command Your Security"
@@ -98,10 +112,12 @@ export default function HeroTypewriterBadge() {
         style={{
           color: '#4f46e5',
           fontWeight: 900,
-          fontSize: '1.35em',
+          fontSize: '1.25em',
           fontFamily: 'Consolas, Monaco, "Courier New", monospace',
           lineHeight: 1,
-          userSelect: 'none',
+          display: 'inline-flex',
+          alignItems: 'center',
+          flexShrink: 0,
         }}
       >
         [
@@ -117,7 +133,7 @@ export default function HeroTypewriterBadge() {
           width: 8,
           height: 8,
           flexShrink: 0,
-          margin: '0 4px',
+          margin: '0 5px 0 6px',
         }}
       >
         <span
@@ -143,45 +159,44 @@ export default function HeroTypewriterBadge() {
         />
       </span>
 
-      {/* Typewriter Text Stream: ONLY takes up space when letters exist */}
-      {displayedText.length > 0 && (
+      {/* Typewriter Text Stream */}
+      <span
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          whiteSpace: 'nowrap',
+          lineHeight: 1,
+          flexShrink: 0,
+        }}
+      >
+        {renderHighlightedText(displayedText)}
+        
+        {/* Blinking Terminal Cursor */}
         <span
           style={{
-            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-            display: 'inline-flex',
-            alignItems: 'center',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            marginLeft: '4px',
-            marginRight: '2px',
+            display: 'inline-block',
+            width: '2px',
+            height: '13px',
+            background: '#4f46e5',
+            marginLeft: displayedText.length > 0 ? '3px' : '1px',
+            marginRight: '3px',
+            alignSelf: 'center',
+            animation: 'blink 0.85s step-start infinite',
           }}
-        >
-          {renderHighlightedText(displayedText)}
-          {/* Blinking Terminal Cursor */}
-          <span
-            style={{
-              display: 'inline-block',
-              width: '2px',
-              height: '1.15em',
-              background: '#4f46e5',
-              marginLeft: '3px',
-              verticalAlign: 'middle',
-              animation: 'blink 0.85s step-start infinite',
-            }}
-          />
-        </span>
-      )}
+        />
+      </span>
 
       {/* Closing Bracket ']' */}
       <span
         style={{
           color: '#4f46e5',
           fontWeight: 900,
-          fontSize: '1.35em',
+          fontSize: '1.25em',
           fontFamily: 'Consolas, Monaco, "Courier New", monospace',
           lineHeight: 1,
-          userSelect: 'none',
+          display: 'inline-flex',
+          alignItems: 'center',
+          flexShrink: 0,
         }}
       >
         ]
