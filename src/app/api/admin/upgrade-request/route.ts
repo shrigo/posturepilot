@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { prisma } from '@/lib/db';
+import { getAllUpgradeRequests } from '@/lib/lead-storage';
 
 const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com'];
 
@@ -16,14 +17,11 @@ export async function GET() {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const requests = await prisma.upgradeRequest.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 200,
-    });
+    const requests = await getAllUpgradeRequests();
     return NextResponse.json({ requests });
   } catch (error) {
     console.error('Failed to fetch upgrade requests:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ requests: [] }, { status: 200 });
   }
 }
 

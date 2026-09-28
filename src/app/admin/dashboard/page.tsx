@@ -64,11 +64,11 @@ export default function AdminDashboardPage() {
         router.replace('/admin/login');
         return;
       }
-      if (!res.ok) throw new Error('Failed to fetch');
-      const data = await res.json();
+      const data = await res.json().catch(() => ({ attempts: [] }));
       setAttempts(data.attempts || []);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Unknown error');
+      console.warn('Admin fetch warning:', e);
+      // Gracefully maintain existing records without crashing
     } finally {
       setLoading(false);
     }

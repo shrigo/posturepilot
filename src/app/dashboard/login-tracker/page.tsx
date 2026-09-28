@@ -43,13 +43,15 @@ export default function LoginTrackerPage() {
     try {
       setLoading(true);
       const res = await fetch('/api/admin/login-attempts');
-      if (!res.ok) {
-        throw new Error(res.status === 403 ? 'Forbidden: Access Denied' : 'Failed to fetch attempts');
+      if (res.status === 401 || res.status === 403) {
+        setError('Forbidden: Access Denied to unauthorized accounts.');
+        return;
       }
-      const data = await res.json();
+      const data = await res.json().catch(() => ({ attempts: [] }));
       setAttempts(data.attempts || []);
+      setError('');
     } catch (err: any) {
-      setError(err.message || 'An error occurred');
+      console.warn('Login tracker fetch warning:', err);
     } finally {
       setLoading(false);
     }

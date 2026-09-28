@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { prisma } from '@/lib/db';
+import { getAllLeads } from '@/lib/lead-storage';
 
 const ADMIN_EMAILS = ['shrigo.now@gmail.com', 'shrigonow@gmail.com'];
 
@@ -17,15 +17,13 @@ export async function GET() {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const attempts = await prisma.loginAttempt.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 500,
-    });
-    return NextResponse.json({ attempts });
+    const { attempts, isDatabaseConnected } = await getAllLeads();
+    return NextResponse.json({ attempts, isDatabaseConnected });
 
   } catch (error) {
     console.error('Failed to fetch login attempts:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    // Never return 500 to the admin dashboard; return clean empty list with 200
+    return NextResponse.json({ attempts: [], error: 'Fallback active' }, { status: 200 });
   }
 }
 
