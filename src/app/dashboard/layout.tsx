@@ -36,6 +36,10 @@ const routeMetadata: Record<string, { title: string; subtitle?: string }> = {
     title: 'AppSec',
     subtitle: 'OWASP findings, SAST/DAST results & dependency vulnerabilities',
   },
+  '/dashboard/php2shell': {
+    title: 'PHP2Shell',
+    subtitle: 'CVE-2026-109618 and CVE-2026-109619 severity, hidden PHP runtimes, and patch status',
+  },
   '/dashboard/traffic': {
     title: 'Traffic & Threats',
     subtitle: 'Network traffic analysis, anomaly detection & bandwidth usage',

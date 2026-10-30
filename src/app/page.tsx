@@ -11,6 +11,7 @@ import { useSession, signOut, signIn } from "next-auth/react";
 
 const TABS = ["Configure","Monitor","Secure","Report"];
 const BOARDS = [
+  {id:"php2shell",icon:"🐘",label:"PHP2Shell",val:"9.2",unit:"CVSS · KEV",c:"#b45309",isNew:true},
   {id:"posture",icon:"🛡️",label:"Cyber Posture",val:"74",unit:"Risk Score",c:"#4f46e5"},
   {id:"cloud",icon:"☁️",label:"Cloud Security",val:"12",unit:"Open Issues",c:"#7c3aed"},
   {id:"network",icon:"🌐",label:"Network Security",val:"847",unit:"Events",c:"#0891b2"},
@@ -25,7 +26,7 @@ const BOARDS = [
   {id:"dispatch",icon:"📨",label:"Dispatch Center",val:"4",unit:"Open SOAR",c:"#0f766e",isNew:true},
 ];
 const PLANS = [
-  {name:"Starter",price:"149",c:"#4f46e5",features:["1 user","CSV upload","500 findings","All 12 dashboards & CISO Cockpit"],cta:"Start Free Trial"},
+  {name:"Starter",price:"149",c:"#4f46e5",features:["1 user","CSV upload","500 findings","All 13 dashboards & CISO Cockpit"],cta:"Start Free Trial"},
   {name:"Professional",price:"399",c:"#7c3aed",features:["5 users · 3 sources","Qualys · Tenable · Nessus","10K findings","API access"],cta:"Start Free Trial",pop:true},
   {name:"MSSP",price:"999",c:"#0891b2",features:["Unlimited users","Multi-tenant","White-label","Dedicated support"],cta:"Contact Sales"},
 ];
@@ -866,7 +867,7 @@ export default function Page() {
           {/* RIGHT — GIF + animated SVG overlay on 6 panel positions */}
           <div 
             className="shield-wrap" 
-            title="Interactive Security Shield — Click to explore 12 Modules Command Center"
+            title="Interactive Security Shield — Click to explore 13 Modules Command Center"
             onClick={(e) => {
               const element = document.getElementById("features");
               if (element) {
@@ -991,10 +992,10 @@ export default function Page() {
 
         <div className="features-split-grid">
           
-          {/* Left Column: 12 Modules */}
+          {/* Left Column: 13 Modules */}
           <div>
             <div style={{marginBottom:"1.5rem"}}>
-              <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>12 Modules · One Command Center</div>
+              <div style={{fontSize:"0.68rem",fontWeight:700,color:"#4f46e5",textTransform:"uppercase",letterSpacing:"0.12em",marginBottom:"0.5rem"}}>13 Modules · One Command Center</div>
               <h2 style={{fontSize:"clamp(1.5rem,2.5vw,1.85rem)",fontWeight:800,letterSpacing:"-0.02em",color:"#0f172a"}}>Enterprise Security Dashboards</h2>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"0.75rem"}}>

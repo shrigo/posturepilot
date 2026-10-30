@@ -6,6 +6,7 @@ import { useClient } from '@/context/ClientContext';
 import { useSession, signOut } from 'next-auth/react';
 
 const navItems = [
+  { href: '/dashboard/php2shell', label: 'PHP2Shell',          badge: 'KEV' },
   { href: '/dashboard',          label: 'Command Center' },
   { href: '/dashboard/posture',  label: 'Security Posture',    badge: '3' },
   { href: '/dashboard/ai-risk',  label: 'AI Risk',             badge: 'NEW' },
@@ -157,7 +158,7 @@ export default function Sidebar() {
                 {!isAllowed && <span style={{ fontSize: '0.65rem', color: '#f59e0b', marginLeft: 'auto' }}>🔒</span>}
               </span>
               {item.badge && isAllowed && (
-                <span className="nav-badge" style={item.badge === 'NEW' ? { background: '#7c3aed' } : {}}>
+                <span className="nav-badge" style={item.badge === 'NEW' ? { background: '#7c3aed' } : item.badge === 'KEV' ? { background: '#b91c1c' } : {}}>
                   {item.badge}
                 </span>
               )}

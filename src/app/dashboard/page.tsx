@@ -12,6 +12,7 @@ import {
   serverData, 
   aiRiskData 
 } from '@/data/mockData';
+import { php2shellSummary } from '@/data/php2shell';
 import { 
   ResponsiveContainer, 
   PieChart, 
@@ -238,6 +239,16 @@ export default function OverviewPage() {
 
   // 10 Security Control Cards Grid Mappings
   const modules = [
+    { 
+      href: '/dashboard/php2shell', 
+      icon: '🐘', 
+      label: 'PHP2Shell', 
+      color: '#b45309', 
+      stat: isUnderAttack ? 'KEV · all exposed' : `${php2shellSummary(currentClient.key).open} exposed`, 
+      sub: 'CVE-2026-109618 · CVSS 9.2', 
+      bg: 'linear-gradient(135deg,#fff7ed,#ffedd5)',
+      progress: isUnderAttack ? 12 : php2shellSummary(currentClient.key).progress
+    },
     { 
       href: '/dashboard/posture', 
       icon: '🛡️', 
@@ -841,7 +852,7 @@ export default function OverviewPage() {
         {/* RESPONSIVE SECURITY CONTROL MODULE GRID */}
         {/* ========================================================================= */}
         <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#475569', marginBottom: '1rem', marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: 6 }}>
-          ⚡ Security Control Modules & Sub-Telemetry <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: '#eef2ff', color: '#4f46e5' }}>12 active layers</span>
+          ⚡ Security Control Modules & Sub-Telemetry <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: '#eef2ff', color: '#4f46e5' }}>13 active layers</span>
         </h3>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1rem' }}>

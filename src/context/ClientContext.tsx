@@ -54,6 +54,7 @@ export const clients: Record<ClientKey, Client> = {
     tier: 'Enterprise',
     allowedModules: [
       '/dashboard', '/dashboard/posture', '/dashboard/ai-risk', '/dashboard/appsec',
+      '/dashboard/php2shell',
       '/dashboard/cloud', '/dashboard/infosec', '/dashboard/dispatch', '/dashboard/server',
       '/dashboard/kpi', '/dashboard/identity', '/dashboard/network', '/dashboard/secure',
       '/dashboard/traffic', '/dashboard/ciso', '/dashboard/findings', '/dashboard/upload',
@@ -73,7 +74,8 @@ export const clients: Record<ClientKey, Client> = {
     assets: '9,450',
     tier: 'Professional',
     allowedModules: [
-      '/dashboard', '/dashboard/posture', '/dashboard/appsec', '/dashboard/cloud',
+      '/dashboard', '/dashboard/posture', '/dashboard/appsec', '/dashboard/php2shell',
+      '/dashboard/cloud',
       '/dashboard/infosec', '/dashboard/server', '/dashboard/kpi', '/dashboard/identity',
       '/dashboard/network', '/dashboard/secure', '/dashboard/traffic', '/dashboard/ciso',
       '/dashboard/findings', '/dashboard/upload', '/dashboard/settings'
@@ -110,6 +112,7 @@ export const clients: Record<ClientKey, Client> = {
     tier: 'Enterprise',
     allowedModules: [
       '/dashboard', '/dashboard/posture', '/dashboard/ai-risk', '/dashboard/appsec',
+      '/dashboard/php2shell',
       '/dashboard/cloud', '/dashboard/infosec', '/dashboard/dispatch', '/dashboard/server',
       '/dashboard/kpi', '/dashboard/identity', '/dashboard/network', '/dashboard/secure',
       '/dashboard/traffic', '/dashboard/ciso', '/dashboard/findings', '/dashboard/upload',
@@ -129,7 +132,8 @@ export const clients: Record<ClientKey, Client> = {
     assets: '12,650',
     tier: 'Professional',
     allowedModules: [
-      '/dashboard', '/dashboard/posture', '/dashboard/appsec', '/dashboard/cloud',
+      '/dashboard', '/dashboard/posture', '/dashboard/appsec', '/dashboard/php2shell',
+      '/dashboard/cloud',
       '/dashboard/infosec', '/dashboard/dispatch', '/dashboard/server', '/dashboard/kpi',
       '/dashboard/identity', '/dashboard/network', '/dashboard/secure', '/dashboard/traffic',
       '/dashboard/ciso', '/dashboard/findings', '/dashboard/upload', '/dashboard/settings'
@@ -197,7 +201,7 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
     if (savedSla) {
       try {
         setSlaThresholds(JSON.parse(savedSla));
-      } catch {}
+      } catch { }
     }
   }, []);
 
@@ -225,11 +229,11 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ClientContext.Provider value={{ 
-      currentClient: activeClient, 
+    <ClientContext.Provider value={{
+      currentClient: activeClient,
       allowedClients,
-      setClient, 
-      isEnterpriseMode, 
+      setClient,
+      isEnterpriseMode,
       setIsEnterpriseMode: toggleEnterpriseMode,
       isUnderAttack,
       setIsUnderAttack: setGlobalUnderAttack,
